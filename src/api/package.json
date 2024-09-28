@@ -6,7 +6,8 @@
   "scripts": {
      "start": "nodemon server.ts",
      "s": "npm run start",
-     "seed": "ts-node seed.ts"
+     "seed": "ts-node seed.ts",
+     "reset": "npx prisma migrate reset"
   },
   "keywords": [],
   "author": "",
