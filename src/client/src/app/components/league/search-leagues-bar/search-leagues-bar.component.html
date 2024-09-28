@@ -1,0 +1,43 @@
+<button (click)="searching = true" class="btn">
+    Buscar ligas
+</button>
+
+<p-dialog closable="true" [dismissableMask]="true" styleClass="bg-base-200" [modal]="true" [(visible)]="searching" [style]="{ width: '25rem' }">
+  <ng-template class="p-4" pTemplate="headless">
+    <label class="input input-bordered flex items-center gap-2 focus-within:border-gray-500 focus-within:outline-none">
+      <input (keyup)="handleSearching($event)" [(ngModel)]="search" type="text"  class="grow" placeholder="Introduce un nombre" />
+    </label>
+
+  @if (results$ | async; as leagues) {
+      @if (leagues.length === 0) {
+          <span>No se han encontrado resultados</span>
+      }
+
+      @else {
+          <ul class="rounded-box">
+              @for (league of leagues; track $index) {
+                  <div class="flex items-center justify-between w-full gap-2">
+                      <span class="text-sm p-1 pl-6">{{league.name}}</span>
+                      <button class="btn m-2" (click)="chooseLeague(league)">Entrar</button>
+                  </div>
+              }
+          </ul>
+      }
+  }
+  </ng-template>
+</p-dialog>
+
+@if (leagueChoosed !== null) {
+    <p-dialog styleClass="p-4" [dismissableMask]="true" [modal]="true" [(visible)]="choosingLeague" [style]="{ width: '25rem' }">
+      <ng-template pTemplate="headless">
+        <h1>¿Realmente quieres entrar a <b>{{this.leagueChoosed?.name}}</b>?</h1>
+        Si haces click en aceptar, mandarás una solicitud a los administradores de la liga,
+        la cual tendrán que aceptar para que seas miembro.
+
+        <div class="flex justify-center mt-3 gap-2">
+          <button class="btn btn-neutral">Mejor no</button>
+          <button class="btn btn-warning" (click)="enterLeague()">Si</button>
+        </div>
+      </ng-template>
+    </p-dialog>
+}

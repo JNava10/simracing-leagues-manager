@@ -1,0 +1,30 @@
+<div class="overflow-x-auto">
+    @if (pendingList$ | async; as users) {
+        <table class="table">
+            @if (users.length > 0) {
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th></th>
+                    </tr>
+                </thead>
+            }
+            <tbody>
+                @for (user of users; track $index) {
+                    <tr>
+                        <td>{{user.nickname}}</td>
+                        
+                        <td>
+                            <div class="join">
+                                <button class="btn bg-green-900 text-green-200 join-item border-none" (click)="acceptMember(user)">Aceptar</button>
+                                <button class="btn bg-red-900 text-red-200 join-item border-none" (click)="declineUser(user)">Rechazar</button>
+                            </div>
+                        </td>
+                    </tr>
+                } @empty {
+                    <p class="text-lg text-gray-600">No existe ninguna solicitud de entrada</p>
+                }
+            </tbody>
+        </table>
+    }
+</div>

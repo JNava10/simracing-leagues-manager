@@ -1,0 +1,41 @@
+<section class="flex flex-col justify-center items-center max-w-md">
+  <label (click)="searching = true" class="input input-bordered flex items-center gap-2 w-full">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    Haz click para buscar
+  </label>
+
+
+
+  <p-dialog [modal]="true" styleClass="w-[40rem]" [(visible)]="searching" draggable="false" [closable]="true">
+    <ng-template pTemplate="headless">
+      <div class="flex flex-col gap-1 w-full bg-base-200 rounded-box p-3">
+        <input placeholder="Introduce un nombre" type="text" class="input w-full" pInputText [(ngModel)]="search" />
+
+        <div>
+          <p class="text-neutral-content">Resultados de la busqueda</p>
+          <ul class="menu w-full flex flex-col items-center justify-center">
+            @if (searchedLeagues$ | async; as leagues) {
+              @for (league of leagues; track league.id) {
+                <li>
+                  {{league.name}}
+                </li>
+              }
+            }
+
+            @if (search.length === 0) {
+              <p class="text-neutral">No has intentado buscar ninguna liga. Introduce un nombre</p>
+            }
+          </ul>
+        </div>
+        <div>
+          <p class="text-neutral-content">Ligas recomendadas</p>
+          <ul class="menu w-full flex flex-col items-center justify-center">
+            <!-- TODO: Buscar ligar recomendadas -->
+
+            <p class="text-neutral">No se han encontrado ligas recomendadas</p>
+          </ul>
+        </div>
+      </div>
+    </ng-template>
+</p-dialog>
+</section>

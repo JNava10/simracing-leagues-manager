@@ -1,0 +1,43 @@
+<app-mode-switch></app-mode-switch>
+
+<section class="px-11 py-6 w-full max-w-lg mx-auto h-screen flex gap-5 flex-col items-center justify-center">
+
+  <h1 class="mb-4 text-xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+    Login
+  </h1>
+
+  <form #form="ngForm" (submit)="$event.preventDefault(); handleSubmit()" [formGroup]="loginForm" class="border-indigo-200 border-2 flex w-full flex-col gap-4 bg-gray-200 rounded-3xl dark:bg-gray-700 p-11">
+    <div class="mb-5">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email/Nick</label>
+      <input formControlName="nickOrEmail" type="text" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 ">
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">El nombre de usuario solo puede tener caracteres alfanumericos y algunos caracteres especiales (_.)</p>
+      @if (form.touched && form.invalid) {
+        <label *ngIf="nickOrEmail.hasError('emailInvalid')" class="text-sm text-red-600 dark:text-red-400">
+          El correo no es valido.
+        </label>
+
+        <label *ngIf="nickOrEmail.hasError('nickInvalid')" class="text-sm text-red-600 dark:text-red-400">
+          El nick no es valido.
+        </label>
+      }
+    </div>
+
+    <div class="mb-5">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
+      <input formControlName="password" type="password" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 ">
+
+      @if (form.touched && form.invalid) {
+        <label *ngIf="password.invalid" class="text-sm text-red-600 dark:text-red-400">
+          La contraseña no es valida.
+        </label>
+      }
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Min. 8 caracteres. Minimo una mayuscula, una minuscula, un numero y algún caracter especial (&commat;$!%*#?&)</p>
+    </div>
+
+    <button type="submit" class="text-white bg-indigo-300 hover:bg-indigo-400 focus:ring-2 focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-blue-800">
+      Iniciar sesión
+    </button>
+
+  </form>
+</section>
+

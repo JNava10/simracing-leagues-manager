@@ -1,0 +1,36 @@
+<p>create-league-form works!</p>
+<section class="flex flex-col justify-center items-center">
+  <h1>Crear una liga</h1>
+  <form (submit)="createLeague()" class="flex flex-col gap-2" #form="ngForm" [formGroup]="createLeagueForm">
+    <div class="form-control">
+      <div class="label">
+        <label class="label-text">Nombre</label>
+      </div>
+      <!-- <input formControlName="name" type="text" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 "> -->
+      <input formControlName="name" type="text" type="text" class="input input-bordered w-full max-w-xs" />
+
+      @if (form.touched && form.invalid) {
+        <label *ngIf="name.errors" class="text-sm text-red-600 dark:text-red-400">
+          El nombrew no es valido.
+        </label>
+      }
+    </div>
+
+    <div class="form-control">
+      <div class="label">
+        <label class="label-text">Descripción</label>
+      </div>
+      <!-- <input formControlName="description" type="text" class="bg-gray-50 outline-none border border-gray-300 focus:border-indigo-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-200 dark:border-gray-700 "> -->
+      <input formControlName="description" type="text" type="text" class="input input-bordered w-full max-w-xs" />
+
+      @if (form.touched && form.invalid) {
+        <label *ngIf="description.errors" class="text-sm text-red-600 dark:text-red-400">
+          La descripción no es valido.
+        </label>
+      }
+    </div>
+
+    <button>Crear liga</button>
+  </form>
+
+</section>

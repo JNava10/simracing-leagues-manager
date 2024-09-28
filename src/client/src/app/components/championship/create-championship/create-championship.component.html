@@ -1,0 +1,126 @@
+<form (submit)="createChampionship()" class="grid grid-cols-2 grid-rows-2" #form="ngForm" [formGroup]="createChampionshipForm">
+  <div class="mb-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+    <input formControlName="name" type="text" class="input input-bordered max-w-md outline-none">
+    @if (form.touched && form.invalid) {
+      <label *ngIf="name.errors" class="text-sm text-red-600 dark:text-red-400">
+        El nombre no es valido.
+      </label>
+    }
+  </div>
+
+  <div class="mb-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
+    <input formControlName="description" type="text" class="input input-bordered max-w-md outline-none">
+    @if (form.touched && form.invalid) {
+      <label *ngIf="description.errors" class="text-sm text-red-600 dark:text-red-400">
+        La descripción no es valido.
+      </label>
+    }
+  </div>
+
+  <div>
+    @if (categories$ | async; as categories) {
+      <h3>Categoria</h3>
+      <select class="select select-bordered w-full max-w-xs"  formControlName="categoryId">
+        <option selected>Selecciona una temporada</option>
+        @for (category of categories; track category.id)  {
+          <optgroup label="{{category.name}}"></optgroup>
+          @for (subcategory of category.subcategories; track subcategory.id) {
+            <option value="{{subcategory.id}}">{{subcategory.name}}</option>
+          }
+        }
+      </select>
+    }
+  </div>
+
+  <div>
+    <h3>Sistema de puntuación</h3>
+    @if (scoreSystems$ | async; as scoreSystems) {
+        <select class="select select-bordered w-full max-w-xs">
+          <option selected>Selecciona un sis. de puntuacion</option>
+
+          @for (scoreSystem of scoreSystems; track $index) {
+            <option value="{{scoreSystem.id}}">{{scoreSystem.name}}</option>
+          }
+
+        </select>
+    }
+  </div>
+
+</form>
+
+<!-- Modal para la creación de rondas -->
+
+<div class="border rounded-lg p-3 border-neutral">
+  <div class="flex gap-4 overflow-x-scroll">
+    @for (track of raceCalendar; track $index) {
+      <div class="relative flex flex-col mt-6 bg-white shadow-sm border border-slate-200 rounded-lg w-96">
+        <div class="mx-3 mb-0 border-b border-slate-200 pt-3 pb-2 px-1">
+          <span class="text-sm text-slate-500">
+              Race {{$index + 1}}
+          </span>
+        </div>
+        <div class="p-4 flex gap-3">
+          <h5 class="mb-2 text-slate-800 text-xl font-semibold">
+            {{track.name}}
+          </h5>
+          <h3>{{track.country}}</h3>
+        </div>
+      </div>
+    } @empty {
+      <p>Se debe añadir una carrera obligatoriamente.</p>
+    }
+  </div>
+
+  <p-dialog styleClass="flex gap-1" [(visible)]="addingRace" modal="true" dismissableMask="true">
+    <div>
+      <div>
+        Circuito seleccionado
+        <div class="card dark:bg-base-100 image-full w-96 shadow-xl">
+          <div class="card-body">
+            @if (roundTrackSelected) {
+              <h2 class="card-title">{{roundTrackSelected.name}}</h2>
+              <p>{{roundTrackSelected.country}}</p>
+            } @else {
+              <p>No se ha indicado ningun circuito</p>
+            }
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2>Circuitos</h2>
+        <div class="flex flex-col shadow-sm border border-slate-200 rounded-lg p-3">
+          <div class="relative flex flex-col text-gray-700 bg-white shadow-md w-96 rounded-xl bg-clip-border">
+            <div class="flex min-w-[240px] max-h-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700 overflow-scroll">
+              @for (track of tracks$ | async; track track.id) {
+                <div role="button" (click)="selectRoundTrack(track)"
+                    class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+                  {{track.name}}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Botones -->
+      <div class="flex gap-1">
+        <button class="btn" (click)="saveRoundAndContinue(roundTrackSelected!)">Guardar y crear otra ronda</button>
+        <button class="btn btn-neutral"  (click)="saveRoundAndClose(roundTrackSelected!)">Guardar y cerrar</button>
+        <button class="btn ml-2 btn-error" (click)="addingRace = false">Cancelar</button>
+      </div>
+    </div>
+
+    <div>
+    </div>
+  </p-dialog>
+
+  <button (click)="addingRace = true" class="btn btn-neutral">
+    Añadir carrera
+  </button>
+</div>
+
+<button class="btn" (click)="createChampionship()">Create championship</button>
+
+
+
