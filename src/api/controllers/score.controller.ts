@@ -18,7 +18,7 @@ export const getScoreSystems = async (req: CustomRequest, res: Response) => {
 
         // return res.status(200).send(league);
     } catch (e) {
-        const error: CustomError = {msg: e.message}
+        const error: CustomError = {error: e.message}
         return res.status(500).send(error);
     }
 };

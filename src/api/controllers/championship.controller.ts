@@ -17,7 +17,7 @@ export const createChampionship = async (req: CustomRequest, res: Response) => {
 
         res.status(201).send(createdChampioship);
     } catch (e) {
-        const error: CustomError = {msg: e.message}
+        const error: CustomError = {error: e.message}
         res.status(500).send(error);
     }
 }

@@ -13,13 +13,13 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'new-league', component: CreateLeagueFormComponent },
       { path: 'leagues', component: LeaguesDashboardComponent, title: 'Ligas' },
-      { path: 'league/:leagueId', component: LeagueMainComponent, children: [
+      { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
         { path: '', redirectTo: 'overview', pathMatch: 'full' },
         { path: 'overview', component: LeagueOverviewComponent },
         { path: 'members', component: LeagueMemberListComponent },
         { path: 'pending', component: PendingMembersListComponent },
         { path: 'championships', children: [
-          { component: CreateChampionshipComponent, path: 'new' },
+          { component: CreateChampionshipComponent, title: 'Crear un campeonato', path: 'new' },
         ] },
       ]
     },

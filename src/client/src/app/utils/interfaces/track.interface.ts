@@ -5,3 +5,9 @@ export interface Track {
   country: string,
   location: string,
 }
+
+export interface SearchTrackProps {
+  id?: number;
+  name?: string;
+  country?: string
+}

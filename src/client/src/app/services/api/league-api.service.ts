@@ -1,16 +1,22 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import { inject, Injectable } from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
 import {QueryIsExecuted, League, LeagueMember, ApiMemberFilter} from "../../utils/interfaces/league.interface";
 import {sendTokenParam} from "../../utils/constants/global.constants";
 import { User } from '../../utils/interfaces/user.interface';
+import { GlobalHelper } from '../../helpers/global.helper';
+import { catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeagueApiService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.globalHelper = inject(GlobalHelper);
+  }
+
+  private globalHelper?: GlobalHelper
 
   createLeague = (league: League) => {
     return this.http.post<League>(`${environment.apiEndpoint}/league`, league, {params: {...sendTokenParam}})
@@ -29,7 +35,17 @@ export class LeagueApiService {
   }
 
   getLeague = (id: number) => {
-    return this.http.get<League>(`${environment.apiEndpoint}/league/${id}`, {params: {...sendTokenParam}})
+    return this.http.get<League>(`${environment.apiEndpoint}/league/${id}`, {params: {...sendTokenParam}}).pipe(
+      catchError((err: HttpResponse<League>, caught) => {
+          console.log('a')
+          if (err.status === 0)  {
+          console.log('a')
+          this.globalHelper!.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet')
+        }
+
+        return caught;
+      })
+    )
   }
 
   getLeagueMembers = (leagueId: number) => {

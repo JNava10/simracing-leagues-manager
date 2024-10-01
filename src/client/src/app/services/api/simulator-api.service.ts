@@ -8,13 +8,12 @@ import {Category} from "../../utils/interfaces/category.interface";
 import { SearchCategoryProps } from '../../utils/props/category/category.prop';
 import { DefaultRes as DefaultRes } from '../../utils/interfaces/responses/response.interface';
 import { catchError, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { MessageService } from 'primeng/api';
 import { GlobalHelper } from '../../helpers/global.helper';
+import { SearchSimProps, SimulatorGame } from '../../utils/interfaces/simulator.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryApiService {
+export class SimulatorApiService {
 
   constructor(private http: HttpClient) { }
 
@@ -24,13 +23,11 @@ export class CategoryApiService {
     return this.http.get<Category[]>(`${environment.apiEndpoint}/category`, {params: {...sendTokenParam}})
   }
 
-  /**
-   * Busca las categorías que tengan las propiedades indicadas.
-   * @param props
-   */
-  search = (props: SearchCategoryProps) => {
-    return this.http.get<DefaultRes<Category[]>>(`${environment.apiEndpoint}/category/search`, {params: {...sendTokenParam, ...props}}).pipe(
-      catchError((err: HttpResponse<DefaultRes<Category[]>>, caught) => {
+
+  search = (props: SearchSimProps) => {
+    return this.http.get<DefaultRes<SimulatorGame[]>>(`${environment.apiEndpoint}/simulator/search`, {params: {...sendTokenParam, ...props}}).pipe(
+      catchError((err: HttpResponse<DefaultRes<SimulatorGame[]>>, caught) => {
+
         this.globalHelper.showErrorMessage('Error', err.body?.error!)
 
         return caught;

@@ -1,3 +1,3 @@
 export interface CustomError {
-    msg: string;
+    error: string;
 }

@@ -256,7 +256,7 @@ model SimulatorGame {
   id          Int           @id @default(autoincrement())
   name        String        @db.VarChar(255)
   description String        @db.VarChar(255)
-  picUrl     String         @db.VarChar(255)
+  picUrl     String?         @db.VarChar(255)
   releaseYear     Int       @db.Year
 
   UserFavouriteSimulator FavouriteSimulator[]

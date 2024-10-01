@@ -8,3 +8,10 @@ export interface Track {
     layouts: Layout[];
 }
 
+
+export interface SearchTrackProps {
+    id?: number;
+    name?: string;
+    country?: string
+  }
+  

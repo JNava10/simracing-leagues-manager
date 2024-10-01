@@ -1,28 +1,29 @@
-import { Injectable } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import {StorageHelper} from "./storage.helper";
 import {MessageService} from "primeng/api";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GlobalHelper {
 
-  constructor(private storageHelper: StorageHelper) { }
+  constructor(private storageHelper?: StorageHelper) {
+  }
 
   private tokenKey = 'token'
 
   saveToken = (token: string) => {
 
-    this.storageHelper.save(this.tokenKey, token);
+    this.storageHelper!.save(this.tokenKey, token);
   }
 
   getToken = () => {
-    return this.storageHelper.get(this.tokenKey);
+    return this.storageHelper!.get(this.tokenKey);
   }
 
-  showErrorMessage = (title: string, message: string, messageService: MessageService) => {
-    messageService.add({severity: 'error', summary: title, detail: message});
+  showErrorMessage = (title: string, message: string, messageService?: MessageService) => {
+    messageService!.add({severity: 'error', summary: title, detail: message});
   }
 
   showSuccessMessage = (title: string, message: string, messageService: MessageService) => {
