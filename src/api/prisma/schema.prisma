@@ -112,6 +112,21 @@ model LeagueMemberRole {
   users User[]
 }
 
+// Miembros pertenecientes a cada liga.
+model LeagueMember {
+  leagueId Int
+  userId   Int
+  accepted Boolean @default(false)
+  joinedAt            DateTime?             @db.DateTime(6)
+  requestedAt            DateTime?             @db.DateTime(6)
+
+  league League @relation(fields: [leagueId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@id(name: "memberKeys", [leagueId, userId])
+}
+
+
 // Campeonatos de cada liga
 
 model LeagueChampionship {
@@ -174,18 +189,44 @@ model RaceSession {
   session  Session[]
 }
 
-// Equipos personalizados y predefinidos
+// Equipos //
 
-model DefaultTeam {
+// Información sobre los equipos existentes. Estos equipos pueden elegirse dentro de un campeonato
+model Team {
   id            Int            @id @default(autoincrement())
-  presetName          String         @db.VarChar(255)
-  teamName          String         @db.VarChar(255)
+  name          String         @db.VarChar(255)
   hexColor      String         @db.VarChar(7)
-  carEntries    Int            @default(2)
+  carEntries    Int?            @default(2)
 }
 
-// Sistemas de puntuación
+// Union entre los campeonatos y sus respectivos equipos.
+model ChampionshipTeam {
+  championshipId  Int            
+  teamId  Int    
 
+  @@id([championshipId, teamId])
+}
+
+// Configuración predeterminada para poder configurar un campeonato. Los usuarios pueden crear estos presets y publicarlos en una "workshop".
+model ChampionshipPreset {
+  id            Int            @id @default(autoincrement())
+  championshipId  Int
+  scoreSystemId Int
+  authorId Int
+  createdAt DateTime @default(now()) @db.DateTime(6)
+}
+
+// Trazados de circuito pertenecientes a cada preset de configuración.
+model WorkshopPresetLayouts {
+  presetId  Int
+  scoreSystemId Int
+
+  @@id([presetId, scoreSystemId])
+}
+
+/// Sistemas de puntuación ///
+
+// Definición de cuanto puntua cada posición, vuelta rapida o pole, distinguidos por un nombre.
 model ScoreSystem {
   id            Int                   @id @default(autoincrement())
   name          String                @db.VarChar(255)
@@ -194,6 +235,7 @@ model ScoreSystem {
   extraScore    ScoreSystemExtra[]
 }
 
+// Valores de puntuación de cada posición dentro de un sistema de puntuación.
 model ScoreSystemPosition {
   id       Int         @id @default(autoincrement())
   parent   ScoreSystem @relation(fields: [parentId], references: [id])
@@ -202,12 +244,14 @@ model ScoreSystemPosition {
   parentId Int
 }
 
+// Definición de las opciones extra dentro de los sistemas de puntuación (pole, vuelta rapida...).
 model ExtraScore {
   id               Int                @id @default(autoincrement())
   name             String
   scoreSystemExtra ScoreSystemExtra[]
 }
 
+// Valores de puntuación de pole, vuelta rapida y otras opciones extra dentro de un sistema de puntuación.
 model ScoreSystemExtra {
   id       Int         @id @default(autoincrement())
   extraId  Int
@@ -217,20 +261,7 @@ model ScoreSystemExtra {
   extra    ExtraScore  @relation(fields: [extraId], references: [id])
 }
 
-model LeagueMember {
-  leagueId Int
-  userId   Int
-  accepted Boolean @default(false)
-  joinedAt            DateTime?             @db.DateTime(6)
-  requestedAt            DateTime?             @db.DateTime(6)
-
-  league League @relation(fields: [leagueId], references: [id])
-  user   User   @relation(fields: [userId], references: [id])
-
-  @@id(name: "memberKeys", [leagueId, userId])
-}
-
-// Circuitos
+/// Circuitos ///
 
 model Track {
   id          Int           @id @default(autoincrement())

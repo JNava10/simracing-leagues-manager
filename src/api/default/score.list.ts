@@ -1,7 +1,7 @@
-import {ScoreSystemSeed} from "../utils/interfaces/score.interface";
+import {ScoreSystem} from "../utils/interfaces/score.interface";
 import {ExtraScoreName} from "../utils/constants/score.constants";
 
-export const scoreSeedList: ScoreSystemSeed[] =
+export const scoreSeedList: ScoreSystem[] =
     [
         {
             "name": "F1 2010-2018",

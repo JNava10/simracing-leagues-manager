@@ -1,4 +1,6 @@
 export enum CreatingChampRoundStates {
-  Default,
-  EditingScores
+  CreatingBasicInfo,
+  CreatingTeams,
+  CreatingScoreSystem,
+  SharePresetConfig,
 }

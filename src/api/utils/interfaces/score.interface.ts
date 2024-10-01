@@ -1,21 +1,22 @@
 import {ExtraScoreName} from "../constants/score.constants";
 
-export interface ScoreSystemSeed {
-    name: string;
-    description: string;
-    positions: PositionScoreSeed[],
-    extra?: ExtraScoreSeed[]
+export interface ScoreSystem {
+    name?: string;
+    description?: string;
+    positions?: PositionScore[],
+    extra?: ExtraScore[]
 }
 
-export interface PositionScoreSeed {
+export interface PositionScore {
     position: string,
     score: string,
     parentId?: number
 }
 
-export interface ExtraScoreSeed {
-    key: ExtraScoreName,
+export interface ExtraScore {
+    key?: ExtraScoreName,
     score: string,
     parentId?: number,
-    extraId?: number
+    extraId?: number,
+    name?: string
 }

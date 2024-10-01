@@ -1,0 +1,205 @@
+<section>
+  <form class="p-3 grid gap-2 grid-cols-3"
+    #form="ngForm" [formGroup]="createChampionshipForm">
+
+    <!-- Nombre -->
+    <div class="mb-5">
+      <label
+        class="block mb-2 text-sm font-medium">Nombre</label>
+      <input formControlName="name" type="text"
+        class="input input-bordered w-full outline-none">
+      @if (form.touched && form.invalid) {
+      <label *ngIf="name.errors" class="text-sm text-red-600 dark:text-red-400">
+        El nombre no es valido.
+      </label>
+      }
+    </div>
+
+    <!-- Descripción -->
+    <div class="mb-5 col-span-2">
+      <label
+        class="block mb-2 text-sm font-medium">Descripción</label>
+      <input formControlName="description" type="text"
+        class="input input-bordered w-full outline-none">
+      @if (form.touched && form.invalid) {
+      <label *ngIf="description.errors"
+        class="text-sm text-red-600 dark:text-red-400">
+        La descripción no es valido.
+      </label>
+      }
+    </div>
+  </form>
+
+  <div class="flex justify-center gap-3">
+  <!-- Buscar categoria -->
+  <div class="flex flex-col gap-1 items-center max-w-md m-3">
+    <span>Categorías</span>
+    <!-- TODO: Extraer lista a componente generico -->
+    <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
+        <app-custom-search-input class="join-item" (onSearch)="searchCategories($event)" placeholder="Introduce el nombre de una categoria"/>
+        <ul
+          class="menu join-item mt-1 text-gray-200 min-h-sm overflow-y-scroll z-[1000] flex-col w-full items-center p-3 no-scrollbar"
+        >
+        @if (categories$ | async; as res) {
+          @for (category of res.data; track $index) {
+            <div class="flex gap-3 items-center w-full my-1">
+              <input type="checkbox" #box class="checkbox" (click)="toggleCategory(category, box.checked, $index)">
+              <span>{{category.name}}</span>
+            </div>
+          } @empty {
+            <p>No se han encontrado resultados.</p>
+          }
+        } @else {
+          <div class="flex flex-col justify-center gap-1 items-center text-neutral">
+            <i class="fa-solid fa-magnifying-glass fa-5x "></i>
+            <span class="font-bold">Introduce alguna busqueda</span>
+          </div>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <!-- Buscar simuladores -->
+  <div class="flex flex-col gap-1 items-center max-w-md m-3">
+    <span>Simulador</span>
+    <!-- TODO: Extraer lista a componente generico -->
+    <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
+        <app-custom-search-input class="join-item" (onSearch)="searchSimulator($event)" placeholder="Introduce el nombre de un simulador"/>
+        <ul
+          class="menu join-item mt-1  text-gray-200 min-h-sm overflow-y-scroll flex-col w-full items-center p-3 no-scrollbar"
+        >
+        @if (simulators$ | async; as res) {
+          @for (item of res.data; track $index) {
+            @if (selectedSimulator !== null && selectedSimulator !== undefined && item.id === selectedSimulator!.id) {
+
+              <!-- Item seleccionado -->
+              <div class="flex p-3 rounded-xl gap-3 items-center w-full bg-base-200 cursor-pointer">
+                <span>{{item.name}}</span>
+              </div>
+            } @else {
+
+              <!-- Todos los items -->
+              <div (click)="selectedSimulator = item" class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
+                <span>{{item.name}}</span>
+              </div>
+            }
+          } @empty {
+            <p>No se han encontrado resultados.</p>
+          }
+        } @else {
+          <div class="flex flex-col justify-center gap-1 items-center text-neutral">
+            <i class="fa-solid fa-magnifying-glass fa-5x "></i>
+            <span class="font-bold">Introduce alguna busqueda</span>
+          </div>
+        }
+      </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para la creación de rondas -->
+  <span>Rondas del campeonato</span>
+  <div class="border rounded-lg p-3 border-neutral">
+    <div class="flex gap-4 overflow-x-scroll">
+      @for (track of raceCalendar; track $index) {
+      <div class="card bg-base-200 min-w-lg">
+        <div class="card-title flex items-center justify-between">
+          <span class="text-sm dark:text-gray-400">
+            Race {{$index + 1}}
+          </span>
+          <span class="text-gray-400">{{track.country}}</span>
+          <hr>
+        </div>
+        <div class="card-body flex justify-between gap-3">
+          <h5 class="mb-2 text-gray-200 text-xl font-semibold">
+            {{track.name}}
+          </h5>
+        </div>
+      </div>
+      } @empty {
+      <p>Se debe añadir una carrera obligatoriamente.</p>
+      }
+    </div>
+
+
+    <button (click)="addingRace = true" class="btn btn-neutral">
+      Añadir carrera
+    </button>
+  </div>
+
+  <button class="btn">Siguiente</button>
+</section>
+
+<!--- Modales --->
+
+<p-dialog contentStyleClass="bg-base-100" showHeader="false" styleClass="flex gap-1 bg-base-100" [(visible)]="addingRace" [modal]="true"
+[dismissableMask]="true">
+  <div>
+    <div>
+      <div class="card dark:bg-base-100 image-full w-full my-3">
+        <div class="card-body">
+          @if (roundTrackSelected) {
+          <h2 class="card-title">{{roundTrackSelected.name}}</h2>
+          <p>{{roundTrackSelected.country}}</p>
+          } @else {
+          <p>No se ha indicado ningun circuito</p>
+          }
+        </div>
+      </div>
+    </div>
+    <div>
+      <!-- TODO: Extraer lista a componente generico -->
+      <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
+        <app-custom-search-input class="join-item" (onSearch)="searchTracks($event)" placeholder="Introduce el nombre de un circuito"/>
+        <ul
+          class="text-gray-200 max-h-sm overflow-scroll-y min-h-sm overflow-y-scrol flex-col w-full items-center p-3"
+        >
+          @if (tracks$ | async; as res) {
+            @for (item of res.data; track $index) {
+              <div (click)="selectTrack(item)" class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
+                {{item.name}}
+              </div>
+            } @empty {
+              <p>No se han encontrado resultados.</p>
+            }
+          } @else {
+            <div class="flex flex-col justify-center gap-1 items-center text-neutral">
+              <i class="fa-solid fa-magnifying-glass fa-5x "></i>
+              <span class="font-bold">Introduce alguna busqueda</span>
+            </div>
+          }
+      </ul>
+      <div>
+        <div>
+            <!-- TODO: Sacar a componente aparte -->
+
+            <select [(ngModel)]="selectedDurationType" #selectType>
+              <option selected>Selecciona una duración</option>
+              @for (item of durationTypeList; track $index) {
+                <option value="{{item}}">{{item.name}}</option>
+              }
+            </select>
+
+            @if (selectedDurationType !== null && selectedDurationType !== undefined) {
+              <div>
+                  <span>{{selectedDurationType!.name}}:</span>
+                <input type="text" [(ngModel)]="roundDuration" class="input input-bordered rounded-xl w-[5rem]" maxlength="4"/>
+              </div>
+            }
+         </div>
+      </div>
+    </div>
+  </div>
+    <!-- Botones -->
+    <div class="flex gap-1 mt-3">
+      <button class="btn"
+        (click)="saveRoundAndContinue(roundTrackSelected!)">Guardar y crear
+        otra ronda</button>
+      <button class="btn btn-neutral"
+        (click)="saveRoundAndClose(roundTrackSelected!)">Guardar y
+        cerrar</button>
+      <button class="btn ml-2 btn-error"
+        (click)="addingRace = false">Cancelar</button>
+    </div>
+  </div>
+</p-dialog>
