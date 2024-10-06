@@ -1,9 +1,9 @@
 import { GlobalHelper } from './../../../../helpers/global.helper';
 import { roundDurationTypes } from './../../../../utils/constants/global.constants';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { Track, TrackLayout } from '../../../../utils/interfaces/track.interface';
 import { Observable, of } from 'rxjs';
-import { ChampionshipCreation as LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
+import { LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
 import { CreatingChampRoundStates } from '../../../../utils/enums/states.enum';
 import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
@@ -25,6 +25,7 @@ import { SESSION_DURATION_TYPE, SESSION_DURATION_TYPE as SESSION_LENGTH_TYPE } f
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { Errors } from '../../../../utils/enums/errors.enum';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -53,7 +54,6 @@ export class BasicInfoChampionshipFormComponent {
     private route: ActivatedRoute,
     private messageService: MessageService,
     private globalHelper: GlobalHelper,
-    private formBuilder: FormBuilder
   ) {}
 
   @Input() leagueId?: number;
@@ -241,24 +241,37 @@ export class BasicInfoChampionshipFormComponent {
 
   /// Siguiente pagina ///
 
+  @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>()
+
   protected goToNextPage = () => {
 
     let championship = this.createChampionshipForm.value as LeagueChampionship
 
-    championship.calendar = this.raceCalendar;
+    // championship.calendar = this.raceCalendar;
 
-    championship.calendar.forEach(entry => {
-      // Unicamente se utilizará el ID de cada trazado, por lo que el resto no hará falta.
-      entry.layoutId = entry.layout?.id;
-      entry.layout = undefined;
-    })
+    // championship.calendar.forEach(entry => {
+    //   // Unicamente se utilizará el ID de cada trazado, por lo que el resto no hará falta.
+    //   entry.layoutId = entry.layout?.id;
+    //   entry.layout = undefined;
+    // })
 
-    this.selectedCategories.forEach(item => {
-      championship.categoryIds?.push(item.id!);
-    })
+    // this.selectedCategories.forEach(item => {
+    //   championship.categoryIds?.push(item.id!);
+    // })
 
-    championship.simulatorId = this.selectedSimulator?.id;
+    // championship.simulatorId = this.selectedSimulator?.id;
+
+    // DATOS DE PRUEBA //
+
+    // TODO: Borrar
+
+    championship.name = "Prueba";
+    championship.description = "Descripción";
+    championship.categoryIds = [1];
+    championship.simulatorId = 1;
 
     console.log(championship);
+
+    this.basicDataCreated.emit(championship);
   }
 }

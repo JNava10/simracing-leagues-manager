@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import { CreatingChampRoundStates } from '../../../utils/enums/states.enum';
-import { FormControl, FormGroup } from '@angular/forms';
 import { BasicInfoChampionshipFormComponent } from "./basic-info-championship-form/basic-info-championship-form.component";
+import { LeagueChampionship } from '../../../utils/interfaces/championship.interface';
 
 @Component({
   selector: 'app-create-championship',
@@ -16,11 +16,11 @@ export class CreateChampionshipComponent {
 
   currentCreatingState: CreatingChampRoundStates = CreatingChampRoundStates.CreatingBasicInfo; // Es mas sencillo manejar que se muestra en el modal cambiando su estado, en vez de ifs y booleans.
 
-  champsionshipInfoForm = new FormGroup({
-    name: new FormControl(""),
-    description: new FormControl(""),
-    categoryId: new FormControl(0),
-    simulatorId: new FormControl(0),
-  });
+  championshipCreating?: LeagueChampionship;
 
+  handleBasicDataCreated = (championship: LeagueChampionship) => {
+    this.championshipCreating = championship;
+
+    this.currentCreatingState++
+  }
 }

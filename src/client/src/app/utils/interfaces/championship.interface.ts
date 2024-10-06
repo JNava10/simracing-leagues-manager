@@ -2,7 +2,7 @@ import { SESSION_DURATION_TYPE } from "../enums/round.enum"
 import { ScoreSystem } from "./score.interface"
 import { Track, TrackLayout } from "./track.interface"
 
-export interface ChampionshipCreation {
+export interface LeagueChampionship {
   id?: number,
   name?: string,
   description?: string
