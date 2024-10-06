@@ -9,36 +9,56 @@ import { SearchTrackProps } from "../utils/interfaces/track.interface";
 import { Messages } from '../utils/enum/messages.enum';
 import { sendSuccessResponse } from '../helpers/common.helper';
 
-export const getAll = async (req: CustomRequest, res: Response) => {
-    try {
-        const trackId = Number(req.params['id']);
+export class TrackController {
+    private trackService = new TrackService();
 
-        if (!trackId) {
-            const tracks = await TrackService.getAllTracks()
-            return res.status(200).send(tracks);
+    getAll = async (req: CustomRequest, res: Response) => {
+        try {
+            const trackId = Number(req.params['id']);
+    
+            if (!trackId) {
+                const tracks = await this.trackService.getAllTracks();
+                return res.status(200).send(tracks);
+            }
+    
+            // const league = await LeagueService.getLeagueById(track);
+    
+            // return res.status(200).send(tracks);
+        } catch (e) {
+            const error: CustomError = {error: e.message}
+            return res.status(500).send(error);
         }
-
-        // const league = await LeagueService.getLeagueById(track);
-
-        // return res.status(200).send(tracks);
-    } catch (e) {
-        const error: CustomError = {error: e.message}
-        return res.status(500).send(error);
+    };
+    
+    search = async (req: Request, res: Response) => {
+        try {
+            const props = req.query as SearchTrackProps;
+            
+            const tracks = await this.trackService.search(props);
+    
+            sendSuccessResponse({
+                msg: Messages.SEARCH_SUCCESS,
+                data: tracks,
+                status: 200
+            }, res)
+        } catch (error) {
+            console.error(error);
+        }
     }
-};
 
-export const search = async (req: Request, res: Response) => {
-    try {
-        const props = req.query as SearchTrackProps;
+    searchLayouts = async (req: Request, res: Response) => {
+        try {
+            const props = req.query as SearchTrackProps;
         
-        const tracks = await TrackService.search(props);
-
-        sendSuccessResponse({
-            msg: Messages.SEARCH_SUCCESS,
-            data: tracks,
-            status: 200
-        }, res)
-    } catch (error) {
-        console.error(error);
+            const tracks = await this.trackService.searchLayouts(props);
+    
+            sendSuccessResponse({
+                msg: Messages.SEARCH_SUCCESS,
+                data: tracks,
+                status: 200
+            }, res)
+        } catch (error) {
+            console.error(error);
+        }
     }
 }

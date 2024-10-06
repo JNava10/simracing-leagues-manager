@@ -3,7 +3,7 @@ import {prisma} from "../app";
 import { SearchTrackProps } from "../utils/interfaces/track.interface";
 
 export class TrackService {
-    static getAllTracks = async () => {
+    getAllTracks = async () => {
         try {
             return await prisma.track.findMany();
         } catch (e) {
@@ -12,7 +12,7 @@ export class TrackService {
     };
 
     
-    static search = async ({name, id, country}: SearchTrackProps) => {
+    search = async ({name, id, country}: SearchTrackProps) => {
         return prisma.track.findMany({
             where: {
                 OR: [
@@ -21,5 +21,19 @@ export class TrackService {
                     {country}
                 ]
             }});
+    };
+
+    searchLayouts = async ({name, id, country}: SearchTrackProps) => {
+        return prisma.track.findMany({
+            where: {
+                OR: [
+                    {name: {startsWith: name}},
+                    {id},
+                    {country}
+                ]
+            },
+
+            include: {layouts: true}
+        });
     };
 }

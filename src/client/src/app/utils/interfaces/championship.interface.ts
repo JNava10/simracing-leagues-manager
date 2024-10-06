@@ -1,22 +1,22 @@
 import { SESSION_DURATION_TYPE } from "../enums/round.enum"
 import { ScoreSystem } from "./score.interface"
-import { Track } from "./track.interface"
+import { Track, TrackLayout } from "./track.interface"
 
 export interface ChampionshipCreation {
   id?: number,
-  name: string,
+  name?: string,
   description?: string
   categoryIds?: number[]
-  trackIds?: number[]
-  leagueId: number
-  presetId?: number // Id del preset que utiliza para definir el sistema de puntuación. (Solo si así lo ha elegido el usuario)
+  calendar?: ChampionshipRound[],
+  simulatorId?: number
+  leagueId?: number
 }
 
 export interface ChampionshipRound {
   id?: number
   name?: string
-  trackId?: number
-  track?: Track
+  layoutId?: number
+  layout?: TrackLayout
   length?: RoundLength
   customScoring?: ScoreSystem // Configuración personalizada del sistema de puntuación.
 }

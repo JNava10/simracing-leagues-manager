@@ -1,9 +1,9 @@
 import { GlobalHelper } from './../../../../helpers/global.helper';
 import { roundDurationTypes } from './../../../../utils/constants/global.constants';
 import { Component, Input } from '@angular/core';
-import { Track } from '../../../../utils/interfaces/track.interface';
+import { Track, TrackLayout } from '../../../../utils/interfaces/track.interface';
 import { Observable, of } from 'rxjs';
-import { ChampionshipCreation, ChampionshipRound, RoundLength as RoundLength, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
+import { ChampionshipCreation as LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
 import { CreatingChampRoundStates } from '../../../../utils/enums/states.enum';
 import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
@@ -48,7 +48,6 @@ export class BasicInfoChampionshipFormComponent {
   constructor(
     private championshipService: ChampionshipApiService,
     private categoryService: CategoryApiService,
-    private scoreService: ScoreApiService,
     private simulatorService: SimulatorApiService,
     private trackService: TrackApiService,
     private route: ActivatedRoute,
@@ -69,11 +68,6 @@ export class BasicInfoChampionshipFormComponent {
 
   ngOnInit() {
     this.leagueId = this.route.snapshot.params['leagueId'];
-
-    // Obtenemos todos los elegibles necesarios para los desplegables
-    // this.tracks$ = this.trackService.getAllTracks();
-    // this.categories$ = this.categoryService.getAllCategories();
-    // this.scoreSystems$ = this.scoreService.getAllScoreSystems();
   }
 
   /// Enums ///
@@ -88,9 +82,7 @@ export class BasicInfoChampionshipFormComponent {
 
   createChampionshipForm: FormGroup = new FormGroup({
     name: new FormControl(''),
-    description: new FormControl(''),
-    categories: new FormControl(this.selectedCategories),
-    simulator: new FormControl<SimulatorGame | null>(null),
+    description: new FormControl('')
   });
 
 
@@ -118,7 +110,7 @@ export class BasicInfoChampionshipFormComponent {
 
   championshipRoundForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null),
-    track: new FormControl<Track | null>(null),
+    layout: new FormControl<TrackLayout | null>(null),
     length: new FormGroup({
       value: new FormControl<number | null>(null),
       type: new FormControl<SESSION_DURATION_TYPE | null>(0)
@@ -129,12 +121,12 @@ export class BasicInfoChampionshipFormComponent {
     return this.championshipRoundForm.get('name') as FormControl;
   }
 
-  protected get roundTrack() {
-    return this.championshipRoundForm.get('track') as FormControl<Track | null>;
+  protected get roundLayout() {
+    return this.championshipRoundForm.get('layout') as FormControl<TrackLayout | undefined>;
   }
 
   protected get roundLength() {
-    return this.championshipRoundForm.get('length') as FormControl<RoundLength | null>;
+    return this.championshipRoundForm.get('length') as FormControl<RoundLength | undefined>;
   }
 
   protected get roundLengthValue() {
@@ -142,7 +134,7 @@ export class BasicInfoChampionshipFormComponent {
   }
 
   protected get roundLengthType() {
-    return this.roundLength.get('type') as FormControl<SESSION_DURATION_TYPE | null>;
+    return this.roundLength.get('type') as FormControl<SESSION_DURATION_TYPE | undefined>;
   }
 
   /// Busqueda de todos los dropdowns ///
@@ -171,12 +163,12 @@ export class BasicInfoChampionshipFormComponent {
 
   // Circuitos //
 
-  protected searchTracks = (value: string) => {
+  protected searchTrackLayouts = (value: string) => {
     this.tracks$ = of();
 
     if (value.length === 0) return
 
-    this.tracks$ = this.trackService.search({name: value});
+    this.tracks$ = this.trackService.searchLayouts({name: value});
   }
 
   /// Circuitos ///
@@ -195,11 +187,22 @@ export class BasicInfoChampionshipFormComponent {
     this.raceCalendar.splice(index, 1);
   }
 
-  selectTrack = (track: Track) => {
-    this.roundTrack.setValue(track)
+  selectLayout = (track: Track, layout: TrackLayout) => {
+    const layoutWithTrack = layout;
+
+    layoutWithTrack.track = track; // Esto servirá para mostrar los datos del circuito al que pertenece el trazado.
+
+    this.roundLayout.setValue(layout);
   }
 
   /// Gestionar las rondas de campeonatos ///
+
+  getRoundLayoutName = () => {
+    console.log(this.roundLayout)
+    // Esto se mostrará si no se ha introducido ningun nombre.
+    // Ej: Suzuka Circuit - East Loop.
+    return `${this.roundLayout.value?.track?.name} - ${this.roundLayout.value?.name}`
+  }
 
   saveRoundAndContinue = () => {
     this.saveRound();
@@ -215,7 +218,7 @@ export class BasicInfoChampionshipFormComponent {
   }
 
   private setRoundName = () => {
-    let nameToSet = this.roundName.value || this.roundTrack.value?.name;
+    let nameToSet = this.roundName.value || this.getRoundLayoutName();
 
     this.roundName.setValue(nameToSet);
   }
@@ -232,6 +235,30 @@ export class BasicInfoChampionshipFormComponent {
 
   private removeCategory = (category: Category) => {
     const index = this.selectedCategories.findIndex(finding => finding.id === category.id)
+
     this.selectedCategories.splice(index, 1);
+  }
+
+  /// Siguiente pagina ///
+
+  protected goToNextPage = () => {
+
+    let championship = this.createChampionshipForm.value as LeagueChampionship
+
+    championship.calendar = this.raceCalendar;
+
+    championship.calendar.forEach(entry => {
+      // Unicamente se utilizará el ID de cada trazado, por lo que el resto no hará falta.
+      entry.layoutId = entry.layout?.id;
+      entry.layout = undefined;
+    })
+
+    this.selectedCategories.forEach(item => {
+      championship.categoryIds?.push(item.id!);
+    })
+
+    championship.simulatorId = this.selectedSimulator?.id;
+
+    console.log(championship);
   }
 }

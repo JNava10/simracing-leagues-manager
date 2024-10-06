@@ -102,17 +102,17 @@
   <div class="border rounded-lg p-3 border-neutral">
     <div class="flex gap-4 overflow-x-scroll">
       @for (round of raceCalendar; track $index) {
-      <div class="card bg-base-200 w-md p-3">
+      <div title="{{round.name}}" class="card bg-base-200 w-md p-3">
         <div class="card-title flex items-center justify-between">
           <span class="text-sm dark:text-gray-400">
             {{$index + 1}}
           </span>
-          <span class="text-gray-400">{{round.track?.country}}</span>
+          <span class="text-gray-400">{{round.layout?.track?.country}}</span>
           <hr>
         </div>
         <div class="card-body flex justify-between gap-3">
           <h5 class="mb-2 text-gray-200 text-xl font-semibold">
-            {{(round.name!.length > 20) ? ((round.name | slice:0:15) + "...") : round.name}}
+            {{(round.name!.length > 20) ? ((round.name | slice:0:20) + "...") : round.name}}
           </h5>
         </div>
       </div>
@@ -127,7 +127,7 @@
     </button>
   </div>
 
-  <button class="btn">Siguiente</button>
+  <button class="btn" (click)="goToNextPage()">Siguiente</button>
 </section>
 
 <!--- Modales --->
@@ -139,11 +139,11 @@
     <div>
       <div class="card dark:bg-base-100 image-full w-full my-3">
         <div class="card-body">
-          <div class="card-title">{{roundName.value || roundTrack.value?.name || "Nombre"}}</div>
-          @if (roundTrack.value) {
+          <div class="card-title"></div>
+          @if (roundLayout.value) {
             <div class="flex gap-1">
-              <h2>{{roundTrack.value.name}}</h2>
-              <p>{{roundTrack.value.country}}</p>
+              <span>{{roundName.value || (getRoundLayoutName()) || "Nombre"}}</span>
+              <p>{{roundLayout.value.track?.country}}</p>
             </div>
           } @else {
             <p>No se ha indicado ningun circuito</p>
@@ -174,15 +174,18 @@
       class="block mb-1 text-sm font-medium">Circuito
       </label>
       <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
-        <app-custom-search-input class="join-item" (onSearch)="searchTracks($event)" placeholder="Introduce el nombre de un circuito"/>
+        <app-custom-search-input class="join-item" (onSearch)="searchTrackLayouts($event)" placeholder="Introduce el nombre de un circuito"/>
         <ul
-          class="text-gray-200 max-h-sm overflow-scroll-y min-h-sm overflow-y-scrol flex-col w-full items-center p-3"
+          class="text-gray-200 overflow-y-auto h-48 flex-col justify-center w-full items-center p-3"
         >
           @if (tracks$ | async; as res) {
-            @for (item of res.data; track $index) {
-              <div (click)="selectTrack(item)" class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
-                {{item.name}}
-              </div>
+            @for (track of res.data; track $index) {
+              <span class="text-gray-600">{{track.name}}</span>
+              @for (layout of track.layouts; track $index) {
+                <div (click)="selectLayout(track, layout)" class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
+                  {{track.name}} - {{layout.name}}
+                </div>
+              }
             } @empty {
               <p>No se han encontrado resultados.</p>
             }
@@ -198,9 +201,9 @@
   <div formGroupName="length" class="flex gap-3 mt-3">
     <!-- TODO: Sacar a componente aparte -->
 
-    <input type="text" placeholder="10" [disabled]="durationLocked === true" formControlName="value" class="input input-bordered rounded-xl w-[5rem]" maxlength="4"/>
+    <input type="text" placeholder="10" [disabled]="durationLocked" formControlName="value" class="input input-bordered rounded-xl w-[5rem]" maxlength="4"/>
 
-    <select [disabled]="durationLocked === true" formControlName="type">
+    <select [disabled]="durationLocked" formControlName="type">
       <option value="0" disabled selected>Selecciona una duración</option>
       @for (item of durationTypeList; track $index) {
         <option value="{{item.type}}">{{item.name}}</option>
