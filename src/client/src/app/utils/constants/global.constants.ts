@@ -14,7 +14,7 @@ export const sendTokenParam = {
 export const roundDurationTypes: RoundDurationType[] = [
   {
     type: SESSION_DURATION_TYPE.Lap,
-    name: 'Vuelta'
+    name: 'Vueltas'
   },
   {
     type: SESSION_DURATION_TYPE.Day,
@@ -22,10 +22,10 @@ export const roundDurationTypes: RoundDurationType[] = [
   },
   {
     type: SESSION_DURATION_TYPE.Hour,
-    name: 'Hora'
+    name: 'Horas'
   },
   {
     type: SESSION_DURATION_TYPE.Minute,
-    name: 'Hora'
+    name: 'Minutos'
   },
 ]

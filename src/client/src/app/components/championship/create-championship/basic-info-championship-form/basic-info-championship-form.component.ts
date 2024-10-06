@@ -1,9 +1,10 @@
+import { GlobalHelper } from './../../../../helpers/global.helper';
 import { roundDurationTypes } from './../../../../utils/constants/global.constants';
 import { Component, Input } from '@angular/core';
 import { Track } from '../../../../utils/interfaces/track.interface';
 import { Observable, of } from 'rxjs';
-import { ChampionshipCreation, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
-import { FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { ChampionshipCreation, ChampionshipRound, RoundLength as RoundLength, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
+import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
 import { CreatingChampRoundStates } from '../../../../utils/enums/states.enum';
 import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
 import { DefaultRes } from '../../../../utils/interfaces/responses/response.interface';
@@ -15,13 +16,15 @@ import { ActivatedRoute } from '@angular/router';
 import { ScoreApiService } from '../../../../services/api/score-api.service';
 import { SimulatorApiService } from '../../../../services/api/simulator-api.service';
 import { TrackApiService } from '../../../../services/api/track-api.service';
-import { NgIf, AsyncPipe, NgClass } from '@angular/common';
+import { NgIf, AsyncPipe, NgClass, SlicePipe } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { CustomSearchInputComponent } from '../../../utils/custom-search-input/custom-search-input.component';
-import { C } from '@angular/cdk/keycodes';
-import { SESSION_DURATION_TYPE } from '../../../../utils/enums/round.enum';
+import { SESSION_DURATION_TYPE, SESSION_DURATION_TYPE as SESSION_LENGTH_TYPE } from '../../../../utils/enums/round.enum';
+import { MessagesModule } from 'primeng/messages';
+import { MessageService } from 'primeng/api';
+import { Errors } from '../../../../utils/enums/errors.enum';
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -31,10 +34,12 @@ import { SESSION_DURATION_TYPE } from '../../../../utils/enums/round.enum';
     ReactiveFormsModule,
     DropdownModule,
     AsyncPipe,
+    SlicePipe,
     AccordionModule,
     DialogModule,
     CustomSearchInputComponent,
-    FormsModule
+    FormsModule,
+    MessagesModule
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
@@ -46,15 +51,21 @@ export class BasicInfoChampionshipFormComponent {
     private scoreService: ScoreApiService,
     private simulatorService: SimulatorApiService,
     private trackService: TrackApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService,
+    private globalHelper: GlobalHelper,
+    private formBuilder: FormBuilder
   ) {}
 
   @Input() leagueId?: number;
 
-  tracks$!: Observable<DefaultRes<Track[]>>;
-  categories$!: Observable<DefaultRes<Category[]>>;
-  scoreSystems$!: Observable<ScoreSystem[]>;
-  simulators$!:  Observable<DefaultRes<SimulatorGame[]>>;
+  protected tracks$!: Observable<DefaultRes<Track[]>>;
+
+  protected categories$!: Observable<DefaultRes<Category[]>>;
+
+  protected scoreSystems$!: Observable<ScoreSystem[]>;
+
+  protected simulators$!:  Observable<DefaultRes<SimulatorGame[]>>;
 
   ngOnInit() {
     this.leagueId = this.route.snapshot.params['leagueId'];
@@ -67,29 +78,20 @@ export class BasicInfoChampionshipFormComponent {
 
   /// Enums ///
 
-  durationTypes = SESSION_DURATION_TYPE;
+  durationTypes = SESSION_LENGTH_TYPE;
 
   /// Datos basicos ///
 
-  raceCalendar: Track[] = []
+  raceCalendar: ChampionshipRound[] = []
 
   selectedCategories: Category[] = [];
-
-  addingRace: boolean = false;
-  roundTrackSelected?: Track;
 
   createChampionshipForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     description: new FormControl(''),
     categories: new FormControl(this.selectedCategories),
-    simulator: new FormControl<SimulatorGame | null>(null)
+    simulator: new FormControl<SimulatorGame | null>(null),
   });
-
-  // Duración de cada ronda //
-
-  selectedDurationType = roundDurationTypes[0]
-  durationTypeList = roundDurationTypes
-  roundDuration = 1;
 
 
   get name() {
@@ -101,6 +103,47 @@ export class BasicInfoChampionshipFormComponent {
   }
 
   selectedSimulator?: SimulatorGame
+
+  // Rondas de campeonato //
+
+  protected durationTypeList = roundDurationTypes
+
+  protected addingRace: boolean = false;
+
+  protected roundTrackSelected?: Track;
+
+  protected roundCreating: ChampionshipRound = {}
+
+  protected durationLocked = false;
+
+  championshipRoundForm: FormGroup = new FormGroup({
+    name: new FormControl<string | null>(null),
+    track: new FormControl<Track | null>(null),
+    length: new FormGroup({
+      value: new FormControl<number | null>(null),
+      type: new FormControl<SESSION_DURATION_TYPE | null>(0)
+    })
+  });
+
+  protected get roundName() {
+    return this.championshipRoundForm.get('name') as FormControl;
+  }
+
+  protected get roundTrack() {
+    return this.championshipRoundForm.get('track') as FormControl<Track | null>;
+  }
+
+  protected get roundLength() {
+    return this.championshipRoundForm.get('length') as FormControl<RoundLength | null>;
+  }
+
+  protected get roundLengthValue() {
+    return this.roundLength.get('value') as FormControl<number | null>;
+  }
+
+  protected get roundLengthType() {
+    return this.roundLength.get('type') as FormControl<SESSION_DURATION_TYPE | null>;
+  }
 
   /// Busqueda de todos los dropdowns ///
 
@@ -138,8 +181,14 @@ export class BasicInfoChampionshipFormComponent {
 
   /// Circuitos ///
 
-  protected saveTrack = (track: Track) => {
-    this.raceCalendar.push(track)
+  protected saveRound = () => {
+    this.setRoundName();
+
+    let round = this.championshipRoundForm.value as ChampionshipRound;
+
+    this.raceCalendar.push(round)
+
+    this.championshipRoundForm.reset()
   }
 
   protected deleteTrack = (index: number) => {
@@ -147,26 +196,34 @@ export class BasicInfoChampionshipFormComponent {
   }
 
   selectTrack = (track: Track) => {
-    this.roundTrackSelected = track
+    this.roundTrack.setValue(track)
   }
 
   /// Gestionar las rondas de campeonatos ///
 
-  saveRoundAndContinue = (track: Track) => {
-    this.saveTrack(track);
+  saveRoundAndContinue = () => {
+    this.saveRound();
   }
 
-  saveRoundAndClose = (track: Track) => {
-    this.saveTrack(track);
+  saveRoundAndClose = () => {
+    this.saveRound();
     this.addingRace = false;
+  }
+
+  lockRoundDuration = () => {
+    this.durationLocked = !this.durationLocked;
+  }
+
+  private setRoundName = () => {
+    let nameToSet = this.roundName.value || this.roundTrack.value?.name;
+
+    this.roundName.setValue(nameToSet);
   }
 
   /// Gestionar las categorias ///
 
   toggleCategory = (category: Category, checked: boolean, index: number) => {
     checked ? this.addCategory(category) : this.removeCategory(category)
-
-    console.log(this.selectedCategories)
   }
 
   private addCategory = (category: Category) => {

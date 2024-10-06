@@ -1,9 +1,9 @@
 export interface ScoreSystem {
   id?: number,
-  name: string,
+  name?: string,
   description?: string
-  positions: PositionScore[]
-  extra: ExtraScore[]
+  positions?: PositionScore[]
+  extra?: ExtraScore[]
 }
 
 export interface PositionScore {
