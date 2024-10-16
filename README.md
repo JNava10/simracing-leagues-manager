@@ -12,8 +12,8 @@
 3. Entrar al subdirectorio `src/api` y ejecutar los siguientes comandos:
 ```powershell
 npm i
-npm run start
 npm run seed
+npm run start
 ```
 4. Entrar al subdirectorio `src/client` y ejecutar los siguientes comandos:
 ```powershell
