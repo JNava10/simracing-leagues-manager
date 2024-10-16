@@ -1,7 +1,7 @@
 # Simracing League Manager
 **Proyecto final de Grado Superior de Desarrollo de Aplicaciones Web**
 
-Gestor de ligas de simracing para poder crear una comunidad con tus amigos.
+ Herramienta para administrar ligas de simracing. ¡Crea tu propia comunidad de simracing con tus amigos! 
 
 ## Despliegue de la aplicación
 
