@@ -10,6 +10,7 @@ import { PendingMembersListComponent } from './components/league/pending-members
 
 export const routes: Routes = [
   { path: 'lm', children: [
+      { path: '', redirectTo:'login', pathMatch:'full' },
       { path: 'login', component: LoginComponent },
       { path: 'new-league', component: CreateLeagueFormComponent },
       { path: 'leagues', component: LeaguesDashboardComponent, title: 'Ligas' },

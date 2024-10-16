@@ -12,6 +12,7 @@ import {NgIf} from "@angular/common";
 import {AuthApiService} from "../../../services/api/auth-api.service";
 import {LoggedData, LoginData} from "../../../utils/interfaces/auth.interface";
 import {GlobalHelper} from "../../../helpers/global.helper";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +35,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthApiService,
     private globalHelper: GlobalHelper,
+    private router: Router,
   ) {}
 
   loginForm = new FormGroup({
@@ -66,8 +68,15 @@ export class LoginComponent {
   };
 
   private handleLogin = (loggedData: LoggedData) => {
-    if (loggedData.success && loggedData.token) {
-      this.globalHelper.saveToken(loggedData.token);
+    if (!loggedData.success) {
+      // TODO: Mostrar mensaje.
+      return;
+    } else if (!loggedData.token) {
+      // TODO: Mostrar mensaje.
+      return;
     }
+
+    this.globalHelper.saveToken(loggedData.token!);
+    this.globalHelper.navigateFromRoot("leagues")
   }
 }

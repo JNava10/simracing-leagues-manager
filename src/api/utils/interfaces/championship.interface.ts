@@ -25,3 +25,10 @@ export interface ChampionshipRound {
     trackId?: number
     championshipId?: number
 }
+
+export interface Team {
+    id?: number;
+    name?: string;
+    hexColor?: string;
+    carEntries?: number;
+}

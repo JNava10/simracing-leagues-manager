@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import {environment} from "../../../environments/environment.development";
+import {devEnv} from "../../../environments/environment.development";
 import {League} from "../../utils/interfaces/league.interface";
 import {sendTokenParam} from "../../utils/constants/global.constants";
 import {ScoreSystem} from "../../utils/interfaces/score.interface";
@@ -16,11 +16,11 @@ export class TrackApiService {
   constructor(private http: HttpClient) { }
 
   getAllTracks = () => {
-    return this.http.get<Track[]>(`${environment.apiEndpoint}/track`, {params: {...sendTokenParam}})
+    return this.http.get<Track[]>(`${devEnv.apiEndpoint}/track`, {params: {...sendTokenParam}})
   }
 
   search = (props: SearchTrackProps) => {
-    return this.http.get<DefaultRes<Track[]>>(`${environment.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
+    return this.http.get<DefaultRes<Track[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
       catchError((err: HttpResponse<DefaultRes<Track[]>>, caught) => {
 
         // this.globalHelper.showErrorMessage('Error', err.body?.error!)
@@ -33,7 +33,7 @@ export class TrackApiService {
   /// Trazados de circuito ///
 
   searchLayouts = (props: SearchTrackProps) => {
-    return this.http.get<DefaultRes<TrackLayout[]>>(`${environment.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
+    return this.http.get<DefaultRes<TrackLayout[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
       catchError((err: HttpResponse<DefaultRes<Track[]>>, caught) => {
 
         return caught;
@@ -47,7 +47,7 @@ export class TrackApiService {
    * @returns
    */
   searchLayoutsGrouped = (props: SearchTrackProps) => {
-    return this.http.get<DefaultRes<Track[]>>(`${environment.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
+    return this.http.get<DefaultRes<Track[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
       catchError((err: HttpResponse<DefaultRes<Track[]>>, caught) => {
 
         // this.globalHelper.showErrorMessage('Error', err.body?.error!)
