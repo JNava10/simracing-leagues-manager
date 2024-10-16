@@ -5,7 +5,7 @@ Gestor de ligas de simracing para poder crear una comunidad con tus amigos.
 
 ## Despliegue de la aplicación
 
-- Por el momento se necesita [**Node.js**](https://nodejs.org/en/) para poder ejecutar el proyecto
+- Por el momento se necesita [**Node.js**](https://nodejs.org/en/) para poder ejecutar el proyecto. En un futuro estará el binario directamente dentro del proyecto.
 
 1. Descargar el contenido de la **release más reciente**.
 2. Descomprimir el contenido de la release en cualquier carpeta.
