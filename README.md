@@ -13,6 +13,7 @@
 ```powershell
 npm i
 npm run start
+npm run seed
 ```
 4. Entrar al subdirectorio `src/client` y ejecutar los siguientes comandos:
 ```powershell
