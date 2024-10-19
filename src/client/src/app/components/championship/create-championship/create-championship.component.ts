@@ -2,11 +2,12 @@ import {Component} from '@angular/core';
 import { CreatingChampRoundStates } from '../../../utils/enums/states.enum';
 import { BasicInfoChampionshipFormComponent } from "./basic-info-championship-form/basic-info-championship-form.component";
 import { LeagueChampionship } from '../../../utils/interfaces/championship.interface';
+import { TeamFormComponent } from "./team-form/team-form.component";
 
 @Component({
   selector: 'app-create-championship',
   standalone: true,
-  imports: [BasicInfoChampionshipFormComponent],
+  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent],
   templateUrl: './create-championship.component.html',
   styleUrl: './create-championship.component.scss'
 })

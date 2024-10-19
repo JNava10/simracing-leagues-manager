@@ -9,8 +9,8 @@ import { LeagueMemberListComponent } from './components/league/league-member-lis
 import { PendingMembersListComponent } from './components/league/pending-members-list/pending-members-list.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo:'login', pathMatch:'full' },
   { path: 'lm', children: [
-      { path: '', redirectTo:'login', pathMatch:'full' },
       { path: 'login', component: LoginComponent },
       { path: 'new-league', component: CreateLeagueFormComponent },
       { path: 'leagues', component: LeaguesDashboardComponent, title: 'Ligas' },
@@ -21,9 +21,8 @@ export const routes: Routes = [
         { path: 'pending', component: PendingMembersListComponent },
         { path: 'championships', children: [
           { component: CreateChampionshipComponent, title: 'Crear un campeonato', path: 'new' },
-        ] },
+        ]},
       ]
     },
-    ]
-  },
+  ]},
 ];

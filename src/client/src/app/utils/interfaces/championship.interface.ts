@@ -30,3 +30,12 @@ export interface RoundDurationType {
   type: SESSION_DURATION_TYPE,
   name: string
 }
+
+/// Equipos ///
+
+export interface Team {
+  id?: number;
+  name?: string;
+  hexColor?: string;
+  carEntries?: number;
+}

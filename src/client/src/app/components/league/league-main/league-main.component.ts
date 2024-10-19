@@ -6,6 +6,7 @@ import {ActivatedRoute, Router, RouterLink, RouterOutlet} from "@angular/router"
 import {AsyncPipe} from "@angular/common";
 import { MenuItem } from 'primeng/api';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { LeagueSidebarComponent } from "../league-sidebar/league-sidebar.component";
 
 @Component({
   selector: 'app-league-main',
@@ -14,8 +15,9 @@ import { TabMenuModule } from 'primeng/tabmenu';
     AsyncPipe,
     RouterLink,
     RouterOutlet,
-    TabMenuModule
-  ],
+    TabMenuModule,
+    LeagueSidebarComponent
+],
   templateUrl: './league-main.component.html',
   styleUrl: './league-main.component.scss'
 })
