@@ -183,6 +183,8 @@ export class BasicInfoChampionshipFormComponent {
     this.raceCalendar.push(round)
 
     this.championshipRoundForm.reset()
+
+    console.log(this.raceCalendar);
   }
 
   protected deleteTrack = (index: number) => {
@@ -267,8 +269,32 @@ export class BasicInfoChampionshipFormComponent {
     championship.description = "Descripción";
     championship.categoryIds = [1];
     championship.simulatorId = 1;
+    championship.calendar = [
+      {
+        name: 'GP de españa',
+        layout: {
+          name: "Grand Prix",
+          track: {
+            country: 'ESP',
+            name: 'Barcelona',
+            location: 'Montmelo',
 
-    console.log(championship);
+          }
+        }
+      },
+
+      {
+        name: 'GP de franciat',
+        layout: {
+          name: "Full circuit",
+          track: {
+            country: 'FRA',
+            name: 'Paul Ricard',
+            location: 'Algun lugar frances',
+          }
+        }
+      }
+    ]
 
     this.basicDataCreated.emit(championship);
   }

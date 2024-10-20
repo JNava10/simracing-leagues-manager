@@ -7,8 +7,7 @@ export interface ScoreSystem {
 }
 
 export interface PositionScore {
-  position: string,
-  score: string,
+  score?: number,
   parentId?: number
 }
 

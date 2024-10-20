@@ -33,7 +33,11 @@ export class CustomTextInputComponent implements ControlValueAccessor {
 
   @Input() placeholder = 'Placeholder';
 
-  @Input() maxLength = "";
+  @Input() maxLength? = "";
+
+  @Input() inputmode? = "";
+
+  @Input() pattern?: RegExp | string = "";
 
   @Input() showPlaceholder? = false;
 

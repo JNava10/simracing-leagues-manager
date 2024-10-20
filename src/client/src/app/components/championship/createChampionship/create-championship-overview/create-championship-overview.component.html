@@ -1,0 +1,87 @@
+<section class="m-9">
+  <div>
+    <h1 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">Resumen del nuevo campeonato</h1>
+
+    <div>
+      <p class="text-dark mb-2 text-center text-xl text-neutral-50">{{championship?.name}}</p>
+      <p class="text-dark mb-2 text-center text-md text-neutral-400">{{championship?.description}}</p>
+    </div>
+
+    <div>
+      <!-- Lista de equipos -->
+      <div
+        class="rounded-md p-3 bg-neutral-800">
+
+        <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">
+          Equipos
+        </h2>
+
+        <div class="grid grid-cols-3 overflow-y-auto h-40 w-sm gap-3">
+          @for (team of championship?.teams; track $index) {
+            <div
+              class="bg-neutral-700 flex gap-3 justify-center items-center p-3 h-20 rounded-md">
+              <span>{{team.name}}</span>
+              <div class="inline-flex items-center">
+                <span
+                  class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                  [ngStyle]="{'background-color': team.hexColor}"></span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="p-3 rounded-md bg-neutral-800 mt-3">
+        <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">
+          Calendario
+       </h2>
+
+        <div class="grid grid-cols-5 gap-3 h-20">
+          @for (race of championship!.calendar!; track $index) {
+          <div class="p-3 rounded-md bg-neutral-700/50">
+            {{race.name}}
+          </div>
+          } @empty {
+          <span>No hay calendario disponible (error).</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">Sistema de puntuacion</h2>
+
+        <div>
+          <h3>Posiciones</h3>
+          <div class="grid p-3 bg-neutral-800 grid-cols-5 gap-3 h-20">
+            @for (positionScore of championship!.scoreSystem?.positions; track $index) {
+              <div class="rounded-md p-3 h-10 bg-neutral-700/50">
+                <span>{{$index + 1}}º - {{positionScore.score}}</span>
+              </div>
+            } @empty {
+              <span>No hay puntuaciones extra</span>
+            }
+          </div>
+        </div>
+
+        <div>
+          <h3>Extra</h3>
+          <div>
+            @for (extraScore of championship!.scoreSystem?.extra; track $index) {
+            <div class="p-3 bg-neutral-700/50">
+              {{extraScore.score}}
+            </div>
+            } @empty {
+              <span>No hay puntuaciones extra</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-custom-button>
+    Crear campeonato
+  </app-custom-button>
+</section>

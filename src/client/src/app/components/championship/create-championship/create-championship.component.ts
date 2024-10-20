@@ -5,11 +5,12 @@ import { LeagueChampionship, Team } from '../../../utils/interfaces/championship
 import { TeamFormComponent } from "./team-form/team-form.component";
 import { ScoreSystemFormComponent } from "../createChampionship/score-system-form/score-system-form.component";
 import { ScoreSystem } from '../../../utils/interfaces/score.interface';
+import { CreateChampionshipOverviewComponent } from "../createChampionship/create-championship-overview/create-championship-overview.component";
 
 @Component({
   selector: 'app-create-championship',
   standalone: true,
-  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent],
+  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent],
   templateUrl: './create-championship.component.html',
   styleUrl: './create-championship.component.scss'
 })
@@ -24,8 +25,8 @@ export class CreateChampionshipComponent {
   handleBasicDataCreated = (championship: LeagueChampionship) => {
     this.championshipCreating = championship;
 
-    this.currentCreatingState++
-  }
+    this.currentCreatingState = this.creatingStates.CreatingTeams;
+  } 
 
   handleTeamsCreated = (teams: Team[]) => {
     if (!this.championshipCreating) {
@@ -34,11 +35,13 @@ export class CreateChampionshipComponent {
 
     this.championshipCreating!.teams = teams;
 
-    this.currentCreatingState++;
+    this.currentCreatingState = this.creatingStates.CreatingScoreSystem
 
   }
 
   handleScoreCreated = (scoreSystem: ScoreSystem) => {
+    this.championshipCreating!.scoreSystem = scoreSystem;
 
+    this.currentCreatingState = this.creatingStates.Overview
   }
 }

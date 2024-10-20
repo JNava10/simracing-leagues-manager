@@ -1,9 +1,9 @@
 import { GlobalHelper } from '../../../../helpers/global.helper';
-import { ScoreSystem } from './../../../../utils/interfaces/score.interface';
+import { PositionScore, ScoreSystem } from './../../../../utils/interfaces/score.interface';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CustomTextInputComponent } from "../../../utils/custom-text-input/custom-text-input.component";
 import { Team } from '../../../../utils/interfaces/championship.interface';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomButtonComponent } from "../../../utils/custom-button/custom-button.component";
 import { NgClass } from '@angular/common';
 
@@ -12,7 +12,7 @@ import { NgClass } from '@angular/common';
   standalone: true,
   templateUrl: './score-system-form.component.html',
   styleUrl: './score-system-form.component.scss',
-  imports: [CustomTextInputComponent, CustomButtonComponent, NgClass]
+  imports: [CustomTextInputComponent, CustomButtonComponent, NgClass, ReactiveFormsModule]
 })
 export class ScoreSystemFormComponent implements OnInit {
 
@@ -26,7 +26,7 @@ export class ScoreSystemFormComponent implements OnInit {
   formBuilder = inject(FormBuilder);
 
   scoresForm = this.formBuilder.group({
-    scores: this.formBuilder.array([])
+    scores: this.formBuilder.array<string>([])
   })
 
   get scores() {
@@ -50,10 +50,23 @@ export class ScoreSystemFormComponent implements OnInit {
     return size;
   }
 
+  protected saveScoreSystem() {
+    const scoreSystem: ScoreSystem = {positions: []};
+
+    this.scores.value.forEach((score, i) => {
+      scoreSystem.positions![i] = {
+        score: (Number(score!) > 0 ? Number(score!) : 0)
+      }
+    });
+
+
+    this.scoreSystemCreated.emit(scoreSystem);
+  }
+
   private buildScoreForm(array: FormArray)  {
     for (let i = 0; i < this.gridSize; i++) {
       array.push(
-        this.formBuilder.control(0)
+        this.formBuilder.control("")
       )
     }
   }
