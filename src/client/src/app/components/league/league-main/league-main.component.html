@@ -1,15 +1,7 @@
 @if (league$ | async; as league) {
-  <h2 class="text-xl">{{league.name}}</h2>
-  <h4 class="text-sm">{{league.description}}</h4>
+  <div class="py-3">
+    <app-league-sidebar [league]="league"/>
 
-  <div>
-    <ul class="menu bg-base-200">
-      <li><a routerLink="overview">Inicio</a></li>
-      <li><a>Campeonatos y eventos</a></li>
-      <li><a routerLink="members">Miembros</a></li>
-      <li><a routerLink="pending">Solicitudes de entrada</a></li>
-    </ul>
-
-    <router-outlet></router-outlet>
+    <router-outlet class="min-w-md w-md"></router-outlet>
   </div>
 }

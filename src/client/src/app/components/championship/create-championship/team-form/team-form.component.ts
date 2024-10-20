@@ -1,5 +1,5 @@
 import { NgFor, NgStyle } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomTextInputComponent } from "../../../utils/custom-text-input/custom-text-input.component";
 import { Team } from '../../../../utils/interfaces/championship.interface';
@@ -15,8 +15,10 @@ import { NgxColorsModule } from 'ngx-colors';
 export class TeamFormComponent implements OnInit {
 
   ngOnInit(): void {
-    this.selectTeam(0)
+    this.selectTeam(0);
   }
+
+  @Output() protected teamsCreated = new EventEmitter<Team[]>();
 
   protected defaultTeam: Team = {
     name: "Nuevo Equipo",
@@ -65,6 +67,10 @@ export class TeamFormComponent implements OnInit {
     console.log(this.selectedTeam.controls.value.name)
   }
 
+  saveTeams() {
+    this.teamsCreated.emit(this.teams);
+  }
+
   /**
    * Añade un nuevo equipo a la lista.
    * @param team Equipo a añadir
@@ -84,8 +90,4 @@ export class TeamFormComponent implements OnInit {
 
       this.teams[index] = newTeam;
     }
-
-  onSubmit() {
-
-  }
 }

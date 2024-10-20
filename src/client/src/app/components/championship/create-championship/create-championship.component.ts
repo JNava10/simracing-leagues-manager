@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import { CreatingChampRoundStates } from '../../../utils/enums/states.enum';
 import { BasicInfoChampionshipFormComponent } from "./basic-info-championship-form/basic-info-championship-form.component";
-import { LeagueChampionship } from '../../../utils/interfaces/championship.interface';
+import { LeagueChampionship, Team } from '../../../utils/interfaces/championship.interface';
 import { TeamFormComponent } from "./team-form/team-form.component";
 
 @Component({
@@ -23,5 +23,17 @@ export class CreateChampionshipComponent {
     this.championshipCreating = championship;
 
     this.currentCreatingState++
+  }
+
+  handleTeamsCreated = (teams: Team[]) => {
+    if (!this.championshipCreating) {
+      return;
+    }
+
+    this.championshipCreating!.teams = teams;
+
+    this.currentCreatingState++;
+
+    console.log(this.championshipCreating);
   }
 }

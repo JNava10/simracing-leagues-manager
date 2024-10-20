@@ -4,5 +4,5 @@
 @if (currentCreatingState === creatingStates.CreatingBasicInfo) {
   <app-basic-info-championship-form (basicDataCreated)="handleBasicDataCreated($event)"></app-basic-info-championship-form>
 } @else if (currentCreatingState === creatingStates.CreatingTeams) {
-  <app-team-form></app-team-form>
+  <app-team-form (teamsCreated)="handleTeamsCreated($event)"></app-team-form>
 }

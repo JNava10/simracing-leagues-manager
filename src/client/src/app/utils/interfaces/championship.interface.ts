@@ -7,7 +7,8 @@ export interface LeagueChampionship {
   name?: string,
   description?: string
   categoryIds?: number[]
-  calendar?: ChampionshipRound[],
+  calendar?: ChampionshipRound[]
+  teams: Team[]
   simulatorId?: number
   leagueId?: number
 }

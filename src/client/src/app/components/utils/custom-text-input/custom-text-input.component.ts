@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-text-input',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgClass],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -16,6 +17,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from '@
   styleUrl: './custom-text-input.component.scss'
 })
 export class CustomTextInputComponent implements ControlValueAccessor {
+
 
   /// Atributos del elemento <input/> ///
 
@@ -29,21 +31,26 @@ export class CustomTextInputComponent implements ControlValueAccessor {
 
   @Input() autocomplete: string = 'off';
 
-  @Input() placeholder? = 'Placeholder';
+  @Input() placeholder = 'Placeholder';
+
+  @Input() maxLength = "";
 
   @Input() showPlaceholder? = false;
 
-  @Input() showLabel? = true;
+  @Input() showLabel = true;
 
-  @Input() label? = 'Label';
+  @Input() label = 'Label';
 
   @Input() formGroupName?: string;
 
   @Input() formControlName?: string;
 
+
   /// Atributos custom ///
 
   @Input() errorMessage: string = '';
+
+  @Input() inputClass: string = '';
 
   @Input() color? = 'blue';
 

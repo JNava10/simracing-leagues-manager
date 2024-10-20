@@ -58,6 +58,8 @@ export class BasicInfoChampionshipFormComponent {
 
   @Input() leagueId?: number;
 
+  @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>()
+
   protected tracks$!: Observable<DefaultRes<Track[]>>;
 
   protected categories$!: Observable<DefaultRes<Category[]>>;
@@ -238,10 +240,6 @@ export class BasicInfoChampionshipFormComponent {
 
     this.selectedCategories.splice(index, 1);
   }
-
-  /// Siguiente pagina ///
-
-  @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>()
 
   protected goToNextPage = () => {
 
