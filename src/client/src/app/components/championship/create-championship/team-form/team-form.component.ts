@@ -64,10 +64,11 @@ export class TeamFormComponent implements OnInit {
 
 
   onChangeName(value: string) {
-    console.log(this.selectedTeam.controls.value.name)
+    console.log(this.selectedTeam.controls.value.carEntries)
   }
 
   saveTeams() {
+    console.log(this.teams)
     this.teamsCreated.emit(this.teams);
   }
 
@@ -84,9 +85,9 @@ export class TeamFormComponent implements OnInit {
    * @param team Equipo a añadir
    */
     protected saveTeam(index: number) {
-      const newTeam = this.selectedTeam.controls.value as Team;
+      let newTeam = this.selectedTeam.controls.value as Team;
 
-      console.log(index, newTeam)
+      newTeam.carEntries = newTeam.carEntries! > 0 ? Number(newTeam.carEntries!): 0;
 
       this.teams[index] = newTeam;
     }

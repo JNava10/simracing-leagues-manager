@@ -53,4 +53,8 @@ export class GlobalHelper {
 
     this.router.navigate([`${devEnv.rootRoute}/${route}`]);
   }
+
+  arrayByNumber = (count: number) => {
+    return [].constructor(count)
+  }
 }

@@ -3,11 +3,13 @@ import { CreatingChampRoundStates } from '../../../utils/enums/states.enum';
 import { BasicInfoChampionshipFormComponent } from "./basic-info-championship-form/basic-info-championship-form.component";
 import { LeagueChampionship, Team } from '../../../utils/interfaces/championship.interface';
 import { TeamFormComponent } from "./team-form/team-form.component";
+import { ScoreSystemFormComponent } from "../createChampionship/score-system-form/score-system-form.component";
+import { ScoreSystem } from '../../../utils/interfaces/score.interface';
 
 @Component({
   selector: 'app-create-championship',
   standalone: true,
-  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent],
+  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent],
   templateUrl: './create-championship.component.html',
   styleUrl: './create-championship.component.scss'
 })
@@ -34,6 +36,9 @@ export class CreateChampionshipComponent {
 
     this.currentCreatingState++;
 
-    console.log(this.championshipCreating);
+  }
+
+  handleScoreCreated = (scoreSystem: ScoreSystem) => {
+
   }
 }

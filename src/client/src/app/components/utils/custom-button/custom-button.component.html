@@ -1,0 +1,18 @@
+<button
+  [type]="type"
+  [disabled]="disabled"
+  [attr.autofocus]="autofocus ? true : null"
+  [name]="name"
+  [value]="value"
+  (click)="onClick($event)"
+  (dblclick)="onDblClick($event)"
+  (focus)="onFocus($event)"
+  (blur)="onBlur($event)"
+  (keydown)="onKeydown($event)"
+  (keyup)="onKeyup($event)"
+  (mouseenter)="onMouseEnter($event)"
+  (mouseleave)="onMouseLeave($event)"
+  class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-100 text-green-800 hover:bg-green-200 focus:outline-none focus:bg-green-200 disabled:opacity-50 disabled:pointer-events-none dark:text-green-500 dark:bg-green-800/30 dark:hover:bg-green-800/20 dark:focus:bg-green-800/20"
+  >
+  <ng-content></ng-content>
+</button>

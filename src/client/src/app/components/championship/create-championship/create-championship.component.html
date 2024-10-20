@@ -5,4 +5,7 @@
   <app-basic-info-championship-form (basicDataCreated)="handleBasicDataCreated($event)"></app-basic-info-championship-form>
 } @else if (currentCreatingState === creatingStates.CreatingTeams) {
   <app-team-form (teamsCreated)="handleTeamsCreated($event)"></app-team-form>
+} @else if (currentCreatingState === creatingStates.CreatingScoreSystem) {
+  <app-score-system-form [teams]="championshipCreating!.teams" (scoreSystemCreated)="handleScoreCreated($event)"></app-score-system-form>
 }
+

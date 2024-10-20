@@ -54,6 +54,8 @@ export class CustomTextInputComponent implements ControlValueAccessor {
 
   @Input() color? = 'blue';
 
+  @Input() debug? = false;
+
 
   /// Eventos del elemento <input/> ///
 
@@ -66,7 +68,6 @@ export class CustomTextInputComponent implements ControlValueAccessor {
   @Output() inputKeyUp: EventEmitter<KeyboardEvent> = new EventEmitter();
 
   @Output() inputKeyDown: EventEmitter<KeyboardEvent> = new EventEmitter();
-
 
 
   /// Variables para interactuar con la API de formularios reactivos de angular ///
@@ -117,6 +118,10 @@ export class CustomTextInputComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: any): void {
+    if (this.debug) {
+      console.log(this.value);
+    }
+
     this.onReactiveChange = fn;
   }
 
