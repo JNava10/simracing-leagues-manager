@@ -13,7 +13,8 @@ model Category {
   description   String        @db.VarChar(255)
   subcategories Subcategory[]
 
-  FavouriteCategories FavouriteCategories[]
+  userFavourites FavouriteCategories[]
+  championships ChampionshipCategories[]
 }
 
 // TODO: Quitar despues
@@ -89,7 +90,7 @@ model AppRole {
     users UserRole[]
 }
 
-// Ligas
+/// Ligas ///
 
 model League {
   id            Int                  @id @default(autoincrement())
@@ -134,23 +135,41 @@ model LeagueChampionship {
   leagueId    Int
   name        String              @db.VarChar(255)
   authorId    Int
-  author      User                @relation(fields: [authorId], references: [id])
   description String              @db.VarChar(255)
+  simulatorId Int
   createdAt   DateTime            @default(now()) @db.DateTime(6)
-  league      League              @relation(fields: [leagueId], references: [id])
+
+  author      User?                @relation(fields: [authorId], references: [id])
+  league      League?              @relation(fields: [leagueId], references: [id])
+  simulator   SimulatorGame?              @relation(fields: [simulatorId], references: [id])
+
   rounds      ChampionshipRound[]
   entries      ChampionshipEntry[]
+  categories ChampionshipCategories[]
 }
 
 model ChampionshipRound {
   id             Int                @id @default(autoincrement())
   championshipId Int
-  trackId        Int
+  layoutId        Int
   name           String?            @db.VarChar(255)
   description    String?            @db.VarChar(255)
   createdAt      DateTime           @default(now()) @db.DateTime(6)
+
   championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
 }
+
+model ChampionshipCategories {
+  championshipId Int
+  categoryId        Int
+
+  championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
+  categories   Category @relation(fields: [categoryId], references: [id])
+
+  @@id(name: "keys", [championshipId, categoryId])
+
+}
+
 
 model ChampionshipEntry {
   id             Int                @id @default(autoincrement())
@@ -216,21 +235,20 @@ model ChampionshipPreset {
   createdAt DateTime @default(now()) @db.DateTime(6)
 }
 
-// Trazados de circuito pertenecientes a cada preset de configuración.
-model WorkshopPresetLayouts {
-  presetId  Int
-  scoreSystemId Int
+// // Trazados de circuito pertenecientes a cada preset de configuración.
+// model WorkshopPresetLayouts {
+//   presetId  Int
+//   scoreSystemId Int
 
-  @@id([presetId, scoreSystemId])
-}
+//   @@id([presetId, scoreSystemId])
+// }
 
 /// Sistemas de puntuación ///
 
 // Definición de cuanto puntua cada posición, vuelta rapida o pole, distinguidos por un nombre.
 model ScoreSystem {
   id            Int                   @id @default(autoincrement())
-  name          String                @db.VarChar(255)
-  description   String                @db.VarChar(255)
+
   positionScore ScoreSystemPosition[]
   extraScore    ScoreSystemExtra[]
 }
@@ -239,8 +257,8 @@ model ScoreSystem {
 model ScoreSystemPosition {
   id       Int         @id @default(autoincrement())
   parent   ScoreSystem @relation(fields: [parentId], references: [id])
-  position String      @db.VarChar(255)
-  score    String      @db.VarChar(255)
+  
+  score    Int   
   parentId Int
 }
 
@@ -290,10 +308,11 @@ model SimulatorGame {
   picUrl     String?         @db.VarChar(255)
   releaseYear     Int       @db.Year
 
-  UserFavouriteSimulator FavouriteSimulator[]
+  userFavourites FavouriteSimulator[]
+  championships LeagueChampionship[]
 }
 
-// Posts de ligas
+/// Posts de ligas ///
 
 model LeaguePost {
   id            Int            @id @default(autoincrement())
@@ -343,7 +362,7 @@ model CommentPostFile {
   comment      PostComment  @relation(fields: [commentId], references: [id])
 }
 
-// Registros de auditoria
+/// Registros de auditoria ///
 
 model LeagueAuditAction {
   id            Int           @id @default(autoincrement())

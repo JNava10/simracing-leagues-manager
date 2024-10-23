@@ -269,8 +269,10 @@ export class BasicInfoChampionshipFormComponent {
     championship.description = "Descripción";
     championship.categoryIds = [1];
     championship.simulatorId = 1;
+    championship.leagueId = this.leagueId;
     championship.calendar = [
       {
+        layoutId: 1,
         name: 'GP de españa',
         layout: {
           name: "Grand Prix",
@@ -284,6 +286,7 @@ export class BasicInfoChampionshipFormComponent {
       },
 
       {
+        layoutId: 2,
         name: 'GP de franciat',
         layout: {
           name: "Full circuit",

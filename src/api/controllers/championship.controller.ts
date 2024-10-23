@@ -11,12 +11,14 @@ import {ChampionshipCreation, ChampionshipData} from "../utils/interfaces/champi
 
 export const createChampionship = async (req: CustomRequest, res: Response) => {
     try {
-        const body = req.body as ChampionshipCreation;
+        console.log('a')
+        const body = req.body as ChampionshipCreation
         
         const createdChampioship = await ChampionshipService.createChampionship(body, req.user.id);
 
         res.status(201).send(createdChampioship);
     } catch (e) {
+        console.error (e)
         const error: CustomError = {error: e.message}
         res.status(500).send(error);
     }

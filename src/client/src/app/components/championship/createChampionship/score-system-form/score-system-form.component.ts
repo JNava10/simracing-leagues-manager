@@ -59,7 +59,6 @@ export class ScoreSystemFormComponent implements OnInit {
       }
     });
 
-
     this.scoreSystemCreated.emit(scoreSystem);
   }
 

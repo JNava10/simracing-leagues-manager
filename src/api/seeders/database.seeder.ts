@@ -8,7 +8,6 @@ import { SimulatorSeeder } from "./simulator.seeder";
 export const seeders: Seeder[] = [
     new UserSeeder(),
     new TrackSeeder(),
-    new ScoreSeeder(),
     new CategorySeeder(),
     new SimulatorSeeder()
 ]

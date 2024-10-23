@@ -41,3 +41,7 @@ export interface Team {
   hexColor?: string;
   carEntries?: number;
 }
+
+export interface ChampionshipCreated {
+  
+}

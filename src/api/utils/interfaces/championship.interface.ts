@@ -1,3 +1,5 @@
+import { ScoreSystem } from "./score.interface"
+
 export interface ChampionshipData {
     id?: number,
     name: string,
@@ -9,12 +11,15 @@ export interface ChampionshipData {
 
 export interface ChampionshipCreation {
     id?: number,
-    name: string,
+    name?: string,
     description?: string
     categoryId?: number
     scoreSystemId?: number,
-    calendarIds?: number[]
-    leagueId: number
+    scoreSystem?: ScoreSystem,
+    simulatorId?: number
+    calendar?: ChampionshipRound[]
+    teams?: Team[]
+    leagueId?: number
 }
 
 
@@ -22,7 +27,8 @@ export interface ChampionshipRound {
     id?: number,
     name?: string,
     description?: string
-    trackId?: number
+    
+    layoutId?: number
     championshipId?: number
 }
 

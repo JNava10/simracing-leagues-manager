@@ -7,7 +7,7 @@ export interface ResError {
 /**
  * Propiedades para respuestas con exito
  */
-export interface DefaultRes<T> {
+export interface DefaultRes<T = void> {
   msg?: string,
   data?: T,
   error?: string
