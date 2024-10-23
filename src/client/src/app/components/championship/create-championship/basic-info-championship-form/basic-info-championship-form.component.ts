@@ -247,57 +247,20 @@ export class BasicInfoChampionshipFormComponent {
 
     let championship = this.createChampionshipForm.value as LeagueChampionship
 
-    // championship.calendar = this.raceCalendar;
-
-    // championship.calendar.forEach(entry => {
-    //   // Unicamente se utilizará el ID de cada trazado, por lo que el resto no hará falta.
-    //   entry.layoutId = entry.layout?.id;
-    //   entry.layout = undefined;
-    // })
-
-    // this.selectedCategories.forEach(item => {
-    //   championship.categoryIds?.push(item.id!);
-    // })
-
-    // championship.simulatorId = this.selectedSimulator?.id;
-
-    // DATOS DE PRUEBA //
-
-    // TODO: Borrar
-
-    championship.name = "Prueba";
-    championship.description = "Descripción";
-    championship.categoryIds = [1];
-    championship.simulatorId = 1;
     championship.leagueId = this.leagueId;
-    championship.calendar = [
-      {
-        layoutId: 1,
-        name: 'GP de españa',
-        layout: {
-          name: "Grand Prix",
-          track: {
-            country: 'ESP',
-            name: 'Barcelona',
-            location: 'Montmelo',
+    championship.calendar = this.raceCalendar;
 
-          }
-        }
-      },
+    championship.calendar.forEach(entry => {
+      // Unicamente se utilizará el ID de cada trazado, por lo que el resto no hará falta.
+      entry.layoutId = entry.layout?.id;
+      entry.layout = undefined;
+    });
 
-      {
-        layoutId: 2,
-        name: 'GP de franciat',
-        layout: {
-          name: "Full circuit",
-          track: {
-            country: 'FRA',
-            name: 'Paul Ricard',
-            location: 'Algun lugar frances',
-          }
-        }
-      }
-    ]
+    this.selectedCategories.forEach(item => {
+      championship.categoryIds?.push(item.id!);
+    });
+
+    championship.simulatorId = this.selectedSimulator?.id;
 
     this.basicDataCreated.emit(championship);
   }

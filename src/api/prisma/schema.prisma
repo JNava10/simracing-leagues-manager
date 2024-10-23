@@ -45,7 +45,6 @@ model User {
   championshipsCreated LeagueChampionship[]
   championshipsJoined   ChampionshipEntry[]
   appRoles UserRole[]
-  leagueRoles LeagueMemberRole[]
   leaguePosts LeaguePost[]
   postComments PostComment[]
   favouriteSimulators FavouriteSimulator[]
@@ -104,13 +103,6 @@ model League {
   championships LeagueChampionship[]
   members       LeagueMember[]
   leaguePost    LeaguePost[]
-}
-
-
-model LeagueMemberRole {
-  id                   Int                  @id @default(autoincrement())
-  name                 String
-  users User[]
 }
 
 // Miembros pertenecientes a cada liga.

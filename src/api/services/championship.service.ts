@@ -1,20 +1,21 @@
 import {prisma} from "../app";
-import {ChampionshipCreation, ChampionshipData, ChampionshipRound} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, ChampionshipRound, Team} from "../utils/interfaces/championship.interface";
 
 export class ChampionshipService {
     static createChampionship = async (championship: ChampionshipCreation, authorId: number) => {
+        const createdTeams: Team[] = []
+
         const createdChampionship = await prisma.leagueChampionship.create({
             data: {
                 name: championship.name,
                 description: championship.description,
-                leagueId: Number(championship.leagueId),
+                leagueId: Number(championship.leagueId)!,
                 authorId: authorId,
                 simulatorId: championship.simulatorId
             }
-        }) as ChampionshipData;            
+        }) as ChampionshipData;
         
         // Inserción del calendario
-
         for (const round of championship.calendar) {
             await prisma.championshipRound.create({
                 // @ts-ignore
@@ -26,11 +27,9 @@ export class ChampionshipService {
             });
         }
 
-        
         // Inserción de los equipos
-        
         for (const team of championship.teams) {
-            await prisma.team.create({
+            const createdTeam = await prisma.team.create({
                 // @ts-ignore
                 data: {
                     name: team.name!,
@@ -38,9 +37,22 @@ export class ChampionshipService {
                     carEntries: team.carEntries!
                 }
             });
+
+            createdTeams.push(createdTeam);
         }
 
+        // Inserción de la tabla foranea de los equipos y su campeonato.
+        for (const team of createdTeams) {
+            await prisma.championshipTeam.create({
+                // @ts-ignore
+                data: {
+                    championshipId: createdChampionship.id!,
+                    teamId: team.id!
+                }
+            });
+        }
 
+        // Inserción del sistema de puntuacion
         const scoreSystemCreated = await prisma.scoreSystem.create({
             // @ts-ignore
             data: {}
@@ -48,7 +60,6 @@ export class ChampionshipService {
 
 
         // Inserción de las puntuaciones de posiciones (si no existe)
-
         for (const position of championship.scoreSystem.positions) {
             await prisma.scoreSystemPosition.create({
                 // @ts-ignore
