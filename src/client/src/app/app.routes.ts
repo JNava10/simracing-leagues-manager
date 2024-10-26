@@ -12,7 +12,7 @@ export const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch:'full' },
   { path: 'lm', children: [
       { path: 'login', component: LoginComponent },
-      { path: 'new-league', component: CreateLeagueFormComponent },
+      { path: 'newleague', component: CreateLeagueFormComponent },
       { path: 'leagues', component: LeaguesDashboardComponent, title: 'Ligas' },
       { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
         { path: '', redirectTo: 'overview', pathMatch: 'full' },

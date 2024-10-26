@@ -12,7 +12,7 @@ export const userSeedList: User[] = [
         nickname: "nava",
         name: "Juan",
         lastname: "Navarrete",
-        secondLastname: "Nivero",
+        secondLastname: "Rivero",
         email: "admin2@gmail.com"
     }
 ];

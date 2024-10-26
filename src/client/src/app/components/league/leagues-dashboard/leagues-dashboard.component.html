@@ -19,12 +19,15 @@
             </p>
           </div>
         </li>
+      } @empty {
+        <span>No se han encontrado ligas disponibles.</span>
       }
     </ul>
   </div>
-
-
 </section>
+
+<app-custom-button (click)="navigateToCreate()">Añadir liga</app-custom-button>
+
 
 
 

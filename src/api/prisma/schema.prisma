@@ -15,6 +15,8 @@ model Category {
 
   userFavourites FavouriteCategories[]
   championships ChampionshipCategories[]
+
+  ChampionshipPresetCategories ChampionshipPresetCategories[]
 }
 
 // TODO: Quitar despues
@@ -138,6 +140,8 @@ model LeagueChampionship {
   rounds      ChampionshipRound[]
   entries      ChampionshipEntry[]
   categories ChampionshipCategories[]
+
+  ChampionshipPresetUsed ChampionshipPresetUsed[]
 }
 
 model ChampionshipRound {
@@ -218,22 +222,66 @@ model ChampionshipTeam {
   @@id([championshipId, teamId])
 }
 
+/// Workshop de configuraciones ///
+
 // Configuración predeterminada para poder configurar un campeonato. Los usuarios pueden crear estos presets y publicarlos en una "workshop".
 model ChampionshipPreset {
   id            Int            @id @default(autoincrement())
-  championshipId  Int
+  name String
+  description String
+  imgUrl String?
   scoreSystemId Int
   authorId Int
   createdAt DateTime @default(now()) @db.DateTime(6)
+
+  Championships ChampionshipPresetUsed[]
+  
+  PresetCategories ChampionshipPresetCategories[]
+  PresetLayouts ChampionshipPresetLayouts[]
+  PresetScores ChampionshipPresetScores[]
 }
 
-// // Trazados de circuito pertenecientes a cada preset de configuración.
-// model WorkshopPresetLayouts {
-//   presetId  Int
-//   scoreSystemId Int
+model ChampionshipPresetUsed {
+  presetId  Int
+  championshipId Int
 
-//   @@id([presetId, scoreSystemId])
-// }
+  preset       ChampionshipPreset @relation(fields: [presetId], references: [id])
+  championship       LeagueChampionship @relation(fields: [championshipId], references: [id])
+
+  @@id([presetId, championshipId])
+}
+
+// Puntuaciones pertenecientes a cada preset de configuración.
+model ChampionshipPresetScores {
+  presetId  Int
+  scoreSystemId Int
+
+  scoreSystem       ScoreSystem @relation(fields: [scoreSystemId], references: [id])
+  preset       ChampionshipPreset @relation(fields: [presetId], references: [id])
+
+  @@id([presetId, scoreSystemId])
+}
+
+// Trazados de circuito pertenecientes a cada preset de configuración.
+model ChampionshipPresetLayouts {
+  presetId  Int
+  layoutId Int
+
+  layout       TrackLayout @relation(fields: [layoutId], references: [id])
+  preset       ChampionshipPreset @relation(fields: [presetId], references: [id])
+
+  @@id([presetId, layoutId])
+}
+
+model ChampionshipPresetCategories {
+  presetId  Int
+  categoryId Int
+  
+  categories       Category @relation(fields: [categoryId], references: [id])
+  preset       ChampionshipPreset @relation(fields: [presetId], references: [id])
+
+  @@id([presetId, categoryId])
+}
 
 /// Sistemas de puntuación ///
 
@@ -243,6 +291,8 @@ model ScoreSystem {
 
   positionScore ScoreSystemPosition[]
   extraScore    ScoreSystemExtra[]
+
+  WorkshopPresets ChampionshipPresetScores[]
 }
 
 // Valores de puntuación de cada posición dentro de un sistema de puntuación.
@@ -289,6 +339,8 @@ model TrackLayout {
   description String @db.VarChar(255)
   parent      Track  @relation(fields: [parentId], references: [id])
   parentId    Int
+
+  WorkshopPresetLayouts ChampionshipPresetLayouts[]
 }
 
 // Simuladores

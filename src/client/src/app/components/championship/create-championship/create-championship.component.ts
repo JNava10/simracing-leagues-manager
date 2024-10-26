@@ -6,11 +6,12 @@ import { TeamFormComponent } from "./team-form/team-form.component";
 import { ScoreSystemFormComponent } from "../createChampionship/score-system-form/score-system-form.component";
 import { ScoreSystem } from '../../../utils/interfaces/score.interface';
 import { CreateChampionshipOverviewComponent } from "../createChampionship/create-championship-overview/create-championship-overview.component";
+import { ShareConfigPresetComponent } from "../createChampionship/share-config-preset/share-config-preset.component";
 
 @Component({
   selector: 'app-create-championship',
   standalone: true,
-  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent],
+  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent],
   templateUrl: './create-championship.component.html',
   styleUrl: './create-championship.component.scss'
 })
@@ -26,7 +27,7 @@ export class CreateChampionshipComponent {
     this.championshipCreating = championship;
 
     this.currentCreatingState = this.creatingStates.CreatingTeams;
-  } 
+  }
 
   handleTeamsCreated = (teams: Team[]) => {
     if (!this.championshipCreating) {
@@ -42,6 +43,10 @@ export class CreateChampionshipComponent {
   handleScoreCreated = (scoreSystem: ScoreSystem) => {
     this.championshipCreating!.scoreSystem = scoreSystem;
 
+    this.currentCreatingState = this.creatingStates.SharePresetConfig
+  }
+
+  handleAfterPresetShare = () => {
     this.currentCreatingState = this.creatingStates.Overview
   }
 }

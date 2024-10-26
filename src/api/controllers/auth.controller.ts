@@ -15,11 +15,11 @@ export const login = async (req: Request, res: Response) => {
         if (nickname) user = await userService.getUserByNickname(nickname);
         else if (email) user = await userService.getUserByEmail(email);
 
-        if (!user) return res.status(403).send('Invalid credentials.');
+        if (!user) return res.status(403).send('Credenciales invalidos.');
 
         const validPassword = await verifyPassword(password, user.password);
 
-        if (!validPassword) return res.status(403).send("Invalid credentials.");
+        if (!validPassword) return res.status(403).send("Credenciales invalidos.");
 
         const payload: AccessPayload = {nickname: user.nickname, email: user.email, id: user.id};
 

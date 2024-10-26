@@ -47,12 +47,12 @@ export class CreateLeagueFormComponent {
     const data = this.createLeagueForm.value as League;
 
     this.leagueApiService.createLeague(data).subscribe({
-      next: (data ) => this.afterCreatingLeague(data),
+      next: (data) => this.afterCreatingLeague(data),
       error: (error) => this.globalHelper.handleRequestDefaultError(error, this.messageService),
     })
   }
 
   private afterCreatingLeague = (data: League) => {
-    console.log('a')
+    this.globalHelper.navigateFromRoot('leagues')
   }
 }

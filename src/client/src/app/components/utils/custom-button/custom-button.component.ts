@@ -16,6 +16,7 @@ export class CustomButtonComponent {
   @Input() theme: ButtonTheme = ButtonTheme.red;
 }
 
+
 // TODO: Quizá mover esto a otro archivo, aunque así considero que está bien organizado de momento.
 export enum ButtonTheme {
   red = "bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:bg-red-800/30 dark:hover:bg-red-800/20 dark:focus:bg-red-800/20",

@@ -42,6 +42,19 @@ export interface Team {
   carEntries?: number;
 }
 
-export interface ChampionshipCreated {
-  
+export interface ChampionshipPreset {
+  id?: number;
+  name?: string;
+  description?: string;
+  imgUrl?: string;
+  scoreSystemId?: number;
+  authorId?: number;
+  createdAt?: Date;
+}
+
+export interface ChampionshipPresetCreating {
+  categoryIds?: number[]
+  calendar?: ChampionshipRound[]
+  scoreSystem?: ScoreSystem
+  teams?: Team[]
 }
