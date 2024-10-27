@@ -1,3 +1,4 @@
+import { CategoryData as Category } from "./category.interface"
 import { ScoreSystem } from "./score.interface"
 
 export interface ChampionshipData {
@@ -17,9 +18,30 @@ export interface ChampionshipCreation {
     scoreSystemId?: number,
     scoreSystem?: ScoreSystem,
     simulatorId?: number
-    calendar?: ChampionshipRound[]
+    calendar?: ChampionshipRoundCreating[]
     teams?: Team[]
     leagueId?: number
+}
+
+export interface PresetCreation {
+    id?: number,
+    name?: string,
+    description?: string
+    categoryIds?: number[]
+    scoreSystem?: ScoreSystem,
+    calendar?: ChampionshipRoundCreating[]
+    teams?: Team[]
+}
+
+
+export interface ChampionshipPreset {
+    id?: number,
+    name?: string,
+    description?: string
+    categories?: Category[]
+    scoreSystem?: ScoreSystem,
+    calendar?: ChampionshipRound[]
+    teams?: Team[]
 }
 
 
@@ -30,6 +52,12 @@ export interface ChampionshipRound {
     
     layoutId?: number
     championshipId?: number
+}
+
+export interface ChampionshipRoundCreating {
+    name?: string,
+    description?: string
+    layoutId?: number
 }
 
 export interface Team {

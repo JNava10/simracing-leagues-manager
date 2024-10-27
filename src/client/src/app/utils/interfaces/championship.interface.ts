@@ -1,4 +1,5 @@
 import { SESSION_DURATION_TYPE } from "../enums/round.enum"
+import { Category } from "./category.interface"
 import { ScoreSystem } from "./score.interface"
 import { Track, TrackLayout } from "./track.interface"
 
@@ -56,5 +57,30 @@ export interface ChampionshipPresetCreating {
   categoryIds?: number[]
   calendar?: ChampionshipRound[]
   scoreSystem?: ScoreSystem
+  teams?: Team[]
+}
+
+export interface ChampionshipRoundCreating {
+  name?: string,
+  description?: string
+  layoutId?: number
+}
+
+export interface ChampionshipPreset {
+  id?: number,
+  name?: string,
+  description?: string
+  categories?: Category[]
+  scoreSystem?: ScoreSystem,
+  calendar?: ChampionshipRound[]
+  teams?: Team[]
+}
+
+export interface ChampionshipPresetCreation {
+  name?: string,
+  description?: string
+  categoryIds?: number[]
+  scoreSystem?: ScoreSystem,
+  calendar?: ChampionshipRoundCreating[]
   teams?: Team[]
 }

@@ -1,0 +1,11 @@
+<h1>Configuraciones de la comunidad</h1>
+<ul class="bg-neutral-800 p-3 grid grid-cols-3 gap-3">
+  @for (preset of presets; track $index) {
+    <div>
+      <span>{{preset.name}}</span>
+    </div>
+  } @empty {
+    <span>No existe ningun preset.</span>
+  }
+
+</ul>

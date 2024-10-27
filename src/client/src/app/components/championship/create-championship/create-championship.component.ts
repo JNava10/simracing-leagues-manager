@@ -37,7 +37,6 @@ export class CreateChampionshipComponent {
     this.championshipCreating!.teams = teams;
 
     this.currentCreatingState = this.creatingStates.CreatingScoreSystem
-
   }
 
   handleScoreCreated = (scoreSystem: ScoreSystem) => {

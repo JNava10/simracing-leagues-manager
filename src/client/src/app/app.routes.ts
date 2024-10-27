@@ -7,12 +7,14 @@ import {LeagueOverviewComponent} from "./components/league/league-overview/leagu
 import {CreateChampionshipComponent} from "./components/championship/create-championship/create-championship.component";
 import { LeagueMemberListComponent } from './components/league/league-member-list/league-member-list.component';
 import { PendingMembersListComponent } from './components/league/pending-members-list/pending-members-list.component';
+import { PresetListComponent } from './components/presets/preset-list/preset-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch:'full' },
   { path: 'lm', children: [
       { path: 'login', component: LoginComponent },
       { path: 'newleague', component: CreateLeagueFormComponent },
+      { path: 'presets', component: PresetListComponent },
       { path: 'leagues', component: LeaguesDashboardComponent, title: 'Ligas' },
       { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
         { path: '', redirectTo: 'overview', pathMatch: 'full' },

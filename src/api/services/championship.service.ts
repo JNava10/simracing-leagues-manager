@@ -1,73 +1,132 @@
+import { ScoreService } from './score.service';
+import { ScoreSystem } from './../utils/interfaces/score.interface';
 import {prisma} from "../app";
-import {ChampionshipCreation, ChampionshipData, ChampionshipRound, Team} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, ChampionshipRound, PresetCreation, Team} from "../utils/interfaces/championship.interface";
+import { Layout } from "../utils/interfaces/layout.interface";
+import { TeamService } from "./team.service";
 
 export class ChampionshipService {
-    static createChampionship = async (championship: ChampionshipCreation, authorId: number) => {
-        const createdTeams: Team[] = []
+    static create = async (incoming: ChampionshipCreation, authorId: number) => {
 
-        const createdChampionship = await prisma.leagueChampionship.create({
+        // Insercion de los datos basicos del campeonato.
+        const created = await prisma.leagueChampionship.create({
             data: {
-                name: championship.name,
-                description: championship.description,
-                leagueId: Number(championship.leagueId)!,
+                name: incoming.name,
+                description: incoming.description,
+                leagueId: Number(incoming.leagueId)!,
                 authorId: authorId,
-                simulatorId: championship.simulatorId
+                simulatorId: incoming.simulatorId
             }
         }) as ChampionshipData;
         
         // Inserción del calendario
-        for (const round of championship.calendar) {
-            await prisma.championshipRound.create({
+        await ChampionshipService.createCalendar(incoming.calendar, created.id);
+      
+        const teamService = new TeamService();
+        const createdTeams = await teamService.createTeamsReturningIds(incoming.teams);
+
+        // Inserción de la tabla foranea de los equipos y su campeonato.
+        for (const i in createdTeams) {
+            const teamId = createdTeams[i];
+
+            await prisma.championshipTeam.create({data: {
+                teamId,
+                championshipId: created.id
+            }})
+        }
+    };
+
+    static createPreset = async (incoming: PresetCreation, authorId: number) => {
+        // Inserción de puntuaciones
+        const createdScoreId = await ScoreService.createScoreSystem(incoming.scoreSystem)
+      
+        const teamService = new TeamService();
+        const createdTeams = await teamService.createTeamsReturningIds(incoming.teams);
+        
+        // Insercion de los datos del preset
+        const created = await prisma.championshipPreset.create({
+            data: {
+                name: incoming.name,
+                description: incoming.description,
+                authorId: authorId,
+                scoreSystemId: createdScoreId,
+            }
+        });
+
+        // Inserción del calendario
+        await ChampionshipService.createPresetCalendar(incoming.calendar, created.id);
+        
+        // Inserción de las categorías
+        for (const i in incoming.categoryIds) {
+            const categoryId = incoming.categoryIds[i];
+
+            await prisma.championshipPresetCategories.create({data: {
+                categoryId,
+                presetId: created.id
+            }})
+        }
+
+         // Inserción de la tabla foranea de los equipos y el preset creado antes.
+        for (const i in createdTeams) {
+            const teamId = createdTeams[i];
+
+            await prisma.presetTeam.create({data: {
+                teamId,
+                presetId: created.id
+            }})
+        }
+    }
+    
+    static createCalendar = async (calendar: ChampionshipRound[], championshipId: number) => {
+        const createdRounds: Team[] = [];
+
+        for (const round of calendar) {
+            const createdRound = await prisma.championshipRound.create({
                 // @ts-ignore
                 data: {
-                    championshipId: createdChampionship.id!,
+                    championshipId,
                     name: round.name,
                     layoutId: round.layoutId
                 }
             });
+
+            createdRounds.push(createdRound);
         }
 
-        // Inserción de los equipos
-        for (const team of championship.teams) {
-            const createdTeam = await prisma.team.create({
-                // @ts-ignore
+        return createdRounds;
+    }
+
+    static createPresetCalendar = async (calendar: ChampionshipRound[], presetId: number) => {
+        const createdRounds: ChampionshipRound[] = [];
+
+        for (const round of calendar) {
+            const createdRound = await prisma.championshipPresetLayouts.create({
                 data: {
-                    name: team.name!,
-                    hexColor: team.hexColor!,
-                    carEntries: team.carEntries!
+                    layoutId: round.layoutId,
+                    presetId
                 }
             });
 
-            createdTeams.push(createdTeam);
+            createdRounds.push(createdRound);
         }
 
-        // Inserción de la tabla foranea de los equipos y su campeonato.
-        for (const team of createdTeams) {
-            await prisma.championshipTeam.create({
-                // @ts-ignore
-                data: {
-                    championshipId: createdChampionship.id!,
-                    teamId: team.id!
+        return createdRounds;
+    }
+
+    
+    static getAllPresets = async (page: number) => {
+        const pageSize = 5
+        
+        // TODO: Enviar datos sin tener tantas anidaciones.
+
+        return prisma.championshipPreset.findMany({
+                take: 5,
+                skip: (page - 1) * pageSize, // Se resta uno a la pagina para que tenga en cuenta la pagina en la que se está actualmente, de lo contrario en la primera pagina saltaria todos.
+                include: {
+                    PresetScores: true, 
+                    PresetLayouts: {include: {layout: true}},
+                    PresetTeam: {include: {team: true}}
                 }
-            });
-        }
-
-        // Inserción del sistema de puntuacion
-        const scoreSystemCreated = await prisma.scoreSystem.create({
-            // @ts-ignore
-            data: {}
-        });
-
-
-        // Inserción de las puntuaciones de posiciones (si no existe)
-        for (const position of championship.scoreSystem.positions) {
-            await prisma.scoreSystemPosition.create({
-                // @ts-ignore
-                data: {
-                    parentId: scoreSystemCreated.id,
-                    score: position.score
-                }
-            });
-        }
-    };
+            })
+    }
 }

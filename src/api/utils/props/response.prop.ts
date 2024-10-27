@@ -6,7 +6,7 @@
 export interface SuccessResponse {
     msg: string,
     data?: any,
-    status: number
+    status?: number
 }
 
 /**

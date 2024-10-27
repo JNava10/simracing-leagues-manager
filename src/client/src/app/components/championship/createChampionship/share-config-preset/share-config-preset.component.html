@@ -1,5 +1,5 @@
 <h1>Publicar configuración a la comunidad</h1>
 <span>Al publicar la configuracion, cualquiera puede copiarla y usarla en sus campeonatos</span>
 
-<app-custom-button [theme]="buttonTheme.fuchsia">Si</app-custom-button>
-<app-custom-button>No</app-custom-button>
+<app-custom-button (click)="createPreset()" [theme]="buttonTheme.fuchsia">Si</app-custom-button>
+<app-custom-button (click)="ended.emit()">No</app-custom-button>

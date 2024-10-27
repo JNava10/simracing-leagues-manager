@@ -52,6 +52,8 @@ model User {
   favouriteSimulators FavouriteSimulator[]
   favouriteCategories FavouriteCategories[]
   auditActions LeagueAuditLog[]
+
+  ChampionshipPreset ChampionshipPreset[]
 }
 
 model FavouriteSimulator {
@@ -141,7 +143,8 @@ model LeagueChampionship {
   entries      ChampionshipEntry[]
   categories ChampionshipCategories[]
 
-  ChampionshipPresetUsed ChampionshipPresetUsed[]
+
+  ChampionshipTeam ChampionshipTeam[]
 }
 
 model ChampionshipRound {
@@ -212,12 +215,29 @@ model Team {
   name          String         @db.VarChar(255)
   hexColor      String         @db.VarChar(7)
   carEntries    Int?            @default(2)
+
+  PresetTeam PresetTeam[]
+
+  ChampionshipTeam ChampionshipTeam[]
+}
+
+model PresetTeam {
+  presetId  Int            
+  teamId  Int    
+
+  team            Team @relation(fields: [teamId], references: [id])
+  preset          ChampionshipPreset @relation(fields: [presetId], references: [id])
+
+  @@id([presetId, teamId])
 }
 
 // Union entre los campeonatos y sus respectivos equipos.
 model ChampionshipTeam {
   championshipId  Int            
   teamId  Int    
+
+  championship       LeagueChampionship @relation(fields: [championshipId], references: [id])
+  team          Team @relation(fields: [teamId], references: [id])
 
   @@id([championshipId, teamId])
 }
@@ -234,32 +254,11 @@ model ChampionshipPreset {
   authorId Int
   createdAt DateTime @default(now()) @db.DateTime(6)
 
-  Championships ChampionshipPresetUsed[]
-  
+  author       User @relation(fields: [authorId], references: [id])
   PresetCategories ChampionshipPresetCategories[]
   PresetLayouts ChampionshipPresetLayouts[]
-  PresetScores ChampionshipPresetScores[]
-}
 
-model ChampionshipPresetUsed {
-  presetId  Int
-  championshipId Int
-
-  preset       ChampionshipPreset @relation(fields: [presetId], references: [id])
-  championship       LeagueChampionship @relation(fields: [championshipId], references: [id])
-
-  @@id([presetId, championshipId])
-}
-
-// Puntuaciones pertenecientes a cada preset de configuración.
-model ChampionshipPresetScores {
-  presetId  Int
-  scoreSystemId Int
-
-  scoreSystem       ScoreSystem @relation(fields: [scoreSystemId], references: [id])
-  preset       ChampionshipPreset @relation(fields: [presetId], references: [id])
-
-  @@id([presetId, scoreSystemId])
+  PresetTeam PresetTeam[]
 }
 
 // Trazados de circuito pertenecientes a cada preset de configuración.
@@ -291,8 +290,6 @@ model ScoreSystem {
 
   positionScore ScoreSystemPosition[]
   extraScore    ScoreSystemExtra[]
-
-  WorkshopPresets ChampionshipPresetScores[]
 }
 
 // Valores de puntuación de cada posición dentro de un sistema de puntuación.

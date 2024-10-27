@@ -1,25 +1,53 @@
 import {Request, Response} from "express";
-import {User} from "../utils/interfaces/user.interface";
-import {UserService} from "../services/user.service";
-import {LeagueData} from "../utils/interfaces/league.interface";
-import {LeagueService} from "../services/league.service";
 import {CustomRequest} from "../utils/interfaces/express.interface";
-import {prisma} from "../app";
 import {CustomError} from "../utils/classes/error";
 import {ChampionshipService} from "../services/championship.service";
-import {ChampionshipCreation, ChampionshipData} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, PresetCreation} from "../utils/interfaces/championship.interface";
+import { sendSuccessResponse } from "../helpers/common.helper";
 
-export const createChampionship = async (req: CustomRequest, res: Response) => {
-    try {
-        console.log('a')
-        const body = req.body as ChampionshipCreation
-        
-        const createdChampioship = await ChampionshipService.createChampionship(body, req.user.id);
+export class ChampionshipController {
+    create = async (req: CustomRequest, res: Response) => {
+        try {
+            const body = req.body as ChampionshipCreation
+            
+            const createdChampioship = await ChampionshipService.create(body, req.user.id);
+    
+            res.status(201).send(createdChampioship);
+        } catch (e) {
+            console.error (e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+    
+    createPreset = async (req: CustomRequest, res: Response) => {
+        try {
+            const body = req.body as PresetCreation;
+            
+            const createdChampioship = await ChampionshipService.createPreset(body, req.user.id);
+    
+            res.status(201).send(createdChampioship);
+        } catch (e) {
+            console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
 
-        res.status(201).send(createdChampioship);
-    } catch (e) {
-        console.error (e)
-        const error: CustomError = {error: e.message}
-        res.status(500).send(error);
+    getAllPresets = async (req: CustomRequest, res: Response) => {
+        try {
+            
+            const presets = await ChampionshipService.getAllPresets(1);
+    
+            return sendSuccessResponse({
+                data: presets,
+                msg: 'A'
+            }, res);
+            
+        } catch (e) {
+            console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
     }
 }

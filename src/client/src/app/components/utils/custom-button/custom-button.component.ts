@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './custom-button.component.scss'
 })
 export class CustomButtonComponent {
+
   // TODO: Componente o clase generica con atributos y eventos de todos los inputs HTML.
 
   @Input() styleClass: string = '';
