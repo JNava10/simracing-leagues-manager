@@ -37,13 +37,13 @@ export class CreateChampionshipOverviewComponent implements OnInit {
   }
 
   createChampionship() {
-    this.championshipService.createChampionship(this.championship!)
+    this.championshipService.create(this.championship!)
       .subscribe(res => {
         this.afterCreatingChampionship(res)
       })
   }
 
-  afterCreatingChampionship(res: DefaultRes) {
-    this.globalHelper.showErrorMessage('Error', res.msg!)
+  afterCreatingChampionship(res: DefaultRes<LeagueChampionship>) {
+    this.globalHelper.navigateFromRoot(`league/${this.championship?.leagueId}/championships/${res.data?.id}`)
   }
 }

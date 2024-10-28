@@ -288,8 +288,8 @@ model ChampionshipPresetCategories {
 model ScoreSystem {
   id            Int                   @id @default(autoincrement())
 
-  positionScore ScoreSystemPosition[]
-  extraScore    ScoreSystemExtra[]
+  positions ScoreSystemPosition[]
+  extra    ScoreSystemExtra[]
 
   ChampionshipPreset ChampionshipPreset[]
 }

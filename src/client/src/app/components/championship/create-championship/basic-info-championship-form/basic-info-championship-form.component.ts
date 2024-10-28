@@ -1,9 +1,9 @@
 import { GlobalHelper } from './../../../../helpers/global.helper';
 import { roundDurationTypes } from './../../../../utils/constants/global.constants';
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { Track, TrackLayout } from '../../../../utils/interfaces/track.interface';
 import { Observable, of } from 'rxjs';
-import { LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
+import { LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType, ChampionshipPreset } from '../../../../utils/interfaces/championship.interface';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
 import { CreatingChampRoundStates } from '../../../../utils/enums/states.enum';
 import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
@@ -45,7 +45,7 @@ import { EventEmitter } from '@angular/core';
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
 })
-export class BasicInfoChampionshipFormComponent {
+export class BasicInfoChampionshipFormComponent implements OnInit {
   constructor(
     private championshipService: ChampionshipApiService,
     private categoryService: CategoryApiService,
@@ -57,6 +57,7 @@ export class BasicInfoChampionshipFormComponent {
   ) {}
 
   @Input() leagueId?: number;
+  @Input() preset?: ChampionshipPreset;
 
   @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>()
 
@@ -70,6 +71,11 @@ export class BasicInfoChampionshipFormComponent {
 
   ngOnInit() {
     this.leagueId = this.route.snapshot.params['leagueId'];
+
+    if (this.preset) {
+      console.log(this.preset)
+      this.raceCalendar = this.preset.layouts.map(item => item.layout)
+    }
   }
 
   /// Enums ///
@@ -194,7 +200,7 @@ export class BasicInfoChampionshipFormComponent {
   selectLayout = (track: Track, layout: TrackLayout) => {
     const layoutWithTrack = layout;
 
-    layoutWithTrack.track = track; // Esto servirá para mostrar los datos del circuito al que pertenece el trazado.
+    layoutWithTrack.parent = track; // Esto servirá para mostrar los datos del circuito al que pertenece el trazado.
 
     this.roundLayout.setValue(layout);
   }
@@ -205,7 +211,7 @@ export class BasicInfoChampionshipFormComponent {
     console.log(this.roundLayout)
     // Esto se mostrará si no se ha introducido ningun nombre.
     // Ej: Suzuka Circuit - East Loop.
-    return `${this.roundLayout.value?.track?.name} - ${this.roundLayout.value?.name}`
+    return `${this.roundLayout.value?.parent?.name} - ${this.roundLayout.value?.name}`
   }
 
   saveRoundAndContinue = () => {

@@ -1,6 +1,7 @@
 import {ExtraScoreName} from "../constants/score.constants";
 
 export interface ScoreSystem {
+    id: number
     name?: string;
     description?: string;
     positions?: PositionScore[],
@@ -8,7 +9,6 @@ export interface ScoreSystem {
 }
 
 export interface PositionScore {
-    position: string,
     score: number,
     parentId?: number
 }

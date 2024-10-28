@@ -13,10 +13,20 @@ import { catchError, throwError } from 'rxjs';
 export class ChampionshipApiService {
   constructor(private http: HttpClient) { }
 
-  createChampionship = (championship: LeagueChampionship) => {
-    return this.http.post<DefaultRes>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
+  create = (championship: LeagueChampionship) => {
+    return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
         console.error('Error creating championship:', err);
+        return throwError(() => new Error('Error creating championship, please try again later.'));
+      })
+    )
+  }
+
+
+  getById = (id: number) => {
+    return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam}}).pipe(
+      catchError((err: HttpResponse<DefaultRes>, caught) => {
+        console.error('Error obteniendo campeonato:', err);
         return throwError(() => new Error('Error creating championship, please try again later.'));
       })
     )

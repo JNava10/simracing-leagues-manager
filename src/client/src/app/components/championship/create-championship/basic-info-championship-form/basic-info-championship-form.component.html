@@ -107,7 +107,7 @@
           <span class="text-sm dark:text-gray-400">
             {{$index + 1}}
           </span>
-          <span class="text-gray-400">{{round.layout?.track?.country}}</span>
+          <span class="text-gray-400">{{round.layout?.parent?.country}}</span>
           <hr>
         </div>
         <div class="card-body flex justify-between gap-3">
@@ -143,7 +143,7 @@
           @if (roundLayout.value) {
             <div class="flex gap-1">
               <span>{{roundName.value || (getRoundLayoutName()) || "Nombre"}}</span>
-              <p>{{roundLayout.value.track?.country}}</p>
+              <p>{{roundLayout.value.parent?.country}}</p>
             </div>
           } @else {
             <p>No se ha indicado ningun circuito</p>

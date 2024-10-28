@@ -17,7 +17,7 @@ export interface TrackLayout {
   /** Propiedad temporal que indica el circuito al que pertenece.
    *
    */
-  track?: Track
+  parent?: Track
 }
 
 export interface SearchTrackProps {

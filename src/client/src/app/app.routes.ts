@@ -8,6 +8,7 @@ import {CreateChampionshipComponent} from "./components/championship/create-cham
 import { LeagueMemberListComponent } from './components/league/league-member-list/league-member-list.component';
 import { PendingMembersListComponent } from './components/league/pending-members-list/pending-members-list.component';
 import { PresetListComponent } from './components/presets/preset-list/preset-list.component';
+import { ChampionshipInfoComponent } from './components/championship/championship-info/championship-info.component';
 
 export const routes: Routes = [
   { path: '', redirectTo:'login', pathMatch:'full' },
@@ -22,6 +23,7 @@ export const routes: Routes = [
         { path: 'members', component: LeagueMemberListComponent },
         { path: 'pending', component: PendingMembersListComponent },
         { path: 'championships', children: [
+          { component: ChampionshipInfoComponent, title: 'Informacion de campeonato', path: ':champId' },
           { component: CreateChampionshipComponent, title: 'Crear un campeonato', path: 'new' },
         ]},
       ]

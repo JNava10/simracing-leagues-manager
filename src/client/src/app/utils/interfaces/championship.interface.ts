@@ -1,7 +1,8 @@
 import { SESSION_DURATION_TYPE } from "../enums/round.enum"
 import { Category } from "./category.interface"
-import { ScoreSystem } from "./score.interface"
+import { ExtraScore, PositionScore, ScoreSystem } from "./score.interface"
 import { Track, TrackLayout } from "./track.interface"
+import { User } from "./user.interface"
 
 export interface LeagueChampionship {
   id?: number,
@@ -43,16 +44,6 @@ export interface Team {
   carEntries?: number;
 }
 
-export interface ChampionshipPreset {
-  id?: number;
-  name?: string;
-  description?: string;
-  imgUrl?: string;
-  scoreSystemId?: number;
-  authorId?: number;
-  createdAt?: Date;
-}
-
 export interface ChampionshipPresetCreating {
   categoryIds?: number[]
   calendar?: ChampionshipRound[]
@@ -66,16 +57,6 @@ export interface ChampionshipRoundCreating {
   layoutId?: number
 }
 
-export interface ChampionshipPreset {
-  id?: number,
-  name?: string,
-  description?: string
-  categories?: Category[]
-  scoreSystem?: ScoreSystem,
-  calendar?: ChampionshipRound[]
-  teams?: Team[]
-}
-
 export interface ChampionshipPresetCreation {
   name?: string,
   description?: string
@@ -85,12 +66,36 @@ export interface ChampionshipPresetCreation {
   teams?: Team[]
 }
 
+/// Presets ///
+
 export interface ChampionshipPreset {
-  id?: number,
-  name?: string,
-  description?: string
-  categories?: Category[]
-  scoreSystem?: ScoreSystem,
-  calendar?: ChampionshipRound[]
-  teams?: Team[]
+  id: number;
+  name: string;
+  description: string;
+  imgUrl: string | null;
+  scoreSystemId: number;
+  authorId: number;
+  createdAt: string;
+  author: User;
+  scoreSystem: ScoreSystem;
+  layouts: PresetRound[];
+  teams: PresetTeam[];
 }
+
+interface PresetTeam {
+  presetId: number
+  teamId: number
+  team: Team
+}
+
+
+interface PresetRound {
+  layout: ChampionshipRound
+}
+
+
+interface LayoutDetails {
+  parent: Track;
+}
+
+

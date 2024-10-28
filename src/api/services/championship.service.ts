@@ -7,6 +7,10 @@ import { Layout } from "../utils/interfaces/layout.interface";
 import { TeamService } from "./team.service";
 
 export class ChampionshipService {
+    static get = async (id: number) => {
+        return await prisma.leagueChampionship.findFirst({where: {id}});
+    };
+
     static create = async (incoming: ChampionshipCreation, authorId: number) => {
 
         // Insercion de los datos basicos del campeonato.
@@ -35,6 +39,8 @@ export class ChampionshipService {
                 championshipId: created.id
             }})
         }
+
+        return created.id;
     };
 
     static createPreset = async (incoming: PresetCreation, authorId: number) => {
@@ -137,11 +143,16 @@ export class ChampionshipService {
                 include: {
                     author: true, 
 
-                    scoreSystem: true,
+                    scoreSystem: {
+                        include: {
+                            positions: true, 
+                            extra: true
+                        }
+                    },
 
                     layouts: {
                         include: {
-                            layout: {select: {parent: true}}
+                            layout: {include: {parent: true}}
                         }
                     },
 
@@ -149,7 +160,9 @@ export class ChampionshipService {
                         include: {
                             team: true
                         }
-                    }
+                    },
+
+                    categories: true
                 },
 
                 where: {id}

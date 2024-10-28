@@ -9,11 +9,14 @@ import { ScoreSystemFormComponent } from "../createChampionship/score-system-for
 import { ScoreSystem } from '../../../utils/interfaces/score.interface';
 import { CreateChampionshipOverviewComponent } from "../createChampionship/create-championship-overview/create-championship-overview.component";
 import { ShareConfigPresetComponent } from "../createChampionship/share-config-preset/share-config-preset.component";
+import { Observable } from 'rxjs';
+import { DefaultRes } from '../../../utils/interfaces/responses/response.interface';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-championship',
   standalone: true,
-  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent],
+  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent, AsyncPipe],
   templateUrl: './create-championship.component.html',
   styleUrl: './create-championship.component.scss'
 })
@@ -22,11 +25,12 @@ export class CreateChampionshipComponent implements OnInit {
   constructor(private route: ActivatedRoute, private championshipService: ChampionshipApiService) {}
 
   ngOnInit(): void {
+    // En caso de que se utilize un ID de preset, se carga su informacion en el formulario
     const presetKey = 'presetId'
     const presetId = this.route.snapshot.queryParams[presetKey];
 
     if (presetId) {
-      this.championshipService.getPresetById(presetId).subscribe(res => this.applyPreset(res.data!))
+      this.preset$ = this.championshipService.getPresetById(presetId)
     }
   }
 
@@ -37,7 +41,7 @@ export class CreateChampionshipComponent implements OnInit {
 
   championshipCreating?: LeagueChampionship;
 
-  preset?: ChampionshipPreset;
+  preset$?: Observable<DefaultRes<ChampionshipPreset>>;
 
   handleBasicDataCreated = (championship: LeagueChampionship) => {
     this.championshipCreating = championship;
@@ -63,11 +67,5 @@ export class CreateChampionshipComponent implements OnInit {
 
   handleAfterPresetShare = () => {
     this.currentCreatingState = this.creatingStates.Overview
-  }
-
-  applyPreset = (preset: ChampionshipPreset) => {
-    console.log(preset)
-
-    this.preset = preset;
   }
 }

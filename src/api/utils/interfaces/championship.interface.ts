@@ -1,3 +1,4 @@
+import { Prisma, User } from "@prisma/client"
 import { CategoryData as Category } from "./category.interface"
 import { ScoreSystem } from "./score.interface"
 
@@ -40,10 +41,10 @@ export interface ChampionshipPreset {
     description?: string
     categories?: Category[]
     scoreSystem?: ScoreSystem,
+    author: User
     calendar?: ChampionshipRound[]
     teams?: Team[]
 }
-
 
 export interface ChampionshipRound {
     id?: number,
