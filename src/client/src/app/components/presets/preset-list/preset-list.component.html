@@ -3,9 +3,35 @@
   @for (preset of presets; track $index) {
     <div>
       <span>{{preset.name}}</span>
+      <div class="flex gap-3">
+        <app-custom-button (click)="selectPreset(preset)" themeName="indigo">Utilizar</app-custom-button>
+      </div>
+
     </div>
   } @empty {
     <span>No existe ningun preset.</span>
   }
-
 </ul>
+
+
+<!-- Modal para seleccionar liga al utilizar preset -->
+<p-dialog showHeader="false" [visible]="selectLeagueShowing" modal="true">
+  <ng-template pTemplate="headless">
+    <div class="bg-neutral-800 p-3">
+      <h2>Selecciona una liga</h2>
+
+      <ul class="grid grid-rows-5 p-3">
+        @for (league of leaguesToSelect; track $index) {
+          <li (click)="createChampionshipWithPreset(league!.id!, presetSelected!.id!)" class="hover:bg-neutral-700 bg-neutral-700/50 p-3 cursor-pointer">
+            <span>{{league.name}}</span>
+          </li>
+        } @empty {
+          <div>
+            <span>No hay ninguna liga creada.</span>
+            <app-custom-button (click)="goToCreateLeague()" routerLinkActive="router-link-active" >Crear liga</app-custom-button>
+          </div>
+        }
+      </ul>
+    </div>
+  </ng-template>
+</p-dialog>

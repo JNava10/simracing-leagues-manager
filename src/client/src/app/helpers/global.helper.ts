@@ -43,15 +43,16 @@ export class GlobalHelper {
     this.showErrorMessage(`${error.status}`, error.statusText, messageService);
   }
 
-  navigateFromRoot = (route: string) => {
+  navigateFromRoot = (route: string, params?: any) => {
     if (route.startsWith('/')) {
-      const routeFixed = route.slice(1, route.length);
-      this.router.navigate([`${devEnv.rootRoute}/${routeFixed}`]);
-
-      return;
+      route = route.slice(1, route.length);
     }
 
-    this.router.navigate([`${devEnv.rootRoute}/${route}`]);
+    if (params) {
+      this.router.navigate([`${devEnv.rootRoute}/${route}`], {queryParams: params});
+    } else {
+      this.router.navigate([`${devEnv.rootRoute}/${route}`]);
+    }
   }
 
   arrayByNumber = (count: number) => {

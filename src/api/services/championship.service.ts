@@ -1,7 +1,8 @@
+import { match } from 'node:assert';
 import { ScoreService } from './score.service';
 import { ScoreSystem } from './../utils/interfaces/score.interface';
 import {prisma} from "../app";
-import {ChampionshipCreation, ChampionshipData, ChampionshipRound, PresetCreation, Team} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, ChampionshipRound, PresetCreation, Team} from "../utils/interfaces/championship.interface";
 import { Layout } from "../utils/interfaces/layout.interface";
 import { TeamService } from "./team.service";
 
@@ -123,10 +124,35 @@ export class ChampionshipService {
                 take: 5,
                 skip: (page - 1) * pageSize, // Se resta uno a la pagina para que tenga en cuenta la pagina en la que se está actualmente, de lo contrario en la primera pagina saltaria todos.
                 include: {
-                    PresetScores: true, 
-                    PresetLayouts: {include: {layout: true}},
-                    PresetTeam: {include: {team: true}}
+                    categories: true, 
+                    layouts: {include: {layout: true}},
+                    teams: {include: {team: true}}
                 }
-            })
+            });
+    }
+
+      
+    static getPresetsById = async (id: number) => {
+        return await prisma.championshipPreset.findFirst({
+                include: {
+                    author: true, 
+
+                    scoreSystem: true,
+
+                    layouts: {
+                        include: {
+                            layout: {select: {parent: true}}
+                        }
+                    },
+
+                    teams: {
+                        include: {
+                            team: true
+                        }
+                    }
+                },
+
+                where: {id}
+            });
     }
 }

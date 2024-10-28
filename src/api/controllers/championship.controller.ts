@@ -50,4 +50,20 @@ export class ChampionshipController {
             res.status(500).send(error);
         }
     }
+
+    getPresetById = async (req: CustomRequest, res: Response) => {
+        try {
+            const presets = await ChampionshipService.getPresetsById(1);
+    
+            return sendSuccessResponse({
+                data: presets,
+                msg: 'A'
+            }, res);
+            
+        } catch (e) {
+            console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
 }

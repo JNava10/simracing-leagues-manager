@@ -84,3 +84,13 @@ export interface ChampionshipPresetCreation {
   calendar?: ChampionshipRoundCreating[]
   teams?: Team[]
 }
+
+export interface ChampionshipPreset {
+  id?: number,
+  name?: string,
+  description?: string
+  categories?: Category[]
+  scoreSystem?: ScoreSystem,
+  calendar?: ChampionshipRound[]
+  teams?: Team[]
+}

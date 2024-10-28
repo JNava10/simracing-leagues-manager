@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 @Injectable({
   providedIn: 'root'
 })
-export class LeagueApiService {
+export class UserApiService {
 
   constructor(private http: HttpClient) { }
 

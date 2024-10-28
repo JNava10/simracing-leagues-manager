@@ -255,10 +255,10 @@ model ChampionshipPreset {
   createdAt DateTime @default(now()) @db.DateTime(6)
 
   author       User @relation(fields: [authorId], references: [id])
-  PresetCategories ChampionshipPresetCategories[]
-  PresetLayouts ChampionshipPresetLayouts[]
-
-  PresetTeam PresetTeam[]
+  scoreSystem       ScoreSystem @relation(fields: [scoreSystemId], references: [id])
+  categories ChampionshipPresetCategories[]
+  layouts ChampionshipPresetLayouts[]
+  teams PresetTeam[]
 }
 
 // Trazados de circuito pertenecientes a cada preset de configuración.
@@ -290,6 +290,8 @@ model ScoreSystem {
 
   positionScore ScoreSystemPosition[]
   extraScore    ScoreSystemExtra[]
+
+  ChampionshipPreset ChampionshipPreset[]
 }
 
 // Valores de puntuación de cada posición dentro de un sistema de puntuación.

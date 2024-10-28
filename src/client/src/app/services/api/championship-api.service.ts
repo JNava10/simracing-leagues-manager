@@ -39,4 +39,13 @@ export class ChampionshipApiService {
       })
     )
   }
+
+  getPresetById(presetId: any) {
+    return this.http.get<DefaultRes<ChampionshipPreset>>(`${devEnv.apiEndpoint}/championship/preset/${presetId}`, {params: {...sendTokenParam}}).pipe(
+      catchError((err: HttpResponse<DefaultRes>, caught) => {
+        console.error('Error al obtener el presets:', err);
+        return throwError(() => new Error('Error obteniendo el preset, prueba mas tarde.'));
+      })
+    )
+  }
 }

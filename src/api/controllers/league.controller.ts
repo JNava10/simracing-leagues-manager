@@ -47,6 +47,9 @@ export const createLeague = async (req: CustomRequest, res: Response) => {
         return res.status(201).send(createdLeague);
     } catch (e) {
         const error: CustomError = {error: e.message}
+
+        console.error(e)
+
         return res.status(500).send(error);
     }
 }

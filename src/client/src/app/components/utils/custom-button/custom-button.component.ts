@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ChampionshipPreset } from '../../../utils/interfaces/championship.interface';
 
 @Component({
   selector: 'app-custom-button',
@@ -10,11 +11,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './custom-button.component.scss'
 })
 export class CustomButtonComponent {
-
   // TODO: Componente o clase generica con atributos y eventos de todos los inputs HTML.
 
   @Input() styleClass: string = '';
-  @Input() theme: ButtonTheme = ButtonTheme.red;
+  @Input() themeName!: keyof typeof ButtonTheme; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
+
+  themes = ButtonTheme;
 }
 
 
