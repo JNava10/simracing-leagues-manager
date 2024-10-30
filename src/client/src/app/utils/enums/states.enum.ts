@@ -5,3 +5,8 @@ export enum CreatingChampRoundStates {
   Overview,
   SharePresetConfig,
 }
+
+export enum EnteringChampStates {
+  CreatingBasicInfo,
+  CreatingGameName,
+}

@@ -47,13 +47,10 @@ import { EventEmitter } from '@angular/core';
 })
 export class BasicInfoChampionshipFormComponent implements OnInit {
   constructor(
-    private championshipService: ChampionshipApiService,
     private categoryService: CategoryApiService,
     private simulatorService: SimulatorApiService,
     private trackService: TrackApiService,
     private route: ActivatedRoute,
-    private messageService: MessageService,
-    private globalHelper: GlobalHelper,
   ) {}
 
   @Input() leagueId?: number;

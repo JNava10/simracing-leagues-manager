@@ -16,8 +16,9 @@ export const sendErrorResponse = async  ({data, error}: ErrorResponse, res: Resp
     return res.status(500).send({error, data})
 }
 
-export const sendSuccessResponse = ({data, msg = '', status = 200}: SuccessResponse, res: Response) => {
-    return res.status(status).send({data, msg})
+export const sendSuccessResponse = ({data, msg = '', status}: SuccessResponse, res: Response) => {
+    console.log(status)
+    return res.status(status || 200).send({data, msg})
 }
 
 export const now = () => {

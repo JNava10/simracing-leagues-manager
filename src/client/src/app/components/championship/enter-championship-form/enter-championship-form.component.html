@@ -1,0 +1,38 @@
+<form [formGroup]="registrationForm" class="w-full max-w-md bg-neutral-800/50 rounded-md p-6">
+  @if (this.currentStep === states.CreatingBasicInfo) {
+    <div>
+      <h2 class="text-2xl font-bold mb-4">Rellena los siguientes datos</h2>
+      <form>
+        <div class="flex flex-col gap-3">
+          <app-custom-text-input
+            label="Dorsal"
+            placeholder="0-999"
+          />
+
+          <app-custom-select
+            keyProp="id"
+            showingProp="name"
+            [options]="teams!"
+          />
+        </div>
+        <app-custom-button (click)="nextStep()">Siguiente</app-custom-button>
+      </form>
+    </div>
+  }
+
+
+  @if (this.currentStep === states.CreatingGameName) {
+    <section>
+      <h2 class="text-2xl font-bold mb-4">Introduce tu nombre dentro del juego (importante)</h2>
+      <div>
+        <app-custom-text-input></app-custom-text-input>
+
+        <div class="flex justify-between">
+          <app-custom-button (click)="prevStep()">Volver</app-custom-button>
+          <button type="button" (click)="onSubmit()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Enviar inscripción</button>
+        </div>
+      </div>
+    </section>
+  }
+
+</form>

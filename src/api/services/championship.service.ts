@@ -43,6 +43,18 @@ export class ChampionshipService {
         return created.id;
     };
 
+    static getTeams = async (championshipId: number) => {
+            return prisma.championshipTeam.findMany({
+                where: {
+                    championshipId,
+                },
+
+                include: {
+                    team: true
+                }
+            });
+    }
+
     static createPreset = async (incoming: PresetCreation, authorId: number) => {
         // Inserción de puntuaciones
         const createdScoreId = await ScoreService.createScoreSystem(incoming.scoreSystem)
@@ -124,8 +136,6 @@ export class ChampionshipService {
     static getAllPresets = async (page: number) => {
         const pageSize = 5
         
-        // TODO: Enviar datos sin tener tantas anidaciones.
-
         return prisma.championshipPreset.findMany({
                 take: 5,
                 skip: (page - 1) * pageSize, // Se resta uno a la pagina para que tenga en cuenta la pagina en la que se está actualmente, de lo contrario en la primera pagina saltaria todos.
@@ -137,7 +147,6 @@ export class ChampionshipService {
             });
     }
 
-      
     static getPresetsById = async (id: number) => {
         return await prisma.championshipPreset.findFirst({
                 include: {

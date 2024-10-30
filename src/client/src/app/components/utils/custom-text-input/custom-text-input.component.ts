@@ -1,11 +1,11 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-text-input',
   standalone: true,
-  imports: [FormsModule, NgClass],
+  imports: [FormsModule, NgClass, NgIf],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -39,7 +39,7 @@ export class CustomTextInputComponent implements ControlValueAccessor {
 
   @Input() pattern?: RegExp | string = "";
 
-  @Input() showPlaceholder? = false;
+  @Input() showPlaceholder? = true;
 
   @Input() showLabel = true;
 

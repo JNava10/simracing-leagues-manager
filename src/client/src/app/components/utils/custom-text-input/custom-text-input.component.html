@@ -1,6 +1,6 @@
 <div>
   @if (showLabel) {
-    <label for="input-label" class="block text-sm font-medium mb-2 dark:text-white">{{label}}</label>
+    <label for="input-label" class="block text-sm font-medium mb-2 dark:text-white">{{label}}<span *ngIf="this.required === true">*</span></label>
   }
 
   <input
@@ -9,13 +9,12 @@
     class="py-3 px-4 block border-gray-200 rounded-lg text-sm
     disabled:opacity-50 disabled:pointer-events-none
     focus:outline-neutral-400 outline-offset-0
-    dark:bg-neutral-700 dark:text-neutral-400
+    dark:bg-neutral-700 dark:text-neutral-300/70
     dark:placeholder-neutral-500
     outline-none"
 
     [className]="inputClass"
     [type]="type"
-    [placeholder]="placeholder"
     [maxlength]="maxLength!"
     [value]="value"
     [disabled]="disabled"

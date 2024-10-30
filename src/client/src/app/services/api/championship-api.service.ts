@@ -3,9 +3,10 @@ import {League} from "../../utils/interfaces/league.interface";
 import {devEnv} from "../../../environments/environment.development";
 import {sendTokenParam} from "../../utils/constants/global.constants";
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {ChampionshipPreset, LeagueChampionship} from "../../utils/interfaces/championship.interface";
+import {ChampionshipPreset, LeagueChampionship, Team} from "../../utils/interfaces/championship.interface";
 import { DefaultRes } from '../../utils/interfaces/responses/response.interface';
 import { catchError, throwError } from 'rxjs';
+import { GetTeam } from '../../utils/interfaces/responses/championship.responses';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,15 @@ export class ChampionshipApiService {
 
   getById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam}}).pipe(
+      catchError((err: HttpResponse<DefaultRes>, caught) => {
+        console.error('Error obteniendo campeonato:', err);
+        return throwError(() => new Error('Error creating championship, please try again later.'));
+      })
+    )
+  }
+
+  getTeams = (champId: number) => {
+    return this.http.get<DefaultRes<GetTeam[]>>(`${devEnv.apiEndpoint}/championship/teams/${champId}`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
         console.error('Error obteniendo campeonato:', err);
         return throwError(() => new Error('Error creating championship, please try again later.'));

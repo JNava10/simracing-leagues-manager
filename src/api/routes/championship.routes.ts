@@ -10,8 +10,11 @@ const controller = new ChampionshipController()
 router.get("/:id", [validateToken], controller.get);
 router.post("/", [validateToken], controller.create);
 
+router.get("/teams/:champId", [validateToken], controller.getTeams);
+
 router.post("/preset", [validateToken], controller.createPreset);
 router.get("/preset/:id", [validateToken], controller.getPresetById);
 router.get("/preset", [validateToken], controller.getAllPresets);
+
 
 export default router;

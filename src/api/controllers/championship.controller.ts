@@ -17,7 +17,7 @@ export class ChampionshipController {
             return sendSuccessResponse({
                 data: championship,
                 msg: 'A'
-            }, res);
+            }, res);6  
         } catch (e) {
             console.error (e)
             const error: CustomError = {error: e.message}
@@ -31,13 +31,36 @@ export class ChampionshipController {
             
             const createdChampioship = await ChampionshipService.create(body, req.user.id);
     
-            res.status(201).send(createdChampioship);
+            return sendSuccessResponse({
+                data: createdChampioship,
+                msg: 'A',
+                status: 201
+            }, res);
         } catch (e) {
             console.error (e)
             const error: CustomError = {error: e.message}
             res.status(500).send(error);
         }
     }
+
+    
+    getTeams = async (req: CustomRequest, res: Response) => {
+        try {
+            const id = Number(req.params['champId']!);
+            const presets = await ChampionshipService.getTeams(id);
+    
+            return sendSuccessResponse({
+                data: presets,
+                msg: 'A'
+            }, res);
+            
+        } catch (e) {
+            console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
     
     createPreset = async (req: CustomRequest, res: Response) => {
         try {

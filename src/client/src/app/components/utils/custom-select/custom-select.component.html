@@ -1,0 +1,7 @@
+<div>
+  <select>
+    @for (item of options; track $index) {
+      <option value="{{item[keyProp]!}}">{{item[showingProp]!}}</option>
+    }
+  </select>
+</div>
