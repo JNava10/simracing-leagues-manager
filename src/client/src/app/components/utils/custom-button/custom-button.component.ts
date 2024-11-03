@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, output, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChampionshipPreset } from '../../../utils/interfaces/championship.interface';
 
@@ -14,14 +14,14 @@ export class CustomButtonComponent {
   // TODO: Componente o clase generica con atributos y eventos de todos los inputs HTML.
 
   @Input() styleClass: string = '';
-  @Input() themeName!: keyof typeof ButtonTheme; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
+  @Input() themeName!: keyof typeof ColorTheme; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 
-  themes = ButtonTheme;
+  themes = ColorTheme;
 }
 
 
 // TODO: Quizá mover esto a otro archivo, aunque así considero que está bien organizado de momento.
-export enum ButtonTheme {
+export enum ColorTheme {
   red = "bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:bg-red-800/30 dark:hover:bg-red-800/20 dark:focus:bg-red-800/20",
   blue = "bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20",
   green = "bg-green-100 text-green-800 hover:bg-green-200 focus:outline-none focus:bg-green-200 disabled:opacity-50 disabled:pointer-events-none dark:text-green-500 dark:bg-green-800/30 dark:hover:bg-green-800/20 dark:focus:bg-green-800/20",

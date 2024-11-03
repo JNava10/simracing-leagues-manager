@@ -1,6 +1,6 @@
 import { Component, inject, Injectable } from '@angular/core';
 import {StorageHelper} from "./storage.helper";
-import {MessageService} from "primeng/api";
+import {Message, MessageService} from "primeng/api";
 import {HttpErrorResponse} from "@angular/common/http";
 import { Router } from '@angular/router';
 import { devEnv } from '../../environments/environment.development';
@@ -10,9 +10,9 @@ import { devEnv } from '../../environments/environment.development';
 })
 export class GlobalHelper {
 
-  constructor(private storageHelper?: StorageHelper) {}
-
   private router = inject(Router);
+  private storageHelper = inject(StorageHelper);
+  private messageService = new MessageService()
   private tokenKey = 'token'
 
   /**
@@ -35,8 +35,8 @@ export class GlobalHelper {
     messageService!.add({severity: 'error', summary: title, detail: message});
   }
 
-  showSuccessMessage = (title: string, message: string, messageService: MessageService) => {
-    messageService.add({severity: 'success', summary: title, detail: message});
+  showSuccessMessage = (title: string, message: string, messageService?: MessageService) => {
+    this.messageService.add({severity: 'success', summary: title, detail: message});
   }
 
   handleRequestDefaultError = (error: any, messageService: MessageService) => {

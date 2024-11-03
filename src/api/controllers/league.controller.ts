@@ -5,9 +5,6 @@ import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import { isValidNumber } from "../helpers/validators.helper";
 import { League } from "@prisma/client";
-import { log } from "console";
-import { UserSeeder } from "../seeders/user.seeder";
-import { UserService } from "../services/user.service";
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {

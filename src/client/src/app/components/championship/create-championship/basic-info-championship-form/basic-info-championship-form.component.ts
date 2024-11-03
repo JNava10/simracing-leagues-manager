@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { GlobalHelper } from './../../../../helpers/global.helper';
 import { roundDurationTypes } from './../../../../utils/constants/global.constants';
 import { Component, Input, OnInit, Output } from '@angular/core';
@@ -26,6 +27,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { Errors } from '../../../../utils/enums/errors.enum';
 import { EventEmitter } from '@angular/core';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -70,9 +72,20 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     this.leagueId = this.route.snapshot.params['leagueId'];
 
     if (this.preset) {
-      console.log(this.preset)
-      this.raceCalendar = this.preset.layouts.map(item => item.layout)
+      this.convertDataFromApi(this.preset)
     }
+  }
+
+  convertDataFromApi(preset: ChampionshipPreset) {
+    console.log(preset)
+    let calendar = preset.layouts.map(item => item.layout)
+
+    calendar.forEach(layout => {
+      this.raceCalendar.push({
+        name: layout.name, // TODO: Poner el nombre de la ronda.
+        layout: layout
+      })
+    })
   }
 
   /// Enums ///

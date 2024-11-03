@@ -1,3 +1,4 @@
+import { GlobalHelper } from './../../../helpers/global.helper';
 import { ChampionshipApiService } from './../../../services/api/championship-api.service';
 import { ActivatedRoute } from '@angular/router';
 import {Component, OnInit} from '@angular/core';
@@ -22,7 +23,7 @@ import { AsyncPipe } from '@angular/common';
 })
 export class CreateChampionshipComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private championshipService: ChampionshipApiService) {}
+  constructor(private route: ActivatedRoute, private championshipService: ChampionshipApiService, private globalHelper: GlobalHelper) {}
 
   ngOnInit(): void {
     // En caso de que se utilize un ID de preset, se carga su informacion en el formulario
@@ -30,7 +31,10 @@ export class CreateChampionshipComponent implements OnInit {
     const presetId = this.route.snapshot.queryParams[presetKey];
 
     if (presetId) {
-      this.preset$ = this.championshipService.getPresetById(presetId)
+      this.championshipService.getPresetById(presetId).subscribe(res => {
+        this.globalHelper.showSuccessMessage('Exito', 'Se ha obtenido el preset correctamente.')
+        this.preset = res.data;
+      })
     }
   }
 
@@ -40,6 +44,8 @@ export class CreateChampionshipComponent implements OnInit {
   currentCreatingState: CreatingChampRoundStates = CreatingChampRoundStates.CreatingBasicInfo; // Es mas sencillo manejar que se muestra en el modal cambiando su estado, en vez de ifs y booleans.
 
   championshipCreating?: LeagueChampionship;
+
+  preset?: ChampionshipPreset
 
   preset$?: Observable<DefaultRes<ChampionshipPreset>>;
 

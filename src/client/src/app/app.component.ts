@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
+import {ToastModule} from 'primeng/toast';
 import { Router, Event, NavigationEnd } from '@angular/router';
 
 import { IStaticMethods } from 'preline/preline';
@@ -14,7 +14,7 @@ declare global {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MessagesModule],
+  imports: [RouterOutlet, ToastModule],
   providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

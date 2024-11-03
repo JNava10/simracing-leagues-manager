@@ -55,6 +55,13 @@ export interface ChampionshipRound {
     championshipId?: number
 }
 
+export interface EnterChampionship {
+  number: number;
+  teamId: number;
+  gameName: string;
+}
+
+
 export interface ChampionshipRoundCreating {
     name?: string,
     description?: string

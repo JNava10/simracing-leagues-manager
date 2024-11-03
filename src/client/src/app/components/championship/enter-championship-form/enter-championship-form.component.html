@@ -4,18 +4,21 @@
       <h2 class="text-2xl font-bold mb-4">Rellena los siguientes datos</h2>
       <form>
         <div class="flex flex-col gap-3">
-          <app-custom-text-input
-            label="Dorsal"
-            placeholder="0-999"
-          />
-
           <app-custom-select
             keyProp="id"
             showingProp="name"
             [options]="teams!"
+            formControlName="team"
+          />
+
+          <app-custom-text-input
+            [debug]="true"
+            label="Dorsal"
+            placeholder="0-999"
+            formControlName="number"
           />
         </div>
-        <app-custom-button (click)="nextStep()">Siguiente</app-custom-button>
+        <app-custom-button (click)="nextStep()" themeName="violet">Siguiente</app-custom-button>
       </form>
     </div>
   }
@@ -25,11 +28,15 @@
     <section>
       <h2 class="text-2xl font-bold mb-4">Introduce tu nombre dentro del juego (importante)</h2>
       <div>
-        <app-custom-text-input></app-custom-text-input>
+        <app-custom-text-input
+          formControlName="gameName"
+          label="Nombre dentro del juego"
+          placeholder="tuNombre01"
+        />
 
         <div class="flex justify-between">
-          <app-custom-button (click)="prevStep()">Volver</app-custom-button>
-          <button type="button" (click)="onSubmit()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Enviar inscripción</button>
+          <app-custom-button themeName="cyan" (click)="prevStep()">Volver</app-custom-button>
+          <app-custom-button themeName="green" (click)="onSubmit()">Entrar</app-custom-button>
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { SESSION_DURATION_TYPE } from "../enums/round.enum"
 import { Category } from "./category.interface"
 import { ExtraScore, PositionScore, ScoreSystem } from "./score.interface"
+import { SimulatorGame } from "./simulator.interface"
 import { Track, TrackLayout } from "./track.interface"
 import { User } from "./user.interface"
 
@@ -77,6 +78,7 @@ export interface ChampionshipPreset {
   authorId: number;
   createdAt: string;
   author: User;
+  simulator: SimulatorGame
   scoreSystem: ScoreSystem;
   layouts: PresetRound[];
   teams: PresetTeam[];
@@ -90,7 +92,7 @@ interface PresetTeam {
 
 
 interface PresetRound {
-  layout: ChampionshipRound
+  layout: TrackLayout
 }
 
 
@@ -98,4 +100,9 @@ interface LayoutDetails {
   parent: Track;
 }
 
+export interface EnterChampionship {
+  number: number;
+  team: number;
+  gameName: string;
+}
 

@@ -25,13 +25,7 @@
     [inputMode]="inputmode"
     [(ngModel)]="value"
     (ngModelChange)="writeValue($event)"
-    (blur)="onReactiveBlur()"
-    (input)="updateValue($event)"
-
     ngClass="inputClass"
-    (input)="onInputChange($event)"
-    (focus)="onInputFocus()"
-    (blur)="onInputBlur()"
     (keyup)="onInputKeyUp($event)"
     (keydown)="onInputKeyDown($event)"
   >

@@ -1,8 +1,8 @@
 import { NgFor, NgStyle } from '@angular/common';
-import { Component, EventEmitter, inject, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomTextInputComponent } from "../../../utils/custom-text-input/custom-text-input.component";
-import { Team } from '../../../../utils/interfaces/championship.interface';
+import { ChampionshipPreset, Team } from '../../../../utils/interfaces/championship.interface';
 import { NgxColorsModule } from 'ngx-colors';
 
 @Component({
@@ -15,8 +15,14 @@ import { NgxColorsModule } from 'ngx-colors';
 export class TeamFormComponent implements OnInit {
 
   ngOnInit(): void {
+    if (this.preset) {
+      this.teams = this.preset.teams.map(item => item.team);
+    }
+
     this.selectTeam(0);
   }
+
+  @Input() preset?: ChampionshipPreset;
 
   @Output() protected teamsCreated = new EventEmitter<Team[]>();
 

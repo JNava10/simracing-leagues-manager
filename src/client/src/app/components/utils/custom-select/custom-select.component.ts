@@ -1,46 +1,41 @@
-import { Component, Input } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
+import { BaseCustomInputComponent } from '../base-custom-input/base-custom-input.component';
 
 @Component({
   selector: 'app-custom-select',
   standalone: true,
-  imports: [DropdownModule],
+  imports: [DropdownModule, ReactiveFormsModule, FormsModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => this),
+      multi: true
+    }
+  ],
   templateUrl: './custom-select.component.html',
   styleUrl: './custom-select.component.scss'
 })
-export class CustomSelectComponent {
-    @Input() id?: string;
+export class CustomSelectComponent extends BaseCustomInputComponent {
+  // TODO: Comprobar que existe en los objetos entrantes.
+  @Input() keyProp = "";
 
-    @Input() name?: string;
+  // TODO: Comprobar que existe en los objetos entrantes.
+  @Input() showingProp = "";
 
-    @Input() required: boolean = false;
+  @Input() placeholder = "";
 
-    // TODO: Comprobar que existe en los objetos entrantes.
-    @Input() keyProp = "";
+  @Input() options: any[] = [];
 
-    // TODO: Comprobar que existe en los objetos entrantes.
-    @Input() showingProp = "";
+  @Input() size?: number;
 
-    @Input() disabled: boolean = false;
+  @Input() multiple: boolean = false;
 
-    @Input() value?: any;
 
-    @Input() label = "";
+  @Input() style?: { [key: string]: string };
 
-    @Input() placeholder = "";
+  @Input() autocomplete?: string;
 
-    @Input() options: any[] = [];
-
-    @Input() size?: number;
-
-    @Input() multiple: boolean = false;
-
-    @Input() class?: string;
-
-    @Input() style?: { [key: string]: string };
-
-    @Input() autocomplete?: string;
-
-    @Input() selectedValue?: any;
-
+  @Input() selectedValue?: any;
 }

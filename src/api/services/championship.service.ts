@@ -2,9 +2,10 @@ import { match } from 'node:assert';
 import { ScoreService } from './score.service';
 import { ScoreSystem } from './../utils/interfaces/score.interface';
 import {prisma} from "../app";
-import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, ChampionshipRound, PresetCreation, Team} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, ChampionshipRound, EnterChampionship, PresetCreation, Team} from "../utils/interfaces/championship.interface";
 import { Layout } from "../utils/interfaces/layout.interface";
 import { TeamService } from "./team.service";
+import { ChampionshipEntry } from '@prisma/client';
 
 export class ChampionshipService {
     static get = async (id: number) => {
@@ -20,7 +21,7 @@ export class ChampionshipService {
                 description: incoming.description,
                 leagueId: Number(incoming.leagueId)!,
                 authorId: authorId,
-                simulatorId: incoming.simulatorId
+                simulatorId: incoming.simulatorId,
             }
         }) as ChampionshipData;
         
@@ -41,6 +42,20 @@ export class ChampionshipService {
         }
 
         return created.id;
+    };
+
+    static enter = async ({gameName, number, teamId}: EnterChampionship, userId: number, championshipId: number) => {
+        const created = await prisma.championshipEntry.create({
+            data: {
+                gameName,
+                number,
+                teamId,
+                userId,
+                championshipId,
+            }
+        });
+        
+        return created !== null;
     };
 
     static getTeams = async (championshipId: number) => {

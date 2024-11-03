@@ -2,9 +2,9 @@
 <sup class="text-red-400">* Funcionalidad en desarrollo, <b>no funcional.</b></sup>
 
 @if (currentCreatingState === creatingStates.CreatingBasicInfo) {
-  @if (this.preset$ | async; as res) {
+  @if (preset) {
     <app-basic-info-championship-form
-      [preset]="res.data"
+      [preset]="preset"
       (basicDataCreated)="handleBasicDataCreated($event)"
     />
   } @else {
@@ -15,16 +15,31 @@
 }
 
 @else if (currentCreatingState === creatingStates.CreatingTeams) {
-  <app-team-form
-    (teamsCreated)="handleTeamsCreated($event)"
-  />
+  @if (preset) {
+    <app-team-form
+      [preset]="preset"
+      (teamsCreated)="handleTeamsCreated($event)"
+    />
+  } @else {
+    <app-team-form
+      (teamsCreated)="handleTeamsCreated($event)"
+    />
+  }
 }
 
 @else if (currentCreatingState === creatingStates.CreatingScoreSystem) {
-  <app-score-system-form
+  @if (preset) {
+    <app-score-system-form
+    [preset]="preset"
     [teams]="championshipCreating!.teams!"
     (scoreSystemCreated)="handleScoreCreated($event)"
   />
+  } @else {
+    <app-score-system-form
+    [teams]="championshipCreating!.teams!"
+    (scoreSystemCreated)="handleScoreCreated($event)"
+  />
+  }
 }
 
 @else if (currentCreatingState === creatingStates.SharePresetConfig) {

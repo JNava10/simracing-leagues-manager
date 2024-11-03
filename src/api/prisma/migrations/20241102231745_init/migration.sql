@@ -77,11 +77,14 @@ CREATE TABLE `League` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `LeagueMemberRole` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
+CREATE TABLE `LeagueMember` (
+    `leagueId` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `accepted` BOOLEAN NOT NULL DEFAULT false,
+    `joinedAt` DATETIME(6) NULL,
+    `requestedAt` DATETIME(6) NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`leagueId`, `userId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -91,6 +94,7 @@ CREATE TABLE `LeagueChampionship` (
     `name` VARCHAR(255) NOT NULL,
     `authorId` INTEGER NOT NULL,
     `description` VARCHAR(255) NOT NULL,
+    `simulatorId` INTEGER NOT NULL,
     `createdAt` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
 
     PRIMARY KEY (`id`)
@@ -100,7 +104,7 @@ CREATE TABLE `LeagueChampionship` (
 CREATE TABLE `ChampionshipRound` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `championshipId` INTEGER NOT NULL,
-    `trackId` INTEGER NOT NULL,
+    `layoutId` INTEGER NOT NULL,
     `name` VARCHAR(255) NULL,
     `description` VARCHAR(255) NULL,
     `createdAt` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
@@ -109,11 +113,21 @@ CREATE TABLE `ChampionshipRound` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `ChampionshipCategories` (
+    `championshipId` INTEGER NOT NULL,
+    `categoryId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`championshipId`, `categoryId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `ChampionshipEntry` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `championshipId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
-    `name` VARCHAR(255) NULL,
+    `gameName` VARCHAR(191) NULL,
+    `number` INTEGER NULL,
+    `teamId` INTEGER NULL,
     `description` VARCHAR(255) NULL,
     `createdAt` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
 
@@ -149,21 +163,63 @@ CREATE TABLE `RaceSession` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `DefaultTeam` (
+CREATE TABLE `Team` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `presetName` VARCHAR(255) NOT NULL,
-    `teamName` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
     `hexColor` VARCHAR(7) NOT NULL,
-    `carEntries` INTEGER NOT NULL DEFAULT 2,
+    `carEntries` INTEGER NULL DEFAULT 2,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `PresetTeam` (
+    `presetId` INTEGER NOT NULL,
+    `teamId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`presetId`, `teamId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ChampionshipTeam` (
+    `championshipId` INTEGER NOT NULL,
+    `teamId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`championshipId`, `teamId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ChampionshipPreset` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `imgUrl` VARCHAR(191) NULL,
+    `scoreSystemId` INTEGER NOT NULL,
+    `authorId` INTEGER NOT NULL,
+    `createdAt` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ChampionshipPresetLayouts` (
+    `presetId` INTEGER NOT NULL,
+    `layoutId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`presetId`, `layoutId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ChampionshipPresetCategories` (
+    `presetId` INTEGER NOT NULL,
+    `categoryId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`presetId`, `categoryId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `ScoreSystem` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `description` VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -171,8 +227,7 @@ CREATE TABLE `ScoreSystem` (
 -- CreateTable
 CREATE TABLE `ScoreSystemPosition` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `position` VARCHAR(255) NOT NULL,
-    `score` VARCHAR(255) NOT NULL,
+    `score` INTEGER NOT NULL,
     `parentId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -194,17 +249,6 @@ CREATE TABLE `ScoreSystemExtra` (
     `parentId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `LeagueMember` (
-    `leagueId` INTEGER NOT NULL,
-    `userId` INTEGER NOT NULL,
-    `accepted` BOOLEAN NOT NULL DEFAULT false,
-    `joinedAt` DATETIME(6) NULL,
-    `requestedAt` DATETIME(6) NULL,
-
-    PRIMARY KEY (`leagueId`, `userId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -233,7 +277,7 @@ CREATE TABLE `SimulatorGame` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
-    `picUrl` VARCHAR(255) NOT NULL,
+    `picUrl` VARCHAR(255) NULL,
     `releaseYear` YEAR NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -285,12 +329,23 @@ CREATE TABLE `CommentPostFile` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_LeagueMemberRoleToUser` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
+CREATE TABLE `LeagueAuditAction` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
 
-    UNIQUE INDEX `_LeagueMemberRoleToUser_AB_unique`(`A`, `B`),
-    INDEX `_LeagueMemberRoleToUser_B_index`(`B`)
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `LeagueAuditLog` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `actionId` INTEGER NOT NULL,
+    `target` INTEGER NOT NULL,
+    `authorId` INTEGER NOT NULL,
+    `date` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -318,13 +373,28 @@ ALTER TABLE `UserRole` ADD CONSTRAINT `UserRole_userId_fkey` FOREIGN KEY (`userI
 ALTER TABLE `League` ADD CONSTRAINT `League_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `LeagueMember` ADD CONSTRAINT `LeagueMember_leagueId_fkey` FOREIGN KEY (`leagueId`) REFERENCES `League`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `LeagueMember` ADD CONSTRAINT `LeagueMember_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `LeagueChampionship` ADD CONSTRAINT `LeagueChampionship_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `LeagueChampionship` ADD CONSTRAINT `LeagueChampionship_leagueId_fkey` FOREIGN KEY (`leagueId`) REFERENCES `League`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `LeagueChampionship` ADD CONSTRAINT `LeagueChampionship_simulatorId_fkey` FOREIGN KEY (`simulatorId`) REFERENCES `SimulatorGame`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `ChampionshipRound` ADD CONSTRAINT `ChampionshipRound_championshipId_fkey` FOREIGN KEY (`championshipId`) REFERENCES `LeagueChampionship`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipCategories` ADD CONSTRAINT `ChampionshipCategories_championshipId_fkey` FOREIGN KEY (`championshipId`) REFERENCES `LeagueChampionship`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipCategories` ADD CONSTRAINT `ChampionshipCategories_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ChampionshipEntry` ADD CONSTRAINT `ChampionshipEntry_championshipId_fkey` FOREIGN KEY (`championshipId`) REFERENCES `LeagueChampionship`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -345,6 +415,36 @@ ALTER TABLE `SessionEntry` ADD CONSTRAINT `SessionEntry_driverId_fkey` FOREIGN K
 ALTER TABLE `SessionEntry` ADD CONSTRAINT `SessionEntry_sessionId_fkey` FOREIGN KEY (`sessionId`) REFERENCES `Session`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `PresetTeam` ADD CONSTRAINT `PresetTeam_teamId_fkey` FOREIGN KEY (`teamId`) REFERENCES `Team`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `PresetTeam` ADD CONSTRAINT `PresetTeam_presetId_fkey` FOREIGN KEY (`presetId`) REFERENCES `ChampionshipPreset`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipTeam` ADD CONSTRAINT `ChampionshipTeam_championshipId_fkey` FOREIGN KEY (`championshipId`) REFERENCES `LeagueChampionship`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipTeam` ADD CONSTRAINT `ChampionshipTeam_teamId_fkey` FOREIGN KEY (`teamId`) REFERENCES `Team`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipPreset` ADD CONSTRAINT `ChampionshipPreset_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipPreset` ADD CONSTRAINT `ChampionshipPreset_scoreSystemId_fkey` FOREIGN KEY (`scoreSystemId`) REFERENCES `ScoreSystem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipPresetLayouts` ADD CONSTRAINT `ChampionshipPresetLayouts_layoutId_fkey` FOREIGN KEY (`layoutId`) REFERENCES `TrackLayout`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipPresetLayouts` ADD CONSTRAINT `ChampionshipPresetLayouts_presetId_fkey` FOREIGN KEY (`presetId`) REFERENCES `ChampionshipPreset`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipPresetCategories` ADD CONSTRAINT `ChampionshipPresetCategories_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChampionshipPresetCategories` ADD CONSTRAINT `ChampionshipPresetCategories_presetId_fkey` FOREIGN KEY (`presetId`) REFERENCES `ChampionshipPreset`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `ScoreSystemPosition` ADD CONSTRAINT `ScoreSystemPosition_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `ScoreSystem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -352,12 +452,6 @@ ALTER TABLE `ScoreSystemExtra` ADD CONSTRAINT `ScoreSystemExtra_parentId_fkey` F
 
 -- AddForeignKey
 ALTER TABLE `ScoreSystemExtra` ADD CONSTRAINT `ScoreSystemExtra_extraId_fkey` FOREIGN KEY (`extraId`) REFERENCES `ExtraScore`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `LeagueMember` ADD CONSTRAINT `LeagueMember_leagueId_fkey` FOREIGN KEY (`leagueId`) REFERENCES `League`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `LeagueMember` ADD CONSTRAINT `LeagueMember_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `TrackLayout` ADD CONSTRAINT `TrackLayout_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `Track`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -381,7 +475,7 @@ ALTER TABLE `LeaguePostFile` ADD CONSTRAINT `LeaguePostFile_postId_fkey` FOREIGN
 ALTER TABLE `CommentPostFile` ADD CONSTRAINT `CommentPostFile_commentId_fkey` FOREIGN KEY (`commentId`) REFERENCES `PostComment`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_LeagueMemberRoleToUser` ADD CONSTRAINT `_LeagueMemberRoleToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `LeagueMemberRole`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `LeagueAuditLog` ADD CONSTRAINT `LeagueAuditLog_actionId_fkey` FOREIGN KEY (`actionId`) REFERENCES `LeagueAuditAction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_LeagueMemberRoleToUser` ADD CONSTRAINT `_LeagueMemberRoleToUser_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `LeagueAuditLog` ADD CONSTRAINT `LeagueAuditLog_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

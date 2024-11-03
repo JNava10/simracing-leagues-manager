@@ -9,6 +9,7 @@ const controller = new ChampionshipController()
 
 router.get("/:id", [validateToken], controller.get);
 router.post("/", [validateToken], controller.create);
+router.post("/:id/enter", [validateToken], controller.enter);
 
 router.get("/teams/:champId", [validateToken], controller.getTeams);
 

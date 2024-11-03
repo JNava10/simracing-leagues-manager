@@ -1,5 +1,14 @@
 <div>
-  <select>
+  <select
+
+  [className]="inputClass"
+  [value]="value"
+  [disabled]="disabled"
+  [required]="required"
+  [(ngModel)]="value"
+  (ngModelChange)="writeValue($event)"
+  ngClass="inputClass"
+  >
     @for (item of options; track $index) {
       <option value="{{item[keyProp]!}}">{{item[showingProp]!}}</option>
     }

@@ -2,7 +2,7 @@ import { GlobalHelper } from '../../../../helpers/global.helper';
 import { PositionScore, ScoreSystem } from './../../../../utils/interfaces/score.interface';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CustomTextInputComponent } from "../../../utils/custom-text-input/custom-text-input.component";
-import { Team } from '../../../../utils/interfaces/championship.interface';
+import { ChampionshipPreset, Team } from '../../../../utils/interfaces/championship.interface';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomButtonComponent } from "../../../utils/custom-button/custom-button.component";
 import { NgClass } from '@angular/common';
@@ -19,11 +19,19 @@ export class ScoreSystemFormComponent implements OnInit {
   ngOnInit(): void {
     this.gridSize = this.getGridSize()
 
+    if (this.preset) {
+      this.scoreValues = this.preset.scoreSystem.positions!.map(item => item.score!)
+    }
+
     this.buildScoreForm(this.scores)
   }
 
+  @Input() preset?: ChampionshipPreset
+
   globalHelper = inject(GlobalHelper);
   formBuilder = inject(FormBuilder);
+
+  scoreValues: number[] = []
 
   scoresForm = this.formBuilder.group({
     scores: this.formBuilder.array<string>([])
@@ -33,8 +41,7 @@ export class ScoreSystemFormComponent implements OnInit {
     return this.scoresForm.controls.scores;
   }
 
-  gridSize = 0;
-
+  gridSize = this.getGridSize();
 
   @Input() teams: Team[] = [];
 
@@ -65,7 +72,7 @@ export class ScoreSystemFormComponent implements OnInit {
   private buildScoreForm(array: FormArray)  {
     for (let i = 0; i < this.gridSize; i++) {
       array.push(
-        this.formBuilder.control("")
+        this.formBuilder.control(`${this.scoreValues[i]}` || "")
       )
     }
   }

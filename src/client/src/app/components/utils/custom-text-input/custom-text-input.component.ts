@@ -1,11 +1,12 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, forwardRef } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { BaseCustomInputComponent } from '../base-custom-input/base-custom-input.component';
 
 @Component({
   selector: 'app-custom-text-input',
   standalone: true,
-  imports: [FormsModule, NgClass, NgIf],
+  imports: [FormsModule, NgClass, NgIf, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -16,18 +17,18 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from '@
   templateUrl: './custom-text-input.component.html',
   styleUrl: './custom-text-input.component.scss'
 })
-export class CustomTextInputComponent implements ControlValueAccessor {
+export class CustomTextInputComponent extends BaseCustomInputComponent {
 
 
   /// Atributos del elemento <input/> ///
 
   @Input() type: string = 'text';
 
-  @Input() disabled: boolean = false;
+  // @Input() disabled: boolean = false;
 
-  @Input() required: boolean = false;
+  // @Input() required: boolean = false;
 
-  @Input() readonly: boolean = false;
+  // @Input() readonly: boolean = false;
 
   @Input() autocomplete: string = 'off';
 
@@ -41,24 +42,24 @@ export class CustomTextInputComponent implements ControlValueAccessor {
 
   @Input() showPlaceholder? = true;
 
-  @Input() showLabel = true;
+  // @Input() showLabel = true;
 
-  @Input() label = 'Label';
+  // @Input() label = 'Label';
 
-  @Input() formGroupName?: string;
+  // @Input() formGroupName?: string;
 
-  @Input() formControlName?: string;
+  // @Input() formControlName?: string;
 
 
   /// Atributos custom ///
 
-  @Input() errorMessage: string = '';
+  // @Input() errorMessage: string = '';
 
-  @Input() inputClass: string = '';
+  // @Input() inputClass: string = '';
 
   @Input() color? = 'blue';
 
-  @Input() debug? = false;
+  // @Input() debug? = false;
 
 
   /// Eventos del elemento <input/> ///
@@ -76,25 +77,10 @@ export class CustomTextInputComponent implements ControlValueAccessor {
 
   /// Variables para interactuar con la API de formularios reactivos de angular ///
 
-  protected value = ''; // Es mejor utilizar una variable privada, ya que asi podemos controlar exactamente cuando se sobreescribe el valor del input.
+  // protected value = ''; // Es mejor utilizar una variable privada, ya que asi podemos controlar exactamente cuando se sobreescribe el valor del input.
 
-  private onReactiveChange = (value: string) => {};
-  private onReactiveTouched = () => {};
-
-
-  /// Handlers de los eventos ///
-
-  onInputChange(event: Event): void {
-    this.inputChange.emit((<HTMLInputElement>event.target).value);
-  }
-
-  onInputFocus(): void {
-    this.inputFocus.emit();
-  }
-
-  onInputBlur(): void {
-    this.inputBlur.emit();
-  }
+  // private onReactiveChange = (value: string) => {};
+  // private onReactiveTouched = () => {};
 
   onInputKeyUp(event: KeyboardEvent): void {
     this.inputKeyUp.emit(event);
@@ -104,39 +90,37 @@ export class CustomTextInputComponent implements ControlValueAccessor {
     this.inputKeyDown.emit(event);
   }
 
-  updateValue(event: Event): void {
-    const newValue = (<HTMLInputElement>event.target).value;
+  // updateValue(event: Event): void {
+  //   const newValue = (<HTMLInputElement>event.target).value;
 
-    this.value = newValue;
-    this.onReactiveChange(newValue);
-    this.onReactiveTouched();
-  }
+  //   if (this.debug === true) {
+  //     console.log(this.value);
+  //   }
+
+  //   this.value = newValue;
+  //   this.onReactiveChange(newValue);
+  //   this.onReactiveTouched();
+  // }
 
   /// Metodos heredados para soportar los formularios reactivos /// Fuente: https://dev.to/krishhnaa/understanding-angular-controlvalueaccessor-with-an-example-33gb
 
-  writeValue(value: string): void {
-    if (value !== undefined) {
-      this.value = value;
-      console.log(this.value)
-    }
-  }
+  // writeValue(value: string): void {
+  //   if (value !== undefined) {
+  //     this.value = value;
+  //   }
+  // }
 
-  registerOnChange(fn: any): void {
-    if (this.debug) {
-      console.log(this.value);
-    }
+  // registerOnChange(fn: any): void {
+  //   this.onReactiveChange = fn;
+  // }
 
-    this.onReactiveChange = fn;
-  }
+  // registerOnTouched(fn: any): void {
+  //   this.onReactiveTouched = fn;
+  // }
 
-  registerOnTouched(fn: any): void {
-    this.onReactiveTouched = fn;
-  }
-
-  onReactiveBlur() {
-    this.onReactiveTouched();
-  }
-
+  // onReactiveBlur() {
+  //   this.onReactiveTouched();
+  // }
 
   /// Metodos custom ///
 

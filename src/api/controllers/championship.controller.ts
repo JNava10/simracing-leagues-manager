@@ -2,10 +2,9 @@ import {Request, Response} from "express";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {ChampionshipService} from "../services/championship.service";
-import {ChampionshipCreation, ChampionshipData, PresetCreation} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, EnterChampionship, PresetCreation} from "../utils/interfaces/championship.interface";
 import { sendSuccessResponse } from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
-import { ChampionshipPreset } from ".prisma/client";
 
 export class ChampionshipController {
     get = async (req: CustomRequest, res: Response) => {
@@ -30,6 +29,25 @@ export class ChampionshipController {
             const body = req.body as ChampionshipCreation
             
             const createdChampioship = await ChampionshipService.create(body, req.user.id);
+    
+            return sendSuccessResponse({
+                data: createdChampioship,
+                msg: 'A',
+                status: 201
+            }, res);
+        } catch (e) {
+            console.error (e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
+    enter = async (req: CustomRequest, res: Response) => {
+        try {
+            const body = req.body as EnterChampionship
+            const champId = Number(req.params['id']!);
+            
+            const createdChampioship = await ChampionshipService.enter(body, req.user.id, champId);
     
             return sendSuccessResponse({
                 data: createdChampioship,

@@ -174,11 +174,15 @@ model ChampionshipEntry {
   id             Int                @id @default(autoincrement())
   championshipId Int
   userId         Int
-  name           String?            @db.VarChar(255)
+  gameName           String?            
+  number           Int?            
+  teamId           Int?            
   description    String?            @db.VarChar(255)
   createdAt      DateTime           @default(now()) @db.DateTime(6)
+
   championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
   user          User               @relation(fields: [userId], references: [id])
+  
 }
 
 model Session {
