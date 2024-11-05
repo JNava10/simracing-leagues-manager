@@ -29,3 +29,9 @@ export const roundDurationTypes: RoundDurationType[] = [
     name: 'Minutos'
   },
 ]
+
+export const sessionFinishStates = {
+  retired: "Retirado",
+  didNotQualify: "Sin clasificar",
+  finished: "Terminado",
+};

@@ -62,6 +62,8 @@ export class CreateChampionshipComponent implements OnInit {
 
     this.championshipCreating!.teams = teams;
 
+    console.log(this.championshipCreating!.teams);
+
     this.currentCreatingState = this.creatingStates.CreatingScoreSystem
   }
 

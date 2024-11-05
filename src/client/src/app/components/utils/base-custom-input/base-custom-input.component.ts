@@ -57,7 +57,7 @@ export class BaseCustomInputComponent implements ControlValueAccessor {
     }
   }
 
-  private onReactiveChange = (value: string) => {};
+  private onReactiveChange = (value: any) => {};
   private onReactiveTouched = () => {};
 
   registerOnChange(fn: any): void {
@@ -73,13 +73,13 @@ export class BaseCustomInputComponent implements ControlValueAccessor {
   }
 
 
-  updateValue(value: string): void {
+  updateValue(value: any): void {
+    this.value = value;
 
-    if (this.debug === true) {
+    if (this.debug) {
       console.log(this.value);
     }
 
-    this.value = value;
     this.onReactiveChange(value);
     this.onReactiveTouched();
   }

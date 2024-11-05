@@ -11,18 +11,5 @@
 @layer tailwind-utilities {
   @tailwind components;
   @tailwind utilities;
-  @variants responsive {
-
-    /* Ocultar la scrollbar - Fuente: https://www.linkedin.com/pulse/enhancing-your-ui-how-hide-scrollbars-using-tailwind-css-mtembete/ */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-
-
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  }
 }
 

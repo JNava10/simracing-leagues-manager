@@ -42,7 +42,6 @@ model User {
   profilePicUrl        String?              @db.VarChar(255)
 
   leagues              LeagueMember[]
-  entries              SessionEntry[]
   leaguesCreated       League[]
   championshipsCreated LeagueChampionship[]
   championshipsJoined   ChampionshipEntry[]
@@ -54,6 +53,8 @@ model User {
   auditActions LeagueAuditLog[]
 
   ChampionshipPreset ChampionshipPreset[]
+
+  RoundSession RoundEntry[]
 }
 
 model FavouriteSimulator {
@@ -139,8 +140,8 @@ model LeagueChampionship {
   league      League?              @relation(fields: [leagueId], references: [id])
   simulator   SimulatorGame?              @relation(fields: [simulatorId], references: [id])
 
-  rounds      ChampionshipRound[]
-  entries      ChampionshipEntry[]
+  calendar      ChampionshipRound[]
+  users      ChampionshipEntry[]
   categories ChampionshipCategories[]
 
 
@@ -154,8 +155,11 @@ model ChampionshipRound {
   name           String?            @db.VarChar(255)
   description    String?            @db.VarChar(255)
   createdAt      DateTime           @default(now()) @db.DateTime(6)
+  finished    Boolean            @default(false)
 
   championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
+
+  RoundSession RoundEntry[]
 }
 
 model ChampionshipCategories {
@@ -185,30 +189,13 @@ model ChampionshipEntry {
   
 }
 
-model Session {
-  id            Int            @id @default(autoincrement())
-  trackId       Int
-  createdAt     DateTime       @default(now()) @db.DateTime(6)
-  track         Track          @relation(fields: [trackId], references: [id])
-  sessionEntry  SessionEntry[]
-  raceSession   RaceSession?   @relation(fields: [raceSessionId], references: [id])
-  raceSessionId Int?
-}
-
-model SessionEntry {
+model RoundEntry {
   driverId      Int    
   sessionId     Int    
   position      Int
   driver        User    @relation(fields: [driverId], references: [id])
-  session       Session @relation(fields: [sessionId], references: [id])
+  round       ChampionshipRound @relation(fields: [sessionId], references: [id])
   @@id([driverId, sessionId])
-}
-
-model RaceSession {
-  id       Int       @id @default(autoincrement())
-  laps     Int?
-  duration Int? // Minutos
-  session  Session[]
 }
 
 // Equipos //
@@ -333,7 +320,6 @@ model Track {
   country     String        @db.VarChar(3)
   location    String        @db.VarChar(255)
   layouts     TrackLayout[]
-  session     Session[]
 }
 
 model TrackLayout {

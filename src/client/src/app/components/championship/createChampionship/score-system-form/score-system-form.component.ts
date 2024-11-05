@@ -24,6 +24,8 @@ export class ScoreSystemFormComponent implements OnInit {
     }
 
     this.buildScoreForm(this.scores)
+
+    this.gridSize = this.getGridSize();
   }
 
   @Input() preset?: ChampionshipPreset
@@ -41,7 +43,7 @@ export class ScoreSystemFormComponent implements OnInit {
     return this.scoresForm.controls.scores;
   }
 
-  gridSize = this.getGridSize();
+  gridSize: number = 0
 
   @Input() teams: Team[] = [];
 

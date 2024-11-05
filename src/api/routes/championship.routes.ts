@@ -8,6 +8,9 @@ const router = express.Router();
 const controller = new ChampionshipController()
 
 router.get("/:id", [validateToken], controller.get);
+router.get("/:id/calendar", [validateToken], controller.getCalendar);
+router.get("/:id/entries", [validateToken], controller.getEntries);
+
 router.post("/", [validateToken], controller.create);
 router.post("/:id/enter", [validateToken], controller.enter);
 

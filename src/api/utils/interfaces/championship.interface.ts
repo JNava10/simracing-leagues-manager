@@ -74,3 +74,14 @@ export interface Team {
     hexColor?: string;
     carEntries?: number;
 }
+
+
+export interface GetChampProps {
+    name?: boolean;
+    description?: boolean;
+    categoryIds?: boolean;
+    calendar?: boolean;
+    scoreSystem?: boolean;
+    teams?: boolean;
+    simulator?: boolean;
+  }

@@ -13,6 +13,7 @@ export interface LeagueChampionship {
   calendar?: ChampionshipRound[]
   scoreSystem?: ScoreSystem
   teams?: Team[]
+  users?: ChampionshipEntry[]
   simulatorId?: number
   leagueId?: number
 }
@@ -24,6 +25,10 @@ export interface ChampionshipRound {
   layout?: TrackLayout
   length?: RoundLength
   customScoring?: ScoreSystem // Configuración personalizada del sistema de puntuación.
+}
+
+export interface ChampionshipEntry {
+  user?: User
 }
 
 export interface RoundLength {
@@ -100,9 +105,20 @@ interface LayoutDetails {
   parent: Track;
 }
 
+export interface GetChampProps {
+  name?: boolean;
+  description?: boolean;
+  categoryIds?: boolean;
+  calendar?: boolean;
+  scoreSystem?: boolean;
+  teams?: boolean;
+  simulator?: boolean;
+}
+
 export interface EnterChampionship {
   number: number;
   team: number;
   gameName: string;
 }
+
 

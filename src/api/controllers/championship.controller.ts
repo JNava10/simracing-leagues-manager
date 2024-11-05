@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {ChampionshipService} from "../services/championship.service";
-import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, EnterChampionship, PresetCreation} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, EnterChampionship, PresetCreation, GetChampProps} from "../utils/interfaces/championship.interface";
 import { sendSuccessResponse } from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
 
@@ -24,10 +24,45 @@ export class ChampionshipController {
         }
     }
 
+    getCalendar = async (req: CustomRequest, res: Response) => {
+        try {
+            const id = Number(req.params['id']!);
+            const calendar = await ChampionshipService.getCalendar(id);
+
+            return sendSuccessResponse({
+                data: calendar[0],
+                msg: 'A'
+            }, res);
+        } catch (e) {
+            console.error (e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
+    
+    getEntries = async (req: CustomRequest, res: Response) => {
+        try {
+            const id = Number(req.params['id']!);
+            const entries = await ChampionshipService.getEntries(id);
+
+            // @ts-ignore
+            console.log(entries)
+
+            return sendSuccessResponse({
+                data: entries[0],
+                msg: 'A'
+            }, res);
+        } catch (e) {
+            console.error (e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
     create = async (req: CustomRequest, res: Response) => {
         try {
             const body = req.body as ChampionshipCreation
-            
             const createdChampioship = await ChampionshipService.create(body, req.user.id);
     
             return sendSuccessResponse({

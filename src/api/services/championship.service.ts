@@ -2,15 +2,53 @@ import { match } from 'node:assert';
 import { ScoreService } from './score.service';
 import { ScoreSystem } from './../utils/interfaces/score.interface';
 import {prisma} from "../app";
-import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, ChampionshipRound, EnterChampionship, PresetCreation, Team} from "../utils/interfaces/championship.interface";
+import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, ChampionshipRound, EnterChampionship, GetChampProps, PresetCreation, Team} from "../utils/interfaces/championship.interface";
 import { Layout } from "../utils/interfaces/layout.interface";
 import { TeamService } from "./team.service";
 import { ChampionshipEntry } from '@prisma/client';
 
 export class ChampionshipService {
-    static get = async (id: number) => {
+    static get = async (id: number, props?: GetChampProps) => {
         return await prisma.leagueChampionship.findFirst({where: {id}});
     };
+
+    static getTeams = async (championshipId: number) => {
+        return prisma.championshipTeam.findMany({
+            where: {
+                championshipId,
+            },
+
+            include: {
+                team: true
+            }
+        });
+    }
+
+    static getCalendar = async (championshipId: number) => {
+        return prisma.leagueChampionship.findMany({
+            where: {
+                id: championshipId,
+            },
+
+            include: {
+                calendar: true
+            }
+        });
+    }
+
+    static getEntries = async (championshipId: number) => {
+        return prisma.leagueChampionship.findMany({
+            where: {
+                id: championshipId,
+            },
+
+            include: {
+                users: {
+                    include: {user: true}
+                }
+            }
+        });
+    }
 
     static create = async (incoming: ChampionshipCreation, authorId: number) => {
 
@@ -58,17 +96,6 @@ export class ChampionshipService {
         return created !== null;
     };
 
-    static getTeams = async (championshipId: number) => {
-            return prisma.championshipTeam.findMany({
-                where: {
-                    championshipId,
-                },
-
-                include: {
-                    team: true
-                }
-            });
-    }
 
     static createPreset = async (incoming: PresetCreation, authorId: number) => {
         // Inserción de puntuaciones
