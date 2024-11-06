@@ -121,4 +121,12 @@ export interface EnterChampionship {
   gameName: string;
 }
 
+export interface Position {
+  driver: User;
+  finishState: number;
+}
 
+export interface PositionCreation {
+  driverId: number;
+  finishState: number;
+}

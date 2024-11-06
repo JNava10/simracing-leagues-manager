@@ -17,9 +17,9 @@ import { BaseCustomInputComponent } from '../base-custom-input/base-custom-input
   templateUrl: './custom-select.component.html',
   styleUrl: './custom-select.component.scss'
 })
-export class CustomSelectComponent extends BaseCustomInputComponent {
+export class CustomSelectComponent<KeyType> extends BaseCustomInputComponent {
   // TODO: Comprobar que existe en los objetos entrantes.
-  @Input() keyProp = "";
+  @Input() keyProp? = "";
 
   // TODO: Comprobar que existe en los objetos entrantes.
   @Input() showingProp = "";
@@ -31,7 +31,6 @@ export class CustomSelectComponent extends BaseCustomInputComponent {
   @Input() size?: number;
 
   @Input() multiple: boolean = false;
-
 
   @Input() style?: { [key: string]: string };
 

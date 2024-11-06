@@ -1,20 +1,26 @@
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { ChampionshipApiService } from './../../../services/api/championship-api.service';
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CustomButtonComponent } from "../../utils/custom-button/custom-button.component";
 import { ActivatedRoute } from '@angular/router';
 import { TrackLayout } from '../../../utils/interfaces/track.interface';
 import { DialogModule } from 'primeng/dialog';
-import { ChampionshipEntry, ChampionshipRound } from '../../../utils/interfaces/championship.interface';
+import {
+  ChampionshipEntry,
+  ChampionshipRound,
+  Position,
+  PositionCreation
+} from '../../../utils/interfaces/championship.interface';
 import { CustomSelectComponent } from "../../utils/custom-select/custom-select.component";
 import { User } from '../../../utils/interfaces/user.interface';
 import {CustomRadioGroupComponent} from "../../utils/custom/custom-radio-group/custom-radio-group.component";
 import {SessionFinishStates} from "../../../utils/enums/championship.enum";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-championship-results',
   standalone: true,
-  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent],
+  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass],
   templateUrl: './championship-results.component.html',
   styleUrl: './championship-results.component.scss'
 })
@@ -23,17 +29,12 @@ export class ChampionshipResultsComponent implements OnInit {
   constructor(
     private championshipApiService: ChampionshipApiService,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-  ) {
-    this.resultsForm = this.formBuilder.group({
-      positions: this.formBuilder.array([])
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    const champId = this.route.snapshot.params['champId'];
+    this.champId = +this.route.snapshot.params['champId'];
 
-    this.championshipApiService.getCalendarById(champId).subscribe(res => {
+    this.championshipApiService.getCalendarById(this.champId).subscribe(res => {
       if (!res.data) {
         // TODO: Mostrar mensaje error
 
@@ -43,7 +44,7 @@ export class ChampionshipResultsComponent implements OnInit {
       this.calendar = res.data!.calendar!
     });
 
-    this.championshipApiService.getEntriesById(champId).subscribe(res => {
+    this.championshipApiService.getEntriesById(this.champId).subscribe(res => {
       if (!res.data) {
         // TODO: Mostrar mensaje error
 
@@ -51,7 +52,7 @@ export class ChampionshipResultsComponent implements OnInit {
       }
 
       res.data!.users!.forEach(_ => { // Se utiliza _ para indicar que la variable no se va a usar.
-        this.positions.push(
+        this.positionsForm.push(
           this.getPositionFormGroup()
         )
       });
@@ -60,32 +61,61 @@ export class ChampionshipResultsComponent implements OnInit {
     });
   }
 
-  get positions(): FormArray {
-    return this.resultsForm!.get('positions') as FormArray;
-  }
-
+  champId?: number
+  editing = true
   calendar?: ChampionshipRound[]
   users?: User[]
-  isFilling = false;
-  fillingIndex?: number;
-  resultsForm?: FormGroup
+  formBuilder = inject(FormBuilder)
 
-  setFillingRound() {
-    this.isFilling = true;
-    this.fillingIndex = this.calendar!.length;
-  }
-
-  protected readonly SessionFinishStates = SessionFinishStates;
-  protected readonly Object = Object;
+  resultsForm = this.formBuilder.group({
+    positions: this.formBuilder.array([])
+  });
 
   private getPositionFormGroup() {
     return this.formBuilder.group({
-      driver: this.formBuilder.control(0, [Validators.required]),
+      driverId: this.formBuilder.control(0, [Validators.required]),
       finishState: this.formBuilder.control(0, [Validators.required]),
     });
   }
 
-  saveResults() {
-    console.log(this.positions.value)
+  get positionsForm(): FormArray {
+    return this.resultsForm!.get('positions') as FormArray;
+  }
+
+  positions: Position[] = [];
+
+  protected readonly SessionFinishStates = SessionFinishStates;
+  protected readonly Object = Object;
+
+  saveProgress() {
+    const positionsCreated = this.positionsForm.value as PositionCreation[];
+
+    positionsCreated.forEach((position) => {
+      this.positions.push({
+        driver: this.users!.find(item => item.id === Number(position.driverId))!,
+        finishState: position.finishState
+      })
+    })
+
+    this.alternateMode(false);
+  }
+
+  alternateMode(editing: boolean) {
+    this.editing = editing;
+  }
+
+  saveRoundResults() {
+
+    // Se mapean los resultados para castear el ID de piloto a String a Number.
+    const results:  PositionCreation[] = (this.positionsForm.value as PositionCreation[]).map((position) => {
+      return {
+        ...position,
+        driverId: +position.driverId
+      }
+    });
+
+    console.log(results);
+
+    this.championshipApiService.saveRoundResults(results, this.champId!).subscribe(res => {})
   }
 }

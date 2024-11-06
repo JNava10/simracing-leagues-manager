@@ -17,7 +17,7 @@ import { ColorTheme } from '../custom-button/custom-button.component';
 })
 export class BaseCustomInputComponent implements ControlValueAccessor {
 
-  protected value = '';
+  protected value: any;
 
   /// Atributos genericos de los inputs ///
 

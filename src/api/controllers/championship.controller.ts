@@ -2,9 +2,18 @@ import {Request, Response} from "express";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {ChampionshipService} from "../services/championship.service";
-import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, EnterChampionship, PresetCreation, GetChampProps} from "../utils/interfaces/championship.interface";
+import {
+    ChampionshipCreation,
+    ChampionshipData,
+    ChampionshipPreset,
+    EnterChampionship,
+    PresetCreation,
+    GetChampProps,
+    PositionCreation
+} from "../utils/interfaces/championship.interface";
 import { sendSuccessResponse } from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
+import {Messages} from "../utils/enum/messages.enum";
 
 export class ChampionshipController {
     get = async (req: CustomRequest, res: Response) => {
@@ -81,12 +90,40 @@ export class ChampionshipController {
         try {
             const body = req.body as EnterChampionship
             const champId = Number(req.params['id']!);
-            
+
             const createdChampioship = await ChampionshipService.enter(body, req.user.id, champId);
-    
+
             return sendSuccessResponse({
                 data: createdChampioship,
                 msg: 'A',
+                status: 201
+            }, res);
+        } catch (e) {
+            console.error (e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
+    saveResults = async (req: CustomRequest, res: Response) => {
+        try {
+            const body = req.body as PositionCreation[];
+            const champId = Number(req.params['id']!);
+            const round = Number(req.params['round']!);
+
+            const roundsCreated = await ChampionshipService.saveResults(body, round);
+
+            if (!roundsCreated) {
+                return sendSuccessResponse({
+                    data: roundsCreated,
+                    msg: Messages.ERROR_MESSAGE,
+                    status: 201
+                }, res);
+            }
+
+            return sendSuccessResponse({
+                data: roundsCreated,
+                msg: Messages.CREATE_ROUND,
                 status: 201
             }, res);
         } catch (e) {

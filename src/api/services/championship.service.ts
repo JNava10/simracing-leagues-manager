@@ -1,15 +1,20 @@
-import { match } from 'node:assert';
-import { ScoreService } from './score.service';
-import { ScoreSystem } from './../utils/interfaces/score.interface';
+import {ScoreService} from './score.service';
 import {prisma} from "../app";
-import {ChampionshipCreation, ChampionshipData, ChampionshipPreset, ChampionshipRound, EnterChampionship, GetChampProps, PresetCreation, Team} from "../utils/interfaces/championship.interface";
-import { Layout } from "../utils/interfaces/layout.interface";
-import { TeamService } from "./team.service";
-import { ChampionshipEntry } from '@prisma/client';
+import {
+    ChampionshipCreation,
+    ChampionshipData,
+    ChampionshipRound,
+    EnterChampionship,
+    GetChampProps,
+    PositionCreation,
+    PresetCreation,
+    Team
+} from "../utils/interfaces/championship.interface";
+import {TeamService} from "./team.service";
 
 export class ChampionshipService {
     static get = async (id: number, props?: GetChampProps) => {
-        return await prisma.leagueChampionship.findFirst({where: {id}});
+        await prisma.leagueChampionship.findFirst({where: {id}});
     };
 
     static getTeams = async (championshipId: number) => {
@@ -137,6 +142,20 @@ export class ChampionshipService {
             }})
         }
     }
+
+    static saveResults = async (results: PositionCreation[], roundId: number) => {
+        console.log(results)
+        return prisma.roundEntry.createMany({
+            // @ts-ignore
+            data: results.map((result, index)=> {
+                return {
+                    ...result,
+                    roundId,
+                    position: index + 1
+                }
+            })
+        })
+    }
     
     static createCalendar = async (calendar: ChampionshipRound[], championshipId: number) => {
         const createdRounds: Team[] = [];
@@ -190,7 +209,7 @@ export class ChampionshipService {
     }
 
     static getPresetsById = async (id: number) => {
-        return await prisma.championshipPreset.findFirst({
+        return prisma.championshipPreset.findFirst({
                 include: {
                     author: true, 
 

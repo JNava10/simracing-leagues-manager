@@ -84,4 +84,9 @@ export interface GetChampProps {
     scoreSystem?: boolean;
     teams?: boolean;
     simulator?: boolean;
-  }
+}
+
+export interface PositionCreation {
+    driverId: number;
+    finishState: number;
+}
