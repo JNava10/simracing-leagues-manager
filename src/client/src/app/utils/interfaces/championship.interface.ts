@@ -122,7 +122,9 @@ export interface EnterChampionship {
 }
 
 export interface Position {
-  driver: User;
+  driver?: User;
+  position?: number;
+  driverId?: number;
   finishState: number;
 }
 

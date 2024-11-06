@@ -7,7 +7,7 @@ import { TrackLayout } from '../../../utils/interfaces/track.interface';
 import { DialogModule } from 'primeng/dialog';
 import {
   ChampionshipEntry,
-  ChampionshipRound,
+  ChampionshipRound, LeagueChampionship,
   Position,
   PositionCreation
 } from '../../../utils/interfaces/championship.interface';
@@ -15,12 +15,12 @@ import { CustomSelectComponent } from "../../utils/custom-select/custom-select.c
 import { User } from '../../../utils/interfaces/user.interface';
 import {CustomRadioGroupComponent} from "../../utils/custom/custom-radio-group/custom-radio-group.component";
 import {SessionFinishStates} from "../../../utils/enums/championship.enum";
-import {NgClass} from "@angular/common";
+import {NgClass, SlicePipe} from "@angular/common";
 
 @Component({
   selector: 'app-championship-results',
   standalone: true,
-  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass],
+  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass, SlicePipe],
   templateUrl: './championship-results.component.html',
   styleUrl: './championship-results.component.scss'
 })
@@ -33,6 +33,10 @@ export class ChampionshipResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.champId = +this.route.snapshot.params['champId'];
+
+    this.championshipApiService.getByIdFull(this.champId).subscribe(res => {
+      this.championship = res.data;
+    });
 
     this.championshipApiService.getCalendarById(this.champId).subscribe(res => {
       if (!res.data) {
@@ -58,13 +62,21 @@ export class ChampionshipResultsComponent implements OnInit {
       });
 
       this.users = res.data.users?.map(item => item.user!)
+
+      this.championshipApiService.getResults(this.champId!).subscribe(res => {
+        this.results = res.data!;
+        console.log(this.results)
+        console.log(this.getDriverResults(1))
+      });
     });
   }
 
-  champId?: number
-  editing = true
-  calendar?: ChampionshipRound[]
-  users?: User[]
+  champId?: number;
+  editing = true;
+  calendar?: ChampionshipRound[];
+  championship?: LeagueChampionship;
+  results?: Position[];
+  users?: User[];
   formBuilder = inject(FormBuilder)
 
   resultsForm = this.formBuilder.group({
@@ -117,5 +129,9 @@ export class ChampionshipResultsComponent implements OnInit {
     console.log(results);
 
     this.championshipApiService.saveRoundResults(results, this.champId!).subscribe(res => {})
+  }
+
+  getDriverResults(driverId: number) {
+    return this.results!.find(result => result.driverId === driverId);
   }
 }

@@ -155,8 +155,7 @@ model ChampionshipRound {
   finished       Boolean  @default(false)
 
   championship LeagueChampionship @relation(fields: [championshipId], references: [id])
-
-  RoundSession RoundEntry[]
+  result       RoundEntry[]
 }
 
 model ChampionshipCategories {

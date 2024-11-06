@@ -11,7 +11,7 @@ import {
     GetChampProps,
     PositionCreation
 } from "../utils/interfaces/championship.interface";
-import { sendSuccessResponse } from "../helpers/common.helper";
+import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
 import {Messages} from "../utils/enum/messages.enum";
 
@@ -111,7 +111,7 @@ export class ChampionshipController {
             const champId = Number(req.params['id']!);
             const round = Number(req.params['round']!);
 
-            const roundsCreated = await ChampionshipService.saveResults(body, round);
+            const roundsCreated = await ChampionshipService.saveRoundResults(body, round);
 
             if (!roundsCreated) {
                 return sendSuccessResponse({
@@ -151,7 +151,52 @@ export class ChampionshipController {
         }
     }
 
-    
+    getResults = async (req: CustomRequest, res: Response) => {
+        try {
+            const id = Number(req.params['id']!);
+            const results = await ChampionshipService.getResults(id);
+
+            if (!results) {
+                return sendErrorResponse({
+                    error: 'No se han encontrado resultados del campeonato.',
+                }, res);
+            }
+
+            return sendSuccessResponse({
+                data: results,
+                msg: 'A',
+                status: 201
+            }, res);
+        } catch (e) {
+            console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
+    getFullData = async (req: CustomRequest, res: Response) => {
+        try {
+            const id = Number(req.params['id']!);
+            const results = await ChampionshipService.getFull(id);
+
+            if (!results) {
+                return sendErrorResponse({
+                    error: 'No se han encontrado resultados del campeonato.',
+                }, res);
+            }
+
+            return sendSuccessResponse({
+                data: results,
+                msg: 'A',
+                status: 201
+            }, res);
+        } catch (e) {
+            console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
     createPreset = async (req: CustomRequest, res: Response) => {
         try {
             const body = req.body as PresetCreation;

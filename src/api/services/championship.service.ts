@@ -11,11 +11,28 @@ import {
     Team
 } from "../utils/interfaces/championship.interface";
 import {TeamService} from "./team.service";
+import {tr} from "@faker-js/faker";
 
 export class ChampionshipService {
     static get = async (id: number, props?: GetChampProps) => {
         await prisma.leagueChampionship.findFirst({where: {id}});
     };
+
+    static getFull = async (championshipId: number) => {
+        return prisma.leagueChampionship.findMany({
+            where: {
+                id: championshipId,
+            },
+
+            include: {
+                calendar: {
+                    include: {
+                        result: true
+                    }
+                },
+            }
+        });
+    }
 
     static getTeams = async (championshipId: number) => {
         return prisma.championshipTeam.findMany({
@@ -143,20 +160,6 @@ export class ChampionshipService {
         }
     }
 
-    static saveResults = async (results: PositionCreation[], roundId: number) => {
-        console.log(results)
-        return prisma.roundEntry.createMany({
-            // @ts-ignore
-            data: results.map((result, index)=> {
-                return {
-                    ...result,
-                    roundId,
-                    position: index + 1
-                }
-            })
-        })
-    }
-    
     static createCalendar = async (calendar: ChampionshipRound[], championshipId: number) => {
         const createdRounds: Team[] = [];
 
@@ -238,4 +241,35 @@ export class ChampionshipService {
                 where: {id}
             });
     }
+
+    static saveRoundResults = async (results: PositionCreation[], roundId: number) => {
+        console.log(results)
+        return prisma.roundEntry.createMany({
+            // @ts-ignore
+            data: results.map((result, index)=> {
+                return {
+                    ...result,
+                    roundId,
+                    position: index + 1
+                }
+            })
+        })
+    }
+
+    static getResults = async (championshipId: number) => {
+        const roundIds = await prisma.championshipRound.findMany({
+            where: {championshipId},
+            select: {id: true}
+        }) as ChampionshipRound[];
+
+        return prisma.roundEntry.findMany({
+            where: {
+                roundId: {
+                    in: roundIds.map(item => item.id)
+                }
+            },
+        })
+    }
+
+
 }

@@ -1,5 +1,50 @@
-@if (editing) {
+<section>
+  <div class="flex flex-col">
+    <div class="-m-1.5 overflow-x-auto">
+      <div class="p-1.5 min-w-full inline-block align-middle">
+        <div class="overflow-hidden">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+            <thead class="text-center">
+              <tr>
+                <td class="px-6 py-3 text-start text-xs font-medium text-neutral-400 uppercase dark:text-neutral-500">
+                  Name
+                </td>
 
+                @for (track of this.calendar; track $index) {
+                  <td class="px-6 py-3 text-center text-xs font-medium text-neutral-400 uppercase dark:text-neutral-500">
+                    <span>{{track.name | slice:0:10}}...</span>
+                  </td>
+                }
+
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 w-sm dark:divide-neutral-700">
+              <tr>
+                <td class="px-6 py-3 text-start text-xs font-medium dark:text-neutral-300">
+                  Nombre
+                </td>
+                @for (_ of this.calendar; track $index) {
+                  <td class="text-center">
+                    @if ((results!)[$index] !== undefined) {
+                      <span class="text-neutral-200">{{results![$index].position}}</span>
+                    } @else {
+                      <button class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-neutral-200 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                        +
+                      </button>
+                    }
+                  </td>
+                }
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+@if (editing) {
   <section>
     <!--TODO: Obtener numero de ronda-->
     Resultados de la ronda X
@@ -48,7 +93,7 @@
         <div class="flex">
           <span>{{$index + 1}}</span>
           <div>
-            <span>{{position.driver.nickname}}</span>
+            <span>{{position.driver!.nickname}}</span>
           </div>
         </div>
       }

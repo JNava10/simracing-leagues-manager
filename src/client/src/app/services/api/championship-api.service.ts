@@ -7,7 +7,7 @@ import {
   ChampionshipPreset,
   EnterChampionship,
   GetChampProps,
-  LeagueChampionship,
+  LeagueChampionship, Position,
   PositionCreation,
   Team
 } from "../../utils/interfaces/championship.interface";
@@ -43,8 +43,26 @@ export class ChampionshipApiService {
     )
   }
 
-  getById = (id: number, props?: GetChampProps) => {
-    return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam, ...props}}).pipe(
+  getById = (id: number) => {
+    return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam}}).pipe(
+      catchError((err: HttpResponse<DefaultRes>, caught) => {
+        console.error('Error obteniendo campeonato:', err);
+        return throwError(() => new Error('Error creating championship, please try again later.'));
+      })
+    )
+  }
+
+  getByIdFull = (id: number) => {
+    return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/full`, {params: {...sendTokenParam}}).pipe(
+      catchError((err: HttpResponse<DefaultRes>, caught) => {
+        console.error('Error obteniendo campeonato:', err);
+        return throwError(() => new Error('Error creating championship, please try again later.'));
+      })
+    )
+  }
+
+  getResults = (id: number) => {
+    return this.http.get<DefaultRes<PositionCreation[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
         console.error('Error obteniendo campeonato:', err);
         return throwError(() => new Error('Error creating championship, please try again later.'));
