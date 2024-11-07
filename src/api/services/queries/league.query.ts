@@ -1,11 +1,11 @@
-import { kickMember } from './../controllers/league.controller';
-import {LeagueData} from "../utils/interfaces/league.interface";
-import {prisma} from "../app";
-import { now } from '../helpers/common.helper';
-import { UserService } from './user.service';
+import { kickMember } from '../../controllers/league.controller';
+import {LeagueData} from "../../utils/interfaces/league.interface";
+import {prisma} from "../../app";
+import { now } from '../../helpers/common.helper';
+import { UserQuery } from './user.query';
 import { User } from '@prisma/client';
 
-export class LeagueService {
+export class LeagueQuery {
     static createLeague = async (league: LeagueData, authorId: number) => {
         const createdLeague = await prisma.league.create({
             data: {
@@ -16,7 +16,7 @@ export class LeagueService {
             }
         });
 
-        await LeagueService.addMember(authorId, createdLeague.id);
+        await LeagueQuery.addMember(authorId, createdLeague.id);
 
         return createdLeague;
     };
@@ -132,7 +132,7 @@ export class LeagueService {
         // El ID del usuario (si es un ID existente y se ha pasado a la funcion) ayudará
         // a recoger info. adicional en las ligas, como si el usuario es miembro de la liga o no. 
 
-        const userExists = userId && await UserService.userIdExists(userId)
+        const userExists = userId && await UserQuery.userIdExists(userId)
 
         if (userExists) {
             // TODO: Devolver ligas junto a si el usuario es miembro de cada liga.

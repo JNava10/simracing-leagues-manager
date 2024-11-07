@@ -1,7 +1,7 @@
-import {prisma} from "../app";
-import { SimulatorSearchProps } from "../utils/props/simulator.prop";
+import {prisma} from "../../app";
+import { SimulatorSearchProps } from "../../utils/props/simulator.prop";
 
-export class SimulatorService {
+export class SimulatorQuery {
 
     static search = async ({name, id, releaseYear}: SimulatorSearchProps) => {
         return prisma.simulatorGame.findMany({

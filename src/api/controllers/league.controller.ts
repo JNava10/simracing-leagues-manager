@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {IsMemberAdded as IsQueryExecuted, KickMember, LeagueData, NewLeagueMember} from "../utils/interfaces/league.interface";
-import {LeagueService} from "../services/league.service";
+import {LeagueQuery} from "../services/queries/league.query";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import { isValidNumber } from "../helpers/validators.helper";
@@ -15,7 +15,7 @@ export const getLeague = async (req: CustomRequest, res: Response) => {
         };
         
         const leagueId = Number(req.params['id']);
-        const league = await LeagueService.getLeagueById(leagueId);
+        const league = await LeagueQuery.getLeagueById(leagueId);
 
         return res.status(200).send(league);
     } catch (e) {
@@ -26,7 +26,7 @@ export const getLeague = async (req: CustomRequest, res: Response) => {
 
 export const getOwnLeagues = async (req: CustomRequest, res: Response) => {
     try {
-        const leagues = await LeagueService.getUserLeagues(req.user.id);
+        const leagues = await LeagueQuery.getUserLeagues(req.user.id);
 
         return res.status(201).send(leagues);
     } catch (e) {
@@ -39,7 +39,7 @@ export const createLeague = async (req: CustomRequest, res: Response) => {
     try {
         const body = req.body as LeagueData;
         
-        const createdLeague = await LeagueService.createLeague(body, req.user.id);
+        const createdLeague = await LeagueQuery.createLeague(body, req.user.id);
 
         return res.status(201).send(createdLeague);
     } catch (e) {
@@ -53,7 +53,7 @@ export const createLeague = async (req: CustomRequest, res: Response) => {
 
 export const addMemberToLeague = async (req: CustomRequest, res: Response) => {
     try {
-        // const userAlreadyInLeague = LeagueService.userAlreadyMember()
+        // const userAlreadyInLeague = LeagueQuery.userAlreadyMember()
 
         const {userId} = req.body as NewLeagueMember;
         const validId = isValidNumber(req.params['id']);
@@ -64,7 +64,7 @@ export const addMemberToLeague = async (req: CustomRequest, res: Response) => {
         
         const leagueId = Number(req.params['id']);
         
-        const executed = await LeagueService.addMember(userId, leagueId);
+        const executed = await LeagueQuery.addMember(userId, leagueId);
 
         const data: IsQueryExecuted = {
             executed,
@@ -89,7 +89,7 @@ export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
         };
         
         const leagueId = Number(req.params['id']);
-        const leagueMembers = await LeagueService.getLeagueMembers(leagueId);
+        const leagueMembers = await LeagueQuery.getLeagueMembers(leagueId);
 
         return res.status(200).send(leagueMembers);
     } catch (e) {
@@ -109,7 +109,7 @@ export const searchNotMembers = async (req: CustomRequest, res: Response) => {
         
         const leagueId = Number(req.params['id']);
         const searchedUsers = String(req.query['search']);
-        const leagueMembers = await LeagueService.searchNotMembers(leagueId, searchedUsers);
+        const leagueMembers = await LeagueQuery.searchNotMembers(leagueId, searchedUsers);
 
         return res.status(200).send(leagueMembers);
     } catch (e) {
@@ -123,7 +123,7 @@ export const kickMember = async (req: CustomRequest, res: Response) => {
     try {
         const userId = Number(req.params['userId']);
         const leagueId = Number(req.params['leagueId']);
-        const executed = await LeagueService.kickMember(userId, leagueId);
+        const executed = await LeagueQuery.kickMember(userId, leagueId);
 
         const data: IsQueryExecuted = {
             executed,
@@ -145,7 +145,7 @@ export const searchLeagues = async (req: CustomRequest, res: Response) => {
         let data: League[] = [];
 
         if (nameSearched) {
-            data = await LeagueService.getLeaguesByName(nameSearched)
+            data = await LeagueQuery.getLeaguesByName(nameSearched)
         }        
 
         return res.status(200).send(data);
@@ -162,7 +162,7 @@ export const requestToEnterLeague = async (req: CustomRequest, res: Response)  =
 
         isValidNumber(req.params['id']);
         
-        const executed = await LeagueService.addPendingMember(req.user.id, leagueId);
+        const executed = await LeagueQuery.addPendingMember(req.user.id, leagueId);
 
         const data: IsQueryExecuted = {
             executed,
@@ -184,7 +184,7 @@ export const getPendingMembers = async (req: CustomRequest, res: Response)  => {
 
         isValidNumber(req.params['id']);
         
-        const data = await LeagueService.getPendingMembers(leagueId);
+        const data = await LeagueQuery.getPendingMembers(leagueId);
         
         return res.status(200).send(data);
     } catch (e) {
@@ -201,7 +201,7 @@ export const acceptMember = async (req: CustomRequest, res: Response)  => {
 
         isValidNumber(req.params['id']);
 
-        const executed = await LeagueService.acceptPendingMember(userId, leagueId) !== null;
+        const executed = await LeagueQuery.acceptPendingMember(userId, leagueId) !== null;
         
         const data: IsQueryExecuted = {
             executed,
@@ -222,7 +222,7 @@ export const denyMember = async (req: CustomRequest, res: Response)  => {
 
         isValidNumber(req.params['id']);
         
-        const executed = await LeagueService.declinePendingMember(userId, leagueId) !== null;
+        const executed = await LeagueQuery.declinePendingMember(userId, leagueId) !== null;
         
         const data: IsQueryExecuted = {
             executed,

@@ -16,6 +16,7 @@ router.get("/:id/results", [validateToken], controller.getResults);
 router.post("/", [validateToken], controller.create);
 router.post("/:id/enter", [validateToken], controller.enter);
 router.post("/:id/results/:round", [validateToken], controller.saveResults);
+router.post("/:id/results/:round/rfactor", [validateToken], controller.parseRfactorXml);
 
 router.get("/teams/:champId", [validateToken], controller.getTeams);
 

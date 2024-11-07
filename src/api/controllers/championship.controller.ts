@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
-import {ChampionshipService} from "../services/championship.service";
+import {ChampionshipQuery} from "../services/queries/championship.query";
 import {
     ChampionshipCreation,
     ChampionshipData,
@@ -10,17 +10,21 @@ import {
     PresetCreation,
     GetChampProps,
     PositionCreation
-} from "../utils/interfaces/championship.interface";
+} from "../utils/interfaces/championship/championship.interface";
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
 import {Messages} from "../utils/enum/messages.enum";
+import {XMLBuilder, XMLParser} from "fast-xml-parser";
+import {UploadedFile} from "express-fileupload";
+import {XmlService} from "../services/xml.service";
+import {Driver, RfactorData} from "../utils/interfaces/championship/rfactor.interface";
 
 export class ChampionshipController {
     get = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['id']!);
 
-            const championship = await ChampionshipService.get(id);
+            const championship = await ChampionshipQuery.get(id);
 
             return sendSuccessResponse({
                 data: championship,
@@ -36,7 +40,7 @@ export class ChampionshipController {
     getCalendar = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['id']!);
-            const calendar = await ChampionshipService.getCalendar(id);
+            const calendar = await ChampionshipQuery.getCalendar(id);
 
             return sendSuccessResponse({
                 data: calendar[0],
@@ -53,7 +57,7 @@ export class ChampionshipController {
     getEntries = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['id']!);
-            const entries = await ChampionshipService.getEntries(id);
+            const entries = await ChampionshipQuery.getEntries(id);
 
             // @ts-ignore
             console.log(entries)
@@ -72,7 +76,7 @@ export class ChampionshipController {
     create = async (req: CustomRequest, res: Response) => {
         try {
             const body = req.body as ChampionshipCreation
-            const createdChampioship = await ChampionshipService.create(body, req.user.id);
+            const createdChampioship = await ChampionshipQuery.create(body, req.user.id);
     
             return sendSuccessResponse({
                 data: createdChampioship,
@@ -91,7 +95,7 @@ export class ChampionshipController {
             const body = req.body as EnterChampionship
             const champId = Number(req.params['id']!);
 
-            const createdChampioship = await ChampionshipService.enter(body, req.user.id, champId);
+            const createdChampioship = await ChampionshipQuery.enter(body, req.user.id, champId);
 
             return sendSuccessResponse({
                 data: createdChampioship,
@@ -111,7 +115,7 @@ export class ChampionshipController {
             const champId = Number(req.params['id']!);
             const round = Number(req.params['round']!);
 
-            const roundsCreated = await ChampionshipService.saveRoundResults(body, round);
+            const roundsCreated = await ChampionshipQuery.saveRoundResults(body, round);
 
             if (!roundsCreated) {
                 return sendSuccessResponse({
@@ -137,7 +141,7 @@ export class ChampionshipController {
     getTeams = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['champId']!);
-            const presets = await ChampionshipService.getTeams(id);
+            const presets = await ChampionshipQuery.getTeams(id);
     
             return sendSuccessResponse({
                 data: presets,
@@ -154,7 +158,7 @@ export class ChampionshipController {
     getResults = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['id']!);
-            const results = await ChampionshipService.getResults(id);
+            const results = await ChampionshipQuery.getResults(id);
 
             if (!results) {
                 return sendErrorResponse({
@@ -177,7 +181,7 @@ export class ChampionshipController {
     getFullData = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['id']!);
-            const results = await ChampionshipService.getFull(id);
+            const results = await ChampionshipQuery.getFull(id);
 
             if (!results) {
                 return sendErrorResponse({
@@ -201,7 +205,7 @@ export class ChampionshipController {
         try {
             const body = req.body as PresetCreation;
             
-            const createdChampioship = await ChampionshipService.createPreset(body, req.user.id);
+            const createdChampioship = await ChampionshipQuery.createPreset(body, req.user.id);
     
             res.status(201).send(createdChampioship);
         } catch (e) {
@@ -214,7 +218,7 @@ export class ChampionshipController {
     getAllPresets = async (req: CustomRequest, res: Response) => {
         try {
             
-            const presets = await ChampionshipService.getAllPresets(1);
+            const presets = await ChampionshipQuery.getAllPresets(1);
     
             return sendSuccessResponse({
                 data: presets,
@@ -230,7 +234,7 @@ export class ChampionshipController {
 
     getPresetById = async (req: CustomRequest, res: Response) => {
         try {
-            const preset = await ChampionshipService.getPresetsById(1) as ChampionshipPresetFull;
+            const preset = await ChampionshipQuery.getPresetsById(1) as ChampionshipPresetFull;
     
             return sendSuccessResponse({
                 data: preset,
@@ -239,6 +243,37 @@ export class ChampionshipController {
             
         } catch (e) {
             console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
+    parseRfactorXml = async (req: CustomRequest, res: Response) => {
+        try {;
+            const xmlFile = req.files['xml']! as UploadedFile;
+            const roundData = (XmlService.parse(xmlFile) as RfactorData)
+            const driversTemp = roundData.rFactorXML.RaceResults.Race.Driver as Driver[];
+            const drivers: Driver[] = []
+
+            driversTemp.forEach(item => {
+                drivers.push({
+                    Name: item.Name,
+                    isPlayer: item.isPlayer,
+                    GridPos: item.GridPos,
+                    Position: item.Position,
+                    FinishStatus: item.FinishStatus
+                })
+            })
+
+
+
+            return sendSuccessResponse({
+                data: drivers,
+                msg: 'OK',
+                status: 201
+            }, res);
+        } catch (e) {
+            console.error (e)
             const error: CustomError = {error: e.message}
             res.status(500).send(error);
         }

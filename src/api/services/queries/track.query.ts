@@ -1,8 +1,8 @@
-import {LeagueData} from "../utils/interfaces/league.interface";
-import {prisma} from "../app";
-import { SearchTrackProps } from "../utils/interfaces/track.interface";
+import {LeagueData} from "../../utils/interfaces/league.interface";
+import {prisma} from "../../app";
+import { SearchTrackProps } from "../../utils/interfaces/track.interface";
 
-export class TrackService {
+export class TrackQuery {
     getAllTracks = async () => {
         try {
             return await prisma.track.findMany();

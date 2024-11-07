@@ -1,6 +1,6 @@
 import { Prisma, User } from "@prisma/client"
-import { CategoryData as Category } from "./category.interface"
-import { ScoreSystem } from "./score.interface"
+import { CategoryData as Category } from "../category.interface"
+import { ScoreSystem } from "../score.interface"
 
 export interface ChampionshipData {
     id?: number,

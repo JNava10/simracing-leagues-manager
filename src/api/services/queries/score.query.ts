@@ -1,8 +1,8 @@
-import {LeagueData} from "../utils/interfaces/league.interface";
-import {prisma} from "../app";
-import { ScoreSystem } from "../utils/interfaces/score.interface";
+import {LeagueData} from "../../utils/interfaces/league.interface";
+import {prisma} from "../../app";
+import { ScoreSystem } from "../../utils/interfaces/score.interface";
 
-export class ScoreService {
+export class ScoreQuery {
     static getAllScoreSystems = async () => {
         try {
             return await prisma.scoreSystem.findMany();

@@ -1,8 +1,8 @@
-import { User } from "../utils/interfaces/user.interface";
-import { hashPassword } from "../helpers/common.helper";
-import {prisma} from "../app";
+import { User } from "../../utils/interfaces/user.interface";
+import { hashPassword } from "../../helpers/common.helper";
+import {prisma} from "../../app";
 
-export class UserService {
+export class UserQuery {
 
     static createUser = async ({ name, lastname, secondLastname, password, nickname }: User) => {
         try {

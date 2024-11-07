@@ -1,5 +1,5 @@
-import {ScoreService} from './score.service';
-import {prisma} from "../app";
+import {ScoreQuery} from './score.query';
+import {prisma} from "../../app";
 import {
     ChampionshipCreation,
     ChampionshipData,
@@ -9,11 +9,11 @@ import {
     PositionCreation,
     PresetCreation,
     Team
-} from "../utils/interfaces/championship.interface";
-import {TeamService} from "./team.service";
+} from "../../utils/interfaces/championship/championship.interface";
+import {TeamQuery} from "./team.query";
 import {tr} from "@faker-js/faker";
 
-export class ChampionshipService {
+export class ChampionshipQuery {
     static get = async (id: number, props?: GetChampProps) => {
         await prisma.leagueChampionship.findFirst({where: {id}});
     };
@@ -86,9 +86,9 @@ export class ChampionshipService {
         }) as ChampionshipData;
         
         // Inserción del calendario
-        await ChampionshipService.createCalendar(incoming.calendar, created.id);
+        await ChampionshipQuery.createCalendar(incoming.calendar, created.id);
       
-        const teamService = new TeamService();
+        const teamService = new TeamQuery();
         const createdTeams = await teamService.createTeamsReturningIds(incoming.teams);
 
         // Inserción de la tabla foranea de los equipos y su campeonato.
@@ -121,9 +121,9 @@ export class ChampionshipService {
 
     static createPreset = async (incoming: PresetCreation, authorId: number) => {
         // Inserción de puntuaciones
-        const createdScoreId = await ScoreService.createScoreSystem(incoming.scoreSystem)
+        const createdScoreId = await ScoreQuery.createScoreSystem(incoming.scoreSystem)
       
-        const teamService = new TeamService();
+        const teamService = new TeamQuery();
         const createdTeams = await teamService.createTeamsReturningIds(incoming.teams);
         
         // Insercion de los datos del preset
@@ -137,7 +137,7 @@ export class ChampionshipService {
         });
 
         // Inserción del calendario
-        await ChampionshipService.createPresetCalendar(incoming.calendar, created.id);
+        await ChampionshipQuery.createPresetCalendar(incoming.calendar, created.id);
         
         // Inserción de las categorías
         for (const i in incoming.categoryIds) {

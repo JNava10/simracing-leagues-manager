@@ -1,12 +1,14 @@
-import * as express from "express";
-import * as cors from "cors";
+import express from "express";
+import cors from "cors";
 import {initRoutes} from "./router";
 import {PrismaClient} from "@prisma/client";
+import fileUpload from "express-fileupload";
 
 export const app = express()
 export const prisma = new PrismaClient()
 
 app.use(express.json());
 app.use(cors())
+app.use(fileUpload());
 
-initRoutes(app).then(() => console.log("All routes loaded."))
+initRoutes(app).then(() => console.log("All routes initialized."))

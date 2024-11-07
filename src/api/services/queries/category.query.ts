@@ -1,7 +1,7 @@
-import {prisma} from "../app";
-import { SearchCategoryProps } from "../utils/props/category.prop";
+import {prisma} from "../../app";
+import { SearchCategoryProps } from "../../utils/props/category.prop";
 
-export class CategoryService {
+export class CategoryQuery {
     /**
      * Numero maximo de registros que devolverá la API al buscar.
      */

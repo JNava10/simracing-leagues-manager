@@ -25,3 +25,23 @@ export const now = () => {
     return new Date(Date.now());
 }
 
+// TODO: Arreglar para futuro uso.
+export const lowerObjectKeys = (object: any) => {
+    let key;
+    let keys = Object.keys(object);
+    let n = keys.length;
+    const newObject = {};
+
+    while (n--) {
+        key = keys[n] as string;
+        newObject[`${key.toLowerCase()}${key.slice(2)}`] = object[key];
+
+        if (typeof object[key] === 'object' && !Array.isArray(object[key])) {
+            console.log('Recursivo', Array.isArray(object[key]), key, object[key]);
+            lowerObjectKeys(object[key])
+        }
+    }
+
+    return newObject;
+}
+
