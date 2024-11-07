@@ -16,9 +16,8 @@ export class CustomButtonComponent {
   @Input() styleClass: string = '';
   @Input() themeName!: keyof typeof ColorTheme; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 
-  themes = ColorTheme;
+  readonly themes= ColorTheme;
 }
-
 
 // TODO: Quizá mover esto a otro archivo, aunque así considero que está bien organizado de momento.
 export enum ColorTheme {

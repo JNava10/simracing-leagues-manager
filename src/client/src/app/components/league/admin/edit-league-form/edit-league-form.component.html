@@ -1,0 +1,20 @@
+<section>
+  <form [formGroup]="form">
+    <!--  Nombre de la liga-->
+    <app-custom-text-input
+      label="Nombre"
+      formControlName="name"
+      [showPlaceholder]="false"
+    />
+
+    <!--  Descripción de la liga-->
+    <app-custom-text-input
+      label="Description"
+      formControlName="description"
+      [showPlaceholder]="false"
+    />
+
+    <!-- Drag and drop de la foto de la liga -->
+    <app-custom-file-drag-drop />
+  </form>
+</section>

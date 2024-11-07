@@ -9,7 +9,8 @@
     class="py-3 px-4 block border-gray-200 rounded-lg text-sm
     disabled:opacity-50 disabled:pointer-events-none
     focus:outline-neutral-400 outline-offset-0
-    dark:bg-neutral-700 dark:text-neutral-300/70
+    transition-all
+    dark:bg-neutral-800 dark:text-neutral-300/70
     dark:placeholder-neutral-500
     outline-none"
 
@@ -22,7 +23,6 @@
     [readonly]="readonly"
     [autocomplete]="autocomplete"
     [placeholder]="managePlaceholder()"
-    [inputMode]="inputmode"
     [(ngModel)]="value"
     (ngModelChange)="writeValue($event)"
     ngClass="inputClass"

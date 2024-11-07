@@ -5,6 +5,7 @@ import {ToastModule} from 'primeng/toast';
 import { Router, Event, NavigationEnd } from '@angular/router';
 
 import { IStaticMethods } from 'preline/preline';
+import {CustomNavbarComponent} from "./components/utils/custom/custom-navbar/custom-navbar.component";
 declare global {
   interface Window {
     HSStaticMethods: IStaticMethods;
@@ -14,7 +15,7 @@ declare global {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ToastModule],
+  imports: [RouterOutlet, ToastModule, CustomNavbarComponent],
   providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

@@ -21,6 +21,7 @@
     "@angular/router": "^18.2.0",
     "@popperjs/core": "^2.11.8",
     "@preline/dropdown": "^2.5.0",
+    "@preline/overlay": "^2.5.0",
     "http-proxy-middleware": "^3.0.3",
     "ngx-colors": "^3.6.0",
     "preline": "^2.5.1",

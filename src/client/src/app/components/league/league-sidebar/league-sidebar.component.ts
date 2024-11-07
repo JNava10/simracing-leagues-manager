@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './league-sidebar.component.scss'
 })
 export class LeagueSidebarComponent {
-  constructor(private globalHelper: GlobalHelper) {}
+  constructor(protected globalHelper: GlobalHelper) {}
 
   @Input() league?: League
 

@@ -1,37 +1,87 @@
-<div id="hs-offcanvas-example" class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-64 bg-white border-e border-gray-200 pt-7 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-800 dark:border-neutral-700" role="dialog" tabindex="-1" aria-label="Sidebar">
-  <div class="px-6">
-    <p class="flex-none font-semibold text-xl text-black focus:outline-none focus:opacity-80 dark:text-white" aria-label="Brand">{{league?.name}}</p>
-    <p class="flex-none font-semibold text-sm text-black focus:outline-none focus:opacity-80 dark:text-gray-400" aria-label="Brand">{{league?.description}}</p>
+<!--<div id="hs-offcanvas-example" class="hs-overlay [&#45;&#45;auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-64 bg-white border-e border-gray-200 pt-7 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-800 dark:border-neutral-700" role="dialog" tabindex="-1" aria-label="Sidebar">-->
+<!--  <div class="px-6">-->
+<!--    <p class="flex-none font-semibold text-xl text-black focus:outline-none focus:opacity-80 dark:text-white" aria-label="Brand">{{league?.name}}</p>-->
+<!--    <p class="flex-none font-semibold text-sm text-black focus:outline-none focus:opacity-80 dark:text-gray-400" aria-label="Brand">{{league?.description}}</p>-->
+<!--  </div>-->
+<!--  <nav class="hs-accordion-group p-6 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>-->
+<!--    <ul class="space-y-1.5">-->
+<!--      <li-->
+<!--        (click)="navigateIntoLeague(leagueRoutes.overview)"-->
+<!--        class="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:bg-neutral-700 dark:text-white">-->
+
+<!--        Inicio-->
+<!--      </li>-->
+
+<!--      <li-->
+<!--        class="flex items-center gap-x-3.5 py-2 px-2.5 cursor-pointer bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:bg-neutral-700 dark:text-white"-->
+<!--       >-->
+
+<!--        Campeonatos y eventos-->
+<!--      </li>-->
+
+<!--      <li-->
+<!--       (click)="navigateIntoLeague(leagueRoutes.members)"-->
+<!--       class="flex items-center gap-x-3.5 py-2 px-2.5 cursor-pointer bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:bg-neutral-700 dark:text-white" >-->
+
+<!--       Miembros-->
+<!--      </li>-->
+
+<!--      <li-->
+<!--      class="flex items-center gap-x-3.5 py-2 px-2.5 cursor-pointer bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:bg-neutral-700 dark:text-white"-->
+<!--      (click)="navigateIntoLeague(leagueRoutes.pending)">-->
+
+<!--        Solicitudes de entrada-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </nav>-->
+<!--</div>-->
+
+<div class="fixed top-0 start-0 bottom-0 z-[60] bg-neutral-800">
+  <div>
+    <div class="inline-flex size-16 items-center justify-center">
+      <span class="grid size-10 place-content-center rounded-lg bg-neutral-900  align-middle text-xs font-medium text-neutral-200">
+        {{league!.name[0].toUpperCase()}}
+      </span>
+    </div>
+
+    <div class="border-t border-neutral-700">
+      <div class="flex justify-center">
+        <span>Admin</span>
+      </div>
+
+      <div class="px-2">
+        <ul class="p-3">
+          <li>
+            <a
+              (click)="globalHelper.navigateFromRoot('league/' + league!.id + '/admin')"
+              class="group relative flex justify-center rounded px-2 py-1.5 text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100"
+            >
+              <i class="fa-solid fa-users"></i>
+
+              <span class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-neutral-900 px-2 py-1.5 text-xs font-medium text-neutral-200 group-hover:visible">
+                Usuarios
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <nav class="hs-accordion-group p-6 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
-    <ul class="space-y-1.5">
-      <li
-        (click)="navigateIntoLeague(leagueRoutes.overview)"
-        class="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:bg-neutral-700 dark:text-white">
 
-        Inicio
-      </li>
+  <div class="sticky inset-x-0 bottom-0 border-t border-neutral-700 bg-neutral-800 p-2">
+    <form action="#">
+      <button
+        type="submit"
+        class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
 
-      <li
-        class="flex items-center gap-x-3.5 py-2 px-2.5 cursor-pointer bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:bg-neutral-700 dark:text-white"
-       >
-
-        Campeonatos y eventos
-      </li>
-
-      <li
-       (click)="navigateIntoLeague(leagueRoutes.members)"
-       class="flex items-center gap-x-3.5 py-2 px-2.5 cursor-pointer bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:bg-neutral-700 dark:text-white" >
-
-       Miembros
-      </li>
-
-      <li
-      class="flex items-center gap-x-3.5 py-2 px-2.5 cursor-pointer bg-gray-100 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:bg-neutral-700 dark:text-white"
-      (click)="navigateIntoLeague(leagueRoutes.pending)">
-
-        Solicitudes de entrada
-      </li>
-    </ul>
-  </nav>
+        <span
+          class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-neutral-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+        >
+          Cerrar sesion
+        </span>
+      </button>
+    </form>
+  </div>
 </div>
