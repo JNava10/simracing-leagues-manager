@@ -8,7 +8,7 @@ import {LeagueChampionship} from "../../utils/interfaces/championship.interface"
 @Injectable({
   providedIn: 'root'
 })
-export class ChampionshipApiService {
+export class EventApiService {
   constructor(private http: HttpClient) { }
 
   createChampionship = (championship: LeagueChampionship) => {

@@ -1,8 +1,13 @@
-@if (championship) {
-  <h1>{{championship.name}}</h1>
-  <h2>{{championship.description}}</h2>
+<section class="flex flex-col gap-3">
+  @if (championship) {
+    <div>
+      <h1>{{championship.name}}</h1>
+      <h2>{{championship.description}}</h2>
+    </div>
 
-  <ul class="p-3 bg-neutral-800">
-    <li>Resultados</li>
-  </ul>
-}
+    <ul>
+      <a class="p-3 bg-neutral-800" routerLink="results">Resultados</a>
+    </ul>
+  }
+
+</section>

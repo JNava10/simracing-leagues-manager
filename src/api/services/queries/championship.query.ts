@@ -14,8 +14,8 @@ import {TeamQuery} from "./team.query";
 import {tr} from "@faker-js/faker";
 
 export class ChampionshipQuery {
-    static get = async (id: number, props?: GetChampProps) => {
-        await prisma.leagueChampionship.findFirst({where: {id}});
+    static get = async (id: number) => {
+        return prisma.leagueChampionship.findFirst({where: {id}});
     };
 
     static getFull = async (championshipId: number) => {

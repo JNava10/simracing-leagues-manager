@@ -14,7 +14,6 @@ import {
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
 import {Messages} from "../utils/enum/messages.enum";
-import {XMLBuilder, XMLParser} from "fast-xml-parser";
 import {UploadedFile} from "express-fileupload";
 import {XmlService} from "../services/xml.service";
 import {Driver, RfactorData} from "../utils/interfaces/championship/rfactor.interface";
@@ -25,6 +24,8 @@ export class ChampionshipController {
             const id = Number(req.params['id']!);
 
             const championship = await ChampionshipQuery.get(id);
+
+            console.log(championship)
 
             return sendSuccessResponse({
                 data: championship,

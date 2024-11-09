@@ -2,7 +2,7 @@ import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from
 import { ChampionshipApiService } from './../../../services/api/championship-api.service';
 import {Component, inject, OnInit} from '@angular/core';
 import { CustomButtonComponent } from "../../utils/custom-button/custom-button.component";
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import { TrackLayout } from '../../../utils/interfaces/track.interface';
 import { DialogModule } from 'primeng/dialog';
 import {
@@ -20,7 +20,7 @@ import {NgClass, SlicePipe} from "@angular/common";
 @Component({
   selector: 'app-championship-results',
   standalone: true,
-  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass, SlicePipe],
+  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass, SlicePipe, RouterLink],
   templateUrl: './championship-results.component.html',
   styleUrl: './championship-results.component.scss'
 })
@@ -55,12 +55,6 @@ export class ChampionshipResultsComponent implements OnInit {
         return;
       }
 
-      res.data!.users!.forEach(_ => { // Se utiliza _ para indicar que la variable no se va a usar.
-        this.positionsForm.push(
-          this.getPositionFormGroup()
-        )
-      });
-
       this.users = res.data.users?.map(item => item.user!)
 
       this.championshipApiService.getResults(this.champId!).subscribe(res => {
@@ -72,64 +66,13 @@ export class ChampionshipResultsComponent implements OnInit {
   }
 
   champId?: number;
-  editing = true;
   calendar?: ChampionshipRound[];
   championship?: LeagueChampionship;
   results?: Position[];
   users?: User[];
-  formBuilder = inject(FormBuilder)
-
-  resultsForm = this.formBuilder.group({
-    positions: this.formBuilder.array([])
-  });
-
-  private getPositionFormGroup() {
-    return this.formBuilder.group({
-      driverId: this.formBuilder.control(0, [Validators.required]),
-      finishState: this.formBuilder.control(0, [Validators.required]),
-    });
-  }
-
-  get positionsForm(): FormArray {
-    return this.resultsForm!.get('positions') as FormArray;
-  }
-
-  positions: Position[] = [];
 
   protected readonly SessionFinishStates = SessionFinishStates;
   protected readonly Object = Object;
-
-  saveProgress() {
-    const positionsCreated = this.positionsForm.value as PositionCreation[];
-
-    positionsCreated.forEach((position) => {
-      this.positions.push({
-        driver: this.users!.find(item => item.id === Number(position.driverId))!,
-        finishState: position.finishState
-      })
-    })
-
-    this.alternateMode(false);
-  }
-
-  alternateMode(editing: boolean) {
-    this.editing = editing;
-  }
-
-  saveRoundResults() {
-
-    // Se mapean los resultados para castear el ID de piloto a String a Number.
-    const results:  PositionCreation[] = (this.positionsForm.value as PositionCreation[]).map((position) => {
-      return {
-        ...position,
-        driverId: +position.driverId
-      }
-    });
-
-    console.log(results);
-
-    this.championshipApiService.saveRoundResults(results, this.champId!).subscribe(res => {})
-  }
 
   getDriverResults(driverId: number) {
     return this.results!.find(result => result.driverId === driverId);

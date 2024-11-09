@@ -13,6 +13,9 @@ import { EnterChampionshipFormComponent } from './components/championship/enter-
 import { ChampionshipResultsComponent } from './components/championship/championship-results/championship-results.component';
 import {LeagueAdminPanelComponent} from "./components/league/admin/league-admin-panel/league-admin-panel.component";
 import {EditLeagueFormComponent} from "./components/league/admin/edit-league-form/edit-league-form.component";
+import {
+  RoundResultFormComponent
+} from "./components/championship/results/round-result-form/round-result-form.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -33,6 +36,7 @@ export const routes: Routes = [
               { path: 'new', title: 'Crear un campeonato', component: CreateChampionshipComponent },
               { path: ':champId/enter', title: 'Entrar a un campeonato', component: EnterChampionshipFormComponent },
               { path: ':champId/results', title: 'Resultados de un campeonato', component: ChampionshipResultsComponent },
+              { path: ':champId/results/:round', title: 'Resultados de un campeonato', component: RoundResultFormComponent },
               { path: ':champId', title: 'Informacion de campeonato', component: ChampionshipInfoComponent },
             ]},
         ]
