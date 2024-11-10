@@ -6,10 +6,10 @@ import {prisma} from "../app";
 export class UserSeeder implements Seeder {
     run = async () => {
        try {
-           const users = {
+           const users = [
                ...userSeedList,
                ...customUserSeedList
-           };
+           ];
 
            for (let i in users) {
                users[i].password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);

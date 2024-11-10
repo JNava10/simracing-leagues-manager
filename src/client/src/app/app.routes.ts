@@ -16,11 +16,13 @@ import {EditLeagueFormComponent} from "./components/league/admin/edit-league-for
 import {
   RoundResultFormComponent
 } from "./components/championship/results/round-result-form/round-result-form.component";
+import {RegisterFormComponent} from "./components/register/register-form/register-form.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'lm', children: [
       { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterFormComponent },
       { path: 'newleague', component: CreateLeagueFormComponent },
       { path: 'presets', component: PresetListComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
