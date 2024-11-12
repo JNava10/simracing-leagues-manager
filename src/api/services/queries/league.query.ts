@@ -169,6 +169,25 @@ export class LeagueQuery {
         return prisma.league.findMany();
     }
 
+    static inviteMember = async (userId: number, leagueId: number) => {
+        const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
+        const userExists = await prisma.user.findUnique({where: {id: userId}}) !== null;
+
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
+        if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
+
+        return prisma.leagueMember.create(
+            {
+            data: {
+                userId,
+                leagueId,
+                accepted: false,
+                invited: true,
+                joinedAt: now()
+            }
+        });
+    }
+
     // Validators //
 
     static checkIfMemberExists = async (userId: number, leagueId: number) => {

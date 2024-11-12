@@ -1,9 +1,11 @@
 import { Component, inject, Injectable } from '@angular/core';
 import {StorageHelper} from "./storage.helper";
 import {Message, MessageService} from "primeng/api";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import { Router } from '@angular/router';
 import { devEnv } from '../../environments/environment.development';
+import {DefaultRes} from "../utils/interfaces/responses/response.interface";
+import {throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +40,14 @@ export class GlobalHelper {
   showSuccessMessage = (title: string, message: string, messageService?: MessageService) => {
     this.messageService.add({severity: 'success', summary: title, detail: message});
   }
+
+  handleApiError = (errorMsg: string, err: HttpResponse<DefaultRes>) => {
+    console.error(errorMsg, err);
+
+    if (err.status === 0)  {
+      this.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet')
+    }
+  };
 
   handleRequestDefaultError = (error: any, messageService: MessageService) => {
     this.showErrorMessage(`${error.status}`, error.statusText, messageService);

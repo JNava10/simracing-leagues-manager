@@ -12,7 +12,7 @@ import {
   Team
 } from "../../utils/interfaces/championship.interface";
 import { DefaultRes } from '../../utils/interfaces/responses/response.interface';
-import { catchError, throwError } from 'rxjs';
+import {catchError, tap, throwError} from 'rxjs';
 import { GetTeam } from '../../utils/interfaces/responses/championship.responses';
 import {GlobalHelper} from "../../helpers/global.helper";
 import {map} from "rxjs/operators";
@@ -28,8 +28,7 @@ export class ChampionshipApiService {
   create = (championship: LeagueChampionship) => {
     return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error creating championship:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al crear el campeonato:', err);
       })
     )
   }
@@ -37,8 +36,7 @@ export class ChampionshipApiService {
   saveRoundResults = (results: PositionCreation[], id: number) => {
     return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/results/1`, results, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error creating championship:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al guardar los resultados de la ronda:', err);
       })
     )
   }
@@ -46,17 +44,32 @@ export class ChampionshipApiService {
   getById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error obteniendo campeonato:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al obtener el campeonato:', err);
       })
     )
+  }
+
+  getByIdNew = (id: number) => {
+    const url = `${devEnv.apiEndpoint}/championship/${id}`;
+    const options = {params: {...sendTokenParam}};
+
+    return this.http.get<DefaultRes<LeagueChampionship>>(url, options)
+      .pipe(
+        catchError((err: HttpResponse<DefaultRes>, caught) => {
+          this.globalHelper.handleApiError('Error al obtener el campeonato:', err);
+          return caught;
+        }),
+
+        map((res) => {
+          return res.data!
+        })
+      )
   }
 
   getByIdFull = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/full`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error obteniendo campeonato:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al obtener el campeonato completo:', err);
       })
     )
   }
@@ -64,28 +77,23 @@ export class ChampionshipApiService {
   getResults = (id: number) => {
     return this.http.get<DefaultRes<PositionCreation[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error obteniendo campeonato:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al obtener los resultados:', err);
       })
     )
   }
 
-  // TODO: Temporal
   getCalendarById =  (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/calendar`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error obteniendo campeonato:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al obtener el calendario del campeonato:', err);
       })
     )
   }
 
-  // TODO: Temporal
   getEntriesById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/entries`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error obteniendo campeonato:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al obtener las entradas del campeonato:', err);
       })
     )
   }
@@ -93,8 +101,7 @@ export class ChampionshipApiService {
   enter = (data: EnterChampionship, champId: number) => {
     return this.http.post<DefaultRes>(`${devEnv.apiEndpoint}/championship/${champId}/enter`, data, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error obteniendo campeonato:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al inscribirse en el campeonato:', err);
       })
     )
   }
@@ -102,8 +109,7 @@ export class ChampionshipApiService {
   getTeams = (champId: number) => {
     return this.http.get<DefaultRes<GetTeam[]>>(`${devEnv.apiEndpoint}/championship/teams/${champId}`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error obteniendo campeonato:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al obtener los equipos del campeonato:', err);
       })
     )
   }
@@ -111,8 +117,7 @@ export class ChampionshipApiService {
   createPreset = (championship: LeagueChampionship) => {
     return this.http.post<DefaultRes>(`${devEnv.apiEndpoint}/championship/preset`, championship, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error creating preset:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return this.globalHelper.handleApiError('Error al crear el preset del campeonato:', err);
       })
     )
   }
@@ -120,8 +125,7 @@ export class ChampionshipApiService {
   getAllPresets = () => {
     return this.http.get<DefaultRes<ChampionshipPreset[]>>(`${devEnv.apiEndpoint}/championship/preset`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error al obtener los presets:', err);
-        return throwError(() => new Error('Error obteniendo los presets, prueba mas tarde.'));
+        return this.globalHelper.handleApiError('Error al obtener los presets:', err);
       })
     )
   }
@@ -129,8 +133,7 @@ export class ChampionshipApiService {
   getPresetById(presetId: any) {
     return this.http.get<DefaultRes<ChampionshipPreset>>(`${devEnv.apiEndpoint}/championship/preset/${presetId}`, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
-        console.error('Error al obtener el presets:', err);
-        return throwError(() => new Error('Error obteniendo el preset, prueba mas tarde.'));
+        return this.globalHelper.handleApiError('Error al obtener el preset:', err);
       })
     )
   }

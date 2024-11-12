@@ -12,7 +12,7 @@ export const verifyPassword = async  (plain: string, hash: string) => {
     return await compare(plain, hash)
 }
 
-export const sendErrorResponse = async  ({data, error}: ErrorResponse, res: Response) => {
+export const sendErrorResponse =  ({data, error}: ErrorResponse, res: Response) => {
     return res.status(500).send({error, data})
 }
 

@@ -5,6 +5,7 @@ import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import { isValidNumber } from "../helpers/validators.helper";
 import { League } from "@prisma/client";
+import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -234,5 +235,31 @@ export const denyMember = async (req: CustomRequest, res: Response)  => {
         console.log(e);
         
         return res.status(500).send(e.message);
+    }
+}
+
+export const inviteMember = async (req: CustomRequest, res: Response)  => {
+    try {
+        const leagueId = Number(req.params['leagueId']);
+        const userId = Number(req.params['userId']);
+        
+        const executed = await LeagueQuery.inviteMember(userId, leagueId) !== null;
+
+        const data: IsQueryExecuted = {
+            executed,
+            msg: "Se ha aceptado la entrada del usuario a la liga correctamente."
+        }
+
+        sendSuccessResponse({
+            data,
+            status: 201,
+            msg: "Se ha enviado una invitación a la liga correctamente."
+        }, res)
+    } catch (e) {
+        console.log(e);
+
+        sendErrorResponse({
+            error: e.message,
+        }, res)
     }
 }

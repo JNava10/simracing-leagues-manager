@@ -58,13 +58,11 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   @Input() leagueId?: number;
   @Input() preset?: ChampionshipPreset;
 
-  @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>()
+  @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>();
 
   protected tracks$!: Observable<DefaultRes<Track[]>>;
 
   protected categories$!: Observable<DefaultRes<Category[]>>;
-
-  protected scoreSystems$!: Observable<ScoreSystem[]>;
 
   protected simulators$!:  Observable<DefaultRes<SimulatorGame[]>>;
 

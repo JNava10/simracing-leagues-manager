@@ -114,6 +114,7 @@ model LeagueMember {
   leagueId    Int
   userId      Int
   accepted    Boolean   @default(false)
+  invited     Boolean   @default(false)
   joinedAt    DateTime? @db.DateTime(6)
   requestedAt DateTime? @db.DateTime(6)
 
