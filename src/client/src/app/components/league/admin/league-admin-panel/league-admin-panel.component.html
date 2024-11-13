@@ -1,3 +1,5 @@
-<app-league-sidebar [league]="(league | async)!"/>
+@if (league) {
+  <app-league-sidebar [league]="league"/>
+}
 
 <router-outlet/>

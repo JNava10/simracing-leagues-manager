@@ -50,9 +50,6 @@ export class SearchLeaguesBarComponent {
     // Borramos el timeout anterior, si es que existia antes.
     clearTimeout(this.searchTimeout);
 
-    // const value = ($event.target as HTMLInputElement).value;
-    // console.log(value)
-
     // Esperamos 1 segundo a que el usuario deje de escribir. Si no,
     // se volverá a entrar a esta funcion, por tanto, se creará de nuevo
     // el timeout. Fuente: https://schier.co/blog/wait-for-user-to-stop-typing-using-javascript

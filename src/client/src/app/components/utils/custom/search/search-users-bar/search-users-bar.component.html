@@ -1,0 +1,25 @@
+<ng-content (click)="searching = true"/>
+
+<p-dialog closable="true" [dismissableMask]="true" styleClass="bg-base-200" [modal]="true" [(visible)]="searching" [style]="{ width: '25rem' }">
+  <ng-template class="p-4" pTemplate="headless">
+    <app-custom-search-input
+      (onSearch)="searchUsers($event)"
+    />
+    @if (results$ | async; as leagues) {
+      @if (leagues.length === 0) {
+        <span>No se han encontrado resultados</span>
+      }
+
+      @else {
+        <ul class="rounded-box">
+          @for (user of leagues; track $index) {
+            <div class="flex items-center justify-between w-full gap-2">
+              <span class="text-sm p-1 pl-6">{{user.name}}</span>
+              <button class="btn m-2" (click)="choose(user)">Entrar</button>
+            </div>
+          }
+        </ul>
+      }
+    }
+  </ng-template>
+</p-dialog>

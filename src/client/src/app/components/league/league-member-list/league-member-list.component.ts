@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LeagueApiService } from '../../../services/api/league-api.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import {async, Observable, of} from 'rxjs';
 import { QueryIsExecuted, LeagueMember, ApiMemberFilter } from '../../../utils/interfaces/league.interface';
 import { TableModule } from 'primeng/table';
 import { AsyncPipe, DatePipe } from '@angular/common';
@@ -13,12 +13,16 @@ import { FormsModule } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
 import { GlobalHelper } from '../../../helpers/global.helper';
 import { MessagesModule } from 'primeng/messages';
-import { TabMenuModule } from 'primeng/tabmenu';
+import {CustomTableComponent, TableColumn} from "../../utils/custom-table/custom-table.component";
+import {CustomButtonComponent} from "../../utils/custom-button/custom-button.component";
+import {DialogModule} from "primeng/dialog";
+import {SearchLeaguesBarComponent} from "../search-leagues-bar/search-leagues-bar.component";
+import {SearchUsersBarComponent} from "../../utils/custom/search/search-users-bar/search-users-bar.component";
 
 @Component({
   selector: 'app-league-member-list',
   standalone: true,
-  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe],
+  imports: [AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe, CustomButtonComponent, DialogModule, SearchLeaguesBarComponent, SearchUsersBarComponent],
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.scss'
 })
@@ -43,6 +47,7 @@ export class LeagueMemberListComponent implements OnInit {
   $search?: Observable<User[]>
 
   searchTimeout?: any;
+  protected searching = false;
 
   handleSearch = (originalEvent: ListboxFilterEvent) => {
     const value = String(originalEvent.filter);
@@ -88,6 +93,10 @@ export class LeagueMemberListComponent implements OnInit {
     this.globalHelper.showSuccessMessage("Exito", memberIsAdded.msg, this.messageService);
 
     this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
+  }
+
+  toggleSearch = (show: boolean) => {
+    this.searching = show;
   }
 }
 

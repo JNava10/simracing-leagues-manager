@@ -30,7 +30,6 @@ export const routes: Routes = [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },
           { path: 'overview', component: LeagueOverviewComponent },
           { path: 'admin', component: LeagueAdminPanelComponent, children: [
-              { path: 'members', component: LeagueMemberListComponent },
               { path: 'members', component: LeagueMemberListComponent, title: 'Miembros de liga' },
               { path: 'pending', component: PendingMembersListComponent, title: 'Miembros pendientes de entrar a liga' },
             ]},

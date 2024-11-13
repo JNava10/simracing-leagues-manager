@@ -28,10 +28,12 @@ export class LeagueAdminPanelComponent implements OnInit {
   ngOnInit(): void {
     this.leagueId = this.route.snapshot.params['leagueId'];
 
-    this.league = this.leagueService.getLeague(this.leagueId!)
+    // this.league =
+    this.leagueService.getLeague(this.leagueId!).subscribe(league => this.league = league);
   }
 
 
-  league?: Observable<League>;
+
+  league?: League;
   leagueId?: number;
 }

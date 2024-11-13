@@ -13,10 +13,8 @@ import { LeagueSidebarComponent } from "../league-sidebar/league-sidebar.compone
   standalone: true,
   imports: [
     AsyncPipe,
-    RouterLink,
     RouterOutlet,
     TabMenuModule,
-    LeagueSidebarComponent
 ],
   templateUrl: './league-main.component.html',
   styleUrl: './league-main.component.scss'

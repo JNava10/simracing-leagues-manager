@@ -24,4 +24,6 @@ router.post("/register", [
         .withMessage("La contraseña es obligatoria."),
 ], controller.createUser);
 
+router.get("/search/nick", controller.createUser);
+
 export default router;

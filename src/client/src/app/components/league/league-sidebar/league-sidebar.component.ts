@@ -1,7 +1,8 @@
 import { M } from '@angular/cdk/keycodes';
 import { GlobalHelper } from '../../../helpers/global.helper';
 import { League } from './../../../utils/interfaces/league.interface';
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {LoginComponent} from "../../auth/login/login.component";
 
 @Component({
   selector: 'app-league-sidebar',
@@ -10,10 +11,14 @@ import { Component, Input } from '@angular/core';
   templateUrl: './league-sidebar.component.html',
   styleUrl: './league-sidebar.component.scss'
 })
-export class LeagueSidebarComponent {
+export class LeagueSidebarComponent implements OnInit {
   constructor(protected globalHelper: GlobalHelper) {}
 
-  @Input() league?: League
+  ngOnInit(): void {
+    console.log(this.league)
+  }
+
+  @Input() league?:League;
 
   leagueRoutes = {
     overview: 'overview',
@@ -21,7 +26,7 @@ export class LeagueSidebarComponent {
     pending: 'pending',
   }
 
-  navigateIntoLeague(route: string) {
-    this.globalHelper.navigateFromRoot(`league/${this.league?.id}/${route}`);
+  navigateInAdmin(route: string) {
+    this.globalHelper.navigateFromRoot(`league/${this.league?.id}/admin/${route}`);
   }
 }
