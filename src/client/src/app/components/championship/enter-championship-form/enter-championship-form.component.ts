@@ -46,7 +46,7 @@ export class EnterChampionshipFormComponent implements OnInit {
       this.leagueId = Number(id) ?? null;
     })
 
-    this.championshipService.getTeams(this.champId!).subscribe(res => this.handleTeams(res))
+    this.championshipService.getTeams(this.champId!).subscribe(res => this.handleTeams(res!))
   }
 
   states = EnteringChampStates;
@@ -73,14 +73,14 @@ export class EnterChampionshipFormComponent implements OnInit {
     console.log(this.champId)
 
     this.championshipService.enter(data, this.champId!).subscribe(res => {
-      if (res.data) {
+      /*if (res.data) {
         this.globalHelper.showSuccessMessage('Exito', res.msg!)
-      }
+      }*/
     })
 
   }
 
-  handleTeams(res: DefaultRes<GetTeam[]>): void {
-    this.teams = res.data?.map(item => item.team);
+  handleTeams(res: GetTeam[]): void {
+    this.teams = res.map(item => item.team);
   }
 }

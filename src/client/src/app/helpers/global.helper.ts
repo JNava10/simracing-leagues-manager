@@ -5,7 +5,7 @@ import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import { Router } from '@angular/router';
 import { devEnv } from '../../environments/environment.development';
 import {DefaultRes} from "../utils/interfaces/responses/response.interface";
-import {throwError} from "rxjs";
+import {Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -41,12 +41,14 @@ export class GlobalHelper {
     this.messageService.add({severity: 'success', summary: title, detail: message});
   }
 
-  handleApiError = (errorMsg: string, err: HttpResponse<DefaultRes>) => {
+  handleApiError = (errorMsg: string, err: HttpResponse<DefaultRes<any>>, caught: Observable<any>) => {
     console.error(errorMsg, err);
 
     if (err.status === 0)  {
       this.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet')
     }
+
+    return caught
   };
 
   handleRequestDefaultError = (error: any, messageService: MessageService) => {

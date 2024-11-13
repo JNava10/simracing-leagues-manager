@@ -20,7 +20,7 @@ export class ChampionshipInfoComponent implements OnInit {
   ngOnInit(): void {
     const champId = this.activatedRoute.snapshot.params['champId'];
 
-    this.championshipService.getById(champId).subscribe(res => this.handleChampionship(res.data))
+    this.championshipService.getById(champId).subscribe(res => this.handleChampionship(res!))
   }
 
   handleChampionship(data: LeagueChampionship | undefined): void {

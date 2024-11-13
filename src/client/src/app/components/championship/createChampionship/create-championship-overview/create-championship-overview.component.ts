@@ -39,11 +39,11 @@ export class CreateChampionshipOverviewComponent implements OnInit {
   createChampionship() {
     this.championshipService.create(this.championship!)
       .subscribe(res => {
-        this.afterCreatingChampionship(res)
+        this.afterCreatingChampionship(res!)
       })
   }
 
-  afterCreatingChampionship(res: DefaultRes<LeagueChampionship>) {
-    this.globalHelper.navigateFromRoot(`league/${this.championship?.leagueId}/championships/${res.data?.id}`)
+  afterCreatingChampionship(res: LeagueChampionship) {
+    this.globalHelper.navigateFromRoot(`league/${this.championship?.leagueId}/championships/${res.id}`)
   }
 }

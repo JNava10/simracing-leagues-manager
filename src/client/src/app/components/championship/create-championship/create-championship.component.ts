@@ -33,7 +33,7 @@ export class CreateChampionshipComponent implements OnInit {
     if (presetId) {
       this.championshipService.getPresetById(presetId).subscribe(res => {
         this.globalHelper.showSuccessMessage('Exito', 'Se ha obtenido el preset correctamente.')
-        this.preset = res.data;
+        this.preset = res!;
       })
     }
   }

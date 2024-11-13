@@ -28,7 +28,7 @@ export class PresetListComponent implements OnInit {
 
   ngOnInit(): void {
     this.championshipService.getAllPresets().subscribe(res => {
-      this.presets = res.data;
+      this.presets = res!;
     })
   }
 

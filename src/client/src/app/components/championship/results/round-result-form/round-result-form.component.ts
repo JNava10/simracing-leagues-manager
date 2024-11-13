@@ -36,33 +36,21 @@ export class RoundResultFormComponent implements OnInit {
     this.champId = +this.route.snapshot.params['champId'];
 
     this.championshipService.getByIdFull(this.champId).subscribe(res => {
-      this.championship = res.data;
+      this.championship = res;
     });
 
     this.championshipService.getCalendarById(this.champId).subscribe(res => {
-      if (!res.data) {
-        // TODO: Mostrar mensaje error
-
-        return;
-      }
-
-      this.calendar = res.data!.calendar!
+      this.calendar = res!.calendar
     });
 
     this.championshipService.getEntriesById(this.champId).subscribe(res => {
-      if (!res.data) {
-        // TODO: Mostrar mensaje error
-
-        return;
-      }
-
-      res.data!.users!.forEach(_ => { // Se utiliza _ para indicar que la variable no se va a usar.
+      res!.users!.forEach(_ => { // Se utiliza _ para indicar que la variable no se va a usar.
         this.positionsForm.push(
           this.getPositionFormGroup()
         )
       });
 
-      this.users = res.data.users?.map(item => item.user!)
+      this.users = res!.users?.map(item => item.user!)
       this.round = this.route.snapshot.params['round'];
 
     });

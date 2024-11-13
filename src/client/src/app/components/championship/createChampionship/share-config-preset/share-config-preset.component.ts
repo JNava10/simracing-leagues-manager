@@ -23,14 +23,10 @@ export class ShareConfigPresetComponent {
   buttonTheme = ColorTheme
 
   createPreset() {
-    this.championshipService.createPreset(this.championship!).subscribe(res => this.afterCreatingPreset(res))
+    this.championshipService.createPreset(this.championship!).subscribe(res => this.afterCreatingPreset())
   }
 
-  afterCreatingPreset(res: DefaultRes): void {
-    if (res.error) {
-      // this.globalHelper.showErrorMessage()
-    } else {
-      this.ended.emit()
-    }
+  afterCreatingPreset(): void {
+    this.ended.emit()
   }
 }

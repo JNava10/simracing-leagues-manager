@@ -35,30 +35,18 @@ export class ChampionshipResultsComponent implements OnInit {
     this.champId = +this.route.snapshot.params['champId'];
 
     this.championshipApiService.getByIdFull(this.champId).subscribe(res => {
-      this.championship = res.data;
+      this.championship = res!;
     });
 
     this.championshipApiService.getCalendarById(this.champId).subscribe(res => {
-      if (!res.data) {
-        // TODO: Mostrar mensaje error
-
-        return;
-      }
-
-      this.calendar = res.data!.calendar!
+      this.calendar = res!.calendar!
     });
 
     this.championshipApiService.getEntriesById(this.champId).subscribe(res => {
-      if (!res.data) {
-        // TODO: Mostrar mensaje error
-
-        return;
-      }
-
-      this.users = res.data.users?.map(item => item.user!)
+      this.users = res!.users?.map(item => item.user!)
 
       this.championshipApiService.getResults(this.champId!).subscribe(res => {
-        this.results = res.data!;
+        this.results = res!;
         console.log(this.results)
         console.log(this.getDriverResults(1))
       });
