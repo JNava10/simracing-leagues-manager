@@ -26,7 +26,7 @@ import {SearchUsersBarComponent} from "../../utils/custom/search/search-users-ba
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.scss'
 })
-export class LeagueMemberListComponent implements OnInit {
+export class  LeagueMemberListComponent implements OnInit {
   constructor(
     private leagueService: LeagueApiService,
     private route: ActivatedRoute,
@@ -49,16 +49,6 @@ export class LeagueMemberListComponent implements OnInit {
   searchTimeout?: any;
   protected searching = false;
 
-  handleSearch = (originalEvent: ListboxFilterEvent) => {
-    const value = String(originalEvent.filter);
-
-    if (value == "") this.$elegibleUsers = of(); // of() crea un nuevo observable vacio.
-
-    clearTimeout(this.searchTimeout);
-
-    this.searchTimeout = setTimeout(() => this.searchUsers(value), 500);
-  }
-
   searchUsers = (search: string) => {
     this.$elegibleUsers = this.leagueService.searchNotMembers(this.leagueId!, search)
   }
@@ -75,7 +65,7 @@ export class LeagueMemberListComponent implements OnInit {
   }
 
   handleAddingMember = (memberIsAdded: QueryIsExecuted) => {
-    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.msg, this.messageService);
+    this.globalHelper?.showSuccessMessage({message: "Se ha añadido al miembro correctamente."})
 
     this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
   }
@@ -90,13 +80,21 @@ export class LeagueMemberListComponent implements OnInit {
   }
 
   handleKickingMember = (memberIsAdded: QueryIsExecuted) => {
-    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.msg, this.messageService);
+    this.globalHelper?.showSuccessMessage({message: "Se ha kickeado al miembro correctamente."})
 
     this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
   }
 
   toggleSearch = (show: boolean) => {
     this.searching = show;
+  }
+
+  inviteUser(user: User) {
+    this.leagueService.inviteMember(this.leagueId!, user.id!).subscribe((res) => {})
+  }
+
+  private handleInvitingMember(res: QueryIsExecuted) {
+
   }
 }
 

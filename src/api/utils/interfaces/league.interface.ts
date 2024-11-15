@@ -1,4 +1,4 @@
-export interface LeagueData {
+export interface League {
     id?: number;
     name: string;
     description?: string;

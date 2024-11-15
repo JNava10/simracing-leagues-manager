@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
@@ -8,16 +8,16 @@ import {League} from "../../../../../utils/interfaces/league.interface";
 import {User} from "../../../../../utils/interfaces/user.interface";
 import {UserApiService} from "../../../../../services/api/user-api.service";
 import {CustomSearchInputComponent} from "../../../custom-search-input/custom-search-input.component";
+import {CustomButtonComponent} from "../../../custom-button/custom-button.component";
+import {LoginComponent} from "../../../../auth/login/login.component";
 
 @Component({
   selector: 'app-search-users-bar',
   standalone: true,
   imports: [
-    AsyncPipe,
     DialogModule,
     FormsModule,
-    PrimeTemplate,
-    CustomSearchInputComponent
+    CustomSearchInputComponent,
   ],
   templateUrl: './search-users-bar.component.html',
 })
@@ -26,7 +26,7 @@ export class SearchUsersBarComponent {
 
   choosed?: User
   searching = false;
-  results: User[] = [];
+  searchedUsers: User[] = [];
   choosing = false;
 
   @Output() onUserSelect: EventEmitter<User> = new EventEmitter();
@@ -42,6 +42,14 @@ export class SearchUsersBarComponent {
   }
 
   searchUsers(search: string) {
-    this.userService.
+    this.userService.searchByNick(search).subscribe(
+      (users) => this.handleSearchedUsers(users),
+    );
+  }
+
+  private handleSearchedUsers = (users: User[]) => {
+    console.log(users)
+
+    this.searchedUsers = users;
   }
 }

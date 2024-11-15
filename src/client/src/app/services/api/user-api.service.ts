@@ -4,7 +4,7 @@ import {LeagueChampionship, PositionCreation} from "../../utils/interfaces/champ
 import {DefaultRes} from "../../utils/interfaces/responses/response.interface";
 import {devEnv} from "../../../environments/environment.development";
 import {sendTokenParam} from "../../utils/constants/global.constants";
-import {catchError, throwError} from "rxjs";
+import {catchError, Observable, of, throwError} from "rxjs";
 import {User} from "../../utils/interfaces/user.interface";
 import {League} from "../../utils/interfaces/league.interface";
 import {map} from "rxjs/operators";
@@ -21,7 +21,7 @@ export class UserApiService {
     return this.http.post<DefaultRes>(`${devEnv.apiEndpoint}/user/register`, user, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes>, caught) => {
         console.error('Error creating championship:', err);
-        return throwError(() => new Error('Error creating championship, please try again later.'));
+        return caught
       })
     )
   }
@@ -31,10 +31,17 @@ export class UserApiService {
     const options = { params: { ...sendTokenParam, name: search } };
 
     return this.http.get<DefaultRes<User[]>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<User[]>>, caught) => {
-        this.globalHelper!.handleApiError('Error al buscar usuarios por nombre:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<User[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          error.data = [];
+
+          return of(error)
+        }
       }),
+
       map((res) => res.data!)
     );
   }

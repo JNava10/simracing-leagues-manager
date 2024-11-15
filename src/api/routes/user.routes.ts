@@ -24,6 +24,8 @@ router.post("/register", [
         .withMessage("La contraseña es obligatoria."),
 ], controller.createUser);
 
-router.get("/search/nick", controller.createUser);
+router.get("/search/nick/:input", controller.searchByNick);
+
+router.get("/notifications", controller.getAllNotifications);
 
 export default router;

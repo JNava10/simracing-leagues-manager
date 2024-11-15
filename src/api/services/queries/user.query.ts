@@ -5,23 +5,18 @@ import {prisma} from "../../app";
 export class UserQuery {
 
     static createUser = async ({ name, lastname, secondLastname, password, nickname }: User) => {
-        try {
-            if (!password) password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
+        if (!password) password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
 
-            return prisma.user.create({
-                data: {
-                    name,
-                    nickname,
-                    lastname,
-                    secondLastname,
-                    password,
-                    email: null
-                },
-            });
-        } catch (err) {
-            console.error(err)
-            return null
-        }
+        return prisma.user.create({
+            data: {
+                name,
+                nickname,
+                lastname,
+                secondLastname,
+                password,
+                email: null
+            },
+        });
     };
 
     getUserByNickname = async (nickname: string) => prisma.user.findFirst({where: {nickname}});
@@ -30,5 +25,9 @@ export class UserQuery {
 
     static userIdExists = async (userId: number) => {
         return prisma.user.findUnique({where: {id: userId}}) !== null;
-    } 
+    }
+
+    static searchByNick = async (search: string) => {
+        return prisma.user.findMany({where: {nickname: {startsWith: search}}});
+    }
 }

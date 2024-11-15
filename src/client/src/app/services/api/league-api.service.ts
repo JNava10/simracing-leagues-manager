@@ -6,8 +6,8 @@ import { sendTokenParam } from '../../utils/constants/global.constants';
 import { User } from '../../utils/interfaces/user.interface';
 import { GlobalHelper } from '../../helpers/global.helper';
 import { catchError, map } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { DefaultRes } from "../../utils/interfaces/responses/response.interface";
+import {Observable, of} from 'rxjs';
+import {DefaultRes} from "../../utils/interfaces/responses/response.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +37,14 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, newMemberData, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        return this.globalHelper!.handleApiError('Error al agregar miembro a la liga:', err, caught);
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
       map((res) => res.data!)
     );
@@ -49,8 +55,14 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.delete<DefaultRes<QueryIsExecuted>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        return this.globalHelper!.handleApiError('Error al expulsar miembro de la liga:', err, caught);
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
       map((res) => res.data!)
     );
@@ -165,11 +177,40 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, { userId }, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        this.globalHelper!.handleApiError('Error al rechazar miembro pendiente:', err, caught);
-        return of();
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
+
       map((res) => res.data!)
+    );
+  }
+
+  inviteMember = (leagueId: number, userId: number) => {
+    const url = `${devEnv.apiEndpoint}/league/${leagueId}/invite/${userId}`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.post<DefaultRes<QueryIsExecuted>>(url, { userId }, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<QueryIsExecuted>(res)!;
+      })
     );
   }
 }

@@ -37,7 +37,9 @@ export class SearchLeaguesBarComponent {
   enterLeague = () => {
     this.leagueService.sendEnterLeagueRequest(this.leagueChoosed?.id!).subscribe((data) => {
       if (data.executed) {
-        this.globalHelper.showSuccessMessage('Exito', data.msg, this.messageService)
+        // TODO: Mover a servicio.
+        this.globalHelper?.showSuccessMessage({message: "Se ha entrado enviado petición correctamente"})
+
       } else {
         this.globalHelper.showErrorMessage('Error', data.msg, this.messageService)
       }

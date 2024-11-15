@@ -1,0 +1,28 @@
+<!--<div (mouseenter)="this.onButtonEnter()" (mouseleave)="onButtonHoverExit()" class="relative inline-flex">-->
+<!--  <ng-container *ngTemplateOutlet="buttonTemplate" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">-->
+
+<!--  </ng-container>-->
+
+<!--  @if (showContent) {-->
+<!--    <div class="absolute z-30 w-full mt-10 transition-[opacity,margin] bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-default">-->
+<!--      <div class="p-3 space-y-3">-->
+<!--        <ng-container *ngTemplateOutlet="bodyTemplate">-->
+
+<!--        </ng-container>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  }-->
+<!--</div>-->
+
+<div class="hs-dropdown [--trigger:hover] relative inline-flex">
+  <ng-container *ngTemplateOutlet="buttonTemplate" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+  </ng-container>
+
+  <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-default">
+    <div class="p-1 space-y-0.5">
+      <ng-container *ngTemplateOutlet="bodyTemplate">
+
+      </ng-container>
+    </div>
+  </div>
+</div>

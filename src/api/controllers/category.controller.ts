@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {LeagueData} from "../utils/interfaces/league.interface";
+import {League} from "../utils/interfaces/league.interface";
 import {LeagueQuery} from "../services/queries/league.query";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";

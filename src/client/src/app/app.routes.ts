@@ -17,6 +17,7 @@ import {
   RoundResultFormComponent
 } from "./components/championship/results/round-result-form/round-result-form.component";
 import {RegisterFormComponent} from "./components/register/register-form/register-form.component";
+import {NotificationMenuComponent} from "./components/notifications/notification-menu/notification-menu.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -26,6 +27,7 @@ export const routes: Routes = [
       { path: 'newleague', component: CreateLeagueFormComponent },
       { path: 'presets', component: PresetListComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
+      { path: 'notifications', title: 'Notificaciones', component: NotificationMenuComponent },
       { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },
           { path: 'overview', component: LeagueOverviewComponent },

@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import {GlobalHelper} from "../../../../helpers/global.helper";
+import {CustomDropdownComponent} from "../../dropdown/custom-dropdown/custom-dropdown.component";
 
 @Component({
   selector: 'app-custom-navbar',
   standalone: true,
-  imports: [],
+  imports: [
+    CustomDropdownComponent
+  ],
   templateUrl: './custom-navbar.component.html',
   styleUrl: './custom-navbar.component.scss'
 })

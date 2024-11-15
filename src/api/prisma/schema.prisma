@@ -54,7 +54,9 @@ model User {
 
   ChampionshipPreset ChampionshipPreset[]
 
-  RoundResults RoundEntry[]
+  RoundResults          RoundEntry[]
+  notificationsSent     Notification[] @relation("NotificationsSent")
+  notificationsReceived Notification[] @relation("NotificationsReceived")
 }
 
 model FavouriteSimulator {
@@ -87,9 +89,8 @@ model UserRole {
 }
 
 model AppRole {
-  id   Int    @id @default(autoincrement())
-  name String
-
+  id    Int        @id @default(autoincrement())
+  name  String
   users UserRole[]
 }
 
@@ -413,4 +414,15 @@ model LeagueAuditLog {
 
   action LeagueAuditAction @relation(fields: [actionId], references: [id])
   user   User              @relation(fields: [authorId], references: [id])
+}
+
+model Notification {
+  id       Int      @id @default(autoincrement())
+  actionId Int
+  targetId Int
+  authorId Int
+  date     DateTime @default(now()) @db.DateTime(6)
+
+  target User @relation("NotificationsReceived", fields: [targetId], references: [id])
+  author User @relation("NotificationsSent", fields: [authorId], references: [id])
 }

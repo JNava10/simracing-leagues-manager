@@ -78,6 +78,10 @@ router.post("/:leagueId/pending/accept", [validateToken], controller.acceptMembe
  */
 router.post("/:leagueId/pending/decline", [validateToken], controller.denyMember);
 
-router.post("/:leagueId/invite/:userId", [validateToken], controller.inviteMember);
+/**
+ * @route POST /:leagueId/pending/decline
+ * @description Invitar a un usuario `:userId` a la liga `:leagueId`
+ */
+router.post("/:leagueId/invite/:userId", [validateToken], controller.inviteUser);
 
 export default router;

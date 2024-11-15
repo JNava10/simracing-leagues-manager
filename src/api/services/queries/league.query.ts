@@ -1,12 +1,12 @@
 import { kickMember } from '../../controllers/league.controller';
-import {LeagueData} from "../../utils/interfaces/league.interface";
+import {League} from "../../utils/interfaces/league.interface";
 import {prisma} from "../../app";
 import { now } from '../../helpers/common.helper';
 import { UserQuery } from './user.query';
 import { User } from '@prisma/client';
 
 export class LeagueQuery {
-    static createLeague = async (league: LeagueData, authorId: number) => {
+    static createLeague = async (league: League, authorId: number) => {
         const createdLeague = await prisma.league.create({
             data: {
                 name: league.name,
@@ -175,6 +175,12 @@ export class LeagueQuery {
 
         if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
         if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
+
+        const alreadyExists = prisma.leagueMember.findFirst({where: {userId, leagueId}});
+
+        if (alreadyExists) {
+            throw new Error(`El usuario ya está dentro de la liga o invitado.`);
+        }
 
         return prisma.leagueMember.create(
             {

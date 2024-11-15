@@ -73,5 +73,9 @@
 </div>
 
 <p-dialog [(visible)]="searching">
-  <app-search-users-bar/>
+  <ng-template pTemplate="headless">
+    <app-search-users-bar
+      (onUserSelect)="inviteUser($event)"
+    />
+  </ng-template>
 </p-dialog>

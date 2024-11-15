@@ -5,7 +5,7 @@ import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import { Router } from '@angular/router';
 import { devEnv } from '../../environments/environment.development';
 import {DefaultRes} from "../utils/interfaces/responses/response.interface";
-import {Observable, throwError} from "rxjs";
+import {Observable, of, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -34,23 +34,37 @@ export class GlobalHelper {
   }
 
   showErrorMessage = (title: string, message: string, messageService?: MessageService) => {
-    messageService!.add({severity: 'error', summary: title, detail: message});
+    this.messageService!.add({severity: 'error', summary: title, detail: message});
   }
 
-  showSuccessMessage = (title: string, message: string, messageService?: MessageService) => {
-    this.messageService.add({severity: 'success', summary: title, detail: message});
-  }
-
-  handleApiError = (errorMsg: string, err: HttpResponse<DefaultRes<any>>, caught: Observable<any>) => {
-    console.error(errorMsg, err);
-
-    if (err.status === 0)  {
-      this.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet')
-    }
-
-    return caught
+  showSuccessMessage = ({ title = "exito", message, messageService }: ShowSuccessMessageProps) => {
+    this.messageService?.add({ severity: 'success', summary: title, detail: message });
   };
 
+
+handleApiError = (
+    errorMsg: string, res: HttpResponse<DefaultRes<any>>, caught: Observable<any>
+  ) => {
+    const defaultRes = { data: null } as DefaultRes<any>
+
+    if (res.status === 0)  {
+      this.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet');
+
+      return defaultRes
+    } else if (res.status === 404) {
+      return defaultRes
+    }
+
+    return throwError(() => new Error(errorMsg));
+  };
+
+  handleDefaultData<T>(res: DefaultRes<T>) {
+    if ("data" in res) {
+      return res.data as T;
+    } else {
+      return
+    }
+  }
   handleRequestDefaultError = (error: any, messageService: MessageService) => {
     this.showErrorMessage(`${error.status}`, error.statusText, messageService);
   }
@@ -70,4 +84,10 @@ export class GlobalHelper {
   arrayByNumber = (count: number) => {
     return [].constructor(count)
   }
+}
+
+interface ShowSuccessMessageProps {
+  title?: string;
+  message: string;
+  messageService?: MessageService;
 }

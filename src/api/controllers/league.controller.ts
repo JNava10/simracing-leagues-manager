@@ -1,10 +1,9 @@
 import {Request, Response} from "express";
-import {IsMemberAdded as IsQueryExecuted, KickMember, LeagueData, NewLeagueMember} from "../utils/interfaces/league.interface";
+import {IsMemberAdded as IsQueryExecuted, KickMember, League, NewLeagueMember} from "../utils/interfaces/league.interface";
 import {LeagueQuery} from "../services/queries/league.query";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {isValidNumber} from "../helpers/validators.helper";
-import {League} from "@prisma/client";
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
@@ -41,7 +40,7 @@ export const getOwnLeagues = async (req: CustomRequest, res: Response) => {
 
 export const createLeague = async (req: CustomRequest, res: Response) => {
     try {
-        const body = req.body as LeagueData;
+        const body = req.body as League;
         const createdLeague = await LeagueQuery.createLeague(body, req.user.id);
 
         sendSuccessResponse({
@@ -199,11 +198,16 @@ export const denyMember = async (req: CustomRequest, res: Response) => {
     }
 };
 
-export const inviteMember = async (req: CustomRequest, res: Response) => {
+export const inviteUser = async (req: CustomRequest, res: Response) => {
     try {
         const leagueId = Number(req.params['leagueId']);
         const userId = Number(req.params['userId']);
+
         const executed = await LeagueQuery.inviteMember(userId, leagueId) !== null;
+
+        if (executed) {
+
+        }
 
         sendSuccessResponse({
             data: { executed },

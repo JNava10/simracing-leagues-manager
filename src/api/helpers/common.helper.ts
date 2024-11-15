@@ -17,7 +17,6 @@ export const sendErrorResponse =  ({data, error}: ErrorResponse, res: Response) 
 }
 
 export const sendSuccessResponse = ({data, msg = '', status}: SuccessResponse, res: Response) => {
-    console.log(status)
     return res.status(status || 200).send({data, msg})
 }
 
