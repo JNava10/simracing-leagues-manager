@@ -224,4 +224,19 @@ export class LeagueQuery {
 
         return false
     }
+
+    static editLeague = async (leagueId: number, data: League) => {
+        const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
+
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
+
+        return prisma.league.update(
+            {
+                where: {id: leagueId},
+                data: {
+                    name: data.name,
+                    description: data.description,
+                }
+            });
+    }
 }

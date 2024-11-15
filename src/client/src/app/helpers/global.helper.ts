@@ -65,6 +65,7 @@ handleApiError = (
       return
     }
   }
+
   handleRequestDefaultError = (error: any, messageService: MessageService) => {
     this.showErrorMessage(`${error.status}`, error.statusText, messageService);
   }

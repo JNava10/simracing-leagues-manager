@@ -72,15 +72,14 @@ export class BaseCustomInputComponent implements ControlValueAccessor {
     this.onReactiveTouched();
   }
 
-
   updateValue(value: any): void {
     this.value = value;
+
+    this.onReactiveChange(value);
+    this.onReactiveTouched();
 
     if (this.debug) {
       console.log(this.value);
     }
-
-    this.onReactiveChange(value);
-    this.onReactiveTouched();
   }
 }

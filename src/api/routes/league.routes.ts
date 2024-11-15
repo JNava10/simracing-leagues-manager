@@ -13,6 +13,13 @@ const router = express.Router();
 router.post("/", [validateToken], controller.createLeague);
 
 /**
+ * @route PUT /
+ * @description Edita la liga `:leagueId` con los datos indicados en la petición.
+ */
+router.put("/:id/", [validateToken], controller.editLeague);
+
+
+/**
  * @route GET /owned
  * @description Obtener las ligas creadas por el usuario autenticado
  */
@@ -91,5 +98,9 @@ router.post("/:leagueId/invite/:userId", [validateToken], controller.inviteUser)
  */
 router.post("/:leagueId/ban/:userId", [validateToken], controller.banMember);
 
+/**
+ * @route POST /:leagueId/pending/decline
+ * @description Invitar a un usuario `:userId` a la liga `:leagueId`
+ */
 
 export default router;

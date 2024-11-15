@@ -11,7 +11,29 @@ import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {isValidNumber} from "../helpers/validators.helper";
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
-import e from "cors";
+
+export const editLeague = async (req: CustomRequest, res: Response) => {
+    try {
+        const validId = isValidNumber(req.params['id']);
+
+        console.log(req.params['id'])
+
+        if (!validId) {
+            return res.send(`No se ha indicado un ID de liga válido.`);
+        }
+
+        const leagueId = Number(req.params['id']);
+        const data = req.body as League;
+        const league = await LeagueQuery.editLeague(leagueId, data);
+
+        sendSuccessResponse({
+            data: league,
+            msg: "Se ha obtenido la liga correctamente."
+        }, res);
+    } catch (e) {
+        sendErrorResponse({ error: e.message }, res);
+    }
+};
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {

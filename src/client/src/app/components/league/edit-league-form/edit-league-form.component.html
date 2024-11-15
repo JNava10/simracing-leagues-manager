@@ -1,0 +1,51 @@
+<section>
+  <h2 class="text-4xl font-semibold text-center mb-3">Editar Liga</h2>
+
+  <div class="grid grid-cols-2 bg-neutral-800 p-3">
+    <div class="flex justify-content items-center">
+      <div class="mx-auto max-w-lg text-center">
+        <h1 class="text-2xl font-bold sm:text-3xl">{{ league.name }}</h1>
+
+        <p class="mt-4 text-gray-500">
+          {{ league.description }}
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-lg mx-auto bg-neutral-900/70 p-6 rounded-lg shadow-md text-neutral-200">
+      <form [formGroup]="editLeagueForm!">
+
+        <div class="flex flex-col gap-3">
+          <!-- Campo para el nombre de la liga -->
+          <app-custom-text-input
+            class="w-full"
+            formControlName="name"
+            label="Nombre de la Liga"
+          />
+
+          <app-custom-text-input
+            class="w-full"
+            formControlName="description"
+            label="Descripción"
+          />
+        </div>
+
+        <div class="flex gap-3">
+          <!-- Botón para enviar el formulario -->
+          <app-custom-button (click)="onSubmit()" styleClass="mt-3" themeName="indigo">
+            Guardar Cambios
+          </app-custom-button>
+
+          <app-custom-color-picker
+            [debug]="true"
+            formControlName="color"
+            [showLabel]="false"
+          />
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</section>
+

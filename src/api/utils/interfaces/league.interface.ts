@@ -2,6 +2,7 @@ export interface League {
     id?: number;
     name: string;
     description?: string;
+    color?: string;
     joinedAt?: Date;
 }
 

@@ -241,4 +241,26 @@ export class LeagueApiService {
       })
     );
   }
+
+  editLeague = (leagueId: number, data: League) => {
+    const url = `${devEnv.apiEndpoint}/league/${leagueId}`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.put<DefaultRes<League>>(url, data, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
+    );
+  }
 }

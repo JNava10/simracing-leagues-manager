@@ -69,7 +69,19 @@
   </div>
 
   <div class="sticky inset-x-0 bottom-0 border-t border-neutral-700 bg-neutral-800 p-2">
-    <form action="#">
+    <form>
+      <a
+        class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm bg-red-900/50 text-red-200/50 hover:bg-red-700/50 hover:text-red-200"
+      >
+        <i class="fa-solid fa-trash"></i>
+
+        <span
+          class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-neutral-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+        >
+          Borrar liga
+        </span>
+      </a>
+
       <button
         type="submit"
         class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100"

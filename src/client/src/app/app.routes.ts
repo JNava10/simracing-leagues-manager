@@ -12,12 +12,12 @@ import { ChampionshipInfoComponent } from './components/championship/championshi
 import { EnterChampionshipFormComponent } from './components/championship/enter-championship-form/enter-championship-form.component';
 import { ChampionshipResultsComponent } from './components/championship/championship-results/championship-results.component';
 import {LeagueAdminPanelComponent} from "./components/league/admin/league-admin-panel/league-admin-panel.component";
-import {EditLeagueFormComponent} from "./components/league/admin/edit-league-form/edit-league-form.component";
 import {
   RoundResultFormComponent
 } from "./components/championship/results/round-result-form/round-result-form.component";
 import {RegisterFormComponent} from "./components/register/register-form/register-form.component";
 import {NotificationMenuComponent} from "./components/notifications/notification-menu/notification-menu.component";
+import {EditLeagueFormComponent} from "./components/league/edit-league-form/edit-league-form.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -32,6 +32,7 @@ export const routes: Routes = [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },
           { path: 'overview', component: LeagueOverviewComponent },
           { path: 'admin', component: LeagueAdminPanelComponent, children: [
+              { path: 'edit', component: EditLeagueFormComponent, title: 'Editar info. de liga' },
               { path: 'members', component: LeagueMemberListComponent, title: 'Miembros de liga' },
               { path: 'pending', component: PendingMembersListComponent, title: 'Miembros pendientes de entrar a liga' },
             ]},

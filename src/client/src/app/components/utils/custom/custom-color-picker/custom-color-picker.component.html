@@ -1,0 +1,13 @@
+<div>
+  @if (showLabel) {
+    <label class="block text-sm font-medium mb-2 dark:text-white">{{label}}<span *ngIf="this.required">*</span></label>
+  }
+
+  <ngx-colors
+    ngx-colors-trigger
+    [className]="inputClass"
+    [(ngModel)]="value"
+    (ngModelChange)="writeValue($event)"
+    ngClass="inputClass"
+  />
+</div>
