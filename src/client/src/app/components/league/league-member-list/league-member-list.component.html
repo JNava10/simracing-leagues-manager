@@ -52,6 +52,7 @@
                       <!-- Botón para banear permanentemente al miembro -->
                       <app-custom-button
                         themeName="red"
+                        (click)="showBanReason(member)"
                       >
                         Banear
                       </app-custom-button>
@@ -79,3 +80,32 @@
     />
   </ng-template>
 </p-dialog>
+
+<p-dialog [(visible)]="banning">
+  <ng-template pTemplate="headless">
+   <div class="flex flex-col gap-3">
+     <app-custom-text-input
+       label="Razón del baneo"
+       [(ngModel)]="banReason"
+     />
+
+     <div class="flex gap-3">
+       <app-custom-button themeName="red" (click)="showBanConfirm()">Continuar</app-custom-button>
+       <app-custom-button themeName="stone" (click)="banning = false">Cerrar</app-custom-button>
+     </div>
+   </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="banConfirm">
+  <ng-template pTemplate="headless">
+    <h1>El usuario ya no podrá entrar de nuevo a la liga, salvo que se le quite el baneo.</h1>
+    <span>Razon: {{ banReason }}</span>
+    <h2>¿Quieres continuar?</h2>
+    <div class="flex gap-3">
+      <app-custom-button themeName="stone">No</app-custom-button>
+      <app-custom-button themeName="red" (click)="banMember(memberToBan!.user.id!)">Si</app-custom-button>
+    </div>
+  </ng-template>
+</p-dialog>
+

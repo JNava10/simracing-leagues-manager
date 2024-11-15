@@ -1,7 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { devEnv } from '../../../environments/environment.development';
-import { QueryIsExecuted, League, LeagueMember, ApiMemberFilter } from '../../utils/interfaces/league.interface';
+import {
+  QueryIsExecuted,
+  League,
+  LeagueMember,
+  LeagueMemberRequest,
+  BanMemberRequest
+} from '../../utils/interfaces/league.interface';
 import { sendTokenParam } from '../../utils/constants/global.constants';
 import { User } from '../../utils/interfaces/user.interface';
 import { GlobalHelper } from '../../helpers/global.helper';
@@ -32,7 +38,7 @@ export class LeagueApiService {
     );
   }
 
-  addMember = (newMemberData: ApiMemberFilter) => {
+  addMember = (newMemberData: LeagueMemberRequest) => {
     const url = `${devEnv.apiEndpoint}/league/${newMemberData.leagueId}/member`;
     const options = { params: { ...sendTokenParam } };
 
@@ -50,8 +56,8 @@ export class LeagueApiService {
     );
   }
 
-  kickMember = ({ leagueId, userId }: ApiMemberFilter) => {
-    const url = `${devEnv.apiEndpoint}/league/${leagueId}/member/${userId}`;
+  kickMember = ({ leagueId, userId }: LeagueMemberRequest) => {
+    const url = `${devEnv.apiEndpoint}/league/${leagueId}/kick/${userId}`;
     const options = { params: { ...sendTokenParam } };
 
     return this.http.delete<DefaultRes<QueryIsExecuted>>(url, options).pipe(
@@ -65,6 +71,28 @@ export class LeagueApiService {
         }
       }),
       map((res) => res.data!)
+    );
+  }
+
+  banMember = ({ leagueId, userId, reason }: BanMemberRequest) => {
+    const url = `${devEnv.apiEndpoint}/league/${leagueId}/ban/${userId}`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.post<DefaultRes<QueryIsExecuted>>(url, {reason}, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<QueryIsExecuted>(res)!;
+      })
     );
   }
 

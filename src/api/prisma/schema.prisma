@@ -112,12 +112,13 @@ model League {
 
 // Miembros pertenecientes a cada liga.
 model LeagueMember {
-  leagueId    Int
-  userId      Int
-  accepted    Boolean   @default(false)
-  invited     Boolean   @default(false)
-  joinedAt    DateTime? @db.DateTime(6)
-  requestedAt DateTime? @db.DateTime(6)
+  leagueId       Int
+  userId         Int
+  notificationId Int?
+  accepted       Boolean   @default(false)
+  invited        Boolean   @default(false)
+  joinedAt       DateTime? @db.DateTime(6)
+  requestedAt    DateTime? @db.DateTime(6)
 
   league League @relation(fields: [leagueId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
@@ -422,7 +423,17 @@ model Notification {
   targetId Int
   authorId Int
   date     DateTime @default(now()) @db.DateTime(6)
+  memberId Int
 
   target User @relation("NotificationsReceived", fields: [targetId], references: [id])
   author User @relation("NotificationsSent", fields: [authorId], references: [id])
+}
+
+model LeagueBan {
+  leagueId Int
+  userId   Int
+  bannedAt DateTime @default(now()) @db.DateTime(6)
+  reason   String
+
+  @@id([leagueId, userId])
 }

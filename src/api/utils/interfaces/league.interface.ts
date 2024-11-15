@@ -17,4 +17,10 @@ export interface IsMemberAdded {
 export interface KickMember {
     userId: number
 }
-  
+
+export interface LeagueBan {
+    leagueId: number;
+    userId: number;
+    bannedAt: Date;
+    reason: string;
+}

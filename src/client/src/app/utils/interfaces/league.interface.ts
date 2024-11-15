@@ -16,9 +16,15 @@ export interface LeagueRole {
   name: string
 }
 
-export interface ApiMemberFilter {
+export interface LeagueMemberRequest {
   userId: number,
   leagueId: number
+}
+
+export interface BanMemberRequest {
+  userId: number
+  leagueId: number
+  reason: string
 }
 
 export interface QueryIsExecuted {

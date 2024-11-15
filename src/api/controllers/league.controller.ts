@@ -1,10 +1,17 @@
 import {Request, Response} from "express";
-import {IsMemberAdded as IsQueryExecuted, KickMember, League, NewLeagueMember} from "../utils/interfaces/league.interface";
+import {
+    IsMemberAdded as IsQueryExecuted,
+    KickMember,
+    League,
+    LeagueBan,
+    NewLeagueMember
+} from "../utils/interfaces/league.interface";
 import {LeagueQuery} from "../services/queries/league.query";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {isValidNumber} from "../helpers/validators.helper";
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
+import e from "cors";
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -208,6 +215,26 @@ export const inviteUser = async (req: CustomRequest, res: Response) => {
         if (executed) {
 
         }
+
+        sendSuccessResponse({
+            data: { executed },
+            msg: "Se ha enviado una invitación a la liga correctamente."
+        }, res);
+    } catch (e) {
+        sendErrorResponse({ error: e.message }, res);
+    }
+};
+
+export const banMember = async (req: CustomRequest, res: Response) => {
+    try {
+        const leagueId = Number(req.params['leagueId']);
+        const userId = Number(req.params['userId']);
+        let banData = req.body as LeagueBan;
+
+        banData.leagueId = Number(leagueId);
+        banData.userId = Number(userId);
+
+        const executed = await LeagueQuery.banMember(banData) !== null;
 
         sendSuccessResponse({
             data: { executed },

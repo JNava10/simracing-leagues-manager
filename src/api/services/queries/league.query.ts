@@ -1,5 +1,5 @@
 import { kickMember } from '../../controllers/league.controller';
-import {League} from "../../utils/interfaces/league.interface";
+import {League, LeagueBan} from "../../utils/interfaces/league.interface";
 import {prisma} from "../../app";
 import { now } from '../../helpers/common.helper';
 import { UserQuery } from './user.query';
@@ -192,6 +192,27 @@ export class LeagueQuery {
                 joinedAt: now()
             }
         });
+    }
+
+    static banMember = async ({userId, leagueId, reason}: LeagueBan) => {
+        const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
+        const userExists = await prisma.user.findUnique({where: {id: userId}}) !== null;
+
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
+        if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
+
+        const alreadyBanned = prisma.leagueBan.findFirst({where: {userId, leagueId}});
+
+        if (!alreadyBanned) throw new Error(`Ya se habia baneado al usuario anteriormente.`);
+
+        return prisma.leagueBan.create(
+            {
+                data: {
+                    userId,
+                    leagueId,
+                    reason
+                }
+            });
     }
 
     // Validators //

@@ -2,6 +2,7 @@
 import * as express from "express";
 import * as controller from "../controllers/league.controller";
 import {validateToken} from "../middlewares/auth.middleware";
+import {banMember} from "../controllers/league.controller";
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ router.post("/:id/member", [validateToken], controller.addMemberToLeague);
  * @route DELETE /:leagueId/member/:userId
  * @description Expulsar un miembro de la liga
  */
-router.delete("/:leagueId/member/:userId", [validateToken], controller.kickMember);
+router.delete("/:leagueId/kick/:userId", [validateToken], controller.kickMember);
 
 /**
  * @route POST /:leagueId/enter
@@ -83,5 +84,12 @@ router.post("/:leagueId/pending/decline", [validateToken], controller.denyMember
  * @description Invitar a un usuario `:userId` a la liga `:leagueId`
  */
 router.post("/:leagueId/invite/:userId", [validateToken], controller.inviteUser);
+
+/**
+ * @route POST /:leagueId/pending/decline
+ * @description Invitar a un usuario `:userId` a la liga `:leagueId`
+ */
+router.post("/:leagueId/ban/:userId", [validateToken], controller.banMember);
+
 
 export default router;
