@@ -1,0 +1,50 @@
+<section class="m-9">
+  <div>
+    <h1 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">Resumen del nuevo campeonato</h1>
+
+    <div>
+      <p class="text-dark mb-2 text-center text-xl text-neutral-50">{{event?.name}}</p>
+      <p class="text-dark mb-2 text-center text-md text-neutral-400">{{event?.description}}</p>
+    </div>
+
+    <div>
+      <!-- Lista de equipos -->
+      <div
+        class="rounded-md p-3 bg-neutral-800">
+
+        <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">
+          Equipos
+        </h2>
+
+        <div class="grid grid-cols-3 overflow-y-auto h-40 w-sm gap-3">
+          @for (team of event?.teams; track $index) {
+            <div
+              class="bg-neutral-700 flex gap-3 justify-center items-center p-3 h-20 rounded-md">
+              <span>{{team.name}}</span>
+              <div class="inline-flex items-center">
+                <span
+                  class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                  [ngStyle]="{'background-color': team.hexColor}"></span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="p-3 rounded-md bg-neutral-800 mt-3">
+        <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">
+          Circuito
+        </h2>
+        <app-custom-card
+          [title]="event?.layout?.parent!.name!"
+          [subtitle]="event?.layout?.name!"
+          [content]="event?.layout?.parent!.country!"
+        />
+      </div>
+    </div>
+  </div>
+
+  <app-custom-button themeName="green" (click)="createEvent()">
+    Crear evento
+  </app-custom-button>
+</section>

@@ -1,0 +1,186 @@
+<section>
+  <form
+    class="p-3 grid gap-2 grid-cols-3"
+    #form="ngForm"
+    [formGroup]="createChampionshipForm"
+  >
+
+    <!-- Nombre -->
+    <div>
+      <app-custom-text-input
+        label="Nombre"
+        formControlName="name"
+      />
+    </div>
+
+    <!-- Descripción -->
+    <div class="col-span-2">
+      <app-custom-text-input
+        class="col-span-2"
+        label="Descripción"
+        formControlName="description"
+      />
+    </div>
+  </form>
+
+  <div class="flex justify-center gap-3">
+    <!-- Buscar categoria -->
+    <div class="flex flex-col gap-1 items-center max-w-md m-3">
+      <span>Categorías</span>
+      <!-- TODO: Extraer lista a componente generico -->
+      <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
+        <app-custom-search-input
+          class="join-item"
+          (onSearch)="searchCategories($event)"
+          placeholder="Introduce el nombre de una categoria"
+        />
+
+        <ul
+          class="menu join-item mt-1 text-gray-200 min-h-sm overflow-y-scroll z-[1000] flex-col w-full items-center p-3 no-scrollbar"
+        >
+          @if (categories$ | async; as res) {
+            @for (category of res.data; track $index) {
+              <div class="flex gap-3 items-center w-full my-1">
+                <input type="checkbox" #box class="checkbox" (click)="toggleCategory(category, box.checked, $index)">
+                <span>{{ category.name }}</span>
+              </div>
+            } @empty {
+              <p>No se han encontrado resultados.</p>
+            }
+          } @else {
+            <div class="flex flex-col justify-center gap-1 items-center text-neutral">
+              <i class="fa-solid fa-magnifying-glass fa-5x "></i>
+              <span class="font-bold">Introduce alguna busqueda</span>
+            </div>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Buscar simuladores -->
+    <div class="flex flex-col gap-1 items-center max-w-md m-3">
+      <span>Simulador</span>
+      <!-- TODO: Extraer lista a componente generico -->
+      <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
+        <app-custom-search-input class="join-item" (onSearch)="searchSimulator($event)"
+                                 placeholder="Introduce el nombre de un simulador"/>
+        <ul
+          class="menu join-item mt-1  text-gray-200 min-h-sm overflow-y-scroll flex-col w-full items-center p-3 no-scrollbar"
+        >
+          @if (simulators$ | async; as res) {
+            @for (item of res.data; track $index) {
+              @if (selectedSimulator !== null && selectedSimulator !== undefined && item.id === selectedSimulator!.id) {
+
+                <!-- Item seleccionado -->
+                <div class="flex p-3 rounded-xl gap-3 items-center w-full bg-base-200 cursor-pointer">
+                  <span>{{ item.name }}</span>
+                </div>
+              } @else {
+
+                <!-- Todos los items -->
+                <div (click)="selectedSimulator = item"
+                     class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
+                  <span>{{ item.name }}</span>
+                </div>
+              }
+            } @empty {
+              <p>No se han encontrado resultados.</p>
+            }
+          } @else {
+            <div class="flex flex-col justify-center gap-1 items-center text-neutral">
+              <i class="fa-solid fa-magnifying-glass fa-5x "></i>
+              <span class="font-bold">Introduce alguna busqueda</span>
+            </div>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-96">
+    <!-- Preview del circuito elegido -->
+    @if (selectedLayout) {
+      <div class="flex flex-col w-96">
+        <app-custom-card
+          (onCloseBtn)="removeLayout()"
+          [showCloseBtn]="true"
+          [title]="selectedLayout.parent?.name!"
+          [subtitle]="selectedLayout.name!"
+          [content]="selectedLayout.parent!.country!"
+        />
+      </div>
+    } @else {
+      <app-track-search-form
+        (onConfirmLayout)="selectLayout($event)"
+      />
+    }
+  </div>
+
+  <button class="btn" (click)="goToNextPage()">Siguiente</button>
+</section>
+
+<!--- Modales --->
+
+<!-- Modal para crear rondas -->
+<p-dialog contentStyleClass="bg-base-100" showHeader="false" styleClass="flex gap-1 bg-base-100"
+          [(visible)]="addingRace" [modal]="true"
+          [dismissableMask]="true">
+  <div [formGroup]="championshipRoundForm">
+    <div>
+      <div class="card dark:bg-base-100 image-full w-full my-3">
+        <div class="card-body">
+          <div class="card-title"></div>
+          @if (roundLayout.value) {
+            <div class="flex gap-1">
+              <span>{{ roundName.value || (getRoundLayoutName()) || "Nombre" }}</span>
+              <p>{{ roundLayout.value.parent?.country }}</p>
+            </div>
+          } @else {
+            <p>No se ha indicado ningun circuito</p>
+          }
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="mb-3 col-span-2">
+          <label
+            class="block mb-1 text-sm font-medium">Nombre <span class="text-gray-700">(Opcional)</span>
+          </label> <!-- Sacar label a componente aparte -->
+
+          <!-- Sacar clases de input a enum aparte -->
+          <input formControlName="name" type="text"
+                 class="input input-bordered w-full outline-none">
+          @if (form.touched && form.invalid) {
+            <label *ngIf="description.errors"
+                   class="text-sm text-red-600 dark:text-red-400">
+              El nombre no es valido.
+            </label>
+          }
+        </div>
+      </div>
+    </div>
+    <div formGroupName="length" class="flex gap-3 mt-3">
+      <!-- TODO: Sacar a componente aparte -->
+
+      <input type="text" placeholder="10" [disabled]="durationLocked" formControlName="value"
+             class="input input-bordered rounded-xl w-[5rem]" maxlength="4"/>
+
+      <select [disabled]="durationLocked" formControlName="type">
+        <option value="0" disabled selected>Selecciona una duración</option>
+        @for (item of durationTypeList; track $index) {
+          <option value="{{item.type}}">{{ item.name }}</option>
+        }
+      </select>
+
+      <button class="btn" (click)="lockDuration()">
+        @if (durationLocked) {
+          Desbloquear
+        } @else {
+          Bloquear
+        }
+      </button>
+
+    </div>
+  </div>
+</p-dialog>

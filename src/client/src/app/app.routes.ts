@@ -18,6 +18,7 @@ import {
 import {RegisterFormComponent} from "./components/register/register-form/register-form.component";
 import {NotificationMenuComponent} from "./components/notifications/notification-menu/notification-menu.component";
 import {EditLeagueFormComponent} from "./components/league/edit-league-form/edit-league-form.component";
+import {CreateEventComponent} from "./components/league/event/create-event-form/create-event.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -42,7 +43,14 @@ export const routes: Routes = [
               { path: ':champId/results', title: 'Resultados de un campeonato', component: ChampionshipResultsComponent },
               { path: ':champId/results/:round', title: 'Resultados de un campeonato', component: RoundResultFormComponent },
               { path: ':champId', title: 'Informacion de campeonato', component: ChampionshipInfoComponent },
-            ]},
+            ]
+          },
+
+          {
+            path: 'events', children: [
+              { path: 'new', title: 'Crear un evento', component: CreateEventComponent },
+            ]
+          },
         ]
       },
     ]},

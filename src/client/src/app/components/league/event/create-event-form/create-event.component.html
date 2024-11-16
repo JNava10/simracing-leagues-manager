@@ -1,14 +1,11 @@
-<!-- TODO: Borrar al terminar -->
-<sup class="text-red-400">* Funcionalidad en desarrollo, <b>no funcional.</b></sup>
-
 @if (currentCreatingState === creatingStates.CreatingBasicInfo) {
   @if (preset) {
-    <app-basic-info-championship-form
+    <app-basic-info-event-form
       [preset]="preset"
       (basicDataCreated)="handleBasicDataCreated($event)"
     />
   } @else {
-    <app-basic-info-championship-form
+    <app-basic-info-event-form
       (basicDataCreated)="handleBasicDataCreated($event)"
     />
   }
@@ -27,33 +24,15 @@
   }
 }
 
-@else if (currentCreatingState === creatingStates.CreatingScoreSystem) {
-  @if (preset) {
-    <app-score-system-form
-    [preset]="preset"
-    [teams]="championshipCreating!.teams!"
-    (scoreSystemCreated)="handleScoreCreated($event)"
-  />
-  } @else {
-    <app-score-system-form
-    [teams]="championshipCreating!.teams!"
-    (scoreSystemCreated)="handleScoreCreated($event)"
-  />
-  }
-}
-
 @else if (currentCreatingState === creatingStates.SharePresetConfig) {
   <app-share-config-preset
-    [championship]="championshipCreating"
+    [championship]="eventCreating"
     (ended)="handleAfterPresetShare()"
   />
 }
 
 @else if (currentCreatingState === creatingStates.Overview) {
-  <app-championship-overview
-  [championship]="championshipCreating"
+  <app-event-overview
+    [event]="eventCreating"
   />
 }
-
-
-

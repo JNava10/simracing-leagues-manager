@@ -10,11 +10,11 @@ import { Observable } from 'rxjs';
 import { GlobalHelper } from '../../../../helpers/global.helper';
 
 @Component({
-  selector: 'app-create-championship-overview',
+  selector: 'app-championship-overview',
   standalone: true,
   imports: [CustomButtonComponent, NgStyle, DialogModule],
-  templateUrl: './create-championship-overview.component.html',
-  styleUrl: './create-championship-overview.component.scss'
+  templateUrl: './championship-overview.component.html',
+  styleUrl: './championship-overview.component.scss'
 })
 export class CreateChampionshipOverviewComponent implements OnInit {
   constructor(private championshipService: ChampionshipApiService, private globalHelper: GlobalHelper, private service: ScoreApiService) {}
@@ -23,10 +23,8 @@ export class CreateChampionshipOverviewComponent implements OnInit {
     console.log(this.championship);
   }
 
-
   createdResponse$?: Observable<DefaultRes>
 
-  buttonTheme = ColorTheme;
 
   showingSummary = false;
 

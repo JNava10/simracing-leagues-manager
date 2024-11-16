@@ -1,0 +1,22 @@
+<div class="flex flex-col h-full justify-center p-3 items-center">
+  <h1 class="text-neutral-800 dark:text-neutral-100 font-medium text-2xl text-center pb-3">
+    {{ title }}
+  </h1>
+  <p class="text-neutral-600 dark:text-neutral-400 text-center mb-6">
+    {{ description }}
+  </p>
+
+  <ng-content/>
+
+  @if (buttonTheme && buttonText) {
+    <div class="flex flex-col justify-center">
+      <app-custom-button
+        (click)="onButtonClick()"
+        [themeName]="buttonTheme"
+      >
+        {{ buttonText }}
+      </app-custom-button>
+    </div>
+  }
+
+</div>

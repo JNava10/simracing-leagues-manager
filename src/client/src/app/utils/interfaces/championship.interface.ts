@@ -18,6 +18,18 @@ export interface LeagueChampionship {
   leagueId?: number
 }
 
+export interface LeagueEvent {
+  id?: number,
+  name?: string,
+  description?: string
+  categoryIds?: number[]
+  calendar?: ChampionshipRound[]
+  teams?: Team[]
+  users?: ChampionshipEntry[]
+  simulatorId?: number
+  leagueId?: number
+}
+
 export interface ChampionshipRound {
   id?: number
   name?: string

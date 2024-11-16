@@ -6,7 +6,7 @@ import { Track, TrackLayout } from '../../../../utils/interfaces/track.interface
 import { Observable, of } from 'rxjs';
 import { LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType, ChampionshipPreset } from '../../../../utils/interfaces/championship.interface';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
-import { CreatingChampRoundStates } from '../../../../utils/enums/states.enum';
+import { CreatingChampStates } from '../../../../utils/enums/states.enum';
 import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
 import { DefaultRes } from '../../../../utils/interfaces/responses/response.interface';
 import { SimulatorGame } from '../../../../utils/interfaces/simulator.interface';

@@ -1,4 +1,4 @@
-import { Prisma, User } from "@prisma/client"
+import {ChampionshipEntry, Prisma, TrackLayout, User} from "@prisma/client"
 import { CategoryData as Category } from "../category.interface"
 import { ScoreSystem } from "../score.interface"
 
@@ -89,4 +89,16 @@ export interface GetChampProps {
 export interface PositionCreation {
     driverId: number;
     finishState: number;
+}
+
+export interface LeagueEvent {
+    id?: number,
+    name?: string,
+    description?: string
+    categoryIds?: number[]
+    layout?: TrackLayout
+    teams?: Team[]
+    users?: ChampionshipEntry[]
+    simulatorId?: number
+    leagueId?: number
 }

@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {CustomTextInputComponent} from "../custom-text-input/custom-text-input.component";
 
 @Component({
   selector: 'app-custom-search-input',
   standalone: true,
-  imports: [],
+  imports: [
+    CustomTextInputComponent
+  ],
   templateUrl: './custom-search-input.component.html',
   styleUrl: './custom-search-input.component.scss'
 })

@@ -2,7 +2,7 @@ import { GlobalHelper } from './../../../helpers/global.helper';
 import { ChampionshipApiService } from './../../../services/api/championship-api.service';
 import { ActivatedRoute } from '@angular/router';
 import {Component, OnInit} from '@angular/core';
-import { CreatingChampRoundStates } from '../../../utils/enums/states.enum';
+import { CreatingChampStates } from '../../../utils/enums/states.enum';
 import { BasicInfoChampionshipFormComponent } from "./basic-info-championship-form/basic-info-championship-form.component";
 import { ChampionshipPreset, LeagueChampionship, Team } from '../../../utils/interfaces/championship.interface';
 import { TeamFormComponent } from "./team-form/team-form.component";
@@ -38,9 +38,9 @@ export class CreateChampionshipComponent implements OnInit {
   }
 
 
-  creatingStates = CreatingChampRoundStates; // Hay que crear una variable si queremos usar un enum en el HTML. De lo contrario no funcionará.
+  creatingStates = CreatingChampStates; // Hay que crear una variable si queremos usar un enum en el HTML. De lo contrario no funcionará.
 
-  currentCreatingState: CreatingChampRoundStates = CreatingChampRoundStates.CreatingBasicInfo; // Es mas sencillo manejar que se muestra en el modal cambiando su estado, en vez de ifs y booleans.
+  currentCreatingState: CreatingChampStates = CreatingChampStates.CreatingBasicInfo; // Es mas sencillo manejar que se muestra en el modal cambiando su estado, en vez de ifs y booleans.
 
   championshipCreating?: LeagueChampionship;
 
