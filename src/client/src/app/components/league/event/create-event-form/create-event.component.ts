@@ -42,6 +42,11 @@ export class CreateEventComponent implements OnInit {
   ngOnInit(): void {
     // En caso de que se utilize un ID de preset, se carga su informacion en el formulario
 
+    this.route.paramMap.subscribe(params => {
+      const id = params.get("leagueId");
+      this.leagueId = Number(id) ?? null;
+    })
+
     const presetKey = 'presetId'
     const presetId = this.route.snapshot.queryParams[presetKey];
 
@@ -52,6 +57,7 @@ export class CreateEventComponent implements OnInit {
     }
   }
 
+  leagueId?: number;
 
   readonly creatingStates = CreatingEventStates;
 
@@ -64,6 +70,8 @@ export class CreateEventComponent implements OnInit {
   handleBasicDataCreated = (event: LeagueEvent) => {
     this.eventCreating = event;
 
+    this.eventCreating.leagueId = this.leagueId;
+
     this.currentCreatingState = this.creatingStates.CreatingTeams;
   }
 
@@ -75,8 +83,6 @@ export class CreateEventComponent implements OnInit {
     this.eventCreating!.teams = teams;
 
     this.currentCreatingState = this.creatingStates.Overview;
-
-    console.log(JSON.stringify(this.eventCreating!));
   }
 
   handleAfterPresetShare = () => {

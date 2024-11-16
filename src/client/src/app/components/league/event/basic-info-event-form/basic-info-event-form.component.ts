@@ -34,12 +34,9 @@ import {CustomButtonComponent} from "../../../utils/custom-button/custom-button.
     DialogModule,
     NgIf,
     ReactiveFormsModule,
-    SlicePipe,
     CustomTextInputComponent,
     TrackSearchFormComponent,
     CustomCardComponent,
-    CustomEmptyComponent,
-    CustomButtonComponent
   ],
   templateUrl: './basic-info-event-form.component.html',
   styleUrl: './basic-info-event-form.component.scss'
@@ -245,8 +242,8 @@ export class BasicInfoEventFormComponent {
         parent: {
           name: "SSSS",
         },
-        id: 1
-      }
+      },
+      layoutId: 1
     }
 
     this.basicDataCreated.emit(event);

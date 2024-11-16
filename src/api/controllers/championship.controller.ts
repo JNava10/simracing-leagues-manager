@@ -4,7 +4,7 @@ import {CustomError} from "../utils/classes/error";
 import {ChampionshipQuery} from "../services/queries/championship.query";
 import {
     ChampionshipCreation,
-    ChampionshipData,
+    Championship,
     ChampionshipPreset,
     EnterChampionship,
     PresetCreation,

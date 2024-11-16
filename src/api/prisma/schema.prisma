@@ -57,6 +57,7 @@ model User {
   RoundResults          RoundEntry[]
   notificationsSent     Notification[] @relation("NotificationsSent")
   notificationsReceived Notification[] @relation("NotificationsReceived")
+  EventChampionship     LeagueEvent[]
 }
 
 model FavouriteSimulator {
@@ -104,10 +105,11 @@ model League {
   category    Int?
   authorId    Int
 
-  author        User                 @relation(fields: [authorId], references: [id])
-  championships LeagueChampionship[]
-  members       LeagueMember[]
-  leaguePost    LeaguePost[]
+  author            User                 @relation(fields: [authorId], references: [id])
+  championships     LeagueChampionship[]
+  members           LeagueMember[]
+  leaguePost        LeaguePost[]
+  EventChampionship LeagueEvent[]
 }
 
 // Miembros pertenecientes a cada liga.
@@ -124,6 +126,36 @@ model LeagueMember {
   user   User   @relation(fields: [userId], references: [id])
 
   @@id(name: "memberKeys", [leagueId, userId])
+}
+
+model LeagueEvent {
+  id          Int      @id @default(autoincrement())
+  leagueId    Int
+  name        String   @db.VarChar(255)
+  description String   @db.VarChar(255)
+  authorId    Int
+  layoutId    Int
+  simulatorId Int
+  createdAt   DateTime @default(now()) @db.DateTime(6)
+
+  author    User?          @relation(fields: [authorId], references: [id])
+  league    League?        @relation(fields: [leagueId], references: [id])
+  simulator SimulatorGame? @relation(fields: [simulatorId], references: [id])
+  layout    TrackLayout?   @relation(fields: [layoutId], references: [id])
+
+  users      ChampionshipEntry[]
+  categories ChampionshipCategories[]
+  teams      EventTeam[]
+}
+
+model EventTeam {
+  eventId Int
+  teamId  Int
+
+  event LeagueEvent @relation(fields: [eventId], references: [id])
+  team  Team        @relation(fields: [teamId], references: [id])
+
+  @@id([eventId, teamId])
 }
 
 // Campeonatos de cada liga
@@ -165,8 +197,10 @@ model ChampionshipCategories {
   championshipId Int
   categoryId     Int
 
-  championship LeagueChampionship @relation(fields: [championshipId], references: [id])
-  categories   Category           @relation(fields: [categoryId], references: [id])
+  championship        LeagueChampionship @relation(fields: [championshipId], references: [id])
+  categories          Category           @relation(fields: [categoryId], references: [id])
+  EventChampionship   LeagueEvent?       @relation(fields: [eventChampionshipId], references: [id])
+  eventChampionshipId Int?
 
   @@id(name: "keys", [championshipId, categoryId])
 }
@@ -181,8 +215,10 @@ model ChampionshipEntry {
   description    String?  @db.VarChar(255)
   createdAt      DateTime @default(now()) @db.DateTime(6)
 
-  championship LeagueChampionship @relation(fields: [championshipId], references: [id])
-  user         User               @relation(fields: [userId], references: [id])
+  championship        LeagueChampionship @relation(fields: [championshipId], references: [id])
+  user                User               @relation(fields: [userId], references: [id])
+  EventChampionship   LeagueEvent?       @relation(fields: [eventChampionshipId], references: [id])
+  eventChampionshipId Int?
 }
 
 model RoundEntry {
@@ -209,6 +245,7 @@ model Team {
   PresetTeam PresetTeam[]
 
   ChampionshipTeam ChampionshipTeam[]
+  EventTeam        EventTeam[]
 }
 
 model PresetTeam {
@@ -329,6 +366,7 @@ model TrackLayout {
   parentId    Int
 
   WorkshopPresetLayouts ChampionshipPresetLayouts[]
+  EventChampionship     LeagueEvent[]
 }
 
 // Simuladores
@@ -342,6 +380,7 @@ model SimulatorGame {
 
   userFavourites FavouriteSimulator[]
   championships  LeagueChampionship[]
+  events         LeagueEvent[]
 }
 
 /// Posts de ligas ///

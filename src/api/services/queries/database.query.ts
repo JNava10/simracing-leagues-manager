@@ -2,7 +2,7 @@ import { match } from 'node:assert';
 import { ScoreQuery } from './score.query';
 import { ScoreSystem } from '../../utils/interfaces/score.interface';
 import {prisma} from "../../app";
-import {ChampionshipCreation, ChampionshipData, ChampionshipRound, PresetCreation, Team} from "../../utils/interfaces/championship/championship.interface";
+import {ChampionshipCreation, Championship, ChampionshipRound, PresetCreation, Team} from "../../utils/interfaces/championship/championship.interface";
 import { Layout } from "../../utils/interfaces/layout.interface";
 import { TeamQuery } from "./team.query";
 

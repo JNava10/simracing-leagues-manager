@@ -1,8 +1,11 @@
-import {ChampionshipEntry, Prisma, TrackLayout, User} from "@prisma/client"
 import { CategoryData as Category } from "../category.interface"
 import { ScoreSystem } from "../score.interface"
+import {Layout} from "../layout.interface";
+import {SimulatorGame} from "../simulator.interface";
+import {League} from "../league.interface";
+import {User} from "../user.interface";
 
-export interface ChampionshipData {
+export interface Championship {
     id?: number,
     name: string,
     description?: string,
@@ -91,14 +94,58 @@ export interface PositionCreation {
     finishState: number;
 }
 
-export interface LeagueEvent {
+export interface LeagueEventCreation {
     id?: number,
+    layoutId?: number,
     name?: string,
     description?: string
     categoryIds?: number[]
-    layout?: TrackLayout
+    layout?: Layout
     teams?: Team[]
-    users?: ChampionshipEntry[]
     simulatorId?: number
     leagueId?: number
 }
+
+export interface LeagueEvent {
+    id?: number;
+    name?: string;
+    description?: string;
+    authorId?: number;
+    layoutId?: number;
+    simulatorId?: number;
+    createdAt?: Date;
+
+    author?: User;
+    league?: League;
+    simulator?: SimulatorGame;
+    layout?: Layout;
+
+    users: ChampionshipEntry[];
+    eventTeams: EventTeam[];
+}
+
+export interface EventTeam {
+    eventId: number;
+    teamId: number;
+
+    event: LeagueEvent;
+    team: Team;
+}
+
+
+export interface ChampionshipEntry {
+    id: number;
+    championshipId: number;
+    userId: number;
+    gameName?: string;
+    number?: number;
+    teamId?: number;
+    description?: string;
+    layoutId: number;
+    createdAt: Date;
+
+    championship?: Championship;
+    user?: User;
+    eventChampionship?: LeagueEvent;
+}
+

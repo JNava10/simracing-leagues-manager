@@ -4,18 +4,21 @@ import {UserQuery} from "../services/queries/user.query";
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {Notification} from "../utils/interfaces/notification.interface";
+import {EventQuery} from "../services/queries/event.query";
+import {LeagueEventCreation} from "../utils/interfaces/championship/championship.interface";
 
 export class EventController {
-    static create = async (req: Request, res: Response): Promise<void> => {
+    static create = async (req: CustomRequest, res: Response): Promise<void> => {
         try {
-            const body = req.body as User;
-            const createdUser = await UserQuery.createUser(body);
+            const body = req.body as LeagueEventCreation;
+            const authorId = req.user.id;
+            const createdUser = await EventQuery.create(body, authorId);
 
             sendSuccessResponse(
                 {
                     data: createdUser,
                     status: 201,
-                    msg: "Usuario creado correctamente.",
+                    msg: "Evento de liga creado correctamente.",
                 },
                 res
             );

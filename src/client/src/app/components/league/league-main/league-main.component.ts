@@ -31,7 +31,6 @@ export class LeagueMainComponent implements OnInit {
       this.leagueId = Number(id) ?? null;
     })
 
-
     if (this.leagueId) {
       this.league$ = this.leagueService.getLeague(this.leagueId)
     }

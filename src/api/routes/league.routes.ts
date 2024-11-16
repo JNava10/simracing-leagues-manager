@@ -98,9 +98,5 @@ router.post("/:leagueId/invite/:userId", [validateToken], controller.inviteUser)
  */
 router.post("/:leagueId/ban/:userId", [validateToken], controller.banMember);
 
-/**
- * @route POST /:leagueId/pending/decline
- * @description Invitar a un usuario `:userId` a la liga `:leagueId`
- */
 
 export default router;

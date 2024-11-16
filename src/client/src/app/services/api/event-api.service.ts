@@ -16,7 +16,7 @@ export class EventApiService {
   constructor(private http: HttpClient, private globalHelper: GlobalHelper) { }
 
   create = (leagueId: number, event: LeagueEvent) => {
-    const url = `${devEnv.apiEndpoint}/league/${leagueId}`;
+    const url = `${devEnv.apiEndpoint}/event`;
     const options = { params: { ...sendTokenParam } };
 
     return this.http.post<DefaultRes<League>>(url, event, options).pipe(

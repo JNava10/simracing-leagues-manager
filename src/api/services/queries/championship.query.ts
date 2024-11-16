@@ -2,7 +2,7 @@ import {ScoreQuery} from './score.query';
 import {prisma} from "../../app";
 import {
     ChampionshipCreation,
-    ChampionshipData,
+    Championship,
     ChampionshipRound,
     EnterChampionship,
     GetChampProps,
@@ -83,7 +83,7 @@ export class ChampionshipQuery {
                 authorId: authorId,
                 simulatorId: incoming.simulatorId,
             }
-        }) as ChampionshipData;
+        }) as Championship;
         
         // Inserción del calendario
         await ChampionshipQuery.createCalendar(incoming.calendar, created.id);

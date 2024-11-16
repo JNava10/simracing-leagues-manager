@@ -26,6 +26,8 @@ export interface LeagueEvent {
   calendar?: ChampionshipRound[]
   teams?: Team[]
   users?: ChampionshipEntry[]
+  layout?: TrackLayout;
+  layoutId?: number
   simulatorId?: number
   leagueId?: number
 }
