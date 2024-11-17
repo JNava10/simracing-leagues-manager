@@ -176,8 +176,7 @@ model LeagueChampionship {
   calendar   ChampionshipRound[]
   users      ChampionshipEntry[]
   categories ChampionshipCategories[]
-
-  ChampionshipTeam ChampionshipTeam[]
+  teams      ChampionshipTeam[]
 }
 
 model ChampionshipRound {
@@ -191,6 +190,7 @@ model ChampionshipRound {
 
   championship LeagueChampionship @relation(fields: [championshipId], references: [id])
   result       RoundEntry[]
+  layout       TrackLayout        @relation(fields: [layoutId], references: [id])
 }
 
 model ChampionshipCategories {
@@ -367,6 +367,8 @@ model TrackLayout {
 
   WorkshopPresetLayouts ChampionshipPresetLayouts[]
   EventChampionship     LeagueEvent[]
+
+  ChampionshipRound ChampionshipRound[]
 }
 
 // Simuladores

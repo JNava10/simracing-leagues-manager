@@ -29,6 +29,10 @@ import { Errors } from '../../../../utils/enums/errors.enum';
 import { EventEmitter } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import {CustomTextInputComponent} from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
+import {SimSearchFormComponent} from "../../../utils/search/sim-search-form/sim-search-form.component";
+import {CategorySearchFormComponent} from "../../../utils/search/category-search-form/category-search-form.component";
+import {CustomBadgeComponent} from "../../../utils/custom/badge/custom-badge.component";
+import {RoundListComponent} from "../../round-list/round-list.component";
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -38,13 +42,17 @@ import {CustomTextInputComponent} from "../../../utils/custom/input/custom-text-
     ReactiveFormsModule,
     DropdownModule,
     AsyncPipe,
-    SlicePipe,
     AccordionModule,
     DialogModule,
     CustomSearchInputComponent,
     FormsModule,
     MessagesModule,
-    CustomTextInputComponent
+    CustomTextInputComponent,
+    SimSearchFormComponent,
+    CategorySearchFormComponent,
+    CustomBadgeComponent,
+    RoundListComponent,
+    SlicePipe
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
@@ -72,13 +80,14 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   ngOnInit() {
     this.leagueId = this.route.snapshot.params['leagueId'];
 
-    if (this.preset) {
+    if (this.championship) {
+      this.applyChampData(this.championship);
+    } else if (this.preset) {
       this.convertDataFromApi(this.preset)
     }
   }
 
   convertDataFromApi(preset: ChampionshipPreset) {
-    console.log(preset)
     let calendar = preset.layouts.map(item => item.layout)
 
     calendar.forEach(layout => {
@@ -87,6 +96,19 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
         layout: layout
       })
     })
+  }
+
+  private applyChampData = (championship: LeagueChampionship) => {
+    console.log(championship)
+
+    this.championshipForm.patchValue({
+      name: championship.name,
+      description: championship.description,
+    });
+
+    console.log(this.championshipForm.value);
+
+    this.raceCalendar = championship.calendar!
   }
 
   /// Enums ///
@@ -99,18 +121,18 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
 
   selectedCategories: Category[] = [];
 
-  createChampionshipForm: FormGroup = new FormGroup({
+  championshipForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     description: new FormControl('')
   });
 
 
   get name() {
-    return this.createChampionshipForm.get('name')!.value;
+    return this.championshipForm.get('name')!.value;
   }
 
   get description() {
-    return this.createChampionshipForm.get('description')!.value;
+    return this.championshipForm.get('description')!.value;
   }
 
   selectedSimulator?: SimulatorGame
@@ -200,8 +222,6 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     this.raceCalendar.push(round)
 
     this.championshipRoundForm.reset()
-
-    console.log(this.raceCalendar);
   }
 
   protected deleteTrack = (index: number) => {
@@ -262,7 +282,7 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
 
   protected goToNextPage = () => {
 
-    let championship = this.createChampionshipForm.value as LeagueChampionship
+    let championship = this.championshipForm.value as LeagueChampionship
 
     championship.leagueId = this.leagueId;
     championship.calendar = this.raceCalendar;
@@ -280,5 +300,9 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     championship.simulatorId = this.selectedSimulator?.id;
 
     this.basicDataCreated.emit(championship);
+  }
+
+  confirmCategory($event: Category) {
+    this.selectedCategories.push($event)
   }
 }

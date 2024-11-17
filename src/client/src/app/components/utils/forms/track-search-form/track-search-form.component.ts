@@ -20,7 +20,6 @@ import {CustomButtonComponent} from "../../custom/input/custom-button/custom-but
     CustomButtonComponent
   ],
   templateUrl: './track-search-form.component.html',
-  styleUrl: './track-search-form.component.scss'
 })
 export class TrackSearchFormComponent {
   constructor(private trackService: TrackApiService) {}

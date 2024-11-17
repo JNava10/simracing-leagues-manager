@@ -8,30 +8,31 @@ import {
     GetChampProps,
     PositionCreation,
     PresetCreation,
-    Team
+    Team, LeagueChampionshipQuery
 } from "../../utils/interfaces/championship/championship.interface";
 import {TeamQuery} from "./team.query";
 import {tr} from "@faker-js/faker";
+import {
+    championshipFull,
+    ChampionshipFull,
+    ChampionshipPresetFull,
+    presetChampionshipFull
+} from "../../prisma/types/championship.types";
 
 export class ChampionshipQuery {
     static get = async (id: number) => {
         return prisma.leagueChampionship.findFirst({where: {id}});
     };
 
+
     static getFull = async (championshipId: number) => {
-        return prisma.leagueChampionship.findMany({
+        // @ts-ignore
+        return prisma.leagueChampionship.findFirst({
             where: {
                 id: championshipId,
             },
-
-            include: {
-                calendar: {
-                    include: {
-                        result: true
-                    }
-                },
-            }
-        });
+            include: championshipFull.include
+        }) as LeagueChampionshipQuery;
     }
 
     static getTeams = async (championshipId: number) => {
@@ -271,5 +272,35 @@ export class ChampionshipQuery {
         })
     }
 
+    static edit = async (championshipId: number, championship: Championship) => {
+
+        // Insercion de los datos basicos del campeonato.
+        const created = await prisma.leagueChampionship.create({
+            data: {
+                name: championship.name,
+                description: championship.description,
+                leagueId: Number(championship.leagueId)!,
+                simulatorId: championship.simulatorId,
+            }
+        }) as Championship;
+
+        // Inserción del calendario
+        await ChampionshipQuery.createCalendar(championship.calendar, created.id);
+
+        const teamService = new TeamQuery();
+        const createdTeams = await teamService.createTeamsReturningIds(championship.teams);
+
+        // Inserción de la tabla foranea de los equipos y su campeonato.
+        for (const i in createdTeams) {
+            const teamId = createdTeams[i];
+
+            await prisma.championshipTeam.create({data: {
+                    teamId,
+                    championshipId: created.id
+                }})
+        }
+
+        return created.id;
+    }
 
 }

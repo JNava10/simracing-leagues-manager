@@ -16,6 +16,7 @@ import {
 import {ScoreSystemFormComponent} from "../createChampionship/score-system-form/score-system-form.component";
 import {ShareConfigPresetComponent} from "../createChampionship/share-config-preset/share-config-preset.component";
 import {TeamFormComponent} from "../create-championship/team-form/team-form.component";
+import {ChampEditOverviewComponent} from "../champ-edit-overview/champ-edit-overview.component";
 
 @Component({
   selector: 'app-edit-championship-form',
@@ -25,7 +26,8 @@ import {TeamFormComponent} from "../create-championship/team-form/team-form.comp
     CreateChampionshipOverviewComponent,
     ScoreSystemFormComponent,
     ShareConfigPresetComponent,
-    TeamFormComponent
+    TeamFormComponent,
+    ChampEditOverviewComponent
   ],
   templateUrl: './edit-championship-form.component.html',
 })
@@ -61,7 +63,10 @@ export class EditChampionshipFormComponent implements OnInit {
   }
 
   handleBasicDataCreated = (championship: LeagueChampionship) => {
-    this.championship = championship;
+    this.championship = {
+      ...championship,
+      teams: this.championship!.teams!,
+    };
 
     this.currentCreatingState = this.creatingStates.Teams;
   }

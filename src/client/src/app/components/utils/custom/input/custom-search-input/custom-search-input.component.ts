@@ -16,7 +16,7 @@ export class CustomSearchInputComponent {
   /**
    * Tiempo en milisegundos que tardará el input en lanzar el evento de busqueda
    */
-  @Input() searchMilis: number | undefined = 450;
+  @Input() searchMilis: number | undefined = 325;
 
   /**
    * Evento que se lanzará al terminar de teclear

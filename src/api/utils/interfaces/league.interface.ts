@@ -3,7 +3,6 @@ export interface League {
     name: string;
     description?: string;
     color?: string;
-    joinedAt?: Date;
 }
 
 export interface NewLeagueMember {

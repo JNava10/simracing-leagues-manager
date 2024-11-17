@@ -30,11 +30,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.post<DefaultRes<League>>(url, league, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<League>>, caught) => {
-        this.globalHelper!.handleApiError('Error al crear la liga:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<League>(res)!;
+      })
     );
   }
 

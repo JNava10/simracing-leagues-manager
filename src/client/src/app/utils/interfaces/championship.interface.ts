@@ -4,6 +4,7 @@ import { ExtraScore, PositionScore, ScoreSystem } from "./score.interface"
 import { SimulatorGame } from "./simulator.interface"
 import { Track, TrackLayout } from "./track.interface"
 import { User } from "./user.interface"
+import {League} from "./league.interface";
 
 export interface LeagueChampionship {
   id?: number,
@@ -15,6 +16,7 @@ export interface LeagueChampionship {
   teams?: Team[]
   users?: ChampionshipEntry[]
   simulatorId?: number
+  simulator?: SimulatorGame
   leagueId?: number
 }
 
@@ -38,7 +40,7 @@ export interface ChampionshipRound {
   layoutId?: number
   layout?: TrackLayout
   length?: RoundLength
-  customScoring?: ScoreSystem // Configuración personalizada del sistema de puntuación.
+  customScoring?: ScoreSystem
 }
 
 export interface ChampionshipEntry {

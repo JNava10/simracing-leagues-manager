@@ -8,6 +8,7 @@ const router = express.Router();
 const controller = new ChampionshipController()
 
 router.get("/:id", [validateToken], controller.get);
+router.put("/preset/:id", [validateToken], controller.edit);
 router.get("/:id/full", [validateToken], controller.getFullData);
 router.get("/:id/calendar", [validateToken], controller.getCalendar);
 router.get("/:id/entries", [validateToken], controller.getEntries);
@@ -20,7 +21,6 @@ router.post("/:id/results/:round/rfactor", [validateToken], controller.parseRfac
 
 router.get("/teams/:champId", [validateToken], controller.getTeams);
 
-router.post("/preset", [validateToken], controller.createPreset);
 router.get("/preset/:id", [validateToken], controller.getPresetById);
 router.get("/preset", [validateToken], controller.getAllPresets);
 

@@ -7,11 +7,16 @@ import {User} from "../user.interface";
 
 export interface Championship {
     id?: number,
-    name: string,
-    description?: string,
-    calendar?: ChampionshipRound[],
-    joinedAt?: Date,
-    leagueId: number,
+    name?: string,
+    description?: string
+    categoryIds?: number[]
+    calendar?: ChampionshipRound[]
+    scoreSystem?: ScoreSystem
+    teams?: Team[]
+    users?: ChampionshipEntry[]
+    simulatorId?: number
+    simulator?: SimulatorGame
+    leagueId?: number
 }
 
 export interface ChampionshipCreation {
@@ -149,3 +154,34 @@ export interface ChampionshipEntry {
     eventChampionship?: LeagueEvent;
 }
 
+export interface LeagueChampionshipQuery {
+    id: number;
+    leagueId: number;
+    name: string;
+    authorId: number;
+    description: string;
+    simulatorId: number;
+    createdAt: string;
+    calendar: CalendarQuery[];
+    simulator: SimulatorGame;
+    author: User;
+    league: League;
+    teams: ChampionshipTeamQuery[];
+}
+
+interface CalendarQuery {
+    id: number;
+    championshipId: number;
+    layoutId: number;
+    name: string;
+    description: string | null;
+    createdAt: string;
+    finished: boolean;
+    layout: Layout;
+}
+
+interface ChampionshipTeamQuery {
+    championshipId: number;
+    teamId: number;
+    team: Team;
+}

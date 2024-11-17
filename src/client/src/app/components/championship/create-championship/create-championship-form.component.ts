@@ -18,9 +18,9 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-create-championship',
   standalone: true,
   imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent, AsyncPipe],
-  templateUrl: './championship-form.component.html',
+  templateUrl: './create-championship-form.component.html',
 })
-export class ChampionshipFormComponent implements OnInit {
+export class CreateChampionshipFormComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private championshipService: ChampionshipApiService, private globalHelper: GlobalHelper) {}
 
@@ -30,10 +30,6 @@ export class ChampionshipFormComponent implements OnInit {
     const presetId = this.route.snapshot.queryParams['presetId'];
     const champId = this.route.snapshot.params['champId'];
 
-    if (champId) {
-      this.getChampionship(+champId);
-    }
-
     if (presetId) {
       this.getPresetIfExists(presetId);
     }
@@ -42,7 +38,7 @@ export class ChampionshipFormComponent implements OnInit {
   creatingStates = ChampFormStates; // Hay que crear una variable si queremos usar un enum en el HTML. De lo contrario no funcionará.
   currentCreatingState: ChampFormStates = ChampFormStates.BasicInfo; // Es mas sencillo manejar que se muestra en el modal cambiando su estado, en vez de ifs y booleans.
   championship?: LeagueChampionship;
-  preset?: ChampionshipPreset
+  preset?: ChampionshipPreset;
 
   private getPresetIfExists(presetId: number) {
     this.championshipService.getPresetById(presetId).subscribe(res => this.preset = res!)
@@ -64,8 +60,6 @@ export class ChampionshipFormComponent implements OnInit {
     }
 
     this.championship!.teams = teams;
-
-    console.log(this.championship!.teams);
 
     this.currentCreatingState = this.creatingStates.ScoreSystem
   }

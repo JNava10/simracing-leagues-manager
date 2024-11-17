@@ -9,7 +9,7 @@ import {
     EnterChampionship,
     PresetCreation,
     GetChampProps,
-    PositionCreation
+    PositionCreation,
 } from "../utils/interfaces/championship/championship.interface";
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
@@ -17,6 +17,7 @@ import {Messages} from "../utils/enum/messages.enum";
 import {UploadedFile} from "express-fileupload";
 import {XmlService} from "../services/xml.service";
 import {Driver, RfactorData} from "../utils/interfaces/championship/rfactor.interface";
+import {League} from "../utils/interfaces/league.interface";
 
 export class ChampionshipController {
     get = async (req: CustomRequest, res: Response) => {
@@ -182,9 +183,17 @@ export class ChampionshipController {
     getFullData = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['id']!);
-            const championship = await ChampionshipQuery.getFull(id);
+            const data = await ChampionshipQuery.getFull(id);
+            const championship: Championship = {
+                id: data.id,
+                name: data.name,
+                description: data.description,
+                calendar: data.calendar,
+                simulator: data.simulator,
+                teams: data.teams.map(item => item.team),
+            }
 
-            if (!championship) {
+            if (!data) {
                 return sendErrorResponse({
                     error: 'No se han encontrado resultados del campeonato.',
                 }, res);
@@ -279,4 +288,22 @@ export class ChampionshipController {
             res.status(500).send(error);
         }
     }
+
+    edit = async (req: CustomRequest, res: Response) => {
+        try {
+            const id = Number(req.params['id']!);
+            const presets = await ChampionshipQuery.getTeams(id);
+
+            return sendSuccessResponse({
+                data: presets,
+                msg: 'A'
+            }, res);
+
+        } catch (e) {
+            console.error(e)
+            const error: CustomError = {error: e.message}
+            res.status(500).send(error);
+        }
+    }
+
 }

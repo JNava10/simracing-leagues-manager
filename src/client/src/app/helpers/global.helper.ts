@@ -85,6 +85,17 @@ handleApiError = (
   arrayByNumber = (count: number) => {
     return [].constructor(count)
   }
+
+  getHexWithAlpha = (hex: string, opacity: number) => {
+    // TODO: Validar si es un HEX.
+    let hexWithAlpha = `${hex}${opacity.toString(16)}`;
+
+    if (!hexWithAlpha.startsWith('#')) {
+      hexWithAlpha = `#${hexWithAlpha}${opacity.toString(16)}`;
+    }
+
+    return hexWithAlpha;
+  }
 }
 
 interface ShowSuccessMessageProps {

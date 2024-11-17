@@ -23,16 +23,9 @@ export class CreateChampionshipOverviewComponent implements OnInit {
     console.log(this.championship);
   }
 
-  createdResponse$?: Observable<DefaultRes>
-
-
   showingSummary = false;
 
   @Input() championship?: LeagueChampionship;
-
-  showSummary() {
-    this.showingSummary = true;
-  }
 
   createChampionship() {
     this.championshipService.create(this.championship!)

@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CustomButtonComponent} from "../input/custom-button/custom-button.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-custom-card',
   standalone: true,
   imports: [
-    CustomButtonComponent
+    CustomButtonComponent,
+    NgIf
   ],
   templateUrl: './custom-card.component.html',
   styleUrl: './custom-card.component.scss'
@@ -17,6 +19,11 @@ export class CustomCardComponent {
   @Input() linkText?: string = 'Default Link Text';
   @Input() link?: string;
   @Input() showCloseBtn?: boolean = false;
+
+  @Input() showTitle?: boolean = true;
+  @Input() showSubtitle?: boolean = true;
+  @Input() showContent?: boolean = true;
+  @Input() showImage?: boolean = false;
 
   @Output() onCloseBtn = new EventEmitter<void>();
 

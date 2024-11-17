@@ -1,0 +1,49 @@
+<div class="border w-96 border-neutral-300 dark:border-neutral-700 rounded-md p-3 bg-neutral-100 dark:bg-neutral-800"
+     [ngClass]="styleClass">
+  @if (selected) {
+    <div class="flex flex-col h-48 gap-3">
+      @if (showButtons) {
+        <div class="flex justify-center gap-3">
+          <app-custom-button *ngIf="showConfirm" (click)="confirm()" color="red">
+            Aceptar
+          </app-custom-button>
+          <app-custom-button *ngIf="showCancel" color="purple" (click)="cancel()">
+            Cancelar
+          </app-custom-button>
+        </div>
+      }
+    </div>
+  } @else {
+    <ul
+      class="text-neutral-800 dark:text-neutral-200 h-48 flex-col justify-center w-full items-center"
+    >
+      @if (categories$ | async; as res) {
+        <div class="overflow-y-auto h-44 py-3">
+          @for (simulator of res.data; track $index) {
+            <span
+              (click)="selectItem(simulator)"
+              class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
+            >
+            {{ simulator.name }}
+          </span>
+          } @empty {
+            <p class="text-neutral-500 dark:text-neutral-400">No se han encontrado resultados.</p>
+          }
+        </div>
+      } @else {
+        <div class="h-full">
+          <app-custom-empty
+            title="Es obligatorio elegir una categoria"
+            description="Introduce un nombre."
+          />
+        </div>
+      }
+    </ul>
+
+    <app-custom-search-input
+      class="join-item"
+      (onSearch)="search($event)"
+      placeholder="Ej. Assetto Corsa"
+    />
+  }
+</div>

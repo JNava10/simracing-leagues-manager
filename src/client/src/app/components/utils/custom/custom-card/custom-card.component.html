@@ -5,13 +5,13 @@
     </app-custom-button>
   }
   <div class="p-3 md:p-5">
-    <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+    <h3 *ngIf="showTitle" class="text-lg font-bold text-gray-800 dark:text-white">
       {{ title }}
     </h3>
-    <p class="mt-1 text-xs font-medium uppercase text-gray-500 dark:text-neutral-500">
+    <p *ngIf="showSubtitle" class="mt-1 text-xs font-medium uppercase text-gray-500 dark:text-neutral-500">
       {{ subtitle }}
     </p>
-    <p class="mt-2 text-gray-500 dark:text-neutral-400">
+    <p *ngIf="showContent" class="mt-2 text-gray-500 dark:text-neutral-400">
       {{ content }}
     </p>
 

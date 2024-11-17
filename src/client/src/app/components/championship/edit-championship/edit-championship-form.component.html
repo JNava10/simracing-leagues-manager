@@ -5,8 +5,9 @@
       [preset]="preset"
       (basicDataCreated)="handleBasicDataCreated($event)"
     />
-  } @else {
+  } @else if (this.championship) {
     <app-basic-info-championship-form
+      [championship]="championship"
       (basicDataCreated)="handleBasicDataCreated($event)"
     />
   }
@@ -20,6 +21,7 @@
     />
   } @else {
     <app-team-form
+      [championship]="championship"
       (teamsCreated)="handleTeamsCreated($event)"
     />
   }
@@ -48,7 +50,7 @@
 }
 
 @else if (currentCreatingState === creatingStates.Overview) {
-  <app-championship-overview
+  <app-champ-edit-overview
     [championship]="championship"
   />
 }
