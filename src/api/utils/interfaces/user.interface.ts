@@ -7,4 +7,5 @@ export interface User {
     password?: string;
     joinedAt?: Date;
     email?: string
+    isYou?: boolean;
 }

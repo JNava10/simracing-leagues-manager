@@ -13,7 +13,7 @@
     dark:placeholder-neutral-500
     outline-none w-full"
 
-    [className]="styleClass"
+    [className]="inputClass"
     [type]="type"
     [maxlength]="maxLength!"
     [value]="value"
@@ -24,7 +24,7 @@
     [placeholder]="managePlaceholder()"
     [(ngModel)]="value"
     (ngModelChange)="writeValue($event)"
-    ngClass="styleClass"
+    ngClass="inputClass"
     (keyup)="onInputKeyUp($event)"
     (keydown)="onInputKeyDown($event)"
   >

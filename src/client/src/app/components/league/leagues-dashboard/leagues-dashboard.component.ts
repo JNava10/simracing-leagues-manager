@@ -8,7 +8,7 @@ import {ListboxModule} from "primeng/listbox";
 import {ActivatedRoute, ParamMap, RouterLink} from "@angular/router";
 import {TableModule} from "primeng/table";
 import { SearchLeaguesBarComponent } from "../search-leagues-bar/search-leagues-bar.component";
-import { CustomButtonComponent } from "../../utils/custom-button/custom-button.component";
+import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
 // import {BrowseLeaguesListComponent} from "../browse-leagues-list/browse-leagues-list.component";
 @Component({
   selector: 'app-leagues-dashboard',

@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {CustomButtonComponent} from "../../../utils/custom-button/custom-button.component";
-import {CustomRadioGroupComponent} from "../../../utils/custom/custom-radio-group/custom-radio-group.component";
-import {CustomSelectComponent} from "../../../utils/custom-select/custom-select.component";
+import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
+import {CustomRadioGroupComponent} from "../../../utils/custom/input/custom-radio-group/custom-radio-group.component";
+import {CustomSelectComponent} from "../../../utils/custom/input/custom-select/custom-select.component";
 import {FormArray, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {

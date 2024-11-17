@@ -4,7 +4,7 @@ import {CreateLeagueFormComponent} from "./components/league/create/create-leagu
 import {LeaguesDashboardComponent} from "./components/league/leagues-dashboard/leagues-dashboard.component";
 import {LeagueMainComponent} from "./components/league/league-main/league-main.component";
 import {LeagueOverviewComponent} from "./components/league/league-overview/league-overview.component";
-import {CreateChampionshipComponent} from "./components/championship/create-championship/create-championship.component";
+import {ChampionshipFormComponent} from "./components/championship/create-championship/championship-form.component";
 import { LeagueMemberListComponent } from './components/league/league-member-list/league-member-list.component';
 import { PendingMembersListComponent } from './components/league/pending-members-list/pending-members-list.component';
 import { PresetListComponent } from './components/presets/preset-list/preset-list.component';
@@ -20,6 +20,9 @@ import {NotificationMenuComponent} from "./components/notifications/notification
 import {EditLeagueFormComponent} from "./components/league/edit-league-form/edit-league-form.component";
 import {CreateEventComponent} from "./components/league/event/create-event-form/create-event.component";
 import {ProfileInfoComponent} from "./components/profile/profile-info/profile-info.component";
+import {
+  EditChampionshipFormComponent
+} from "./components/championship/edit-championship/edit-championship-form.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -40,7 +43,8 @@ export const routes: Routes = [
               { path: 'pending', component: PendingMembersListComponent, title: 'Miembros pendientes de entrar a liga' },
             ]},
           { path: 'championships', children: [
-              { path: 'new', title: 'Crear un campeonato', component: CreateChampionshipComponent },
+              { path: 'new', title: 'Crear un campeonato', component: ChampionshipFormComponent },
+              { path: ':champId/edit', title: 'Editar un campeonato', component: ChampionshipFormComponent },
               { path: ':champId/enter', title: 'Entrar a un campeonato', component: EnterChampionshipFormComponent },
               { path: ':champId/results', title: 'Resultados de un campeonato', component: ChampionshipResultsComponent },
               { path: ':champId/results/:round', title: 'Resultados de un campeonato', component: RoundResultFormComponent },

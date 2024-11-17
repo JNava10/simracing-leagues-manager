@@ -1,7 +1,7 @@
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { ChampionshipApiService } from './../../../services/api/championship-api.service';
 import {Component, inject, OnInit} from '@angular/core';
-import { CustomButtonComponent } from "../../utils/custom-button/custom-button.component";
+import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import { TrackLayout } from '../../../utils/interfaces/track.interface';
 import { DialogModule } from 'primeng/dialog';
@@ -11,9 +11,9 @@ import {
   Position,
   PositionCreation
 } from '../../../utils/interfaces/championship.interface';
-import { CustomSelectComponent } from "../../utils/custom-select/custom-select.component";
+import { CustomSelectComponent } from "../../utils/custom/input/custom-select/custom-select.component";
 import { User } from '../../../utils/interfaces/user.interface';
-import {CustomRadioGroupComponent} from "../../utils/custom/custom-radio-group/custom-radio-group.component";
+import {CustomRadioGroupComponent} from "../../utils/custom/input/custom-radio-group/custom-radio-group.component";
 import {SessionFinishStates} from "../../../utils/enums/championship.enum";
 import {NgClass, SlicePipe} from "@angular/common";
 

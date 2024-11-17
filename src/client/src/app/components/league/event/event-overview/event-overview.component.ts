@@ -6,7 +6,7 @@ import {ChampionshipApiService} from "../../../../services/api/championship-api.
 import {GlobalHelper} from "../../../../helpers/global.helper";
 import {ScoreApiService} from "../../../../services/api/score-api.service";
 import {EventApiService} from "../../../../services/api/event-api.service";
-import {CustomButtonComponent} from "../../../utils/custom-button/custom-button.component";
+import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
 import {CustomCardComponent} from "../../../utils/custom/custom-card/custom-card.component";
 import {NgStyle} from "@angular/common";
 

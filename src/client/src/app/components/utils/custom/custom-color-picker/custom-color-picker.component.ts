@@ -1,5 +1,5 @@
 import {Component, forwardRef, OnInit} from '@angular/core';
-import {BaseCustomInputComponent} from "../../base-custom-input/base-custom-input.component";
+import {BaseCustomInputComponent} from "../input/base-custom-input/base-custom-input.component";
 import {NG_VALUE_ACCESSOR} from "@angular/forms";
 import {NgxColorsModule} from "ngx-colors";
 import {NgClass, NgIf} from "@angular/common";

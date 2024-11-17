@@ -1,7 +1,7 @@
 import { NgFor, NgStyle } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomTextInputComponent } from "../../../utils/custom-text-input/custom-text-input.component";
+import { CustomTextInputComponent } from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
 import { ChampionshipPreset, Team } from '../../../../utils/interfaces/championship.interface';
 import { NgxColorsModule } from 'ngx-colors';
 

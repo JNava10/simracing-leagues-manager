@@ -2,6 +2,8 @@
 import * as express from "express";
 import {body} from "express-validator";
 import {UserController} from "../controllers/user.controller";
+import {verifyToken} from "../helpers/auth.helper";
+import {validateToken} from "../middlewares/auth.middleware";
 
 const router = express.Router();
 const controller = UserController
@@ -26,7 +28,7 @@ router.post("/register", [
 
 router.get("/search/nick/:input", controller.searchByNick);
 
-router.get("/:id", controller.getById);
+router.get("/:id", [validateToken], controller.getById);
 
 router.get("/notifications", controller.getAllNotifications);
 

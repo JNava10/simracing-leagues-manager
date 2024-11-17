@@ -7,8 +7,8 @@ import {Observable} from "rxjs";
 import {League} from "../../../../../utils/interfaces/league.interface";
 import {User} from "../../../../../utils/interfaces/user.interface";
 import {UserApiService} from "../../../../../services/api/user-api.service";
-import {CustomSearchInputComponent} from "../../../custom-search-input/custom-search-input.component";
-import {CustomButtonComponent} from "../../../custom-button/custom-button.component";
+import {CustomSearchInputComponent} from "../../input/custom-search-input/custom-search-input.component";
+import {CustomButtonComponent} from "../../input/custom-button/custom-button.component";
 import {LoginComponent} from "../../../../auth/login/login.component";
 
 @Component({

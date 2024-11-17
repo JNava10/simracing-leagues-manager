@@ -182,18 +182,18 @@ export class ChampionshipController {
     getFullData = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['id']!);
-            const results = await ChampionshipQuery.getFull(id);
+            const championship = await ChampionshipQuery.getFull(id);
 
-            if (!results) {
+            if (!championship) {
                 return sendErrorResponse({
                     error: 'No se han encontrado resultados del campeonato.',
                 }, res);
             }
 
             return sendSuccessResponse({
-                data: results,
-                msg: 'A',
-                status: 201
+                data: championship,
+                msg: 'Se ha obtenido correctamente el campeonato.',
+                status: 200
             }, res);
         } catch (e) {
             console.error(e)

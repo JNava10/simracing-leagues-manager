@@ -16,11 +16,11 @@ import { ListboxModule } from 'primeng/listbox';
 import { FormsModule } from '@angular/forms';
 import { GlobalHelper } from '../../../helpers/global.helper';
 import { MessagesModule } from 'primeng/messages';
-import {CustomButtonComponent} from "../../utils/custom-button/custom-button.component";
+import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
 import {DialogModule} from "primeng/dialog";
 import {SearchUsersBarComponent} from "../../utils/custom/search/search-users-bar/search-users-bar.component";
-import {BaseCustomInputComponent} from "../../utils/base-custom-input/base-custom-input.component";
-import {CustomTextInputComponent} from "../../utils/custom-text-input/custom-text-input.component";
+import {BaseCustomInputComponent} from "../../utils/custom/input/base-custom-input/base-custom-input.component";
+import {CustomTextInputComponent} from "../../utils/custom/input/custom-text-input/custom-text-input.component";
 
 @Component({
   selector: 'app-league-member-list',

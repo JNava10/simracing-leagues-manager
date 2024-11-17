@@ -1,14 +1,14 @@
-export enum CreatingChampStates {
-  CreatingBasicInfo,
-  CreatingTeams,
-  CreatingScoreSystem,
+export enum ChampFormStates {
+  BasicInfo,
+  Teams,
+  ScoreSystem,
   Overview,
   SharePresetConfig,
 }
 
 export enum CreatingEventStates {
-  CreatingBasicInfo,
-  CreatingTeams,
+  BasicInfo,
+  Teams,
   Overview,
   SharePresetConfig,
 }

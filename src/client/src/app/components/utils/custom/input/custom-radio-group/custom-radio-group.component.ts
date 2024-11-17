@@ -1,5 +1,5 @@
 import {Component, EventEmitter, forwardRef, Input, input, Output} from '@angular/core';
-import {BaseCustomInputComponent} from "../../base-custom-input/base-custom-input.component";
+import {BaseCustomInputComponent} from "../base-custom-input/base-custom-input.component";
 import {NG_VALUE_ACCESSOR, RadioControlValueAccessor} from "@angular/forms";
 import {PaginatorModule} from "primeng/paginator";
 import { v4 as uuidv4 } from 'uuid';

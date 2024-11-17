@@ -1,7 +1,7 @@
 import { GlobalHelper } from './../../../../helpers/global.helper';
 import { MessageService } from 'primeng/api';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {CustomButtonComponent, SoftButtons} from "../../../utils/custom-button/custom-button.component";
+import {CustomButtonComponent, SoftButtons} from "../../../utils/custom/input/custom-button/custom-button.component";
 import { LeagueChampionship } from '../../../../utils/interfaces/championship.interface';
 import { ChampionshipApiService } from '../../../../services/api/championship-api.service';
 import { DefaultRes } from '../../../../utils/interfaces/responses/response.interface';

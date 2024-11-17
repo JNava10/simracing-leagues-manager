@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, output, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ChampionshipPreset } from '../../../utils/interfaces/championship.interface';
+import { ChampionshipPreset } from '../../../../../utils/interfaces/championship.interface';
 
 @Component({
   selector: 'app-custom-button',

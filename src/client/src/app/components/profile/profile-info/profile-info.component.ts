@@ -1,10 +1,10 @@
 import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {CustomAvatarComponent} from "../../utils/custom-avatar/custom-avatar.component";
-import {CustomButtonComponent} from "../../utils/custom-button/custom-button.component";
+import {CustomAvatarComponent} from "../../utils/custom/custom-avatar/custom-avatar.component";
+import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
 import {User} from "../../../utils/interfaces/user.interface";
 import {ActivatedRoute} from "@angular/router";
 import {UserApiService} from "../../../services/api/user-api.service";
-import {CustomTextInputComponent} from "../../utils/custom-text-input/custom-text-input.component";
+import {CustomTextInputComponent} from "../../utils/custom/input/custom-text-input/custom-text-input.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({

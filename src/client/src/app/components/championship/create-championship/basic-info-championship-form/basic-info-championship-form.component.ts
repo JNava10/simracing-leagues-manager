@@ -6,7 +6,7 @@ import { Track, TrackLayout } from '../../../../utils/interfaces/track.interface
 import { Observable, of } from 'rxjs';
 import { LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType, ChampionshipPreset } from '../../../../utils/interfaces/championship.interface';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
-import { CreatingChampStates } from '../../../../utils/enums/states.enum';
+import { ChampFormStates } from '../../../../utils/enums/states.enum';
 import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
 import { DefaultRes } from '../../../../utils/interfaces/responses/response.interface';
 import { SimulatorGame } from '../../../../utils/interfaces/simulator.interface';
@@ -21,13 +21,14 @@ import { NgIf, AsyncPipe, NgClass, SlicePipe } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { CustomSearchInputComponent } from '../../../utils/custom-search-input/custom-search-input.component';
+import { CustomSearchInputComponent } from '../../../utils/custom/input/custom-search-input/custom-search-input.component';
 import { SESSION_DURATION_TYPE, SESSION_DURATION_TYPE as SESSION_LENGTH_TYPE } from '../../../../utils/enums/round.enum';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { Errors } from '../../../../utils/enums/errors.enum';
 import { EventEmitter } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
+import {CustomTextInputComponent} from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -42,7 +43,8 @@ import { InputTextModule } from 'primeng/inputtext';
     DialogModule,
     CustomSearchInputComponent,
     FormsModule,
-    MessagesModule
+    MessagesModule,
+    CustomTextInputComponent
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
@@ -57,6 +59,7 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
 
   @Input() leagueId?: number;
   @Input() preset?: ChampionshipPreset;
+  @Input() championship?: LeagueChampionship;
 
   @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>();
 

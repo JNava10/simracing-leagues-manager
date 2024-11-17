@@ -1,10 +1,10 @@
 import { GlobalHelper } from '../../../../helpers/global.helper';
 import { PositionScore, ScoreSystem } from './../../../../utils/interfaces/score.interface';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { CustomTextInputComponent } from "../../../utils/custom-text-input/custom-text-input.component";
+import { CustomTextInputComponent } from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
 import { ChampionshipPreset, Team } from '../../../../utils/interfaces/championship.interface';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomButtonComponent } from "../../../utils/custom-button/custom-button.component";
+import { CustomButtonComponent } from "../../../utils/custom/input/custom-button/custom-button.component";
 import { NgClass } from '@angular/common';
 
 @Component({

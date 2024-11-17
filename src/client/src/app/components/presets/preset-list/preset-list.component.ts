@@ -4,7 +4,7 @@ import { GlobalHelper } from './../../../helpers/global.helper';
 import { Component, OnInit } from '@angular/core';
 import { ChampionshipApiService } from '../../../services/api/championship-api.service';
 import { Observable } from 'rxjs';
-import { CustomButtonComponent } from "../../utils/custom-button/custom-button.component";
+import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
 import { Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { League } from '../../../utils/interfaces/league.interface';

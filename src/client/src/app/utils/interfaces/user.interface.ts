@@ -7,4 +7,5 @@ export interface User {
   leagueJoinedAt?: Date;
   createdAt?: Date;
   email?: string
+  isYou?: boolean;
 }

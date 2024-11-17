@@ -62,7 +62,7 @@ export class CreateEventComponent implements OnInit {
   readonly creatingStates = CreatingEventStates;
 
   // Es mas sencillo manejar que se muestra en el modal cambiando su estado, en vez de ifs y booleans.
-  currentCreatingState: CreatingEventStates = CreatingEventStates.CreatingBasicInfo;
+  currentCreatingState: CreatingEventStates = CreatingEventStates.BasicInfo;
 
   eventCreating?: LeagueEvent;
   preset?: ChampionshipPreset
@@ -72,7 +72,7 @@ export class CreateEventComponent implements OnInit {
 
     this.eventCreating.leagueId = this.leagueId;
 
-    this.currentCreatingState = this.creatingStates.CreatingTeams;
+    this.currentCreatingState = this.creatingStates.Teams;
   }
 
   handleTeamsCreated = (teams: Team[]) => {

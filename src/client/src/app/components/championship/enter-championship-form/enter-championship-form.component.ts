@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CustomTextInputComponent } from "../../utils/custom-text-input/custom-text-input.component";
+import { CustomTextInputComponent } from "../../utils/custom/input/custom-text-input/custom-text-input.component";
 import { EnteringChampStates } from '../../../utils/enums/states.enum';
-import { CustomButtonComponent } from "../../utils/custom-button/custom-button.component";
-import { CustomSelectComponent } from "../../utils/custom-select/custom-select.component";
+import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
+import { CustomSelectComponent } from "../../utils/custom/input/custom-select/custom-select.component";
 import { EnterChampionship, Team } from '../../../utils/interfaces/championship.interface';
 import { ChampionshipApiService } from '../../../services/api/championship-api.service';
 import { ActivatedRoute } from '@angular/router';

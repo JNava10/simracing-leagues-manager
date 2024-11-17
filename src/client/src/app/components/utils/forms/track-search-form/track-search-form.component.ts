@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
-import {CustomSearchInputComponent} from "../../custom-search-input/custom-search-input.component";
+import {CustomSearchInputComponent} from "../../custom/input/custom-search-input/custom-search-input.component";
 import {Observable, of} from "rxjs";
 import {TrackApiService} from "../../../../services/api/track-api.service";
 import {DefaultRes} from "../../../../utils/interfaces/responses/response.interface";
 import {Track, TrackLayout} from "../../../../utils/interfaces/track.interface";
 import {CustomEmptyComponent} from "../../custom/custom-empty/custom-empty.component";
 import {CustomCardComponent} from "../../custom/custom-card/custom-card.component";
-import {CustomButtonComponent} from "../../custom-button/custom-button.component";
+import {CustomButtonComponent} from "../../custom/input/custom-button/custom-button.component";
 
 @Component({
   selector: 'app-track-search-form',

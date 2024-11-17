@@ -29,38 +29,43 @@
       </div>
     </div>
   </div>
-  <div class="p-6 bg-neutral-800 rounded-3xl">
-    <h2 class="mb-3 font-bold text-xl text-neutral-100">
-      Contraseña
-    </h2>
 
-    <form #passForm [formGroup]="passwordForm" (ngSubmit)="changePassword()">
-      <div class="flex flex-col gap-3">
-        <app-custom-text-input
-          [showPlaceholder]="false"
-          formControlName="currentPassword"
-          label="Contraseña Actual"
-        ></app-custom-text-input>
+  @if (user?.isYou) {
+    <!-- Formularios de conf. -->
 
-        <app-custom-text-input
-          [showPlaceholder]="false"
-          formControlName="newPassword"
-          label="Nueva Contraseña"
-          [type]="'password'"
-        ></app-custom-text-input>
+    <div class="p-6 bg-neutral-800 rounded-3xl">
+      <h2 class="mb-3 font-bold text-xl text-neutral-100">
+        Contraseña
+      </h2>
 
-        <app-custom-text-input
-          class="w-full mb-4"
-          formControlName="confirmPassword"
-          [showPlaceholder]="false"
-          label="Confirmar Nueva Contraseña"
-          [type]="'password'"
-        ></app-custom-text-input>
-      </div>
+      <form #passForm [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+        <div class="flex flex-col gap-3">
+          <app-custom-text-input
+            [showPlaceholder]="false"
+            formControlName="currentPassword"
+            label="Contraseña Actual"
+          ></app-custom-text-input>
 
-      <app-custom-button (click)="passForm.submit()" color="red">
-        Guardar cambios
-      </app-custom-button>
-    </form>
-  </div>
+          <app-custom-text-input
+            [showPlaceholder]="false"
+            formControlName="newPassword"
+            label="Nueva Contraseña"
+            [type]="'password'"
+          ></app-custom-text-input>
+
+          <app-custom-text-input
+            class="w-full mb-4"
+            formControlName="confirmPassword"
+            [showPlaceholder]="false"
+            label="Confirmar Nueva Contraseña"
+            [type]="'password'"
+          ></app-custom-text-input>
+        </div>
+        <app-custom-button (click)="passForm.submit()" color="red">
+          Guardar cambios
+        </app-custom-button>
+      </form>
+    </div>
+  }
+
 </section>

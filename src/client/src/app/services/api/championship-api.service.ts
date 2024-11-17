@@ -14,7 +14,7 @@ import {
 import { DefaultRes } from '../../utils/interfaces/responses/response.interface';
 import { catchError, map } from 'rxjs/operators';
 import { GlobalHelper } from "../../helpers/global.helper";
-import { of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { GetTeam } from '../../utils/interfaces/responses/championship.responses';
 
 @Injectable({
@@ -27,11 +27,20 @@ export class ChampionshipApiService {
 
   create = (championship: LeagueChampionship) => {
     return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        this.globalHelper!.handleApiError('Error al expulsar miembro de la liga:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+      })
     );
   };
 

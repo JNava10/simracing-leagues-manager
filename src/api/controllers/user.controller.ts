@@ -28,10 +28,10 @@ export class UserController {
         }
     };
 
-    static getById = async (req: Request, res: Response): Promise<void> => {
+    static getById = async (req: CustomRequest, res: Response): Promise<void> => {
         try {
             const userId = Number(req.params['id']);
-            const user = await UserQuery.getById(userId);
+            const user = await UserQuery.getById(userId) as User;
 
             if (!user) {
                 sendSuccessResponse({
@@ -41,6 +41,8 @@ export class UserController {
 
                 return;
             }
+
+            user.isYou = req.user.id === user.id;
 
             sendSuccessResponse(
                 {

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {SoftButtons, CustomButtonComponent} from "../../custom-button/custom-button.component";
+import {SoftButtons, CustomButtonComponent} from "../input/custom-button/custom-button.component";
 
 @Component({
   selector: 'app-custom-empty',

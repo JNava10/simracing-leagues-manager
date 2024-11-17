@@ -17,13 +17,13 @@ import {SESSION_DURATION_TYPE, SESSION_DURATION_TYPE as SESSION_LENGTH_TYPE} fro
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {roundDurationTypes} from "../../../../utils/constants/global.constants";
 import {AsyncPipe, NgIf, SlicePipe} from "@angular/common";
-import {CustomSearchInputComponent} from "../../../utils/custom-search-input/custom-search-input.component";
+import {CustomSearchInputComponent} from "../../../utils/custom/input/custom-search-input/custom-search-input.component";
 import {DialogModule} from "primeng/dialog";
-import {CustomTextInputComponent} from "../../../utils/custom-text-input/custom-text-input.component";
+import {CustomTextInputComponent} from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
 import {TrackSearchFormComponent} from "../../../utils/forms/track-search-form/track-search-form.component";
 import {CustomCardComponent} from "../../../utils/custom/custom-card/custom-card.component";
 import {CustomEmptyComponent} from "../../../utils/custom/custom-empty/custom-empty.component";
-import {CustomButtonComponent} from "../../../utils/custom-button/custom-button.component";
+import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
 
 @Component({
   selector: 'app-basic-info-event-form',
