@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ColorTheme } from '../custom-button/custom-button.component';
+import {SoftButtons} from "../custom-button/custom-button.component";
 
 @Component({
   selector: 'app-base-custom-input',
@@ -47,7 +47,7 @@ export class BaseCustomInputComponent implements ControlValueAccessor {
 
   @Input() inputClass: string = '';
 
-  @Input() themeName!: keyof typeof ColorTheme; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
+  @Input() themeName!: keyof typeof SoftButtons; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 
   @Input() debug? = false;
 

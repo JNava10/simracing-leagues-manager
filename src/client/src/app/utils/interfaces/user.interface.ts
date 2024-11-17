@@ -5,5 +5,6 @@ export interface User {
   lastname: string;
   secondLastname: string;
   leagueJoinedAt?: Date;
+  createdAt?: Date;
   email?: string
 }

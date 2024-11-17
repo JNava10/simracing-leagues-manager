@@ -28,6 +28,37 @@ export class UserController {
         }
     };
 
+    static getById = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const userId = Number(req.params['id']);
+            const user = await UserQuery.getById(userId);
+
+            if (!user) {
+                sendSuccessResponse({
+                    msg: "No se ha encontrado ningun usuario coincidente.",
+                    status: 404
+                }, res)
+
+                return;
+            }
+
+            sendSuccessResponse(
+                {
+                    data: user,
+                    status: 200,
+                    msg: "Se ha obtenido el usuario correctamente.",
+                },
+                res
+            );
+        } catch (error) {
+            console.error(error);
+
+            sendErrorResponse({
+                error: `Ha ocurrido un error al crear el usuario: ${error}`
+            }, res)
+        }
+    };
+
     static searchByNick = async (req: Request, res: Response): Promise<void> => {
         try {
             const input = req.params['input'];

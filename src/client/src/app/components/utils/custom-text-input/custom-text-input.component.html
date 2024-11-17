@@ -9,12 +9,11 @@
     class="py-3 px-4 block border-gray-200 rounded-lg text-sm
     disabled:opacity-50 disabled:pointer-events-none
     focus:outline-neutral-400 outline-offset-0
-    transition-all
-    dark:bg-neutral-800 dark:text-neutral-300/70
+    transition-all dark:bg-neutral-900 dark:text-neutral-300/70
     dark:placeholder-neutral-500
     outline-none w-full"
 
-    [className]="inputClass"
+    [className]="styleClass"
     [type]="type"
     [maxlength]="maxLength!"
     [value]="value"
@@ -25,7 +24,7 @@
     [placeholder]="managePlaceholder()"
     [(ngModel)]="value"
     (ngModelChange)="writeValue($event)"
-    ngClass="inputClass"
+    ngClass="styleClass"
     (keyup)="onInputKeyUp($event)"
     (keydown)="onInputKeyDown($event)"
   >

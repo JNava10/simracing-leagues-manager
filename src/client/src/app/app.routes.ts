@@ -19,10 +19,12 @@ import {RegisterFormComponent} from "./components/register/register-form/registe
 import {NotificationMenuComponent} from "./components/notifications/notification-menu/notification-menu.component";
 import {EditLeagueFormComponent} from "./components/league/edit-league-form/edit-league-form.component";
 import {CreateEventComponent} from "./components/league/event/create-event-form/create-event.component";
+import {ProfileInfoComponent} from "./components/profile/profile-info/profile-info.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'lm', children: [
+      { path: 'profile/:userId', component: ProfileInfoComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterFormComponent },
       { path: 'newleague', component: CreateLeagueFormComponent },

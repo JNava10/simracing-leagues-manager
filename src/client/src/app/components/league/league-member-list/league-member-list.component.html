@@ -45,13 +45,13 @@
                       <!-- Botón para kickear al miembro -->
                       <app-custom-button
                         (click)="kickMember(member.user.id!)"
-                        themeName="red">
+                        color="red">
                         Kickear
                       </app-custom-button>
 
                       <!-- Botón para banear permanentemente al miembro -->
                       <app-custom-button
-                        themeName="red"
+                        color="red"
                         (click)="showBanReason(member)"
                       >
                         Banear
@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <app-custom-button themeName="blue" (click)="toggleSearch(true)">
+  <app-custom-button color="blue" (click)="toggleSearch(true)">
     Invitar miembro
   </app-custom-button>
 </div>
@@ -90,8 +90,8 @@
      />
 
      <div class="flex gap-3">
-       <app-custom-button themeName="red" (click)="showBanConfirm()">Continuar</app-custom-button>
-       <app-custom-button themeName="stone" (click)="banning = false">Cerrar</app-custom-button>
+       <app-custom-button color="red" (click)="showBanConfirm()">Continuar</app-custom-button>
+       <app-custom-button color="stone" (click)="banning = false">Cerrar</app-custom-button>
      </div>
    </div>
   </ng-template>
@@ -103,8 +103,8 @@
     <span>Razon: {{ banReason }}</span>
     <h2>¿Quieres continuar?</h2>
     <div class="flex gap-3">
-      <app-custom-button themeName="stone">No</app-custom-button>
-      <app-custom-button themeName="red" (click)="banMember(memberToBan!.user.id!)">Si</app-custom-button>
+      <app-custom-button color="stone">No</app-custom-button>
+      <app-custom-button color="red" (click)="banMember(memberToBan!.user.id!)">Si</app-custom-button>
     </div>
   </ng-template>
 </p-dialog>

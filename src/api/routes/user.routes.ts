@@ -26,6 +26,8 @@ router.post("/register", [
 
 router.get("/search/nick/:input", controller.searchByNick);
 
+router.get("/:id", controller.getById);
+
 router.get("/notifications", controller.getAllNotifications);
 
 export default router;

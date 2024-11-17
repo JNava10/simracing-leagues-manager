@@ -21,6 +21,10 @@ export class UserQuery {
 
     getUserByNickname = async (nickname: string) => prisma.user.findFirst({where: {nickname}});
 
+    static getById = async (userId: number) => {
+        return prisma.user.findFirst({where: {id: userId}});
+    }
+
     getUserByEmail = async (email: string) => prisma.user.findFirst({where: {email}});
 
     static userIdExists = async (userId: number) => {

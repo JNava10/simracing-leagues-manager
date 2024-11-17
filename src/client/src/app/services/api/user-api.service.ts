@@ -6,7 +6,7 @@ import {devEnv} from "../../../environments/environment.development";
 import {sendTokenParam} from "../../utils/constants/global.constants";
 import {catchError, Observable, of, throwError} from "rxjs";
 import {User} from "../../utils/interfaces/user.interface";
-import {League} from "../../utils/interfaces/league.interface";
+import {BanMemberRequest, League, QueryIsExecuted} from "../../utils/interfaces/league.interface";
 import {map} from "rxjs/operators";
 import {GlobalHelper} from "../../helpers/global.helper";
 
@@ -43,6 +43,28 @@ export class UserApiService {
       }),
 
       map((res) => res.data!)
+    );
+  }
+
+  getById = (userId: number) => {
+    const url = `${devEnv.apiEndpoint}/user/${userId}`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<User>>(url, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<User>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<User>(res)!;
+      })
     );
   }
 

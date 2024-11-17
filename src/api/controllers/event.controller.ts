@@ -19,8 +19,7 @@ export class EventController {
                     data: createdUser,
                     status: 201,
                     msg: "Evento de liga creado correctamente.",
-                },
-                res
+                }, res
             );
         } catch (error) {
             console.error(error);

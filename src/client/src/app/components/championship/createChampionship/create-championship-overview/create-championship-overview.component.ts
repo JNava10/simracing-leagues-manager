@@ -1,7 +1,7 @@
 import { ScoreApiService } from './../../../../services/api/score-api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { LeagueChampionship } from '../../../../utils/interfaces/championship.interface';
-import { ColorTheme, CustomButtonComponent } from "../../../utils/custom-button/custom-button.component";
+import { CustomButtonComponent } from "../../../utils/custom-button/custom-button.component";
 import { NgStyle } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ChampionshipApiService } from '../../../../services/api/championship-api.service';
