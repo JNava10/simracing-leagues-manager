@@ -14,7 +14,7 @@ export class SimulatorController {
             const simulators = await SimulatorQuery.search(body);
     
             sendSuccessResponse({
-                msg: Messages.SEARCH_SIMS,
+                msg: Messages.searchSims,
                 data: simulators,
                 status: 200
             }, res)

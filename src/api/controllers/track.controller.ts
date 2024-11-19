@@ -37,7 +37,7 @@ export class TrackController {
             const tracks = await this.trackService.search(props);
     
             sendSuccessResponse({
-                msg: Messages.SEARCH_SUCCESS,
+                msg: Messages.searchSuccess,
                 data: tracks,
                 status: 200
             }, res)
@@ -53,7 +53,7 @@ export class TrackController {
             const tracks = await this.trackService.searchLayouts(props);
     
             sendSuccessResponse({
-                msg: Messages.SEARCH_SUCCESS,
+                msg: Messages.searchSuccess,
                 data: tracks,
                 status: 200
             }, res)

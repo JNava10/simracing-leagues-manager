@@ -1,9 +1,7 @@
-import { kickMember } from '../../controllers/league.controller';
 import {League, LeagueBan} from "../../utils/interfaces/league.interface";
 import {prisma} from "../../app";
-import { now } from '../../helpers/common.helper';
-import { UserQuery } from './user.query';
-import { User } from '@prisma/client';
+import {now} from '../../helpers/common.helper';
+import {UserQuery} from './user.query';
 
 export class LeagueQuery {
     static createLeague = async (league: League, authorId: number) => {
@@ -37,7 +35,7 @@ export class LeagueQuery {
 
     
     static addPendingMember = async (userId: number, leagueId: number) => {
-        await this.checkIfMemberExists(userId, leagueId)
+        await this.memberExists(userId, leagueId)
 
         const isAdded = await prisma.leagueMember.create({
             data: {leagueId, userId, accepted: false, requestedAt: now()}
@@ -205,7 +203,7 @@ export class LeagueQuery {
 
         if (!alreadyBanned) throw new Error(`Ya se habia baneado al usuario anteriormente.`);
 
-        return prisma.leagueBan.create(
+        const banned = await prisma.leagueBan.create(
             {
                 data: {
                     userId,
@@ -213,16 +211,24 @@ export class LeagueQuery {
                     reason
                 }
             });
-    }
 
-    // Validators //
+        if (banned) {
+            const deleted = await prisma.leagueMember.delete(
+                {
+                    where: {
+                        memberKeys: {
+                            leagueId,
+                            userId
+                        }
+                    }
+                });
 
-    static checkIfMemberExists = async (userId: number, leagueId: number) => {
-        const isAdded = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
-
-        if (isAdded) throw new Error("Error añadiendo el miembro.");
-
-        return false
+            if (banned && deleted) {
+                return true
+            } else {
+                throw Error("No se ha podido banear correctamente al usuario.");
+            }
+        }
     }
 
     static editLeague = async (leagueId: number, data: League) => {
@@ -238,5 +244,19 @@ export class LeagueQuery {
                     description: data.description,
                 }
             });
+    }
+
+    // Validators //
+
+    static memberExists = async (userId: number, leagueId: number) => {
+        const isAdded = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
+
+        if (isAdded) throw new Error("Error añadiendo el miembro.");
+
+        return false
+    }
+
+    static isBanned = async (userId: number, leagueId: number) => {
+        return await prisma.leagueBan.findFirst({where: {userId, leagueId}}) !== null
     }
 }

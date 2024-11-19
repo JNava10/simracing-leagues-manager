@@ -22,7 +22,7 @@ import {League} from "../utils/interfaces/league.interface";
 export class ChampionshipController {
     get = async (req: CustomRequest, res: Response) => {
         try {
-            const id = Number(req.params['id']!);
+            const id = Number(req.params['championshipId']!);
 
             const championship = await ChampionshipQuery.get(id);
 
@@ -41,7 +41,7 @@ export class ChampionshipController {
 
     getCalendar = async (req: CustomRequest, res: Response) => {
         try {
-            const id = Number(req.params['id']!);
+            const id = Number(req.params['championshipId']!);
             const calendar = await ChampionshipQuery.getCalendar(id);
 
             return sendSuccessResponse({
@@ -58,7 +58,7 @@ export class ChampionshipController {
     
     getEntries = async (req: CustomRequest, res: Response) => {
         try {
-            const id = Number(req.params['id']!);
+            const id = Number(req.params['championshipId']!);
             const entries = await ChampionshipQuery.getEntries(id);
 
             // @ts-ignore
@@ -95,7 +95,7 @@ export class ChampionshipController {
     enter = async (req: CustomRequest, res: Response) => {
         try {
             const body = req.body as EnterChampionship
-            const champId = Number(req.params['id']!);
+            const champId = Number(req.params['championshipId']!);
 
             const createdChampioship = await ChampionshipQuery.enter(body, req.user.id, champId);
 
@@ -114,7 +114,7 @@ export class ChampionshipController {
     saveResults = async (req: CustomRequest, res: Response) => {
         try {
             const body = req.body as PositionCreation[];
-            const champId = Number(req.params['id']!);
+            const champId = Number(req.params['championshipId']!);
             const round = Number(req.params['round']!);
 
             const roundsCreated = await ChampionshipQuery.saveRoundResults(body, round);
@@ -122,14 +122,14 @@ export class ChampionshipController {
             if (!roundsCreated) {
                 return sendSuccessResponse({
                     data: roundsCreated,
-                    msg: Messages.ERROR_MESSAGE,
+                    msg: Messages.isBanned,
                     status: 201
                 }, res);
             }
 
             return sendSuccessResponse({
                 data: roundsCreated,
-                msg: Messages.CREATE_ROUND,
+                msg: Messages.createRound,
                 status: 201
             }, res);
         } catch (e) {
@@ -142,7 +142,7 @@ export class ChampionshipController {
     
     getTeams = async (req: CustomRequest, res: Response) => {
         try {
-            const id = Number(req.params['champId']!);
+            const id = Number(req.params['championshipId']!);
             const presets = await ChampionshipQuery.getTeams(id);
     
             return sendSuccessResponse({
@@ -159,7 +159,7 @@ export class ChampionshipController {
 
     getResults = async (req: CustomRequest, res: Response) => {
         try {
-            const id = Number(req.params['id']!);
+            const id = Number(req.params['championshipId']!);
             const results = await ChampionshipQuery.getResults(id);
 
             if (!results) {
@@ -182,7 +182,7 @@ export class ChampionshipController {
 
     getFullData = async (req: CustomRequest, res: Response) => {
         try {
-            const id = Number(req.params['id']!);
+            const id = Number(req.params['championshipId']!);
             const data = await ChampionshipQuery.getFull(id);
             const championship: Championship = {
                 id: data.id,
@@ -291,7 +291,7 @@ export class ChampionshipController {
 
     edit = async (req: CustomRequest, res: Response) => {
         try {
-            const id = Number(req.params['id']!);
+            const id = Number(req.params['championshipId']!);
             const presets = await ChampionshipQuery.getTeams(id);
 
             return sendSuccessResponse({

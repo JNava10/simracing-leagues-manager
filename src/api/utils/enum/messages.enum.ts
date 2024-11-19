@@ -1,16 +1,16 @@
-export enum Messages {
-    // Simuladores //
+export class Messages {
+    // LIGAS //
+    static readonly isBanned = "Estás baneado de la liga indicada.";
 
-    SEARCH_SIMS = "Se han encontrado los simuladores correctamente.",
+    // SIMULADORES //
+    static readonly searchSims = "Se han encontrado los simuladores correctamente.";
 
-    // Campeonatos //
-
-    CREATE_ROUND = "Se han insertado corretamente los resultados.",
+    // CAMPEONATOS //
+    static readonly createRound = "Se han insertado correctamente los resultados.";
 
     // CIRCUITOS //
 
-    // ESTANDAR //
-
-    SEARCH_SUCCESS = "Se han encontrado coincidencias correctamente.",
-    ERROR_MESSAGE = "Ha ocurrido un error en el servidor."
+    // ESTÁNDAR //
+    static readonly searchSuccess = "Se han encontrado coincidencias correctamente.";
+    static readonly errorMessage = "Ha ocurrido un error en el servidor.";
 }

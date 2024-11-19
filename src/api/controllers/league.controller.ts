@@ -14,7 +14,7 @@ import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 
 export const editLeague = async (req: CustomRequest, res: Response) => {
     try {
-        const validId = isValidNumber(req.params['id']);
+        const validId = isValidNumber(req.params['leagueId']);
 
         console.log(req.params['id'])
 
@@ -22,7 +22,7 @@ export const editLeague = async (req: CustomRequest, res: Response) => {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }
 
-        const leagueId = Number(req.params['id']);
+        const leagueId = Number(req.params['leagueId']);
         const data = req.body as League;
         const league = await LeagueQuery.editLeague(leagueId, data);
 
@@ -37,12 +37,12 @@ export const editLeague = async (req: CustomRequest, res: Response) => {
 
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {
-        const validId = isValidNumber(req.params['id']);
+        const validId = isValidNumber(req.params['leagueId']);
         if (!validId) {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }
 
-        const leagueId = Number(req.params['id']);
+        const leagueId = Number(req.params['leagueId']);
         const league = await LeagueQuery.getLeagueById(leagueId);
 
         sendSuccessResponse({
@@ -84,12 +84,12 @@ export const createLeague = async (req: CustomRequest, res: Response) => {
 export const addMemberToLeague = async (req: CustomRequest, res: Response) => {
     try {
         const {userId} = req.body as NewLeagueMember;
-        const validId = isValidNumber(req.params['id']);
+        const validId = isValidNumber(req.params['leagueId']);
         if (!validId) {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }
 
-        const leagueId = Number(req.params['id']);
+        const leagueId = Number(req.params['leagueId']);
         const executed = await LeagueQuery.addMember(userId, leagueId);
 
         sendSuccessResponse({
@@ -103,12 +103,12 @@ export const addMemberToLeague = async (req: CustomRequest, res: Response) => {
 
 export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
     try {
-        const validId = isValidNumber(req.params['id']);
+        const validId = isValidNumber(req.params['leagueId']);
         if (!validId) {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }
 
-        const leagueId = Number(req.params['id']);
+        const leagueId = Number(req.params['leagueId']);
         const leagueMembers = await LeagueQuery.getLeagueMembers(leagueId);
 
         sendSuccessResponse({
@@ -122,12 +122,12 @@ export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
 
 export const searchNotMembers = async (req: CustomRequest, res: Response) => {
     try {
-        const validId = isValidNumber(req.params['id']);
+        const validId = isValidNumber(req.params['leagueId']);
         if (!validId) {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }
 
-        const leagueId = Number(req.params['id']);
+        const leagueId = Number(req.params['leagueId']);
         const searchedUsers = String(req.query['search']);
         const leagueMembers = await LeagueQuery.searchNotMembers(leagueId, searchedUsers);
 
@@ -259,7 +259,9 @@ export const banMember = async (req: CustomRequest, res: Response) => {
         const executed = await LeagueQuery.banMember(banData) !== null;
 
         sendSuccessResponse({
-            data: { executed },
+            data: {
+                executed
+            },
             msg: "Se ha enviado una invitación a la liga correctamente."
         }, res);
     } catch (e) {

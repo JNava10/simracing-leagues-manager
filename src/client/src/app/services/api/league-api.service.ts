@@ -110,11 +110,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.get<DefaultRes<League[]>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<League[]>>, caught) => {
-        this.globalHelper!.handleApiError('Error al obtener tus ligas:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<League[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
@@ -123,11 +132,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.get<DefaultRes<League>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<League>>, caught) => {
-        this.globalHelper!.handleApiError('Error al obtener la liga:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
@@ -136,11 +154,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.get<DefaultRes<LeagueMember[]>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<LeagueMember[]>>, caught) => {
-        this.globalHelper!.handleApiError('Error al obtener los miembros de la liga:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<LeagueMember[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
@@ -149,11 +176,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam, search } };
 
     return this.http.get<DefaultRes<User[]>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<User[]>>, caught) => {
-        this.globalHelper!.handleApiError('Error al buscar no-miembros de la liga:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<User[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
@@ -162,11 +198,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam, name: search } };
 
     return this.http.get<DefaultRes<League[]>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<League[]>>, caught) => {
-        this.globalHelper!.handleApiError('Error al buscar liga por nombre:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<League[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
@@ -175,11 +220,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, {}, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        this.globalHelper!.handleApiError('Error al solicitar unirse a la liga:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
@@ -188,11 +242,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.get<DefaultRes<User[]>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<User[]>>, caught) => {
-        this.globalHelper!.handleApiError('Error al obtener miembros pendientes:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<User[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
@@ -201,11 +264,20 @@ export class LeagueApiService {
     const options = { params: { ...sendTokenParam } };
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, { userId }, options).pipe(
-      catchError((err: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        this.globalHelper!.handleApiError('Error al aceptar miembro pendiente:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
     );
   }
 
