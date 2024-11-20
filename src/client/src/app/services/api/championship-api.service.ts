@@ -16,6 +16,7 @@ import { catchError, map } from 'rxjs/operators';
 import { GlobalHelper } from "../../helpers/global.helper";
 import {Observable, of} from 'rxjs';
 import { GetTeam } from '../../utils/interfaces/responses/championship.responses';
+import {Driver} from "../../utils/interfaces/rfactor.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,29 @@ export class ChampionshipApiService {
       map(res => res.data)
     );
   };
+
+  sendRfactorResults(file: File, championshipId: number, roundId: number) {
+    const formData = new FormData();
+
+    formData.append('file', file);
+
+    return this.http.post<DefaultRes<Driver[]>>(`${devEnv.apiEndpoint}/championship/${championshipId}/results/${roundId}/rfactor`, formData, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<Driver[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<Driver[]>(res)!;
+      })
+    );
+  }
 
   getById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam}}).pipe(
@@ -187,11 +211,22 @@ export class ChampionshipApiService {
 
   getPresetById(presetId: any) {
     return this.http.get<DefaultRes<ChampionshipPreset>>(`${devEnv.apiEndpoint}/championship/preset/${presetId}`, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener el preset:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<ChampionshipPreset>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<ChampionshipPreset>(res)!;
+      })
     );
   }
+
+
 }

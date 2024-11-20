@@ -16,11 +16,13 @@ import { User } from '../../../utils/interfaces/user.interface';
 import {CustomRadioGroupComponent} from "../../utils/custom/input/custom-radio-group/custom-radio-group.component";
 import {SessionFinishStates} from "../../../utils/enums/championship.enum";
 import {NgClass, SlicePipe} from "@angular/common";
+import {CustomDropdownComponent} from "../../utils/dropdown/custom-dropdown/custom-dropdown.component";
+import {CustomDropdownItemComponent} from "../../utils/dropdown/custom-dropdown-item/custom-dropdown-item.component";
 
 @Component({
   selector: 'app-championship-results',
   standalone: true,
-  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass, SlicePipe, RouterLink],
+  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass, SlicePipe, RouterLink, CustomDropdownComponent, CustomDropdownItemComponent],
   templateUrl: './championship-results.component.html',
   styleUrl: './championship-results.component.scss'
 })

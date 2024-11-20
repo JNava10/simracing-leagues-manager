@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
 import {CustomRadioGroupComponent} from "../../../utils/custom/input/custom-radio-group/custom-radio-group.component";
 import {CustomSelectComponent} from "../../../utils/custom/input/custom-select/custom-select.component";
-import {FormArray, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {
   ChampionshipRound,
@@ -15,6 +15,10 @@ import {SessionFinishStates} from "../../../../utils/enums/championship.enum";
 import {User} from "../../../../utils/interfaces/user.interface";
 import {ChampionshipApiService} from "../../../../services/api/championship-api.service";
 import {NgClass} from "@angular/common";
+import {CustomDropdownComponent} from "../../../utils/dropdown/custom-dropdown/custom-dropdown.component";
+import {CustomDropdownItemComponent} from "../../../utils/dropdown/custom-dropdown-item/custom-dropdown-item.component";
+import {GlobalHelper} from "../../../../helpers/global.helper";
+import {Driver} from "../../../../utils/interfaces/rfactor.interface";
 
 @Component({
   selector: 'app-round-result-form',
@@ -30,7 +34,11 @@ import {NgClass} from "@angular/common";
   styleUrl: './round-result-form.component.scss'
 })
 export class RoundResultFormComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private championshipService: ChampionshipApiService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private championshipService: ChampionshipApiService,
+    private globalHelper: GlobalHelper,
+  ) {}
 
   ngOnInit(): void {
     this.champId = +this.route.snapshot.params['champId'];
@@ -50,7 +58,7 @@ export class RoundResultFormComponent implements OnInit {
         )
       });
 
-      this.users = res!.users?.map(item => item.user!)
+      this.members = res!.users?.map(item => item.user!)
       this.round = this.route.snapshot.params['round'];
 
     });
@@ -60,8 +68,8 @@ export class RoundResultFormComponent implements OnInit {
   champId?: number;
   calendar?: ChampionshipRound[];
   championship?: LeagueChampionship;
-  results?: Position[];
-  users?: User[];
+  results: Position[] = [];
+  members?: User[];
   positions: Position[] = [];
   editing = true
 
@@ -72,7 +80,7 @@ export class RoundResultFormComponent implements OnInit {
   });
 
   get positionsForm(): FormArray {
-    return this.resultsForm!.get('positions') as FormArray;
+    return this.resultsForm!.get('positions') as FormArray<FormGroup>;
   }
 
   private getPositionFormGroup() {
@@ -82,7 +90,6 @@ export class RoundResultFormComponent implements OnInit {
     });
   }
 
-
   protected readonly SessionFinishStates = SessionFinishStates;
   protected readonly Object = Object;
 
@@ -91,14 +98,12 @@ export class RoundResultFormComponent implements OnInit {
 
     positionsCreated.forEach((position) => {
       this.positions.push({
-        driver: this.users!.find(item => item.id === Number(position.driverId))!,
+        driver: this.members!.find(item => item.id === Number(position.driverId))!,
         finishState: position.finishState
       })
     })
 
     this.alternateMode(false);
-
-
   }
 
   alternateMode(editing: boolean) {
@@ -118,7 +123,33 @@ export class RoundResultFormComponent implements OnInit {
     console.log(results);
 
     this.championshipService.saveRoundResults(results, this.champId!).subscribe(res => {})
+  }
 
+  importRfactorFile = async () => {
+    const files = await this.globalHelper.openFileDialog({
+      validExtensions: ['xml'],
+    }) as FileList;
 
+    this.championshipService.sendRfactorResults(files[0], this.champId!, this.round).subscribe(res => this.handleRfactorResults(res));
+  };
+
+  private handleRfactorResults(drivers: Driver[]) {
+    console.log(this.members)
+    drivers.forEach(driver => {
+
+      const driverMatch = this.members?.find(member => member.nickname === driver.Name);
+
+      if (driverMatch) {
+        console.log(driverMatch)
+        this.positionsForm.at(driver.Position - 1).patchValue({
+          position: driver.Position,
+          driver: driverMatch,
+          driverId: driverMatch.id,
+          finishState: 0
+        })
+      }
+    })
+
+    console.log(this.positions);
   }
 }

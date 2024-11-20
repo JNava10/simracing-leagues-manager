@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { devEnv } from '../../environments/environment.development';
 import {DefaultRes} from "../utils/interfaces/responses/response.interface";
 import {Observable, of, throwError} from "rxjs";
+import {Form} from "@angular/forms";
+import {OpenFileDialogProps} from "../utils/props/file.props";
 
 @Injectable({
   providedIn: 'root',
@@ -95,6 +97,58 @@ handleApiError = (
     }
 
     return hexWithAlpha;
+  }
+
+  openFileDialog = (
+    {
+      validExtensions,
+      invalidExtensions,
+      returnFormData
+    }: OpenFileDialogProps
+  ) => {
+    return new Promise<FileList | FormData>((resolve, reject) => {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+
+      fileInput.onchange = ($event) => {
+        const {files: fileList} = fileInput;
+
+        // Prefiero borrar el elemento por si acaso se queda guardado, mejor eliminarlo si no se usa.
+        fileInput.remove();
+
+        if (fileList && fileList[0]) {
+          const files = Array.from(fileList);
+
+          const allExtValid = files.every((file: File) => {
+            const extTemp = file.name.split(".");
+
+            return validExtensions!.includes(extTemp.at(extTemp.length - 1)!);
+          });
+
+          if (!allExtValid) {
+            reject(new Error('Extensiones de archivo no son validoss.'));
+          }
+
+          if (returnFormData) {
+            const formData = new FormData();
+
+            files.forEach((file, index) => {
+              formData.append(`${index}`, file);
+            });
+
+            resolve(formData);
+          } else {
+            resolve(fileList);
+          }
+        } else {
+          fileInput.remove();
+
+          reject(new Error('No se ha seleccionado ningun archivo.'));
+        }
+      }
+
+      fileInput.click();
+    });
   }
 }
 

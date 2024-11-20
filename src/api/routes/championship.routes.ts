@@ -10,10 +10,10 @@ const controller = new ChampionshipController()
 
 router.get("/:championshipId", [validateToken], controller.get);
 router.put("/preset/:championshipId", [validateToken], controller.edit);
-router.get("/:id/full", [validateToken], controller.getFullData);
-router.get("/:id/calendar", [validateToken], controller.getCalendar);
-router.get("/:id/entries", [validateToken], controller.getEntries);
-router.get("/:id/results", [validateToken], controller.getResults);
+router.get("/:championshipId/full", [validateToken], controller.getFullData);
+router.get("/:championshipId/calendar", [validateToken], controller.getCalendar);
+router.get("/:championshipId/entries", [validateToken], controller.getEntries);
+router.get("/:championshipId/results", [validateToken], controller.getResults);
 
 router.post("/", [validateToken], controller.create);
 router.post("/:championshipId/enter", [validateToken], controller.enter);

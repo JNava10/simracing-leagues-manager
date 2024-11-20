@@ -1,5 +1,6 @@
 import {UploadedFile} from "express-fileupload";
 import {XMLBuilder, XMLParser} from "fast-xml-parser";
+import {fi} from "@faker-js/faker";
 
 export class XmlService {
 
@@ -29,6 +30,8 @@ export class XmlService {
 
     private static parseUploaded = (file: UploadedFile) => {
         const {parser, builder} = XmlService;
+
+        console.log(file)
 
         return parser.parse(file.data);
     }

@@ -259,8 +259,8 @@ export class ChampionshipController {
     }
 
     parseRfactorXml = async (req: CustomRequest, res: Response) => {
-        try {;
-            const xmlFile = req.files['xml']! as UploadedFile;
+        try {
+            const xmlFile = req.files['file']! as UploadedFile;
             const roundData = (XmlService.parse(xmlFile) as RfactorData)
             const driversTemp = roundData.rFactorXML.RaceResults.Race.Driver as Driver[];
             const drivers: Driver[] = []
@@ -274,8 +274,6 @@ export class ChampionshipController {
                     FinishStatus: item.FinishStatus
                 })
             })
-
-
 
             return sendSuccessResponse({
                 data: drivers,
