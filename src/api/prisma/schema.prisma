@@ -19,15 +19,6 @@ model Category {
   ChampionshipPresetCategories ChampionshipPresetCategories[]
 }
 
-// TODO: Quitar despues
-model Subcategory {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(255)
-  parentId    Int
-  description String   @db.VarChar(255)
-  parent      Category @relation(fields: [parentId], references: [id])
-}
-
 // Usuarios
 
 model User {
@@ -46,11 +37,11 @@ model User {
   championshipsCreated LeagueChampionship[]
   championshipsJoined  ChampionshipEntry[]
   appRoles             UserRole[]
-  leaguePosts          LeaguePost[]
-  postComments         PostComment[]
+  // leaguePosts          LeaguePost[]
+  // postComments         PostComment[]
   favouriteSimulators  FavouriteSimulator[]
   favouriteCategories  FavouriteCategories[]
-  auditActions         LeagueAuditLog[]
+  // auditActions         LeagueAuditLog[]
 
   ChampionshipPreset ChampionshipPreset[]
 
@@ -108,7 +99,7 @@ model League {
   author            User                 @relation(fields: [authorId], references: [id])
   championships     LeagueChampionship[]
   members           LeagueMember[]
-  leaguePost        LeaguePost[]
+  // leaguePost        LeaguePost[]
   EventChampionship LeagueEvent[]
 }
 
@@ -362,8 +353,15 @@ model TrackLayout {
   id          Int    @id @default(autoincrement())
   name        String @db.VarChar(255)
   description String @db.VarChar(255)
-  parent      Track  @relation(fields: [parentId], references: [id])
-  parentId    Int
+  lengthKm    Float
+
+  traction   Int @default(0)
+  braking    Int @default(0)
+  lateral    Int @default(0)
+  tireStress Int @default(0)
+
+  parent   Track @relation(fields: [parentId], references: [id])
+  parentId Int
 
   WorkshopPresetLayouts ChampionshipPresetLayouts[]
   EventChampionship     LeagueEvent[]
@@ -383,79 +381,6 @@ model SimulatorGame {
   userFavourites FavouriteSimulator[]
   championships  LeagueChampionship[]
   events         LeagueEvent[]
-}
-
-/// Posts de ligas ///
-
-model LeaguePost {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(255)
-  description String   @db.VarChar(255)
-  content     String   @db.LongText
-  authorId    Int
-  leagueId    Int
-  createdAt   DateTime @default(now()) @db.DateTime(6)
-  updatedAt   DateTime
-  private     Boolean  @default(false)
-
-  author User   @relation(fields: [authorId], references: [id])
-  league League @relation(fields: [leagueId], references: [id])
-
-  postComment PostComment[]
-  files       LeaguePostFile[]
-}
-
-model PostComment {
-  id        Int      @id @default(autoincrement())
-  content   String   @db.LongText
-  authorId  Int
-  postId    Int
-  createdAt DateTime @default(now()) @db.DateTime(6)
-  updatedAt DateTime
-
-  author User       @relation(fields: [authorId], references: [id])
-  post   LeaguePost @relation(fields: [postId], references: [id])
-
-  files CommentPostFile[]
-}
-
-model LeaguePostFile {
-  id      Int    @id @default(autoincrement())
-  fileUrl String @db.VarChar(255)
-  postId  Int
-
-  post LeaguePost @relation(fields: [postId], references: [id])
-}
-
-model CommentPostFile {
-  id        Int    @id @default(autoincrement())
-  fileUrl   String @db.VarChar(255)
-  commentId Int
-
-  comment PostComment @relation(fields: [commentId], references: [id])
-}
-
-/// Registros de auditoria ///
-
-model LeagueAuditAction {
-  id          Int    @id @default(autoincrement())
-  name        String @db.VarChar(255)
-  description String @db.VarChar(255)
-
-  usages LeagueAuditLog[]
-}
-
-model LeagueAuditLog {
-  id       Int @id @default(autoincrement())
-  actionId Int
-  target   Int // Puede ser cualquier cosa, un rol, un campeonato, un usuario... Si miras la base de datos es lioso,
-  //  pero es la unica forma que veo sin meter una tabla por cada acción (lo cual seria peor)
-
-  authorId Int
-  date     DateTime @default(now()) @db.DateTime(6)
-
-  action LeagueAuditAction @relation(fields: [actionId], references: [id])
-  user   User              @relation(fields: [authorId], references: [id])
 }
 
 model Notification {
@@ -478,3 +403,115 @@ model LeagueBan {
 
   @@id([leagueId, userId])
 }
+
+// Conceptos de coche genericos que comparten las caracteristicas de una categoria especifica en momentos o reglamentos concretos. Por ej: F1 2022-2025 o GT3 de resistencia.
+model BaselineCar {
+  id                Int    @id @default(autoincrement())
+  name              String
+  description       String
+  fuelWasteKm       Float
+  engine            String
+  powerHp           Int
+  weightKg          Int
+  fuelCapacityLitre Int
+
+  tyres Tyre[]
+}
+
+model Tyre {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  color       String
+  carId       Int
+
+  car BaselineCar @relation(fields: [carId], references: [id])
+}
+
+model TyreWear {
+  tyreId      Int   @id @default(autoincrement())
+  wearIndex   Float
+  performance Float
+}
+
+// /// Registros de auditoria ///
+//
+// model LeagueAuditAction {
+//   id          Int    @id @default(autoincrement())
+//   name        String @db.VarChar(255)
+//   description String @db.VarChar(255)
+//
+//   usages LeagueAuditLog[]
+// }
+//
+// model LeagueAuditLog {
+//   id       Int @id @default(autoincrement())
+//   actionId Int
+//   target   Int // Puede ser cualquier cosa, un rol, un campeonato, un usuario... Si miras la base de datos es lioso,
+//   //  pero es la unica forma que veo sin meter una tabla por cada acción (lo cual seria peor)
+//
+//   authorId Int
+//   date     DateTime @default(now()) @db.DateTime(6)
+//
+//   action LeagueAuditAction @relation(fields: [actionId], references: [id])
+//   user   User              @relation(fields: [authorId], references: [id])
+// }
+
+/// Posts de ligas ///
+//
+// model LeaguePost {
+//   id          Int      @id @default(autoincrement())
+//   title       String   @db.VarChar(255)
+//   description String   @db.VarChar(255)
+//   content     String   @db.LongText
+//   authorId    Int
+//   leagueId    Int
+//   createdAt   DateTime @default(now()) @db.DateTime(6)
+//   updatedAt   DateTime
+//   private     Boolean  @default(false)
+//
+//   author User   @relation(fields: [authorId], references: [id])
+//   league League @relation(fields: [leagueId], references: [id])
+//
+//   postComment PostComment[]
+//   files       LeaguePostFile[]
+// }
+//
+// model PostComment {
+//   id        Int      @id @default(autoincrement())
+//   content   String   @db.LongText
+//   authorId  Int
+//   postId    Int
+//   createdAt DateTime @default(now()) @db.DateTime(6)
+//   updatedAt DateTime
+//
+//   author User       @relation(fields: [authorId], references: [id])
+//   post   LeaguePost @relation(fields: [postId], references: [id])
+//
+//   files CommentPostFile[]
+// }
+//
+// model LeaguePostFile {
+//   id      Int    @id @default(autoincrement())
+//   fileUrl String @db.VarChar(255)
+//   postId  Int
+//
+//   post LeaguePost @relation(fields: [postId], references: [id])
+// }
+//
+// model CommentPostFile {
+//   id        Int    @id @default(autoincrement())
+//   fileUrl   String @db.VarChar(255)
+//   commentId Int
+//
+//   comment PostComment @relation(fields: [commentId], references: [id])
+// }
+
+// // TODO: Quitar despues
+// model Subcategory {
+//   id          Int      @id @default(autoincrement())
+//   name        String   @db.VarChar(255)
+//   parentId    Int
+//   description String   @db.VarChar(255)
+//   parent      Category @relation(fields: [parentId], references: [id])
+// }

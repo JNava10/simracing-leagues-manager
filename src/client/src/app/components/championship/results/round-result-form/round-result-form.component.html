@@ -7,7 +7,7 @@
       <div class="-m-1.5 overflow-x-auto">
         <div class="p-1.5 min-w-full inline-block align-middle">
           <div class="overflow-hidden">
-            <table [formGroup]="resultsForm!" class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+            <table [formGroup]="resultsForm!" class="min-w-full divide-y dark:bg-neutral-800 rounded-md divide-gray-200 dark:divide-neutral-700">
               <thead>
               <tr>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Pos.</th>
@@ -38,9 +38,12 @@
       </div>
     </div>
 
-    <app-custom-button color="purple" (click)="importRfactorFile()">Importar de rFactor</app-custom-button>
-    <app-custom-button color="red" (click)="saveProgress()">Guardar resultados</app-custom-button>
+    <div class="mt-3 flex gap-3">
+      <app-custom-button color="purple" (click)="importRfactorFile()">Importar de rFactor</app-custom-button>
+      <app-custom-button color="red" (click)="saveProgress()">Guardar resultados</app-custom-button>
+    </div>
   </section>
+
 
 } @else {
   <section>

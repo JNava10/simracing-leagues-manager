@@ -3,4 +3,9 @@ export interface Layout {
     name?: string;
     description?: string;
     parentId?: number
+    lengthKm: number;
+    traction: number;
+    braking: number;
+    lateral: number;
+    tireStress: number;
 }
