@@ -7,10 +7,8 @@ export class CategoryQuery {
      */
     private static maxCategorySearch = 5
 
-    static getAll = async (withSubcategories: boolean) => {
-        const args = withSubcategories ? {include: {subcategories: true}} : undefined;
-
-        return prisma.category.findMany(args);
+    static getAll = async () => {
+        return prisma.category.findMany();
     };
 
     static search = async ({name, id}: SearchCategoryProps) => {

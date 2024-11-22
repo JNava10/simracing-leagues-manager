@@ -27,3 +27,11 @@ export interface TyreWear {
     wearIndex?: number;
     performance?: number;
 }
+
+export interface StrategyLap {
+    lap: number;
+    tyreId?: number;
+    tyreWear?: string;
+    lapSecs?: number;
+    hasPitted: boolean;
+}

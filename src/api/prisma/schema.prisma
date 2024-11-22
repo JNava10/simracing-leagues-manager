@@ -8,10 +8,9 @@ datasource db {
 }
 
 model Category {
-  id            Int           @id @default(autoincrement())
-  name          String        @db.VarChar(255)
-  description   String        @db.VarChar(255)
-  subcategories Subcategory[]
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(255)
+  description String @db.VarChar(255)
 
   userFavourites FavouriteCategories[]
   championships  ChampionshipCategories[]
@@ -424,14 +423,20 @@ model Tyre {
   description String?
   color       String
   carId       Int
+  hardness    Float
 
-  car BaselineCar @relation(fields: [carId], references: [id])
+  car      BaselineCar @relation(fields: [carId], references: [id])
+  wearList TyreWear[]
 }
 
 model TyreWear {
-  tyreId      Int   @id @default(autoincrement())
+  id          Int   @id @default(autoincrement())
+  tyreId      Int
   wearIndex   Float
   performance Float
+
+  Tyre          Tyre @relation(fields: [tyreId], references: [id])
+  baselineCarId Int?
 }
 
 // /// Registros de auditoria ///

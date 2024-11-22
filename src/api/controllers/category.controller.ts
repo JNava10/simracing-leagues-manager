@@ -9,7 +9,7 @@ import { now, sendSuccessResponse } from "../helpers/common.helper";
 
 export const getAll = async (req: CustomRequest, res: Response) => {
     try {
-        const categories = await CategoryQuery.getAll(true)
+        const categories = await CategoryQuery.getAll()
         return res.status(200).send(categories);
     } catch (e) {
         const error: CustomError = {error: e.message}
