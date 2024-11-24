@@ -120,12 +120,16 @@ export class StrategyService {
 
         // Aplicando el desgaste de esta vuelta segun los valores indicados en el circuito y la longitud en Km.
         // Se aplica la longitud ya que cuanto mas largo sea el circuito, mayor desgaste habrá por vuelta.
-        this.currentTyre.wearIndex += (this.tyreImpact * 0.1) + (this.trackLayout.lengthKm * 0.1);
+        this.currentTyre.wearIndex += (this.tyreImpact * 0.35) + (this.trackLayout.lengthKm * 0.1);
         this.currentTyre.performance = this.getTyrePerformance();
 
         lapTime += this.calculateTyreDelta();
 
-        lapData.wearIndex = this.currentTyre.wearIndex;
+        lapData.wearInfo = {
+            wearIndex: this.currentTyre.wearIndex,
+            performance: this.currentTyre.performance
+        };
+
         lapData.tyreId = this.currentTyre.id;
         lapData.lapTime = lapTime;
 
@@ -138,8 +142,6 @@ export class StrategyService {
         const nearestWearIndex = getNearestNumber(wearList, wearIndex);
         const i = this.currentTyre.wearList.findIndex(item => item.wearIndex === nearestWearIndex);
         const currentWear = this.currentTyre.wearList[i]
-
-        console.log(currentWear.performance);
 
         return currentWear.performance
     }
@@ -202,7 +204,7 @@ export class StrategyService {
             wearDelta: deltaTotal * wear
         })
 
-        return Math.round(deltaTotal * wear)  // WΔ, tiempo delta con el desgaste de neumaticos
+        return Math.round(deltaTotal * (wear * 0.4))  // WΔ, tiempo delta con el desgaste de neumaticos
     }
 
     private simulateDrivingPerformance = (lapData: StrategyLap): StrategyLap => {

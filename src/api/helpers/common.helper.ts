@@ -1,6 +1,7 @@
 import {hash, compare} from "bcrypt";
 import {Response} from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/props/response.prop";
+import {StrategyTyreWear} from "../utils/interfaces/car.interface";
 
 export const hashPassword = async (text: string = process.env['DEFAULT_PASSWORD_TEXT']) => {
     const salt = Number(process.env['DEFAULT_PASSWORD_SALT']);

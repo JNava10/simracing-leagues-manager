@@ -37,13 +37,13 @@ export interface StrategyLap {
     stintLap?: number;
     tyreId?: number;
     wearInfo?: TyreWearInfo
-    wearIndex?: number;
     lapTime?: number;
     lapTimeFormatted?: string;
 }
 
 export interface TyreWearInfo {
-
+    wearIndex?: number;
+    performance?: number;
 }
 
 export interface CreateStrategyProps {
