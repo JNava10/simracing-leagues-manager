@@ -3,6 +3,8 @@ export interface BaselineCar {
     name?: string;
     description?: string;
     fuelWasteKm?: number;
+    startYear?: number;
+    endYear?: number;
     engine?: string;
     weightKg?: number;
     fuelCapacityLitre?: number;
@@ -13,6 +15,7 @@ export interface BaselineCar {
 export interface StrategyTyre {
     id?: number;
     name?: string;
+    grip?: number;
     description?: string;
     color?: string;
     hardness?: number;
@@ -24,6 +27,7 @@ export interface StrategyTyre {
 export interface Tyre extends StrategyTyre {
     wearIndex: number;
     performance: number;
+    stint: number;
 }
 
 

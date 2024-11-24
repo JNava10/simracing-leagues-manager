@@ -7,9 +7,6 @@ import {Notification} from "../utils/interfaces/notification.interface";
 import {CarSeeder} from "../seeders/car.seeder";
 import {carSeedList} from "../default/baseline-car.list";
 import {trackSeedList} from "../default/track.list";
-import {StrategyLap} from "../utils/interfaces/strategy.interface";
-import {BaselineCar} from "../utils/interfaces/car.interface";
-import {Track} from "../utils/interfaces/track.interface";
 import {StrategyService} from "../services/strategy.service";
 
 export class StrategyController {
@@ -24,7 +21,8 @@ export class StrategyController {
                     {lapTimeMilis: 93021, tyreId: 3},
                     {lapTimeMilis: 93843, tyreId: 2},
                     {lapTimeMilis: 94731, tyreId: 1},
-                ]
+                ],
+                tyres: [1, 3]
             });
 
             const strategy = strategyService.sim()

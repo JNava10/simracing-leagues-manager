@@ -36,8 +36,14 @@ export interface StrategyLap {
     raceLap?: number;
     stintLap?: number;
     tyreId?: number;
+    wearInfo?: TyreWearInfo
     wearIndex?: number;
     lapTime?: number;
+    lapTimeFormatted?: string;
+}
+
+export interface TyreWearInfo {
+
 }
 
 export interface CreateStrategyProps {
@@ -46,6 +52,7 @@ export interface CreateStrategyProps {
     car: BaselineCar,
     startFuel?: number,
     estimatedLapTimes: EstimatedLapTime[]
+    tyres: number[],
 }
 
 
