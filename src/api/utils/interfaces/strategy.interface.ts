@@ -1,3 +1,7 @@
+import {Track} from "./track.interface";
+import {TrackLayout} from "@prisma/client";
+import {Layout} from "./layout.interface";
+
 export interface BaselineCar {
     id?: number;
     name?: string;
@@ -29,9 +33,23 @@ export interface TyreWear {
 }
 
 export interface StrategyLap {
-    lap: number;
+    raceLap?: number;
+    stintLap?: number;
     tyreId?: number;
-    tyreWear?: string;
-    lapSecs?: number;
-    hasPitted: boolean;
+    wearIndex?: number;
+    lapTime?: number;
+}
+
+export interface CreateStrategyProps {
+    raceLength: number,
+    trackLayout: Layout,
+    car: BaselineCar,
+    startFuel?: number,
+    estimatedLapTimes: EstimatedLapTime[]
+}
+
+
+export interface EstimatedLapTime {
+    tyreId?: number;
+    lapTimeMilis?: number;
 }

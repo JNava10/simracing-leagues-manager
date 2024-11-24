@@ -7,5 +7,5 @@ export interface Layout {
     traction: number;
     braking: number;
     lateral: number;
-    tireStress: number;
+    tyreStress: number;
 }

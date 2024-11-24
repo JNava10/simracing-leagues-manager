@@ -14,7 +14,7 @@ export const trackSeedList: Track[] = [
                 "traction": 3,
                 "braking": 3,
                 "lateral": 5,
-                "tireStress": 4
+                "tyreStress": 4
             }
         ]
     },
@@ -31,7 +31,7 @@ export const trackSeedList: Track[] = [
                 "traction": 2,
                 "braking": 4,
                 "lateral": 4,
-                "tireStress": 5
+                "tyreStress": 5
             },
         ]
     },
@@ -48,7 +48,7 @@ export const trackSeedList: Track[] = [
                 "traction": 5,
                 "braking": 5,
                 "lateral": 3,
-                "tireStress": 3
+                "tyreStress": 3
             },
         ]
     },
@@ -65,7 +65,7 @@ export const trackSeedList: Track[] = [
                 "traction": 3,
                 "braking": 4,
                 "lateral": 5,
-                "tireStress": 5
+                "tyreStress": 5
             },
         ]
     },
@@ -82,7 +82,7 @@ export const trackSeedList: Track[] = [
                 "traction": 2,
                 "braking": 3,
                 "lateral": 4,
-                "tireStress": 4
+                "tyreStress": 4
             }
         ]
     },

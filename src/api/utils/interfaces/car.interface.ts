@@ -7,10 +7,10 @@ export interface BaselineCar {
     weightKg?: number;
     fuelCapacityLitre?: number;
     powerHp?: number;
-    tyres?: Tyre[];
+    tyres?: StrategyTyre[];
 }
 
-export interface Tyre {
+export interface StrategyTyre {
     id?: number;
     name?: string;
     description?: string;
@@ -18,11 +18,16 @@ export interface Tyre {
     hardness?: number;
     carId?: number;
     car?: BaselineCar;
-    wearList?: TyreWear[]
+    wearList?: StrategyTyreWear[]
+}
+
+export interface Tyre extends StrategyTyre {
+    wearIndex: number;
+    performance: number;
 }
 
 
-export interface TyreWear {
+export interface StrategyTyreWear {
     tyreId?: number;
     wearIndex?: number;
     performance?: number;
