@@ -61,6 +61,46 @@ export const carSeedList: BaselineCar[] = [
                         wearIndex: 26,
                         performance: 70.4,
                     },
+                    {
+                        wearIndex: 28.6,
+                        performance: 67.5,
+                    },
+                    {
+                        wearIndex: 31.2,
+                        performance: 65,
+                    },
+                    {
+                        wearIndex: 33.8,
+                        performance: 62,
+                    },
+                    {
+                        wearIndex: 36.4,
+                        performance: 59.5,
+                    },
+                    {
+                        wearIndex: 39,
+                        performance: 57,
+                    },
+                    {
+                        wearIndex: 41.6,
+                        performance: 54.5,
+                    },
+                    {
+                        wearIndex: 44.2,
+                        performance: 51,
+                    },
+                    {
+                        wearIndex: 46.8,
+                        performance: 49,
+                    },
+                    {
+                        wearIndex: 49.4,
+                        performance: 47,
+                    },
+                    {
+                        wearIndex: 52,
+                        performance: 45,
+                    },
                 ]
             },
             {
@@ -164,6 +204,46 @@ export const carSeedList: BaselineCar[] = [
                     {
                         wearIndex: 22,
                         performance: 70.4,
+                    },
+                    {
+                        wearIndex: 24.2,
+                        performance: 67.5,
+                    },
+                    {
+                        wearIndex: 26.4,
+                        performance: 65,
+                    },
+                    {
+                        wearIndex: 28.6,
+                        performance: 62,
+                    },
+                    {
+                        wearIndex: 30.8,
+                        performance: 59.5,
+                    },
+                    {
+                        wearIndex: 33,
+                        performance: 57,
+                    },
+                    {
+                        wearIndex: 35.2,
+                        performance: 54.5,
+                    },
+                    {
+                        wearIndex: 37.4,
+                        performance: 51,
+                    },
+                    {
+                        wearIndex: 39.6,
+                        performance: 49,
+                    },
+                    {
+                        wearIndex: 41.8,
+                        performance: 47,
+                    },
+                    {
+                        wearIndex: 44,
+                        performance: 45,
                     },
                 ]
             },

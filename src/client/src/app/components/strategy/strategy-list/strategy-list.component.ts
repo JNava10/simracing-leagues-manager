@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {StrategyApiService} from "../../../services/api/strategy-api.service";
 import {Strategy} from "../../../utils/interfaces/strategy.interface";
 import {StrategyChartComponent} from "../strategy-chart/strategy-chart.component";
+import {GlobalHelper} from "../../../helpers/global.helper";
 
 @Component({
   selector: 'app-strategy-list',
@@ -21,6 +22,8 @@ export class StrategyListComponent implements OnInit {
       this.strategies = strategies;
     })
   }
+
+
 
   strategies?: Strategy[]
 }

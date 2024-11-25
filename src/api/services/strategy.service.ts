@@ -131,10 +131,10 @@ export class StrategyService {
     simulateLap = () => {
         const car = this.car;
 
-        if (this.currentTyre.performance < this.minimumTyrePerformance) {
+        if (this.currentTyre.performance < this.minimumTyrePerformance && this.nextTyreExists()) {
             const nextTyreIndex = this.currentStint.number + 1;
             const tyreId = this.strategyTyres[nextTyreIndex];
-            console.log(tyreId);
+
             this.makePitStop(tyreId)
         }
 
@@ -161,10 +161,12 @@ export class StrategyService {
 
     private simulateTyres = (lapData: StrategyLap) => {
         let lapTime = this.baseLapTimeEstimated;
+        const softness = 1 - this.currentTyre.hardness; // TODO: Cambiar a softness en base de datos, si da tiempo
+        const lapFactor = 1 / Math.sqrt(this.raceLapLength);
 
         // Aplicando el desgaste de esta vuelta segun los valores indicados en el circuito y la longitud en Km.
         // Se aplica la longitud ya que cuanto mas largo sea el circuito, mayor desgaste habrá por vuelta.
-        this.currentTyre.wearIndex += (this.tyreImpact * 0.7) + (this.trackLayout.lengthKm * 0.15);
+        this.currentTyre.wearIndex += (((this.tyreImpact * 0.45) + (this.trackLayout.lengthKm * 0.1)) + (softness * 0.55) * lapFactor);
         this.currentTyre.performance = this.getTyrePerformance();
 
         lapTime += this.calculateTyreDelta();
@@ -229,7 +231,7 @@ export class StrategyService {
          */
 
         const impact = this.tyreImpact; // Δb, delta por cada 1% de desgaste en ms
-        const deltaBase = 40; // Δb, tiempo delta por cada 1% de desgaste en ms
+        const deltaBase = 80; // Δb, tiempo delta por cada 1% de desgaste en ms
         const deltaImpact = Math.round(deltaBase * impact); // Δi, tiempo delta de impacto de los neumaticos sobre el tiempo por vuelta.
         const deltaTotal = deltaBase + deltaImpact + (this.currentTyre.wearIndex * 10); // Δt + Indice de desgaste transformado a milesimas
         const performanceOptimal = 100 // Po
@@ -265,7 +267,13 @@ export class StrategyService {
 
     private makePitStop = (tyreId: number) => {
         this.mountTyres(tyreId);
-        this.currentStint.laps = 0;
+
+        this.currentStint = {
+            ...this.currentStint,
+            number: this.currentStint.number + 1,
+        }
+
+        console.log(this.currentStint);
     }
 
     private updateDrivingPerf = (perf: DrivingPerformance) => {
@@ -273,6 +281,7 @@ export class StrategyService {
     }
 
     private nextTyreExists = () => {
-        return this.strategyTyres[this.currentStint.number + 1] !== null
+        console.log(this.strategyTyres[this.currentStint.number + 1])
+        return this.strategyTyres[this.currentStint.number + 1] !== undefined
     }
 }

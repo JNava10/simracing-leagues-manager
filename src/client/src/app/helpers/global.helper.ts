@@ -150,6 +150,19 @@ handleApiError = (
       fileInput.click();
     });
   }
+
+  milisToLaptime = (ms: number): string => {
+    const minutes = Math.floor(ms / 60000); // 1 minuto = 60000 ms
+    const seconds = Math.floor((ms % 60000) / 1000); // 1 segundo = 1000 ms
+    const milliseconds = ms % 1000; // Resto de milesimas que sobran de los segundos.
+
+    // Añadimos los ceros al principio en cada numero para que tenga el formato correcto.
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+    const formattedMilliseconds = String(milliseconds).padStart(3, '0');
+
+    return `${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
+  };
 }
 
 interface ShowSuccessMessageProps {

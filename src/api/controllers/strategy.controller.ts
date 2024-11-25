@@ -12,7 +12,7 @@ import {StrategyService} from "../services/strategy.service";
 export class StrategyController {
     static getStrategies = async (req: Request, res: Response): Promise<void> => {
         try {
-            const laps = 22;
+            const laps = 50;
             const strategyService = new StrategyService({
                 raceLength: laps,
                 car: carSeedList[0],
@@ -22,7 +22,7 @@ export class StrategyController {
                     {lapTimeMilis: 93843, tyreId: 2},
                     {lapTimeMilis: 94731, tyreId: 1},
                 ],
-                tyres: [1, 2]
+                tyres: [1, 3, 3]
             });
 
             const strategy = strategyService.sim();
