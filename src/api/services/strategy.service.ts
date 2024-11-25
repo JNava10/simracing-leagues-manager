@@ -65,12 +65,27 @@ export class StrategyService {
             )
         }
 
+        const raceTime = this.getTotalRaceTime();
+
         const strategy: Strategy = {
             laps: this.raceLaps,
-            3q1Se va 
+            overall: {
+                raceLaps: this.raceLaps.length,
+                raceTime,
+                pitStopCount: this.strategyTyres.length - 1
+            }
         }
 
-        return this.raceLaps;
+        return strategy;
+    }
+
+    private getTotalRaceTime() {
+        const lapTimes = this.raceLaps.map(item => item.lapTime);
+        let totalTime = 0;
+
+        lapTimes.forEach(lapTime => totalTime += lapTime);
+
+        return totalTime;
     }
 
     private mountTyres(tyreId: number) {
