@@ -27,7 +27,6 @@ export interface StrategyTyre {
 export interface Tyre extends StrategyTyre {
     wearIndex: number;
     performance: number;
-    stint: number;
 }
 
 

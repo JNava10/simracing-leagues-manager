@@ -60,3 +60,8 @@ export interface EstimatedLapTime {
     tyreId?: number;
     lapTimeMilis?: number;
 }
+
+export interface Stint {
+    laps?: number;
+    number?: number;
+}

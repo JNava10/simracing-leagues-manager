@@ -12,9 +12,9 @@ export const trackSeedList: Track[] = [
                 "description": "Configuración tradicional de GP",
                 "lengthKm": 5.891,
                 "traction": 3,
-                "braking": 3,
+                "braking": 2,
                 "lateral": 5,
-                "tyreStress": 4
+                "tyreStress": 5
             }
         ]
     },

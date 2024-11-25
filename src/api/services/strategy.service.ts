@@ -1,4 +1,4 @@
-import {CreateStrategyProps, EstimatedLapTime, StrategyLap} from "../utils/interfaces/strategy.interface";
+import {CreateStrategyProps, EstimatedLapTime, Stint, StrategyLap} from "../utils/interfaces/strategy.interface";
 import {BaselineCar, Tyre} from "../utils/interfaces/car.interface";
 import {Layout} from "../utils/interfaces/layout.interface";
 import {getNearestNumber, milisToLaptime} from "../helpers/common.helper";
@@ -8,7 +8,6 @@ import {DrivingPerformance} from "../utils/enum/global.enum";
 export class StrategyService {
     private fuelRemaining = 0;
     private currentTyre: Tyre;
-    private currentStint: StrategyLap[] = [];
     private baseLapTimeEstimated: number = 0;
     private currentWearIndexList: number[];
     private currentPerformanceList: number[];
@@ -19,11 +18,12 @@ export class StrategyService {
     private estimatedLapTimes: EstimatedLapTime[];
     private raceLaps: StrategyLap[] = [];
     private strategyTyres: number[] = [];
+    private currentStint: Stint
 
     // Impacto que tendrá el neumatico durante las vueltas de carrera. Depende de las caracteristicas del circuito.
     private tyreImpact = 0;
 
-    private minimumTyrePerformance: 75;
+    private minimumTyrePerformance = 79;
     private currentDrivePerformance: DrivingPerformance;
 
     constructor(
@@ -34,24 +34,30 @@ export class StrategyService {
         this.raceLength = raceLength;
         this.fuelRemaining = startFuel || car.fuelCapacityLitre;
         this.estimatedLapTimes = estimatedLapTimes;
-        this.strategyTyres = tyres
+        this.strategyTyres = tyres;
     }
 
-    private mountTyres(tyreId: number, stint: number) {
+    private mountTyres(tyreId: number) {
         const searchedTyre = this.car.tyres.find(tyre => tyre.id === tyreId);
 
         if (!searchedTyre) throw new Error("Neumaticos indicados son invalidos.");
 
+        // Poniendo neumatico nuevo, reseteando todos sus valores.
         this.currentTyre = {
             ...searchedTyre,
             wearIndex: 0,
             performance: searchedTyre.wearList[0].performance,
-            stint
         }
 
+        // Calculo del impacto de los neum. en el tiempo por vuelta.
         this.tyreImpact = this.calculateTyreImpact();
+
+        // Mapeo de indices de desgaste y rendimientos para tenerlos en arrays diferentes.
         this.currentWearIndexList = this.currentTyre.wearList.map(item => item.wearIndex);
         this.currentPerformanceList = this.currentTyre.wearList.map(item => item.performance);
+
+        // Busqueda del tiempo estimado según el neumatico que se esté llevando.
+        this.baseLapTimeEstimated = this.estimatedLapTimes.find(item => item.tyreId === tyreId).lapTimeMilis;
     }
 
     private calculateTyreImpact() {
@@ -75,15 +81,19 @@ export class StrategyService {
         const car = this.car;
 
         if (this.currentTyre.performance < this.minimumTyrePerformance) {
-            const nextTyreIndex = this.currentTyre.stint;
+            const nextTyreIndex = this.currentStint.number + 1;
             const tyreId = this.strategyTyres[nextTyreIndex];
+            console.log(tyreId);
             this.makePitStop(tyreId)
         }
+
+        // Contando una vuelta más al stint actual
+        this.currentStint.laps++
 
         let lapData: StrategyLap = {
             lapTime: this.baseLapTimeEstimated,
             raceLap: this.raceLaps.length + 1,
-            stintLap: this.currentStint.length + 1,
+            stintLap: this.currentStint.laps,
         };
 
         lapData = this.simulateTyres(lapData)
@@ -100,11 +110,13 @@ export class StrategyService {
     sim = () => {
         const startTyreId = this.strategyTyres[0];
 
-        this.mountTyres(startTyreId, 0);
+        this.mountTyres(startTyreId);
 
-        // Busqueda del tiempo estimado según el neumatico que se esté llevando.
-        this.baseLapTimeEstimated = this.estimatedLapTimes.find(item => item.tyreId === startTyreId).lapTimeMilis;
         this.currentDrivePerformance = DrivingPerformance.Neutral;
+        this.currentStint = {
+            number: 0,
+            laps: 0
+        }
 
         for (let i = 0; i < this.raceLength - 1; i++) {
              this.raceLaps.push(
@@ -120,7 +132,7 @@ export class StrategyService {
 
         // Aplicando el desgaste de esta vuelta segun los valores indicados en el circuito y la longitud en Km.
         // Se aplica la longitud ya que cuanto mas largo sea el circuito, mayor desgaste habrá por vuelta.
-        this.currentTyre.wearIndex += (this.tyreImpact * 0.35) + (this.trackLayout.lengthKm * 0.1);
+        this.currentTyre.wearIndex += (this.tyreImpact * 0.7) + (this.trackLayout.lengthKm * 0.15);
         this.currentTyre.performance = this.getTyrePerformance();
 
         lapTime += this.calculateTyreDelta();
@@ -192,17 +204,17 @@ export class StrategyService {
 
         const wear = performanceOptimal - this.currentTyre.performance; // W
 
-        console.table({
-            lap: this.raceLaps.length + 1,
-            wearIndex: this.currentTyre.wearIndex,
-            impact,
-            deltaBase,
-            deltaImpact,
-            deltaTotal,
-            wear,
-            performanceOptimal,
-            wearDelta: deltaTotal * wear
-        })
+        // console.table({
+        //     lap: this.raceLaps.length + 1,
+        //     wearIndex: this.currentTyre.wearIndex,
+        //     impact,
+        //     deltaBase,
+        //     deltaImpact,
+        //     deltaTotal,
+        //     wear,
+        //     performanceOptimal,
+        //     wearDelta: deltaTotal * wear
+        // })
 
         return Math.round(deltaTotal * (wear * 0.4))  // WΔ, tiempo delta con el desgaste de neumaticos
     }
@@ -220,8 +232,8 @@ export class StrategyService {
     }
 
     private makePitStop = (tyreId: number) => {
-        this.mountTyres(tyreId, this.currentTyre.stint++);
-        this.currentStint = [];
+        this.mountTyres(tyreId);
+        this.currentStint.laps = 0;
     }
 
     private updateDrivingPerf = (perf: DrivingPerformance) => {
@@ -229,6 +241,6 @@ export class StrategyService {
     }
 
     private nextTyreExists = () => {
-        return this.strategyTyres[this.currentTyre.stint + 1] !== null
+        return this.strategyTyres[this.currentStint.number + 1] !== null
     }
 }

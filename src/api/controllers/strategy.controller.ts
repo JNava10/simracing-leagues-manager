@@ -22,7 +22,7 @@ export class StrategyController {
                     {lapTimeMilis: 93843, tyreId: 2},
                     {lapTimeMilis: 94731, tyreId: 1},
                 ],
-                tyres: [1, 3]
+                tyres: [1, 2]
             });
 
             const strategy = strategyService.sim()
