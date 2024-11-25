@@ -5,7 +5,8 @@ import {provideRouter, withComponentInputBinding, withRouterConfig} from '@angul
 import { routes } from './app.routes';
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor} from "./interceptor/auth.interceptor";
+import {provideCharts, withDefaultRegisterables} from "ng2-charts";
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideAnimations(), provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes, withComponentInputBinding(), withRouterConfig({paramsInheritanceStrategy: 'always'})), provideHttpClient(withInterceptors([authInterceptor]))]
+  providers: [provideAnimations(), provideCharts(withDefaultRegisterables()), provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes, withComponentInputBinding(), withRouterConfig({paramsInheritanceStrategy: 'always'})), provideHttpClient(withInterceptors([authInterceptor]))]
 };

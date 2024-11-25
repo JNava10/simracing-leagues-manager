@@ -23,6 +23,7 @@ import {ProfileInfoComponent} from "./components/profile/profile-info/profile-in
 import {
   EditChampionshipFormComponent
 } from "./components/championship/edit-championship/edit-championship-form.component";
+import {StrategyListComponent} from "./components/strategy/strategy-list/strategy-list.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: 'newleague', component: CreateLeagueFormComponent },
       { path: 'presets', component: PresetListComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
+      { path: 'strategy', title: 'Estrategias', component: StrategyListComponent },
       { path: 'notifications', title: 'Notificaciones', component: NotificationMenuComponent },
       { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },

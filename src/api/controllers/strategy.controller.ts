@@ -12,7 +12,7 @@ import {StrategyService} from "../services/strategy.service";
 export class StrategyController {
     static getStrategies = async (req: Request, res: Response): Promise<void> => {
         try {
-            const laps = 15;
+            const laps = 22;
             const strategyService = new StrategyService({
                 raceLength: laps,
                 car: carSeedList[0],
@@ -25,11 +25,11 @@ export class StrategyController {
                 tyres: [1, 2]
             });
 
-            const strategy = strategyService.sim()
+            const strategy = strategyService.sim();
 
             sendSuccessResponse(
                 {
-                    data: strategy,
+                    data: [strategy],
                     status: 201,
                     msg: "Usuario creado correctamente.",
                 },
