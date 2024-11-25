@@ -5,7 +5,7 @@ export enum DrivingPerformance {
     Managing = 95,
 }
 
-export enum TrackSpeed {
+export enum TrackGrip {
     Dusty = 86,
     Green = 90,
     Slow = 96,

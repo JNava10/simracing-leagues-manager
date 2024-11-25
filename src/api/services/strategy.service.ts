@@ -1,8 +1,14 @@
-import {CreateStrategyProps, EstimatedLapTime, Stint, StrategyLap} from "../utils/interfaces/strategy.interface";
+import {
+    CreateStrategyProps,
+    EstimatedLapTime,
+    Stint,
+    Strategy,
+    StrategyLap
+} from "../utils/interfaces/strategy.interface";
 import {BaselineCar, Tyre} from "../utils/interfaces/car.interface";
 import {Layout} from "../utils/interfaces/layout.interface";
 import {getNearestNumber, milisToLaptime} from "../helpers/common.helper";
-import {DrivingPerformance} from "../utils/enum/global.enum";
+import {DrivingPerformance, TrackGrip} from "../utils/enum/global.enum";
 
 
 export class StrategyService {
@@ -14,11 +20,12 @@ export class StrategyService {
 
     private car: BaselineCar;
     private trackLayout: Layout;
-    private raceLength = 0;
+    private raceLapLength = 0;
     private estimatedLapTimes: EstimatedLapTime[];
     private raceLaps: StrategyLap[] = [];
     private strategyTyres: number[] = [];
-    private currentStint: Stint
+    private currentStint: Stint;
+    private currentTrackGrip: TrackGrip;
 
     // Impacto que tendrá el neumatico durante las vueltas de carrera. Depende de las caracteristicas del circuito.
     private tyreImpact = 0;
@@ -31,10 +38,39 @@ export class StrategyService {
     ) {
         this.car = car;
         this.trackLayout = trackLayout;
-        this.raceLength = raceLength;
+        this.raceLapLength = raceLength;
         this.fuelRemaining = startFuel || car.fuelCapacityLitre;
         this.estimatedLapTimes = estimatedLapTimes;
         this.strategyTyres = tyres;
+    }
+
+    private initRace() {
+        const startTyreId = this.strategyTyres[0];
+
+        this.mountTyres(startTyreId);
+
+        this.currentDrivePerformance = DrivingPerformance.Neutral;
+        this.currentStint = {
+            number: 0,
+            laps: 0
+        }
+    }
+
+    sim = () => {
+        this.initRace();
+
+        for (let i = 0; i < this.raceLapLength - 1; i++) {
+            this.raceLaps.push(
+                this.simulateLap()
+            )
+        }
+
+        const strategy: Strategy = {
+            laps: this.raceLaps,
+            3q1Se va 
+        }
+
+        return this.raceLaps;
     }
 
     private mountTyres(tyreId: number) {
@@ -107,25 +143,6 @@ export class StrategyService {
         return lapData;
     }
 
-    sim = () => {
-        const startTyreId = this.strategyTyres[0];
-
-        this.mountTyres(startTyreId);
-
-        this.currentDrivePerformance = DrivingPerformance.Neutral;
-        this.currentStint = {
-            number: 0,
-            laps: 0
-        }
-
-        for (let i = 0; i < this.raceLength - 1; i++) {
-             this.raceLaps.push(
-                 this.simulateLap()
-             )
-        }
-
-        return this.raceLaps;
-    }
 
     private simulateTyres = (lapData: StrategyLap) => {
         let lapTime = this.baseLapTimeEstimated;

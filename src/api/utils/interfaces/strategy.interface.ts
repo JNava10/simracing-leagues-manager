@@ -32,6 +32,17 @@ export interface TyreWear {
     performance?: number;
 }
 
+export interface Strategy  {
+    laps: StrategyLap[];
+    overall: StrategyOverall
+}
+
+export interface StrategyOverall {
+    raceTime?: number;
+    raceLaps?: number;
+    pitStopCount?: number;
+}
+
 export interface StrategyLap {
     raceLap?: number;
     stintLap?: number;
