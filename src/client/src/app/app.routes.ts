@@ -27,6 +27,7 @@ import {StrategyListComponent} from "./components/strategy/strategy-list/strateg
 import {
   DefineStrategiesFormComponent
 } from "./components/strategy/define-strategies-form/define-strategies-form.component";
+import {InvitesComponent} from "./components/invites/invites/invites.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -35,6 +36,7 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterFormComponent },
       { path: 'newleague', component: CreateLeagueFormComponent },
+      { path: 'invites', component: InvitesComponent },
       { path: 'presets', component: PresetListComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
       { path: 'strategy', title: 'Estrategias', component: StrategyListComponent },

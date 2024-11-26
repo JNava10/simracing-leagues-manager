@@ -6,7 +6,7 @@ import {
   League,
   LeagueMember,
   LeagueMemberRequest,
-  BanMemberRequest
+  BanMemberRequest, LeagueInvite
 } from '../../utils/interfaces/league.interface';
 import { sendTokenParam } from '../../utils/constants/global.constants';
 import { User } from '../../utils/interfaces/user.interface';
@@ -149,8 +149,52 @@ export class LeagueApiService {
     );
   }
 
+  getInvites = (userId?: number) => {
+    const url = userId ? `${devEnv.apiEndpoint}/league/invites/${userId}` : `${devEnv.apiEndpoint}/league/invites`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<LeagueInvite[]>>(url, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<LeagueInvite[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
+    );
+  }
+
   getLeagueMembers = (leagueId: number) => {
     const url = `${devEnv.apiEndpoint}/league/${leagueId}/members`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<LeagueMember[]>>(url, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<LeagueMember[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return res.data!
+      })
+    );
+  }
+
+  acceptInvite = (leagueId: number, userId?: number) => {
+    const url = `${devEnv.apiEndpoint}/league/invite/${leagueId}/accept`;
     const options = { params: { ...sendTokenParam } };
 
     return this.http.get<DefaultRes<LeagueMember[]>>(url, options).pipe(

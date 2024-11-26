@@ -1,7 +1,15 @@
 <section class="flex flex-col gap-3">
   <form class="p-3 grid gap-2 grid-cols-3 rounded-xl dark:bg-neutral-800/70">
-    <app-custom-select
+    <app-custom-search-input
+      class="join-item"
+      (onSearch)="searchCars($event)"
+      placeholder="Introduce el nombre del coche base"
+    />
 
+    <app-custom-search-input
+      class="join-item"
+      (onSearch)="searchTrack($event)"
+      placeholder="Introduce el nombre del circuito"
     />
   </form>
 </section>

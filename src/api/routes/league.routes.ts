@@ -13,6 +13,9 @@ const router = express.Router();
  */
 router.post("/", [validateToken], controller.createLeague);
 
+router.get("/invites/:userId?", [validateToken], controller.getUserInvites);
+
+
 /**
  * @route PUT /
  * @description Edita la liga `:leagueId` con los datos indicados en la petición.
@@ -92,6 +95,7 @@ router.post("/:leagueId/pending/decline", [validateToken, isBanned], controller.
  * @description Invitar a un usuario `:userId` a la liga `:leagueId`
  */
 router.post("/:leagueId/invite/:userId", [validateToken, isBanned], controller.inviteUser);
+
 
 /**
  * @route POST /:leagueId/pending/decline

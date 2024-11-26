@@ -1,3 +1,5 @@
+import {User} from "@prisma/client";
+
 export interface League {
     id?: number;
     name: string;
@@ -8,6 +10,26 @@ export interface League {
 export interface NewLeagueMember {
     userId: number;
 }
+
+export interface LeagueInvite {
+    league: League;
+    invitedAt: Date
+}
+
+export interface LeagueMemberQuery {
+    leagueId?: number;
+    userId?: number;
+    notificationId?: number | null;
+    accepted?: boolean;
+    invited?: boolean;
+    joinedAt?: Date | null;
+    invitedAt?: Date;
+    requestedAt?: Date | null;
+
+    league?: League; // Relación con el modelo League
+    user?: User;     // Relación con el modelo User
+}
+
 
 export interface IsMemberAdded {
     executed: boolean,

@@ -74,3 +74,8 @@ export interface Stint {
   laps?: number;
   number?: number;
 }
+
+export interface SearchCarProps {
+  id?: number;
+  name?: string;
+}

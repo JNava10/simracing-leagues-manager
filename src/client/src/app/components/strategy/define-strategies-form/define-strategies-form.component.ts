@@ -8,6 +8,7 @@ import {StrategyApiService} from "../../../services/api/strategy-api.service";
 import {TrackApiService} from "../../../services/api/track-api.service";
 import {BaselineCar} from "../../../utils/interfaces/strategy.interface";
 import {StrategyLayout, Track} from "../../../utils/interfaces/track.interface";
+import {CustomSearchInputComponent} from "../../utils/custom/input/custom-search-input/custom-search-input.component";
 
 @Component({
   selector: 'app-define-strategies-form',
@@ -18,7 +19,8 @@ import {StrategyLayout, Track} from "../../../utils/interfaces/track.interface";
     ReactiveFormsModule,
     CustomDropdownComponent,
     CustomDropdownItemComponent,
-    CustomSelectComponent
+    CustomSelectComponent,
+    CustomSearchInputComponent
   ],
   templateUrl: './define-strategies-form.component.html',
   styleUrl: './define-strategies-form.component.scss'
@@ -27,16 +29,22 @@ export class DefineStrategiesFormComponent implements OnInit {
   constructor(private strategyService: StrategyApiService, private trackService: TrackApiService) {}
 
   ngOnInit(): void {
-    this.strategyService.getAvailableCars().subscribe(res => this.handleCarsResponse(res))
 
-    this.trackService.getAvailableCars().subscribe(res => this.handleCarsResponse(res))
+  }
+
+  searchCars = (name: string) => {
+    this.strategyService.searchCars({name}).subscribe(res => this.handleCarsResponse(res))
+  }
+
+  searchTrack = (name: string) => {
+    this.trackService.searchLayouts({name}).subscribe(res => this.handleTrackResponse(res))
   }
 
   private handleCarsResponse(res: BaselineCar[]) {
 
   }
 
-  private handleTrackResponse(res: StrategyLayout) {
+  private handleTrackResponse(res: StrategyLayout[]) {
 
   }
 

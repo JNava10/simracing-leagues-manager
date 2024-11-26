@@ -61,4 +61,20 @@ export class TrackController {
             console.error(error);
         }
     }
+
+    searchLayoutsWithWear = async (req: Request, res: Response) => {
+        try {
+            const props = req.query as SearchTrackProps;
+
+            const tracks = await this.trackService.searchLayouts(props);
+
+            sendSuccessResponse({
+                msg: Messages.searchSuccess,
+                data: tracks,
+                status: 200
+            }, res)
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }

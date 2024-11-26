@@ -16,6 +16,11 @@ export interface LeagueRole {
   name: string
 }
 
+export interface LeagueInvite {
+  league: League;
+  invitedAt: Date
+}
+
 export interface LeagueMemberRequest {
   userId: number,
   leagueId: number

@@ -8,7 +8,8 @@ import {League} from "../../utils/interfaces/league.interface";
 import {catchError, map} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {GlobalHelper} from "../../helpers/global.helper";
-import {BaselineCar} from "../../utils/interfaces/strategy.interface";
+import {BaselineCar, SearchCarProps} from "../../utils/interfaces/strategy.interface";
+import {SearchTrackProps} from "../../utils/interfaces/track.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +40,9 @@ export class StrategyApiService {
     );
   }
 
-  getAvailableCars = () => {
+  searchCars = (props: SearchCarProps) => {
     const url = `${devEnv.apiEndpoint}/strategy/car`;
-    const options = { params: { ...sendTokenParam } };
+    const options = { params: { ...sendTokenParam }, ...props };
 
     return this.http.get<DefaultRes<BaselineCar[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<BaselineCar[]>>, caught) => {

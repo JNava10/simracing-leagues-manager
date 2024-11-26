@@ -2,6 +2,8 @@ import {League, LeagueBan} from "../../utils/interfaces/league.interface";
 import {prisma} from "../../app";
 import {now} from '../../helpers/common.helper';
 import {UserQuery} from './user.query';
+import {fa, tr} from "@faker-js/faker";
+import {leagueInviteFull, LeagueInviteFull} from "../../prisma/types/league.types";
 
 export class LeagueQuery {
     static createLeague = async (league: League, authorId: number) => {
@@ -190,6 +192,18 @@ export class LeagueQuery {
                 joinedAt: now()
             }
         });
+    }
+
+    static getLeagueInvites = async (userId: number) => {
+        return prisma.leagueMember.findMany(
+            {
+                where: {
+                    userId,
+                    invited: true,
+                    accepted: false
+                },
+                include: leagueInviteFull.include
+            });
     }
 
     static banMember = async ({userId, leagueId, reason}: LeagueBan) => {

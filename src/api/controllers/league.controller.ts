@@ -3,7 +3,7 @@ import {
     IsMemberAdded as IsQueryExecuted,
     KickMember,
     League,
-    LeagueBan,
+    LeagueBan, LeagueInvite, LeagueMemberQuery,
     NewLeagueMember
 } from "../utils/interfaces/league.interface";
 import {LeagueQuery} from "../services/queries/league.query";
@@ -11,6 +11,7 @@ import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {isValidNumber} from "../helpers/validators.helper";
 import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
+import {LeagueInviteFull} from "../prisma/types/league.types";
 
 export const editLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -234,13 +235,37 @@ export const inviteUser = async (req: CustomRequest, res: Response) => {
 
         const executed = await LeagueQuery.inviteMember(userId, leagueId) !== null;
 
-        if (executed) {
-
-        }
-
         sendSuccessResponse({
             data: { executed },
             msg: "Se ha enviado una invitación a la liga correctamente."
+        }, res);
+    } catch (e) {
+        sendErrorResponse({ error: e.message }, res);
+    }
+};
+
+export const getUserInvites = async (req: CustomRequest, res: Response) => {
+    try {
+        let userId = Number(req.params['userId']);
+
+        if (!userId) {
+            userId = req.user.id;
+        }
+
+        const query = await LeagueQuery.getLeagueInvites(userId) as LeagueMemberQuery[];
+
+        const invites: LeagueInvite[] = []
+
+        query.forEach(item => {
+            invites.push({
+                league: item.league,
+                invitedAt: item.invitedAt
+            });
+        })
+
+        sendSuccessResponse({
+            data: invites,
+            msg: "Se han obtenido las invitaciones."
         }, res);
     } catch (e) {
         sendErrorResponse({ error: e.message }, res);

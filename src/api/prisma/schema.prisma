@@ -110,6 +110,7 @@ model LeagueMember {
   accepted       Boolean   @default(false)
   invited        Boolean   @default(false)
   joinedAt       DateTime? @db.DateTime(6)
+  invitedAt      DateTime? @db.DateTime(6)
   requestedAt    DateTime? @db.DateTime(6)
 
   league League @relation(fields: [leagueId], references: [id])
