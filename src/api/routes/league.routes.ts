@@ -11,7 +11,7 @@ const router = express.Router();
  * @route POST /
  * @description Crear una nueva liga
  */
-router.post("/", [validateToken, isBanned], controller.createLeague);
+router.post("/", [validateToken], controller.createLeague);
 
 /**
  * @route PUT /

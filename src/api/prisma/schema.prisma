@@ -44,10 +44,10 @@ model User {
 
   ChampionshipPreset ChampionshipPreset[]
 
-  RoundResults          RoundEntry[]
-  notificationsSent     Notification[] @relation("NotificationsSent")
-  notificationsReceived Notification[] @relation("NotificationsReceived")
-  EventChampionship     LeagueEvent[]
+  RoundResults      RoundEntry[]
+  // notificationsSent     Notification[] @relation("NotificationsSent")
+  // notificationsReceived Notification[] @relation("NotificationsReceived")
+  EventChampionship LeagueEvent[]
 }
 
 model FavouriteSimulator {
@@ -357,7 +357,7 @@ model TrackLayout {
   traction   Int @default(0)
   braking    Int @default(0)
   lateral    Int @default(0)
-  tireStress Int @default(0)
+  tyreStress Int @default(0)
 
   parent   Track @relation(fields: [parentId], references: [id])
   parentId Int
@@ -380,18 +380,6 @@ model SimulatorGame {
   userFavourites FavouriteSimulator[]
   championships  LeagueChampionship[]
   events         LeagueEvent[]
-}
-
-model Notification {
-  id       Int      @id @default(autoincrement())
-  actionId Int
-  targetId Int
-  authorId Int
-  date     DateTime @default(now()) @db.DateTime(6)
-  memberId Int
-
-  target User @relation("NotificationsReceived", fields: [targetId], references: [id])
-  author User @relation("NotificationsSent", fields: [authorId], references: [id])
 }
 
 model LeagueBan {
@@ -423,7 +411,7 @@ model Tyre {
   description String?
   color       String
   carId       Int
-  hardness    Float
+  softness    Float
 
   car      BaselineCar @relation(fields: [carId], references: [id])
   wearList TyreWear[]
@@ -519,4 +507,16 @@ model TyreWear {
 //   parentId    Int
 //   description String   @db.VarChar(255)
 //   parent      Category @relation(fields: [parentId], references: [id])
+// }
+
+// model Notification {
+//   id       Int      @id @default(autoincrement())
+//   actionId Int
+//   targetId Int
+//   authorId Int
+//   date     DateTime @default(now()) @db.DateTime(6)
+//   memberId Int
+//
+//   target User @relation("NotificationsReceived", fields: [targetId], references: [id])
+//   author User @relation("NotificationsSent", fields: [authorId], references: [id])
 // }

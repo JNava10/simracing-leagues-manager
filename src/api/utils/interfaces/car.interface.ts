@@ -18,7 +18,7 @@ export interface StrategyTyre {
     grip?: number;
     description?: string;
     color?: string;
-    hardness?: number;
+    softness?: number;
     carId?: number;
     car?: BaselineCar;
     wearList?: StrategyTyreWear[]

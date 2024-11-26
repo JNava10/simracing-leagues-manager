@@ -161,12 +161,11 @@ export class StrategyService {
 
     private simulateTyres = (lapData: StrategyLap) => {
         let lapTime = this.baseLapTimeEstimated;
-        const softness = 1 - this.currentTyre.hardness; // TODO: Cambiar a softness en base de datos, si da tiempo
-        const lapFactor = 1 / Math.sqrt(this.raceLapLength);
 
         // Aplicando el desgaste de esta vuelta segun los valores indicados en el circuito y la longitud en Km.
         // Se aplica la longitud ya que cuanto mas largo sea el circuito, mayor desgaste habrá por vuelta.
-        this.currentTyre.wearIndex += (((this.tyreImpact * 0.45) + (this.trackLayout.lengthKm * 0.1)) + (softness * 0.55) * lapFactor);
+        this.currentTyre.wearIndex += this.getCurrentWearIndex();
+
         this.currentTyre.performance = this.getTyrePerformance();
 
         lapTime += this.calculateTyreDelta();
@@ -180,6 +179,18 @@ export class StrategyService {
         lapData.lapTime = lapTime;
 
         return lapData;
+    }
+
+    private getCurrentWearIndex() {
+        const raceLengthFactor = 1 / Math.sqrt(this.raceLapLength); // Se aumenta o disminuye el desgaste en funcion de cuanto dure la carrera.
+
+        /*
+        * Peso de cada valor en el desgaste:
+        * 45% al impacto que tienen los neumaticos en el tiempo por vuelta
+        * 10% a la longitud del circuito. Aunque parezca poco, marca mucho la diferencia.
+        * 55% según lo blando que sea el neumatico actual. Cuanto más blando, más desgaste. Esto marca la durabilidad.
+        */
+        return ((this.tyreImpact * 0.45) + (this.trackLayout.lengthKm * 0.1)) + (this.currentTyre.softness * 0.55) * raceLengthFactor;
     }
 
     private getTyrePerformance() {

@@ -42,7 +42,7 @@ export class CarSeeder implements Seeder {
                        description,
                        color,
                        wearList,
-                       hardness,
+                       softness,
                        carId
                    } = tyres[j];
 
@@ -53,7 +53,7 @@ export class CarSeeder implements Seeder {
                            data: {
                                name,
                                description,
-                               hardness,
+                               softness: softness,
                                color,
                                carId: createdCar.id
                            }

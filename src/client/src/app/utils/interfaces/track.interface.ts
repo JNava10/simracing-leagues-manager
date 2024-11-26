@@ -38,3 +38,9 @@ export interface SearchLayoutProps {
   country?: string
 }
 
+export interface StrategyLayout extends TrackLayout {
+  traction: number;
+  braking: number;
+  lateral: number;
+  tyreStress: number;
+}

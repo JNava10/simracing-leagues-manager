@@ -24,6 +24,9 @@ import {
   EditChampionshipFormComponent
 } from "./components/championship/edit-championship/edit-championship-form.component";
 import {StrategyListComponent} from "./components/strategy/strategy-list/strategy-list.component";
+import {
+  DefineStrategiesFormComponent
+} from "./components/strategy/define-strategies-form/define-strategies-form.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -35,6 +38,7 @@ export const routes: Routes = [
       { path: 'presets', component: PresetListComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
       { path: 'strategy', title: 'Estrategias', component: StrategyListComponent },
+      { path: 'strategy/create', title: 'Estrategias', component: DefineStrategiesFormComponent },
       { path: 'notifications', title: 'Notificaciones', component: NotificationMenuComponent },
       { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },

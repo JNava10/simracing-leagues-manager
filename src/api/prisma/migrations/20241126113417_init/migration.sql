@@ -270,7 +270,7 @@ CREATE TABLE `TrackLayout` (
     `traction` INTEGER NOT NULL DEFAULT 0,
     `braking` INTEGER NOT NULL DEFAULT 0,
     `lateral` INTEGER NOT NULL DEFAULT 0,
-    `tireStress` INTEGER NOT NULL DEFAULT 0,
+    `tyreStress` INTEGER NOT NULL DEFAULT 0,
     `parentId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -283,18 +283,6 @@ CREATE TABLE `SimulatorGame` (
     `description` VARCHAR(255) NOT NULL,
     `picUrl` VARCHAR(255) NULL,
     `releaseYear` YEAR NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Notification` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `actionId` INTEGER NOT NULL,
-    `targetId` INTEGER NOT NULL,
-    `authorId` INTEGER NOT NULL,
-    `date` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `memberId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -330,7 +318,7 @@ CREATE TABLE `Tyre` (
     `description` VARCHAR(191) NULL,
     `color` VARCHAR(191) NOT NULL,
     `carId` INTEGER NOT NULL,
-    `hardness` DOUBLE NOT NULL,
+    `softness` DOUBLE NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -471,12 +459,6 @@ ALTER TABLE `ScoreSystemExtra` ADD CONSTRAINT `ScoreSystemExtra_extraId_fkey` FO
 
 -- AddForeignKey
 ALTER TABLE `TrackLayout` ADD CONSTRAINT `TrackLayout_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `Track`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Notification` ADD CONSTRAINT `Notification_targetId_fkey` FOREIGN KEY (`targetId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Notification` ADD CONSTRAINT `Notification_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Tyre` ADD CONSTRAINT `Tyre_carId_fkey` FOREIGN KEY (`carId`) REFERENCES `BaselineCar`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -8,6 +8,8 @@ import {CarSeeder} from "../seeders/car.seeder";
 import {carSeedList} from "../default/baseline-car.list";
 import {trackSeedList} from "../default/track.list";
 import {StrategyService} from "../services/strategy.service";
+import {StrategyQuery} from "../services/queries/strategy.query";
+import {Messages} from "../utils/enum/messages.enum";
 
 export class StrategyController {
     static getStrategies = async (req: Request, res: Response): Promise<void> => {
@@ -38,6 +40,27 @@ export class StrategyController {
         } catch (error) {
             console.error(error);
             
+            sendErrorResponse({
+                error: `Ha ocurrido un error al crear el usuario: ${error}`
+            }, res)
+        }
+    };
+
+    static getBaselineCars = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const cars = await StrategyQuery.getAllCars();
+
+            sendSuccessResponse(
+                {
+                    data: cars,
+                    status: 201,
+                    msg: Messages.searchSuccess,
+                },
+                res
+            );
+        } catch (error) {
+            console.error(error);
+
             sendErrorResponse({
                 error: `Ha ocurrido un error al crear el usuario: ${error}`
             }, res)

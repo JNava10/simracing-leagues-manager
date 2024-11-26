@@ -23,7 +23,5 @@ export class StrategyListComponent implements OnInit {
     })
   }
 
-
-
   strategies?: Strategy[]
 }

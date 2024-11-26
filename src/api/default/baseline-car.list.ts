@@ -15,7 +15,7 @@ export const carSeedList: BaselineCar[] = [
                 id: 1,
                 color: "#e1e1e3",
                 name: "C1",
-                hardness: 0.85,
+                softness: 0.10,
                 wearList: [
                     {
                         wearIndex: 0,
@@ -107,7 +107,7 @@ export const carSeedList: BaselineCar[] = [
                 id: 2,
                 color: "#8a8624",
                 name: "C2",
-                hardness: 0.70,
+                softness: 0.30,
                 wearList: [
                     {
                         wearIndex: 0,
@@ -159,7 +159,7 @@ export const carSeedList: BaselineCar[] = [
                 id: 3,
                 color: "#d8c739",
                 name: "C3",
-                hardness: 0.50,
+                softness: 0.50,
                 wearList: [
                     {
                         wearIndex: 0,
@@ -247,17 +247,17 @@ export const carSeedList: BaselineCar[] = [
                     },
                 ]
             },
-            {
-                id: 4,
-                name: "C4",
-                color: "#db222b",
-                hardness: 0.35,
-            },
-            {
-                id: 3,
-                name: "C5",
-                hardness: 0.15,
-            },
+            // {
+            //     id: 4,
+            //     name: "C4",
+            //     color: "#db222b",
+            //     softness: 0.70,
+            // },
+            // {
+            //     id: 3,
+            //     name: "C5",
+            //     softness: 0.15,
+            // },
         ],
     }
 ];

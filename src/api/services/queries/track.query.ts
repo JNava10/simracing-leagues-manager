@@ -10,7 +10,6 @@ export class TrackQuery {
             console.error(e.message);
         }
     };
-
     
     search = async ({name, id, country}: SearchTrackProps) => {
         return prisma.track.findMany({
