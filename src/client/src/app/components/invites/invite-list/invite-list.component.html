@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-3">
-  @for (invite of inviteList; track $index) {
+  @for (invite of inviteList?.values(); track $index) {
     <div class="flex gap-3 justify-center items-center">
       <div class="flex flex-col">
         <span>{{invite.league.name}}</span>

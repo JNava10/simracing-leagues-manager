@@ -213,6 +213,21 @@ export const acceptMember = async (req: CustomRequest, res: Response) => {
     }
 };
 
+export const acceptLeagueInvite = async (req: CustomRequest, res: Response) => {
+    try {
+        const leagueId = Number(req.params['leagueId']);
+        const userId = req.user.id;
+        const executed = await LeagueQuery.acceptPendingMember(userId, leagueId) !== null;
+
+        sendSuccessResponse({
+            data: {executed},
+            msg: "Se ha aceptado la entrada del usuario a la liga correctamente."
+        }, res);
+    } catch (e) {
+        sendErrorResponse({ error: e.message }, res);
+    }
+};
+
 export const denyMember = async (req: CustomRequest, res: Response) => {
     try {
         const leagueId = Number(req.params['leagueId']);

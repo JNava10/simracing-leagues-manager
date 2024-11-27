@@ -41,7 +41,7 @@ export class SearchLeaguesBarComponent {
         this.globalHelper?.showSuccessMessage({message: "Se ha entrado enviado petición correctamente"})
 
       } else {
-        this.globalHelper.showErrorMessage('Error', data.msg, this.messageService)
+        this.globalHelper.showErrorMessage('Error', data.msg)
       }
 
       this.choosingLeague = false;

@@ -15,6 +15,8 @@ router.post("/", [validateToken], controller.createLeague);
 
 router.get("/invites/:userId?", [validateToken], controller.getUserInvites);
 
+router.put("/invites/accept/:leagueId", [validateToken], controller.acceptLeagueInvite);
+
 
 /**
  * @route PUT /

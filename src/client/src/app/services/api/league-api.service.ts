@@ -14,17 +14,14 @@ import { GlobalHelper } from '../../helpers/global.helper';
 import { catchError, map } from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {DefaultRes} from "../../utils/interfaces/responses/response.interface";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeagueApiService {
-  constructor(private http: HttpClient) {
-    this.globalHelper = inject(GlobalHelper);
+  constructor(private http: HttpClient, private globalHelper: GlobalHelper) {
   }
-
-  private globalHelper?: GlobalHelper;
-
   createLeague = (league: League) => {
     const url = `${devEnv.apiEndpoint}/league`;
     const options = { params: { ...sendTokenParam } };
@@ -188,17 +185,18 @@ export class LeagueApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return res.data!
+        return this.globalHelper!.handleDefaultData<LeagueMember[]>(res)!;
+
       })
     );
   }
 
   acceptInvite = (leagueId: number, userId?: number) => {
-    const url = `${devEnv.apiEndpoint}/league/invite/${leagueId}/accept`;
+    const url = `${devEnv.apiEndpoint}/league/invites/accept/${leagueId}`;
     const options = { params: { ...sendTokenParam } };
 
-    return this.http.get<DefaultRes<LeagueMember[]>>(url, options).pipe(
-      catchError((res: HttpResponse<DefaultRes<LeagueMember[]>>, caught) => {
+    return this.http.put<DefaultRes<QueryIsExecuted>>(url, {}, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
 
         if (error instanceof Observable) {
@@ -210,7 +208,7 @@ export class LeagueApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return res.data!
+        return this.globalHelper!.handleDefaultData<QueryIsExecuted>(res)!;
       })
     );
   }

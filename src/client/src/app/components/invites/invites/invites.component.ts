@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LeagueApiService} from "../../../services/api/league-api.service";
 import {LeagueInvite} from "../../../utils/interfaces/league.interface";
 import {InviteListComponent} from "../invite-list/invite-list.component";
+import {IndexableMap} from "../../../utils/classes/IndexableMap";
 
 @Component({
   selector: 'app-invites',
@@ -20,8 +21,9 @@ export class InvitesComponent implements OnInit {
     }
 
   private handleInvites = (res: LeagueInvite[]) => {
-    this.invites = res
+    this.invites = IndexableMap.fromArray(res)
   }
 
-  protected invites?: LeagueInvite[];
+  protected invites?: IndexableMap<LeagueInvite>;
+  protected readonly IndexableMap = IndexableMap;
 }

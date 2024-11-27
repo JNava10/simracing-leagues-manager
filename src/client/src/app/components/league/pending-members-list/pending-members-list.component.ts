@@ -45,7 +45,7 @@ export class PendingMembersListComponent implements OnInit {
     if (data.executed) {
       this.globalHelper?.showSuccessMessage({message: "Se ha aceptado la entrada correctamente."})
     } else {
-      this.globalHelper.showErrorMessage('Error', data.msg, this.messageService)
+      this.globalHelper.showErrorMessage('Error', data.msg)
     }
 
     this.pendingList$ = this.leagueService.getPendingMembers(this.leagueId!);
@@ -57,7 +57,7 @@ export class PendingMembersListComponent implements OnInit {
       this.globalHelper?.showSuccessMessage({message: "Se ha rechazado la entrada correctamente."})
 
     } else {
-      this.globalHelper.showErrorMessage('Error', data.msg, this.messageService)
+      this.globalHelper.showErrorMessage('Error', data.msg)
     }
 
     this.pendingList$ = this.leagueService.getPendingMembers(this.leagueId!);

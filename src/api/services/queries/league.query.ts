@@ -49,7 +49,7 @@ export class LeagueQuery {
     }
 
     static getPendingMembers = async (leagueId: number) => {
-        const pendingMembers = await prisma.leagueMember.findMany({where: {leagueId, accepted: false}, include: {user: true}});        
+        const pendingMembers = await prisma.leagueMember.findMany({where: {leagueId, accepted: false, requestedAt: {not: null}}, include: {user: true}});
 
         // @ts-ignore
         return pendingMembers.map(item => item.user);
@@ -176,7 +176,9 @@ export class LeagueQuery {
         if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
         if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
 
-        const alreadyExists = prisma.leagueMember.findFirst({where: {userId, leagueId}});
+        const alreadyExists = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
+
+        console.log(alreadyExists);
 
         if (alreadyExists) {
             throw new Error(`El usuario ya está dentro de la liga o invitado.`);
@@ -189,18 +191,20 @@ export class LeagueQuery {
                 leagueId,
                 accepted: false,
                 invited: true,
-                joinedAt: now()
+                invitedAt: now()
             }
         });
     }
 
     static getLeagueInvites = async (userId: number) => {
+        console.log(userId);
         return prisma.leagueMember.findMany(
             {
                 where: {
                     userId,
                     invited: true,
-                    accepted: false
+                    accepted: false,
+                    invitedAt: {not: null}
                 },
                 include: leagueInviteFull.include
             });
