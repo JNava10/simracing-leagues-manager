@@ -1,11 +1,14 @@
 import { ActivatedRoute } from '@angular/router';
 import { GlobalHelper } from './../../../helpers/global.helper';
 import { Component } from '@angular/core';
+import {LeagueSidebarComponent} from "../league-sidebar/league-sidebar.component";
 
 @Component({
   selector: 'app-league-overview',
   standalone: true,
-  imports: [],
+  imports: [
+    LeagueSidebarComponent
+  ],
   templateUrl: './league-overview.component.html',
   styleUrl: './league-overview.component.scss'
 })

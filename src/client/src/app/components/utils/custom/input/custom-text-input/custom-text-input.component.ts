@@ -125,6 +125,6 @@ export class CustomTextInputComponent extends BaseCustomInputComponent {
   /// Metodos custom ///
 
   protected managePlaceholder() {
-    return this.showPlaceholder ? this.placeholder : ''
+    return this.showPlaceholder && this.placeholder ? this.placeholder : ''
   }
 }

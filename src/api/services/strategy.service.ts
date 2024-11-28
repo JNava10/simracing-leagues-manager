@@ -249,18 +249,6 @@ export class StrategyService {
 
         const wear = performanceOptimal - this.currentTyre.performance; // W
 
-        // console.table({
-        //     lap: this.raceLaps.length + 1,
-        //     wearIndex: this.currentTyre.wearIndex,
-        //     impact,
-        //     deltaBase,
-        //     deltaImpact,
-        //     deltaTotal,
-        //     wear,
-        //     performanceOptimal,
-        //     wearDelta: deltaTotal * wear
-        // })
-
         return Math.round(deltaTotal * (wear * 0.4))  // WΔ, tiempo delta con el desgaste de neumaticos
     }
 

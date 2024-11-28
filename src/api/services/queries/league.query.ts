@@ -3,7 +3,8 @@ import {prisma} from "../../app";
 import {now} from '../../helpers/common.helper';
 import {UserQuery} from './user.query';
 import {fa, tr} from "@faker-js/faker";
-import {leagueInviteFull, LeagueInviteFull} from "../../prisma/types/league.types";
+import {leagueInviteFull} from "../../prisma/types/league.types";
+import {ExpectedError} from "../../utils/classes/error";
 
 export class LeagueQuery {
     static createLeague = async (league: League, authorId: number) => {
@@ -91,7 +92,7 @@ export class LeagueQuery {
     static getLeagueMembers = async (leagueId: number) => {
         const leagueExists = await prisma.league.findFirst({where: {id: leagueId}}) !== null;
         
-        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`)
+        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
 
         return prisma.leagueMember.findMany({where: {leagueId, accepted: true, joinedAt: {not: null}}, include: {user: true}});
     }
@@ -173,13 +174,13 @@ export class LeagueQuery {
         const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
         const userExists = await prisma.user.findUnique({where: {id: userId}}) !== null;
 
-        if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
-        if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
+        if (!leagueExists) throw new ExpectedError(`La liga con ID ${leagueId} no existe.`);
+        if (!userExists) throw new ExpectedError(`El usuario con ID ${userId} no existe.`);
 
         const alreadyExists = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
         
         if (alreadyExists) {
-            throw new Error(`El usuario ya está dentro de la liga o invitado.`);
+            throw new ExpectedError(`El usuario ya está dentro de la liga o invitado.`);
         }
 
         return prisma.leagueMember.create(

@@ -10,7 +10,7 @@ import {LeagueQuery} from "../services/queries/league.query";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {isValidNumber} from "../helpers/validators.helper";
-import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
+import {handleRequestError, sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import {LeagueInviteFull} from "../prisma/types/league.types";
 
 export const editLeague = async (req: CustomRequest, res: Response) => {
@@ -180,7 +180,7 @@ export const requestToEnterLeague = async (req: CustomRequest, res: Response) =>
             msg: "Se ha enviado la petición de entrada a la liga correctamente."
         }, res);
     } catch (e) {
-        sendErrorResponse({ error: e.message }, res);
+        handleRequestError(e, res)
     }
 };
 
@@ -194,7 +194,7 @@ export const getPendingMembers = async (req: CustomRequest, res: Response) => {
             msg: "Se han obtenido los miembros pendientes correctamente."
         }, res);
     } catch (e) {
-        sendErrorResponse({ error: e.message }, res);
+        handleRequestError(e, res)
     }
 };
 
@@ -209,7 +209,7 @@ export const acceptMember = async (req: CustomRequest, res: Response) => {
             msg: "Se ha aceptado la entrada del usuario a la liga correctamente."
         }, res);
     } catch (e) {
-        sendErrorResponse({ error: e.message }, res);
+        handleRequestError(e, res)
     }
 };
 
@@ -224,7 +224,7 @@ export const acceptLeagueInvite = async (req: CustomRequest, res: Response) => {
             msg: "Se ha aceptado la entrada del usuario a la liga correctamente."
         }, res);
     } catch (e) {
-        sendErrorResponse({ error: e.message }, res);
+        handleRequestError(e, res)
     }
 };
 
@@ -255,7 +255,7 @@ export const inviteUser = async (req: CustomRequest, res: Response) => {
             msg: "Se ha enviado una invitación a la liga correctamente."
         }, res);
     } catch (e) {
-        sendErrorResponse({ error: e.message }, res);
+        handleRequestError(e, res)
     }
 };
 

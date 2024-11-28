@@ -6,7 +6,26 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        dark: {
+          mainbg: '#090510',
+          background: '#261E43',
+          main: '#9273F7',
+          accent: '#FF0080',
+          text: '#374151',
+          hover: '#FEFDFF',
+          border: '#FF0080',
+        },
+        light: {
+          mainbg: '#FFFFFF',
+          background: '#FEFDFF',
+          accent: '#DD0001',
+          text: '#000000',
+          hover: '#ce5757',
+          border: '#D1D5DB',
+        },
+      }
   },
   plugins: [require('daisyui'),   require('preline/plugin'),     require('@tailwindcss/forms'),],
 

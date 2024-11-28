@@ -40,6 +40,8 @@ export interface ChampionshipRound {
   layoutId?: number
   layout?: TrackLayout
   length?: RoundLength
+  duration?: number
+  durationType?: SESSION_DURATION_TYPE
   customScoring?: ScoreSystem
 }
 

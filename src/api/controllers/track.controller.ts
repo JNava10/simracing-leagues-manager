@@ -7,7 +7,7 @@ import {CustomError} from "../utils/classes/error";
 import {TrackQuery} from "../services/queries/track.query";
 import { SearchTrackProps } from "../utils/interfaces/track.interface";
 import { Messages } from '../utils/enum/messages.enum';
-import { sendSuccessResponse } from '../helpers/common.helper';
+import {handleRequestError, sendSuccessResponse} from '../helpers/common.helper';
 import {log} from "node:util";
 
 export class TrackController {
@@ -26,8 +26,7 @@ export class TrackController {
     
             // return res.status(200).send(tracks);
         } catch (e) {
-            const error: CustomError = {error: e.message}
-            return res.status(500).send(error);
+            handleRequestError(e, res);
         }
     };
     

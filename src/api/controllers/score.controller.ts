@@ -4,6 +4,7 @@ import {LeagueQuery} from "../services/queries/league.query";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
 import {ScoreQuery} from "../services/queries/score.query";
+import {handleRequestError} from "../helpers/common.helper";
 
 export const getScoreSystems = async (req: CustomRequest, res: Response) => {
     try {
@@ -18,7 +19,6 @@ export const getScoreSystems = async (req: CustomRequest, res: Response) => {
 
         // return res.status(200).send(league);
     } catch (e) {
-        const error: CustomError = {error: e.message}
-        return res.status(500).send(error);
+        handleRequestError(e, res);
     }
 };

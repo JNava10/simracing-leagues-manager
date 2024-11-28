@@ -164,6 +164,10 @@ handleApiError = (
 
     return `${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
   };
+
+  getDefaultColor = () => {
+
+  }
 }
 
 interface ShowSuccessMessageProps {

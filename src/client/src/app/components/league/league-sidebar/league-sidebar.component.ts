@@ -3,11 +3,15 @@ import { GlobalHelper } from '../../../helpers/global.helper';
 import { League } from './../../../utils/interfaces/league.interface';
 import {Component, Input, OnInit} from '@angular/core';
 import {LoginComponent} from "../../auth/login/login.component";
+import {NgStyle} from "@angular/common";
+import {devEnv} from "../../../../environments/environment.development";
 
 @Component({
   selector: 'app-league-sidebar',
   standalone: true,
-  imports: [],
+  imports: [
+    NgStyle
+  ],
   templateUrl: './league-sidebar.component.html',
   styleUrl: './league-sidebar.component.scss'
 })
@@ -29,4 +33,6 @@ export class LeagueSidebarComponent implements OnInit {
   navigateInAdmin(route: string) {
     this.globalHelper.navigateFromRoot(`league/${this.league?.id}/admin/${route}`);
   }
+
+  protected readonly devEnv = devEnv;
 }

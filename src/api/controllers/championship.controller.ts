@@ -11,7 +11,7 @@ import {
     GetChampProps,
     PositionCreation,
 } from "../utils/interfaces/championship/championship.interface";
-import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
+import {handleRequestError, sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
 import {Messages} from "../utils/enum/messages.enum";
 import {UploadedFile} from "express-fileupload";
@@ -26,16 +26,14 @@ export class ChampionshipController {
 
             const championship = await ChampionshipQuery.get(id);
 
-            console.log(championship)
+            console.log(championship);
 
             return sendSuccessResponse({
                 data: championship,
                 msg: 'A'
-            }, res);6  
+            }, res);
         } catch (e) {
-            console.error (e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
@@ -49,52 +47,45 @@ export class ChampionshipController {
                 msg: 'A'
             }, res);
         } catch (e) {
-            console.error (e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
-    
     getEntries = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['championshipId']!);
             const entries = await ChampionshipQuery.getEntries(id);
 
             // @ts-ignore
-            console.log(entries)
+            console.log(entries);
 
             return sendSuccessResponse({
                 data: entries[0],
                 msg: 'A'
             }, res);
         } catch (e) {
-            console.error (e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
     create = async (req: CustomRequest, res: Response) => {
         try {
-            const body = req.body as ChampionshipCreation
+            const body = req.body as ChampionshipCreation;
             const createdChampioship = await ChampionshipQuery.create(body, req.user.id);
-    
+
             return sendSuccessResponse({
                 data: createdChampioship,
                 msg: 'A',
                 status: 201
             }, res);
         } catch (e) {
-            console.error (e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
     enter = async (req: CustomRequest, res: Response) => {
         try {
-            const body = req.body as EnterChampionship
+            const body = req.body as EnterChampionship;
             const champId = Number(req.params['championshipId']!);
 
             const createdChampioship = await ChampionshipQuery.enter(body, req.user.id, champId);
@@ -105,9 +96,7 @@ export class ChampionshipController {
                 status: 201
             }, res);
         } catch (e) {
-            console.error (e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
@@ -133,27 +122,21 @@ export class ChampionshipController {
                 status: 201
             }, res);
         } catch (e) {
-            console.error (e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
-    
     getTeams = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['championshipId']!);
             const presets = await ChampionshipQuery.getTeams(id);
-    
+
             return sendSuccessResponse({
                 data: presets,
                 msg: 'A'
             }, res);
-            
         } catch (e) {
-            console.error(e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
@@ -174,9 +157,7 @@ export class ChampionshipController {
                 status: 201
             }, res);
         } catch (e) {
-            console.error(e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
@@ -191,7 +172,7 @@ export class ChampionshipController {
                 calendar: data.calendar,
                 simulator: data.simulator,
                 teams: data.teams.map(item => item.team),
-            }
+            };
 
             if (!data) {
                 return sendErrorResponse({
@@ -205,65 +186,54 @@ export class ChampionshipController {
                 status: 200
             }, res);
         } catch (e) {
-            console.error(e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
     createPreset = async (req: CustomRequest, res: Response) => {
         try {
             const body = req.body as PresetCreation;
-            
+
             const createdChampioship = await ChampionshipQuery.createPreset(body, req.user.id);
-    
+
             res.status(201).send(createdChampioship);
         } catch (e) {
-            console.error(e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
     getAllPresets = async (req: CustomRequest, res: Response) => {
         try {
-            
             const presets = await ChampionshipQuery.getAllPresets(1);
-    
+
             return sendSuccessResponse({
                 data: presets,
                 msg: 'A'
             }, res);
-            
         } catch (e) {
-            console.error(e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
     getPresetById = async (req: CustomRequest, res: Response) => {
         try {
             const preset = await ChampionshipQuery.getPresetsById(1) as ChampionshipPresetFull;
-    
+
             return sendSuccessResponse({
                 data: preset,
                 msg: 'A'
             }, res);
-            
         } catch (e) {
-            console.error(e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
     parseRfactorXml = async (req: CustomRequest, res: Response) => {
         try {
             const xmlFile = req.files['file']! as UploadedFile;
-            const roundData = (XmlService.parse(xmlFile) as RfactorData)
+            const roundData = (XmlService.parse(xmlFile) as RfactorData);
             const driversTemp = roundData.rFactorXML.RaceResults.Race.Driver as Driver[];
-            const drivers: Driver[] = []
+            const drivers: Driver[] = [];
 
             driversTemp.forEach(item => {
                 drivers.push({
@@ -272,8 +242,8 @@ export class ChampionshipController {
                     GridPos: item.GridPos,
                     Position: item.Position,
                     FinishStatus: item.FinishStatus
-                })
-            })
+                });
+            });
 
             return sendSuccessResponse({
                 data: drivers,
@@ -281,9 +251,7 @@ export class ChampionshipController {
                 status: 201
             }, res);
         } catch (e) {
-            console.error (e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
 
@@ -296,12 +264,8 @@ export class ChampionshipController {
                 data: presets,
                 msg: 'A'
             }, res);
-
         } catch (e) {
-            console.error(e)
-            const error: CustomError = {error: e.message}
-            res.status(500).send(error);
+            handleRequestError(e, res);
         }
     }
-
 }

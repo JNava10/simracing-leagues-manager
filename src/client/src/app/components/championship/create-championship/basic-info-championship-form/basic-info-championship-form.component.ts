@@ -34,6 +34,8 @@ import {CategorySearchFormComponent} from "../../../utils/search/category-search
 import {CustomBadgeComponent} from "../../../utils/custom/badge/custom-badge.component";
 import {RoundListComponent} from "../../round-list/round-list.component";
 import {LoginComponent} from "../../../auth/login/login.component";
+import {CustomSelectComponent} from "../../../utils/custom/input/custom-select/custom-select.component";
+import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -51,7 +53,9 @@ import {LoginComponent} from "../../../auth/login/login.component";
     SimSearchFormComponent,
     CategorySearchFormComponent,
     CustomBadgeComponent,
-    SlicePipe
+    SlicePipe,
+    CustomSelectComponent,
+    CustomButtonComponent
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
@@ -134,19 +138,17 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     return this.championshipForm.get('description')!.value;
   }
 
-  selectedSimulator?: SimulatorGame
+  selectedSimulator?: SimulatorGame;
 
   // Rondas de campeonato //
 
-  protected durationTypeList = roundDurationTypes
+  protected durationTypeList = roundDurationTypes;
 
   protected addingRace: boolean = false;
 
   protected roundTrackSelected?: Track;
 
   protected roundCreating: ChampionshipRound = {}
-
-  protected durationLocked = false;
 
   championshipRoundForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null),
@@ -167,14 +169,6 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
 
   protected get roundLength() {
     return this.championshipRoundForm.get('length') as FormControl<RoundLength | undefined>;
-  }
-
-  protected get roundLengthValue() {
-    return this.roundLength.get('value') as FormControl<number | null>;
-  }
-
-  protected get roundLengthType() {
-    return this.roundLength.get('type') as FormControl<SESSION_DURATION_TYPE | undefined>;
   }
 
   /// Busqueda de todos los dropdowns ///
@@ -251,10 +245,6 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     this.addingRace = false;
   }
 
-  lockRoundDuration = () => {
-    this.durationLocked = !this.durationLocked;
-  }
-
   private setRoundName = () => {
     let nameToSet = this.roundName.value || this.getRoundLayoutName();
 
@@ -301,7 +291,9 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     this.basicDataCreated.emit(championship);
   }
 
-  confirmCategory($event: Category) {
+  confirmCategory = ($event: Category) => {
     this.selectedCategories.push($event)
-  }
+  };
+
+  protected readonly Number = Number;
 }

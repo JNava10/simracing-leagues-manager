@@ -2,6 +2,7 @@ import {hash, compare} from "bcrypt";
 import {Response} from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/props/response.prop";
 import {StrategyTyreWear} from "../utils/interfaces/car.interface";
+import {CustomError, ExpectedError} from "../utils/classes/error";
 
 export const hashPassword = async (text: string = process.env['DEFAULT_PASSWORD_TEXT']) => {
     const salt = Number(process.env['DEFAULT_PASSWORD_SALT']);
@@ -19,6 +20,18 @@ export const sendErrorResponse =  ({data, error}: ErrorResponse, res: Response) 
 
 export const sendSuccessResponse = ({data, msg = '', status}: SuccessResponse, res: Response) => {
     return res.status(status || 200).send({data, msg})
+}
+
+export const handleRequestError = (error: Error, res: Response) => {
+    console.error(error)
+
+    if (error instanceof ExpectedError) {
+        return sendSuccessResponse({
+            msg: error.msg
+        }, res)
+    }
+
+    return res.status(500).send(error);
 }
 
 export const now = () => {

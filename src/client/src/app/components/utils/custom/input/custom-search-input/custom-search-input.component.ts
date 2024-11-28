@@ -23,6 +23,8 @@ export class CustomSearchInputComponent {
    */
   @Output() onSearch: EventEmitter<string> = new EventEmitter();
 
+  @Input() showPlaceholder: boolean = false;
+
   searchTimeout: any = null;
 
   onSearchChange = (event: KeyboardEvent) => {
