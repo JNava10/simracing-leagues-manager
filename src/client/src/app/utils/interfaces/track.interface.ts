@@ -14,6 +14,11 @@ export interface TrackLayout {
   description?: string;
   parentId?: number
 
+  traction?: number;
+  braking?: number;
+  lateral?: number;
+  tyreStress?: number;
+
   /** Propiedad temporal que indica el circuito al que pertenece.
    *
    */

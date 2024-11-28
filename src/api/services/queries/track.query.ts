@@ -23,6 +23,7 @@ export class TrackQuery {
     };
 
     searchLayouts = async ({name, id, country}: SearchTrackProps) => {
+        console.log(name)
         return prisma.track.findMany({
             where: {
                 OR: [

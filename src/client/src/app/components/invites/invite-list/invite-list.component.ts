@@ -18,16 +18,15 @@ import {IndexableMap} from "../../../utils/classes/IndexableMap";
 export class InviteListComponent {
   constructor(private leagueService: LeagueApiService) {}
 
-  @Input() inviteList?: IndexableMap<LeagueInvite>
+  @Input() inviteList?: Map<number, LeagueInvite>
 
   acceptLeague(id: number) {
     this.leagueService.acceptInvite(id).subscribe(res => this.handleCreating(res, id))
   }
 
   private handleCreating = (res: QueryIsExecuted, id: number) => {
-    if (res.executed) {
-      const i = this.inviteList!.findIndex(item => item.league.id === id)
-      this.inviteList!.delete(i)
+    if (res.executed && this.inviteList) {
+      this.inviteList.delete(id)
     }
   }
 }

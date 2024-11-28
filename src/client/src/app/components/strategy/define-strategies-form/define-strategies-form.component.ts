@@ -37,6 +37,7 @@ export class DefineStrategiesFormComponent implements OnInit {
   }
 
   searchTrack = (name: string) => {
+    console.log(name)
     this.trackService.searchLayouts({name}).subscribe(res => this.handleTrackResponse(res))
   }
 
@@ -44,7 +45,7 @@ export class DefineStrategiesFormComponent implements OnInit {
 
   }
 
-  private handleTrackResponse(res: StrategyLayout[]) {
+  private handleTrackResponse(res: Track[]) {
 
   }
 

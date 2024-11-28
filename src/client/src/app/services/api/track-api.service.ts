@@ -10,6 +10,7 @@ import {catchError, Observable, of} from 'rxjs';
 import {BaselineCar} from "../../utils/interfaces/strategy.interface";
 import {map} from "rxjs/operators";
 import {GlobalHelper} from "../../helpers/global.helper";
+import {LeagueChampionship} from "../../utils/interfaces/championship.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,10 @@ export class TrackApiService {
   /// Trazados de circuito ///
 
   searchLayouts = (props: SearchTrackProps) => {
-    return this.http.get<DefaultRes<StrategyLayout[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
-      catchError((res: HttpResponse<DefaultRes<StrategyLayout[]>>, caught) => {
+
+    console.log(props);
+    return this.http.get<DefaultRes<Track[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<Track[]>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
 
         if (error instanceof Observable) {
@@ -49,7 +52,7 @@ export class TrackApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return res.data!
+        return this.globalHelper!.handleDefaultData<Track[]>(res)!;
       })
     )
   }

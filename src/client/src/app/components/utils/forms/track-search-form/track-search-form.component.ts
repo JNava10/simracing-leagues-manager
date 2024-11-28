@@ -27,16 +27,14 @@ export class TrackSearchFormComponent {
 
   @Output() public onConfirmLayout = new EventEmitter<TrackLayout>();
 
-  protected tracks$!: Observable<DefaultRes<Track[]>>;
+  protected tracks!: Track[]
 
   selectedLayout?: TrackLayout;
 
   protected searchTrackLayouts = (value: string) => {
-    this.tracks$ = of();
+    if (value.length === 0) return // TODO: Notificar al usuario.
 
-    if (value.length === 0) return
-
-    this.tracks$ = this.trackService.searchLayouts({name: value});
+    this.trackService.searchLayouts({name: value}).subscribe(res => this.tracks = res);
   }
 
   selectLayout = (track: Track, layout: TrackLayout) => {

@@ -33,6 +33,7 @@ import {SimSearchFormComponent} from "../../../utils/search/sim-search-form/sim-
 import {CategorySearchFormComponent} from "../../../utils/search/category-search-form/category-search-form.component";
 import {CustomBadgeComponent} from "../../../utils/custom/badge/custom-badge.component";
 import {RoundListComponent} from "../../round-list/round-list.component";
+import {LoginComponent} from "../../../auth/login/login.component";
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -41,7 +42,6 @@ import {RoundListComponent} from "../../round-list/round-list.component";
     NgIf,
     ReactiveFormsModule,
     DropdownModule,
-    AsyncPipe,
     AccordionModule,
     DialogModule,
     CustomSearchInputComponent,
@@ -51,7 +51,6 @@ import {RoundListComponent} from "../../round-list/round-list.component";
     SimSearchFormComponent,
     CategorySearchFormComponent,
     CustomBadgeComponent,
-    RoundListComponent,
     SlicePipe
   ],
   templateUrl: './basic-info-championship-form.component.html',
@@ -71,7 +70,7 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
 
   @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>();
 
-  protected tracks$!: Observable<DefaultRes<Track[]>>;
+  protected tracks!: Track[];
 
   protected categories$!: Observable<DefaultRes<Category[]>>;
 
@@ -205,11 +204,9 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   // Circuitos //
 
   protected searchTrackLayouts = (value: string) => {
-    this.tracks$ = of();
+    if (value.length === 0) return;
 
-    if (value.length === 0) return
-
-    this.tracks$ = this.trackService.searchLayouts({name: value});
+    this.trackService.searchLayouts({name: value}).subscribe(res => this.tracks = res);
   }
 
   /// Circuitos ///
@@ -293,8 +290,10 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
       entry.layout = undefined;
     });
 
+    championship!.categories = []
+
     this.selectedCategories.forEach(item => {
-      championship.categoryIds?.push(item.id!);
+      championship.categories?.push(item);
     });
 
     championship.simulatorId = this.selectedSimulator?.id;

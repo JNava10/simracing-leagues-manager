@@ -8,6 +8,7 @@ import {TrackQuery} from "../services/queries/track.query";
 import { SearchTrackProps } from "../utils/interfaces/track.interface";
 import { Messages } from '../utils/enum/messages.enum';
 import { sendSuccessResponse } from '../helpers/common.helper';
+import {log} from "node:util";
 
 export class TrackController {
     private trackService = new TrackQuery();
@@ -51,6 +52,7 @@ export class TrackController {
             const props = req.query as SearchTrackProps;
         
             const tracks = await this.trackService.searchLayouts(props);
+            console.log(tracks);
     
             sendSuccessResponse({
                 msg: Messages.searchSuccess,

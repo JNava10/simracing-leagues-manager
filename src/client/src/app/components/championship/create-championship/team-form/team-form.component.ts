@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFo
 import { CustomTextInputComponent } from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
 import {ChampionshipPreset, LeagueChampionship, Team} from '../../../../utils/interfaces/championship.interface';
 import { NgxColorsModule } from 'ngx-colors';
+import {Category} from "../../../../utils/interfaces/category.interface";
 
 @Component({
   selector: 'app-team-form',
@@ -15,13 +16,18 @@ import { NgxColorsModule } from 'ngx-colors';
 export class TeamFormComponent implements OnInit {
 
   ngOnInit(): void {
-    console.log(this.championship)
     if (this.preset) {
       this.teams = this.preset.teams.map(item => item.team);
     }
 
     if (this.championship) {
       this.teams = this.championship.teams!
+    }
+
+    if (!this.teams) {
+      this.teams = [];
+
+      this.teams.push(this.defaultTeam)
     }
 
     this.selectTeam(0);
@@ -56,6 +62,8 @@ export class TeamFormComponent implements OnInit {
   }
 
   @Input() championship?: LeagueChampionship;
+
+  categorySelected?: Category;
 
   /**
    * Selecciona el equipo a editar.

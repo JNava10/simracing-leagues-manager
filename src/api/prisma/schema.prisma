@@ -16,6 +16,8 @@ model Category {
   championships  ChampionshipCategories[]
 
   ChampionshipPresetCategories ChampionshipPresetCategories[]
+
+  TeamCategory TeamCategory[]
 }
 
 // Usuarios
@@ -237,6 +239,7 @@ model Team {
 
   ChampionshipTeam ChampionshipTeam[]
   EventTeam        EventTeam[]
+  TeamCategory     TeamCategory[]
 }
 
 model PresetTeam {
@@ -247,6 +250,16 @@ model PresetTeam {
   preset ChampionshipPreset @relation(fields: [presetId], references: [id])
 
   @@id([presetId, teamId])
+}
+
+model TeamCategory {
+  teamId     Int
+  categoryId Int
+
+  team     Team     @relation(fields: [teamId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@id([teamId, categoryId])
 }
 
 // Union entre los campeonatos y sus respectivos equipos.

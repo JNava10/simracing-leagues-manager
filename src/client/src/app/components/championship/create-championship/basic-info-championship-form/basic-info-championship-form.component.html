@@ -126,8 +126,8 @@
         <ul
           class="text-gray-200 overflow-y-auto h-48 flex-col justify-center w-full items-center p-3"
         >
-          @if (tracks$ | async; as res) {
-            @for (track of res.data; track $index) {
+          @if (tracks && tracks.length > 0) {
+            @for (track of tracks; track $index) {
               <span class="text-gray-600">{{ track.name }}</span>
               @for (layout of track.layouts; track $index) {
                 <div (click)="selectLayout(track, layout)"

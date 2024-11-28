@@ -16,10 +16,12 @@
   @if (preset) {
     <app-team-form
       [preset]="preset"
+      [championship]="championship"
       (teamsCreated)="handleTeamsCreated($event)"
     />
   } @else {
     <app-team-form
+      [championship]="championship"
       (teamsCreated)="handleTeamsCreated($event)"
     />
   }

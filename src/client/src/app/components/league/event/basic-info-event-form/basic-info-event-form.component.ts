@@ -54,7 +54,7 @@ export class BasicInfoEventFormComponent {
 
   @Output() protected basicDataCreated = new EventEmitter<LeagueEvent>();
 
-  protected tracks$!: Observable<DefaultRes<Track[]>>;
+  protected tracks!: Track[]
 
   protected categories$!: Observable<DefaultRes<Category[]>>;
 
@@ -165,11 +165,11 @@ export class BasicInfoEventFormComponent {
   // Circuitos //
 
   protected searchTrackLayouts = (value: string) => {
-    this.tracks$ = of();
+    this.tracks
 
     if (value.length === 0) return
 
-    this.tracks$ = this.trackService.searchLayouts({name: value});
+    this.trackService.searchLayouts({name: value}).subscribe(res => this.tracks = res);
   }
 
   /// Circuitos ///

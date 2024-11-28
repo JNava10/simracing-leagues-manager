@@ -177,9 +177,7 @@ export class LeagueQuery {
         if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
 
         const alreadyExists = await prisma.leagueMember.findFirst({where: {userId, leagueId}});
-
-        console.log(alreadyExists);
-
+        
         if (alreadyExists) {
             throw new Error(`El usuario ya está dentro de la liga o invitado.`);
         }

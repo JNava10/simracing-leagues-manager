@@ -10,7 +10,7 @@ export interface LeagueChampionship {
   id?: number,
   name?: string,
   description?: string
-  categoryIds?: number[]
+  categories?: Category[]
   calendar?: ChampionshipRound[]
   scoreSystem?: ScoreSystem
   teams?: Team[]
