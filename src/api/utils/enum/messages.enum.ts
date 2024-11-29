@@ -13,4 +13,6 @@ export class Messages {
     // ESTÁNDAR //
     static readonly searchSuccess = "Se han encontrado coincidencias correctamente.";
     static readonly errorMessage = "Ha ocurrido un error en el servidor.";
+    static readonly isAuth = "El usuario está autorizado";
+    static readonly notAuth = "Debes iniciar sesión para ver este contenido";
 }

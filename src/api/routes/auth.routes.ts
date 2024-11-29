@@ -1,13 +1,15 @@
 // @ts-ignore
 import * as express from "express";
-import * as controller from "../controllers/auth.controller";
 import {body} from "express-validator";
 import {checkBodyFields} from "../middlewares/body.middleware";
 import {match} from "node:assert";
 import {regexList} from "../utils/constants/regex.constants";
 import {identifierExists, isCustomEmail, isNick} from "../helpers/validators.helper";
+import {validateToken} from "../middlewares/auth.middleware";
+import {AuthController} from "../controllers/auth.controller";
 
 const router = express.Router();
+const controller = AuthController;
 
 router.post("/login", [
     body()
@@ -23,5 +25,8 @@ router.post("/login", [
         .matches(regexList.password).withMessage('Invalid password'),
     checkBodyFields
 ], controller.login);
+
+router.post("/login", [validateToken], controller.login);
+router.get("/", [validateToken], controller.isAuth);
 
 export default router;

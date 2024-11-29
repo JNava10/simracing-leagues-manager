@@ -18,13 +18,13 @@ export class StrategyController {
             const strategyService = new StrategyService({
                 raceLength: laps,
                 car: carSeedList[0],
-                trackLayout: trackSeedList[0].layouts[0],
+                trackLayout: trackSeedList[1].layouts[0],
                 estimatedLapTimes: [
                     {lapTimeMilis: 93021, tyreId: 3},
                     {lapTimeMilis: 93843, tyreId: 2},
                     {lapTimeMilis: 94731, tyreId: 1},
                 ],
-                tyres: [1, 3, 3]
+                tyres: [3, 3, 3]
             });
 
             const strategy = strategyService.sim();

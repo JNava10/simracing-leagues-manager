@@ -46,15 +46,18 @@ export class GlobalHelper {
 
 
 handleApiError = (
-    errorMsg: string, res: HttpResponse<DefaultRes<any>>, caught: Observable<any>
-  ) => {
-    const defaultRes = { data: null } as DefaultRes<any>
+    errorMsg: string, res: HttpResponse<DefaultRes<any>>
+) => {
+    const defaultRes = { data: {} } as DefaultRes<any>
 
     if (res.status === 0)  {
       this.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet');
 
       return defaultRes
     } else if (res.status === 404) {
+      return defaultRes
+    } else if (res.status === 403) {
+      defaultRes.data['auth'] = false;
       return defaultRes
     }
 

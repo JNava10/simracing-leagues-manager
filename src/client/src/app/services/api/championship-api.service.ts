@@ -29,7 +29,7 @@ export class ChampionshipApiService {
   create = (championship: LeagueChampionship) => {
     return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -48,7 +48,7 @@ export class ChampionshipApiService {
   saveRoundResults = (results: PositionCreation[], id: number) => {
     return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/results/1`, results, {params: {...sendTokenParam}}).pipe(
       catchError((err: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        this.globalHelper!.handleApiError('Error al expulsar miembro de la liga:', err, caught);
+        this.globalHelper!.handleApiError('Error al expulsar miembro de la liga:', err);
         return caught;
       }),
       map(res => res.data)
@@ -62,7 +62,7 @@ export class ChampionshipApiService {
 
     return this.http.post<DefaultRes<Driver[]>>(`${devEnv.apiEndpoint}/championship/${championshipId}/results/${roundId}/rfactor`, formData, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<Driver[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -81,7 +81,7 @@ export class ChampionshipApiService {
   getById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -100,7 +100,7 @@ export class ChampionshipApiService {
   getByIdFull = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/full`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -119,7 +119,7 @@ export class ChampionshipApiService {
   edit = (id: number, championship: LeagueChampionship) => {
     return this.http.put<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/`, championship, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -138,7 +138,7 @@ export class ChampionshipApiService {
   getResults = (id: number) => {
     return this.http.get<DefaultRes<PositionCreation[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<PositionCreation[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -157,7 +157,7 @@ export class ChampionshipApiService {
   getCalendarById =  (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/calendar`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -176,7 +176,7 @@ export class ChampionshipApiService {
   getEntriesById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/entries`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -195,7 +195,7 @@ export class ChampionshipApiService {
   enter = (data: EnterChampionship, champId: number) => {
     return this.http.post<DefaultRes<ChampionshipPreset[]>>(`${devEnv.apiEndpoint}/championship/${champId}/enter`, data, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<ChampionshipPreset[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -214,7 +214,7 @@ export class ChampionshipApiService {
   getTeams = (champId: number) => {
     return this.http.get<DefaultRes<GetTeam[]>>(`${devEnv.apiEndpoint}/championship/teams/${champId}`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<GetTeam[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -233,7 +233,7 @@ export class ChampionshipApiService {
   createPreset = (championship: LeagueChampionship) => {
     return this.http.post<DefaultRes<ChampionshipPreset>>(`${devEnv.apiEndpoint}/championship/preset`, championship, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<ChampionshipPreset>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -252,7 +252,7 @@ export class ChampionshipApiService {
   getAllPresets = () => {
     return this.http.get<DefaultRes<ChampionshipPreset[]>>(`${devEnv.apiEndpoint}/championship/preset`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<ChampionshipPreset[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -271,7 +271,7 @@ export class ChampionshipApiService {
   getPresetById(presetId: any) {
     return this.http.get<DefaultRes<ChampionshipPreset>>(`${devEnv.apiEndpoint}/championship/preset/${presetId}`, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<ChampionshipPreset>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;

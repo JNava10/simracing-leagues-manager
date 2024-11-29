@@ -41,7 +41,7 @@ export class TrackApiService {
     console.log(props);
     return this.http.get<DefaultRes<Track[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
       catchError((res: HttpResponse<DefaultRes<Track[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -79,7 +79,7 @@ export class TrackApiService {
 
     return this.http.get<DefaultRes<TrackLayout[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<TrackLayout[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error

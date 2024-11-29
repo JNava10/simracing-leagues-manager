@@ -1,40 +1,83 @@
-import {Request, Response} from "express";
-import {AccessPayload, LoginData} from "../utils/interfaces/login.interface";
-import {UserQuery} from "../services/queries/user.query";
-import {generateToken} from "../helpers/auth.helper";
-import {verifyPassword} from "../helpers/common.helper";
-import {User} from "../utils/interfaces/user.interface";
+import { Request, Response } from "express";
+import { AccessPayload, LoginData } from "../utils/interfaces/login.interface";
+import { UserQuery } from "../services/queries/user.query";
+import { generateToken } from "../helpers/auth.helper";
+import {handleRequestError, sendSuccessResponse, verifyPassword} from "../helpers/common.helper";
+import { User } from "../utils/interfaces/user.interface";
+import {CustomRequest} from "../utils/interfaces/express.interface";
+import {Messages} from "../utils/enum/messages.enum";
+import {tr} from "@faker-js/faker";
 
-const userService = new UserQuery();
+export class AuthController {
+    private static userService = new UserQuery();
 
-export const login = async (req: Request, res: Response) => {
-    try {
-        const {nickname, email, password} = req.body as LoginData;
-        let user: User;
+    static async isAuth(req: CustomRequest, res: Response): Promise<void> {
+        try {
+            const {id} = req.user;
 
-        if (nickname) user = await userService.getUserByNickname(nickname);
-        else if (email) user = await userService.getUserByEmail(email);
+            if (id) {
+                sendSuccessResponse({
+                    msg: Messages.isAuth,
+                    data: {auth: true}
+                }, res)
+            } else {
+                sendSuccessResponse({
+                    msg: Messages.notAuth,
+                    data: {auth: false},
+                    status: 403
+                }, res)
+            }
 
-        if (!user) return res.status(403).send('Credenciales invalidos.');
+        } catch (error) {
+            console.error(error);
+            res.status(500).send(`Ha ocurrido un error al iniciar sesión. (${error})`);
+        }
+    }
 
-        const validPassword = await verifyPassword(password, user.password);
+    static async login(req: Request, res: Response): Promise<void> {
+        try {
+            const { nickname, email, password } = req.body as LoginData;
+            let user: User;
 
-        if (!validPassword) return res.status(403).send("Credenciales invalidos.");
+            if (nickname) {
+                user = await AuthController.userService.getUserByNickname(nickname);
+            } else if (email) {
+                user = await AuthController.userService.getUserByEmail(email);
+            }
 
-        const payload: AccessPayload = {nickname: user.nickname, email: user.email, id: user.id};
+            if (!user) {
+                res.status(403).send('Credenciales inválidos.');
+                return;
+            }
 
-        const token = await generateToken(payload, "2d");
+            const validPassword = await verifyPassword(password, user.password);
 
-        // TODO: Generate access and refresh token.
-        // const accessToken = await generateToken(payload, process.env['JWT_ACCESS_EXP_TIME'])
-        // const refreshToken = await generateToken(payload, process.env['JWT_REFRESH_EXP_TIME']);
+            if (!validPassword) {
+                res.status(403).send("Credenciales inválidos.");
+                return;
+            }
 
-        const loginData = {success: true, token, id: user.id};
+            const payload: AccessPayload = {
+                nickname: user.nickname,
+                email: user.email,
+                id: user.id
+            };
 
-        res.send(loginData);
-    } catch (error) {
-        console.error(error);
+            const token = await generateToken(payload, "2d");
 
-        res.status(500).send(`Ha ocurrido un error al iniciar sesión. (${error})`);
+            // TODO: Generate access and refresh token.
+            // const accessToken = await generateToken(payload, process.env['JWT_ACCESS_EXP_TIME']);
+            // const refreshToken = await generateToken(payload, process.env['JWT_REFRESH_EXP_TIME']);
+
+            const loginData = {
+                success: true,
+                token,
+                id: user.id
+            };
+
+            res.send(loginData);
+        } catch (error) {
+            handleRequestError(error, res)
+        }
     }
 }

@@ -21,7 +21,7 @@ export class EventApiService {
 
     return this.http.post<DefaultRes<League>>(url, event, options).pipe(
       catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error

@@ -24,7 +24,7 @@ export class StrategyApiService {
 
     return this.http.post<DefaultRes<StrategyApiService[]>>(url, {}, options).pipe(
       catchError((res: HttpResponse<DefaultRes<StrategyApiService[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -46,7 +46,7 @@ export class StrategyApiService {
 
     return this.http.get<DefaultRes<BaselineCar[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<BaselineCar[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error

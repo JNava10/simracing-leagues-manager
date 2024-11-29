@@ -29,7 +29,7 @@ export class LeagueApiService {
 
     return this.http.post<DefaultRes<League>>(url, league, options).pipe(
       catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -51,7 +51,7 @@ export class LeagueApiService {
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, newMemberData, options).pipe(
       catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -69,7 +69,7 @@ export class LeagueApiService {
 
     return this.http.delete<DefaultRes<QueryIsExecuted>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -87,7 +87,7 @@ export class LeagueApiService {
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, {reason}, options).pipe(
       catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -109,7 +109,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<League[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<League[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -131,7 +131,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<League>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -153,7 +153,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<LeagueInvite[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueInvite[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -175,7 +175,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<LeagueMember[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueMember[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -198,7 +198,7 @@ export class LeagueApiService {
 
     return this.http.put<DefaultRes<QueryIsExecuted>>(url, {}, options).pipe(
       catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -220,7 +220,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<User[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<User[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -242,7 +242,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<League[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<League[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -264,7 +264,7 @@ export class LeagueApiService {
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, {}, options).pipe(
       catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -286,7 +286,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<User[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<User[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -308,7 +308,7 @@ export class LeagueApiService {
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, { userId }, options).pipe(
       catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -330,7 +330,7 @@ export class LeagueApiService {
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, { userId }, options).pipe(
       catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;
@@ -349,7 +349,7 @@ export class LeagueApiService {
 
     return this.http.post<DefaultRes<QueryIsExecuted>>(url, { userId }, options).pipe(
       catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -372,7 +372,7 @@ export class LeagueApiService {
 
     return this.http.put<DefaultRes<League>>(url, data, options).pipe(
       catchError((res: HttpResponse<DefaultRes<League>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error
@@ -395,7 +395,7 @@ export class LeagueApiService {
 
     return this.http.get<DefaultRes<LeagueChampionship[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error

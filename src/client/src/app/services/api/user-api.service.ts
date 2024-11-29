@@ -32,7 +32,7 @@ export class UserApiService {
 
     return this.http.get<DefaultRes<User[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<User[]>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
         if (error instanceof Observable) {
           return error;
         } else {
@@ -52,7 +52,7 @@ export class UserApiService {
 
     return this.http.get<DefaultRes<User>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<User>>, caught) => {
-        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
           return error;

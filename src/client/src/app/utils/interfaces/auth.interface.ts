@@ -9,3 +9,7 @@ export interface LoggedData {
   success?: string
   id?: number
 }
+
+export interface AuthData {
+  auth: boolean
+}
