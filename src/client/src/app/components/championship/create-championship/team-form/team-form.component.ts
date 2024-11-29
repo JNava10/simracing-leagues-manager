@@ -9,7 +9,7 @@ import {Category} from "../../../../utils/interfaces/category.interface";
 @Component({
   selector: 'app-team-form',
   standalone: true,
-  imports: [FormsModule, NgFor, CustomTextInputComponent, ReactiveFormsModule, NgStyle, NgxColorsModule],
+  imports: [FormsModule, CustomTextInputComponent, ReactiveFormsModule, NgStyle, NgxColorsModule],
   templateUrl: './team-form.component.html',
   styleUrl: './team-form.component.scss'
 })
@@ -17,14 +17,13 @@ export class TeamFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.preset) {
-      this.teams = this.preset.teams.map(item => item.team);
-    }
+      this.teams = this.preset.teams;
 
-    if (this.championship) {
+    } else if (this.championship) {
       this.teams = this.championship.teams!
     }
 
-    if (!this.teams) {
+    if (this.teams.length < 1) {
       this.teams = [];
 
       this.teams.push(this.defaultTeam)
@@ -43,7 +42,7 @@ export class TeamFormComponent implements OnInit {
     carEntries: 2
   }
 
-  teams: Team[] = [this.defaultTeam];
+  teams: Team[] = [];
 
   /**
    * Información del equipo seleccionado.

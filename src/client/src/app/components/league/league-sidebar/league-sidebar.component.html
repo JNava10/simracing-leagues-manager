@@ -5,11 +5,14 @@
     <h5 class="text-xl font-semibold text-blue-gray-900">{{ league?.name }}</h5>
   </div>
   <nav class="flex flex-col gap-1 p-2">
-    <span class="flex items-center w-full p-3 rounded-lg hover:text-dark-main">
+    <span (click)="navigateInLeague('championships')" class="flex items-center w-full p-3 rounded-lg hover:text-dark-main">
       Campeonatos
     </span>
     <span class="flex items-center w-full p-3 rounded-lg  hover:text-dark-main">
       Eventos
+    </span>
+    <span (click)="navigateInLeague('admin')" class="flex items-center w-full p-3 rounded-lg  hover:text-dark-main">
+      Admin
     </span>
   </nav>
 </div>

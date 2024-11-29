@@ -210,6 +210,7 @@ export class ChampionshipController {
         try {
             const presets = await ChampionshipQuery.getAllPresets(1);
 
+
             return sendSuccessResponse({
                 data: presets,
                 msg: 'A'
@@ -221,7 +222,9 @@ export class ChampionshipController {
 
     getPresetById = async (req: CustomRequest, res: Response) => {
         try {
-            const preset = await ChampionshipQuery.getPresetsById(1) as ChampionshipPresetFull;
+            const preset = await ChampionshipQuery.getPresetById(Number(req.params['id']));
+
+            console.log(preset)
 
             return sendSuccessResponse({
                 data: preset,

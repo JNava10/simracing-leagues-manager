@@ -28,6 +28,8 @@ import {
   DefineStrategiesFormComponent
 } from "./components/strategy/define-strategies-form/define-strategies-form.component";
 import {InvitesComponent} from "./components/invites/invites/invites.component";
+import {ChampListComponent} from "./components/league/champ-list/champ-list.component";
+import {LeagueChampsComponent} from "./components/league/league-champs/league-champs.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -51,6 +53,7 @@ export const routes: Routes = [
               { path: 'pending', component: PendingMembersListComponent, title: 'Miembros pendientes de entrar a liga' },
             ]},
           { path: 'championships', children: [
+              { path: '', component: LeagueChampsComponent },
               { path: 'new', title: 'Crear un campeonato', component: CreateChampionshipFormComponent },
               { path: ':champId/edit', title: 'Editar un campeonato', component: EditChampionshipFormComponent },
               { path: ':champId/enter', title: 'Entrar a un campeonato', component: EnterChampionshipFormComponent },

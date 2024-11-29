@@ -105,5 +105,7 @@ router.post("/:leagueId/invite/:userId", [validateToken, isBanned], controller.i
  */
 router.post("/:leagueId/ban/:userId", [validateToken, isBanned], controller.banMember);
 
+router.get("/:leagueId/championships", [validateToken], controller.getChampionships);
+
 
 export default router;

@@ -32,8 +32,8 @@ export class LeagueSidebarComponent implements OnInit {
     pending: 'pending',
   }
 
-  navigateInAdmin(route: string) {
-    this.globalHelper.navigateFromRoot(`league/${this.league?.id}/admin/${route}`);
+  navigateInLeague(route: string) {
+    this.globalHelper.navigateFromRoot(`league/${this.league?.id}/${route}`);
   }
 
   protected readonly devEnv = devEnv;

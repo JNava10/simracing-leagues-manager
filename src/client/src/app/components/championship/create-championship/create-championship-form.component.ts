@@ -17,7 +17,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-create-championship',
   standalone: true,
-  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent, AsyncPipe],
+  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent],
   templateUrl: './create-championship-form.component.html',
 })
 export class CreateChampionshipFormComponent implements OnInit {

@@ -62,14 +62,7 @@ export class BasicInfoEventFormComponent {
 
   convertDataFromApi(preset: ChampionshipPreset) {
     console.log(preset)
-    let calendar = preset.layouts.map(item => item.layout)
-
-    // calendar.forEach(layout => {
-    //   this.raceCalendar.push({
-    //     name: layout.name, // TODO: Poner el nombre de la ronda.
-    //     layout: layout
-    //   })
-    // })
+    let calendar = preset.calendar
   }
 
   /// Enums ///

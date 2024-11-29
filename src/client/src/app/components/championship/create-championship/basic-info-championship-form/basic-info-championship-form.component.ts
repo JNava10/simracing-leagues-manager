@@ -91,14 +91,18 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   }
 
   convertDataFromApi(preset: ChampionshipPreset) {
-    let calendar = preset.layouts.map(item => item.layout)
+    console.log(preset)
 
-    calendar.forEach(layout => {
+    preset.calendar.forEach(layout => {
       this.raceCalendar.push({
         name: layout.name, // TODO: Poner el nombre de la ronda.
         layout: layout
       })
     })
+
+    this.selectedSimulator = preset.simulator;
+
+    console.log(this.selectedSimulator)
   }
 
   private applyChampData = (championship: LeagueChampionship) => {

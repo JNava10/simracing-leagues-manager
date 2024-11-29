@@ -21,9 +21,10 @@ export class InvitesComponent implements OnInit {
     }
 
   private handleInvites = (res: LeagueInvite[]) => {
-    this.invites = IndexableMap.fromArray(res)
+    this.invites = new Map();
+
+    res.forEach(invite => this.invites?.set(invite.league.id!, invite));
   }
 
-  protected invites?: IndexableMap<LeagueInvite>;
-  protected readonly IndexableMap = IndexableMap;
+  protected invites?: Map<number, LeagueInvite>;
 }

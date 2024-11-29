@@ -1,5 +1,7 @@
-@if (league) {
-  <app-league-sidebar [league]="league"/>
-}
+<section class="flex gap-3">
+  @if (league) {
+    <app-league-admin-sidebar [league]="league"/>
+  }
 
-<router-outlet/>
+  <router-outlet/>
+</section>

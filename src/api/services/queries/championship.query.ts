@@ -8,10 +8,9 @@ import {
     GetChampProps,
     PositionCreation,
     PresetCreation,
-    Team, LeagueChampionshipQuery
+    Team, LeagueChampionshipQuery, ChampionshipPresetQuery, ChampionshipPreset
 } from "../../utils/interfaces/championship/championship.interface";
 import {TeamQuery} from "./team.query";
-import {tr} from "@faker-js/faker";
 import {
     championshipFull,
     ChampionshipFull,
@@ -200,47 +199,45 @@ export class ChampionshipQuery {
     
     static getAllPresets = async (page: number) => {
         const pageSize = 5
-        
-        return prisma.championshipPreset.findMany({
-                take: 5,
-                skip: (page - 1) * pageSize, // Se resta uno a la pagina para que tenga en cuenta la pagina en la que se está actualmente, de lo contrario en la primera pagina saltaria todos.
-                include: {
-                    categories: true, 
-                    layouts: {include: {layout: true}},
-                    teams: {include: {team: true}}
-                }
-            });
+
+        // @ts-ignore
+        let results = await prisma.championshipPreset.findMany({
+            take: 5,
+            skip: (page - 1) * pageSize, // Se resta uno a la pagina para que tenga en cuenta la pagina en la que se está actualmente, de lo contrario en la primera pagina saltaria todos.
+            include: presetChampionshipFull.include
+        }) as ChampionshipPresetQuery[];
+
+        // const presets: ChampionshipPreset[] = []
+        // const teams = .map(item => item)
+
+        // results.forEach((preset) => {
+        //     presets.push({
+        //         calendar: preset.layouts,
+        //         teams: .map(item => item)
+        //     })
+        // })
+
+        return results;
     }
 
-    static getPresetsById = async (id: number) => {
-        return prisma.championshipPreset.findFirst({
-                include: {
-                    author: true, 
+    static getPresetById = async (id: number) => {
+        // @ts-ignore
+        let result = await prisma.championshipPreset.findFirst({
+            include: presetChampionshipFull.include,
+            where: {id}
+        }) as ChampionshipPresetQuery;
 
-                    scoreSystem: {
-                        include: {
-                            positions: true, 
-                            extra: true
-                        }
-                    },
+        const preset: ChampionshipPreset = {
+            id: result.id,
+            teams: result.teams.map(item => item.team),
+            name: result.name,
+            author: result.author,
+            calendar: result.layouts.map(item => item.layout),
+            // categories: result.,
+            scoreSystem: result.scoreSystem,
+        }
 
-                    layouts: {
-                        include: {
-                            layout: {include: {parent: true}}
-                        }
-                    },
-
-                    teams: {
-                        include: {
-                            team: true
-                        }
-                    },
-
-                    categories: true
-                },
-
-                where: {id}
-            });
+        return preset;
     }
 
     static saveRoundResults = async (results: PositionCreation[], roundId: number) => {

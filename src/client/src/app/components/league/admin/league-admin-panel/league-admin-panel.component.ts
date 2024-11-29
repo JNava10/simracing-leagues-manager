@@ -7,6 +7,7 @@ import {Observable} from "rxjs";
 import {LeagueChampionship} from "../../../../utils/interfaces/championship.interface";
 import {AsyncPipe} from "@angular/common";
 import {LeagueApiService} from "../../../../services/api/league-api.service";
+import {LeagueAdminSidebarComponent} from "../league-admin-sidebar/league-admin-sidebar.component";
 
 @Component({
   selector: 'app-league-admin-panel',
@@ -14,7 +15,8 @@ import {LeagueApiService} from "../../../../services/api/league-api.service";
   imports: [
     RouterOutlet,
     LeagueSidebarComponent,
-    AsyncPipe
+    AsyncPipe,
+    LeagueAdminSidebarComponent
   ],
   templateUrl: './league-admin-panel.component.html',
   styleUrl: './league-admin-panel.component.scss'

@@ -15,6 +15,7 @@ import { catchError, map } from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {DefaultRes} from "../../utils/interfaces/responses/response.interface";
 import {Router} from "@angular/router";
+import {LeagueChampionship} from "../../utils/interfaces/championship.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -382,7 +383,31 @@ export class LeagueApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return res.data!
+        return this.globalHelper!.handleDefaultData<League>(res)!;
+
+      })
+    );
+  }
+
+  getChamps = (leagueId: number) => {
+    const url = `${devEnv.apiEndpoint}/league/${leagueId}/championships`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<LeagueChampionship[]>>(url, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<LeagueChampionship[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<LeagueChampionship[]>(res)!;
+
       })
     );
   }

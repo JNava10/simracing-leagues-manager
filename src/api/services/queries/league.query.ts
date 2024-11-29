@@ -56,6 +56,10 @@ export class LeagueQuery {
         return pendingMembers.map(item => item.user);
     }
 
+    static getChampionships = async (leagueId: number) => {
+        return prisma.leagueChampionship.findMany({where: {leagueId}});
+    }
+
     static kickMember = async (userId: number, leagueId: number) => {
         const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
         const userIsMember = await prisma.leagueMember.findFirst({where: {leagueId, userId}})  !== null;

@@ -12,6 +12,7 @@ import {CustomError} from "../utils/classes/error";
 import {isValidNumber} from "../helpers/validators.helper";
 import {handleRequestError, sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import {LeagueInviteFull} from "../prisma/types/league.types";
+import {Championship} from "../utils/interfaces/championship/championship.interface";
 
 export const editLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -302,6 +303,21 @@ export const banMember = async (req: CustomRequest, res: Response) => {
             data: {
                 executed
             },
+            msg: "Se ha enviado una invitación a la liga correctamente."
+        }, res);
+    } catch (e) {
+        sendErrorResponse({ error: e.message }, res);
+    }
+};
+
+export const getChampionships = async (req: CustomRequest, res: Response) => {
+    try {
+        const leagueId = Number(req.params['leagueId']);
+
+        const championships = await LeagueQuery.getChampionships(leagueId) as Championship[];
+
+        sendSuccessResponse({
+            data: championships,
             msg: "Se ha enviado una invitación a la liga correctamente."
         }, res);
     } catch (e) {

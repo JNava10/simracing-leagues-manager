@@ -1,6 +1,7 @@
 @if (league$ | async; as league) {
   <section class="grid grid-cols-12 gap-9">
     <app-league-sidebar
+      [league]="league"
       class="col-span-3"
     />
 

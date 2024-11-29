@@ -50,8 +50,35 @@ export interface ChampionshipPreset {
     categories?: Category[]
     scoreSystem?: ScoreSystem,
     author: User
+    simulator?: SimulatorGame,
     calendar?: ChampionshipRound[]
     teams?: Team[]
+}
+
+export interface ChampionshipPresetQuery {
+    id: number
+    name: string
+    description: string
+    imgUrl: string
+    scoreSystemId: number
+    authorId: number
+    createdAt: string
+    author: User,
+    scoreSystem: ScoreSystem
+    layouts: PresetLayout[]
+    teams: PresetTeam[]
+}
+
+export interface PresetLayout {
+    presetId: number
+    layoutId: number
+    layout: Layout
+}
+
+export interface PresetTeam {
+    presetId: number
+    teamId: number
+    team: Team
 }
 
 export interface ChampionshipRound {

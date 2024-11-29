@@ -103,8 +103,8 @@ export interface ChampionshipPreset {
   author: User;
   simulator: SimulatorGame
   scoreSystem: ScoreSystem;
-  layouts: PresetRound[];
-  teams: PresetTeam[];
+  calendar: TrackLayout[];
+  teams: Team[];
 }
 
 interface PresetTeam {

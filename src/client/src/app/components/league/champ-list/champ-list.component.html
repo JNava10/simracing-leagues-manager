@@ -1,0 +1,9 @@
+@if (championships) {
+  <section>
+    @for (champ of championships; track $index) {
+      <div class="flex gap-3">
+        <span>{{champ.name}}</span>
+      </div>
+    }
+  </section>
+}
