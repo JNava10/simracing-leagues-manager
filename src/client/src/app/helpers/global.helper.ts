@@ -1,7 +1,7 @@
 import { Component, inject, Injectable } from '@angular/core';
 import {StorageHelper} from "./storage.helper";
 import {Message, MessageService} from "primeng/api";
-import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import { Router } from '@angular/router';
 import { devEnv } from '../../environments/environment.development';
 import {DefaultRes} from "../utils/interfaces/responses/response.interface";
@@ -14,9 +14,11 @@ import {OpenFileDialogProps} from "../utils/props/file.props";
 })
 export class GlobalHelper {
 
+  constructor(private messageService: MessageService) {}
+
+
   private router = inject(Router);
   private storageHelper = inject(StorageHelper);
-  private messageService = new MessageService()
   private tokenKey = 'token'
 
   /**
@@ -36,12 +38,14 @@ export class GlobalHelper {
   }
 
   showErrorMessage = (title: string, message: string, messageService?: MessageService) => {
-    this.messageService!.add({severity: 'error', summary: title, detail: message});
+
+    this.messageService.add({severity: 'error', summary: title, detail: message});
   }
 
-  showSuccessMessage = ({ title = "exito", message, messageService }: ShowSuccessMessageProps) => {
-
-    this.messageService?.add({ severity: 'success', summary: title, detail: message });
+  showSuccessMessage = ({ title = "exito", message }: ShowSuccessMessageProps) => {
+    console.log(message);
+    // this.messageService.add({ severity: 'success', summary: title, detail: message });
+    this.messageService.add({ summary: title });
   };
 
 

@@ -4,17 +4,19 @@ import {prisma} from "../../app";
 
 export class UserQuery {
 
-    static createUser = async ({ name, lastname, secondLastname, password, nickname }: User) => {
+    static createUser = async ({ name, lastnames, password, nickname, profileUrl }: User) => {
         if (!password) password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
+
+        console.log( process.env['DEFAULT_PROFILE_PIC'])
 
         return prisma.user.create({
             data: {
                 name,
                 nickname,
-                lastname,
-                secondLastname,
                 password,
-                email: null
+                email: null,
+                lastnames,
+                profileUrl: profileUrl || process.env['DEFAULT_PROFILE_PIC'],
             },
         });
     };

@@ -18,7 +18,7 @@ import {Router} from "@angular/router";
 import {LeagueChampionship} from "../../utils/interfaces/championship.interface";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LeagueApiService {
   constructor(private http: HttpClient, private globalHelper: GlobalHelper) {

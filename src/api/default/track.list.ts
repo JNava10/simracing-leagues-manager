@@ -4,7 +4,7 @@ export const trackSeedList: Track[] = [
     {
         "name": "Silverstone Circuit",
         "description": "Circuit británico famoso por F1 y GT",
-        "country": "GBR",
+        "country": "GB",
         "location": "Northamptonshire",
         "layouts": [
             {
@@ -21,7 +21,7 @@ export const trackSeedList: Track[] = [
     {
         "name": "Circuit de Spa-Francorchamps",
         "description": "Circuit belga famoso por F1 y WEC",
-        "country": "BEL",
+        "country": "BE",
         "location": "Francorchamps",
         "layouts": [
             {
@@ -38,7 +38,7 @@ export const trackSeedList: Track[] = [
     {
         "name": "Monza Circuit",
         "description": "Circuit italiano famoso por F1",
-        "country": "ITA",
+        "country": "IT",
         "location": "Monza",
         "layouts": [
             {
@@ -55,7 +55,7 @@ export const trackSeedList: Track[] = [
     {
         "name": "Suzuka Circuit",
         "description": "Circuit japonés famoso por F1 y Super GT",
-        "country": "JPN",
+        "country": "JP",
         "location": "Suzuka",
         "layouts": [
             {
@@ -72,7 +72,7 @@ export const trackSeedList: Track[] = [
     {
         "name": "Sebring International Raceway",
         "description": "Circuit estadounidense famoso por endurance",
-        "country": "USA",
+        "country": "US",
         "location": "Sebring, Florida",
         "layouts": [
             {

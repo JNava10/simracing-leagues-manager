@@ -6,7 +6,18 @@ import { routes } from './app.routes';
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor} from "./interceptor/auth.interceptor";
 import {provideCharts, withDefaultRegisterables} from "ng2-charts";
+import {MessageService} from "primeng/api";
+import {GlobalHelper} from "./helpers/global.helper";
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideAnimations(), provideCharts(withDefaultRegisterables()), provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes, withComponentInputBinding(), withRouterConfig({paramsInheritanceStrategy: 'always'})), provideHttpClient(withInterceptors([authInterceptor]))]
+  providers: [
+    GlobalHelper,
+    MessageService,
+    provideAnimations(),
+    provideCharts(withDefaultRegisterables()),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes, withComponentInputBinding(),
+      withRouterConfig({paramsInheritanceStrategy: 'always'})),
+    provideHttpClient(withInterceptors([authInterceptor]))
+  ]
 };

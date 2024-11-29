@@ -116,7 +116,7 @@ export class LeagueQuery {
                     OR: [
                         {nickname: {contains: search}},
                         {name: {contains: search}},
-                        {lastname: {contains: search}},
+                        {lastnames: {contains: search}},
                     ]
                 }
             }

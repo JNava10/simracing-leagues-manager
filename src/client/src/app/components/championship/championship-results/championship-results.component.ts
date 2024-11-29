@@ -36,6 +36,12 @@ export class ChampionshipResultsComponent implements OnInit {
   ngOnInit(): void {
     this.champId = +this.route.snapshot.params['champId'];
 
+    this.roundId = +this.route.snapshot.params['roundId'];
+
+    if (!this.roundId) {
+      throw new Error('No se ha introducido ID de ronda.')
+    }
+
     this.championshipApiService.getCalendarById(this.champId).subscribe(res => {
       if (!res) {
         throw new Error('No se ha podido obtener el calendario')
@@ -47,12 +53,18 @@ export class ChampionshipResultsComponent implements OnInit {
     this.championshipApiService.getEntriesById(this.champId).subscribe(res => {
       this.users = res!.users?.map(item => item.user!)
 
-      this.championshipApiService.getResults(this.champId!).subscribe(res => {
-        this.results = res!;
-        console.log(this.results)
-        console.log(this.getDriverResults(1))
-      });
+
+      this.getResults();
     });
+  }
+
+  private getResults() {
+    this.championshipApiService.getResults(this.roundId!).subscribe(res => this.handleResults(res));
+  }
+
+  private handleResults(res: PositionCreation[]) {
+    this.results = res!;
+    console.log(this.results)
   }
 
   champId?: number;
@@ -60,6 +72,7 @@ export class ChampionshipResultsComponent implements OnInit {
   championship?: LeagueChampionship;
   results?: Position[];
   users?: User[];
+  roundId?: number;
 
   protected readonly SessionFinishStates = SessionFinishStates;
   protected readonly Object = Object;

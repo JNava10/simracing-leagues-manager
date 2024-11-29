@@ -28,7 +28,7 @@ export class ChampionshipApiService {
 
   create = (championship: LeagueChampionship) => {
     return this.http.post<DefaultRes<number>>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
-      catchError((res: HttpResponse<DefaultRes<number>>, caught) => {
+      catchError((res: HttpResponse<DefaultRes<number>>) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
@@ -47,11 +47,20 @@ export class ChampionshipApiService {
 
   saveRoundResults = (results: PositionCreation[], id: number) => {
     return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/results/1`, results, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
-        this.globalHelper!.handleApiError('Error al expulsar miembro de la liga:', err);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+      })
     );
   };
 
@@ -286,6 +295,4 @@ export class ChampionshipApiService {
       })
     );
   }
-
-
 }

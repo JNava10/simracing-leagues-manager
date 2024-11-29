@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
@@ -6,22 +6,18 @@ import { Router, Event, NavigationEnd } from '@angular/router';
 
 import { IStaticMethods } from 'preline/preline';
 import {NavbarComponent} from "./components/utils/custom-navbar/navbar.component";
-declare global {
-  interface Window {
-    HSStaticMethods: IStaticMethods;
-  }
-}
+import {MessageModule} from "primeng/message";
+import {GlobalHelper} from "./helpers/global.helper";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, ToastModule, NavbarComponent],
-  providers: [MessageService],
+  providers: [MessageModule, MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  constructor(private router: Router) {}
+export class AppComponent{
 
   title = 'leagueManagerClient';
 

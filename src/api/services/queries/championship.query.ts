@@ -18,6 +18,7 @@ import {
     presetChampionshipFull
 } from "../../prisma/types/championship.types";
 import {UserQuery} from "./user.query";
+import {ExpectedError} from "../../utils/classes/error";
 
 export class ChampionshipQuery {
     static get = async (id: number) => {
@@ -244,7 +245,16 @@ export class ChampionshipQuery {
     }
 
     static saveRoundResults = async (results: PositionCreation[], roundId: number) => {
-        console.log(results)
+        const resultsExists = await prisma.roundEntry.findFirst({
+            where: {
+                roundId
+            }
+        }) !== null;
+
+        if (resultsExists) {
+            throw new ExpectedError('Los resultados de esta ronda ya estan introducidos.')
+        }
+
         return prisma.roundEntry.createMany({
             // @ts-ignore
             data: results.map((result, index)=> {
@@ -262,6 +272,8 @@ export class ChampionshipQuery {
             where: {championshipId},
             select: {id: true}
         }) as ChampionshipRound[];
+
+        console.log(roundIds)
 
         return prisma.roundEntry.findMany({
             where: {

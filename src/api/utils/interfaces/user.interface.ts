@@ -6,10 +6,9 @@ export interface UserDataQuery {
     id?: number;
     nickname?: string;
     name?: string;
-    lastname?: string;
-    secondLastname?: string;
+    lastnames?: string;
     password?: string;
     createdAt?: Date;
     email?: string;
-    profilePicUrl?: string;
+    profileUrl?: string;
 }

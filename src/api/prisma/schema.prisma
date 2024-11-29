@@ -23,15 +23,17 @@ model Category {
 // Usuarios
 
 model User {
-  id             Int      @id @default(autoincrement())
-  nickname       String?  @db.VarChar(255)
-  name           String   @db.VarChar(255)
-  lastname       String   @db.VarChar(255)
-  secondLastname String?  @db.VarChar(255)
-  password       String   @db.VarChar(255)
-  createdAt      DateTime @default(now()) @db.DateTime(6)
-  email          String?  @db.VarChar(255)
-  profilePicUrl  String?  @db.VarChar(255)
+  id         Int      @id @default(autoincrement())
+  nickname   String   @db.VarChar(255)
+  name       String   @db.VarChar(255)
+  lastnames  String   @db.VarChar(255)
+  bio        String   @default("Profile bio.") @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  colorHex   String?  @default("#ffffff") @db.VarChar(7)
+  createdAt  DateTime @default(now()) @db.DateTime(6)
+  email      String?  @db.VarChar(255)
+  profileUrl String   @db.VarChar(255)
+  bannerUrl  String?  @db.VarChar(255)
 
   leagues              LeagueMember[]
   leaguesCreated       League[]
@@ -176,6 +178,7 @@ model ChampionshipRound {
   id             Int      @id @default(autoincrement())
   championshipId Int
   layoutId       Int
+  roundNum       Int
   name           String?  @db.VarChar(255)
   description    String?  @db.VarChar(255)
   createdAt      DateTime @default(now()) @db.DateTime(6)
@@ -205,6 +208,7 @@ model ChampionshipEntry {
   gameName       String?
   number         Int?
   teamId         Int?
+  nacionality    String?  @db.VarChar(2)
   description    String?  @db.VarChar(255)
   createdAt      DateTime @default(now()) @db.DateTime(6)
 
@@ -357,7 +361,7 @@ model Track {
   id          Int           @id @default(autoincrement())
   name        String        @db.VarChar(255)
   description String        @db.VarChar(255)
-  country     String        @db.VarChar(3)
+  country     String        @db.VarChar(2)
   location    String        @db.VarChar(255)
   layouts     TrackLayout[]
 }

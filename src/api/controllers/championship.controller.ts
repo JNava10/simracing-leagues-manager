@@ -102,8 +102,9 @@ export class ChampionshipController {
     saveResults = async (req: CustomRequest, res: Response) => {
         try {
             const body = req.body as PositionCreation[];
-            const champId = Number(req.params['championshipId']!);
             const round = Number(req.params['round']!);
+
+            console.log(round)
 
             const roundsCreated = await ChampionshipQuery.saveRoundResults(body, round);
 
@@ -144,16 +145,17 @@ export class ChampionshipController {
             const id = Number(req.params['championshipId']!);
             const results = await ChampionshipQuery.getResults(id);
 
-            if (!results) {
-                return sendErrorResponse({
-                    error: 'No se han encontrado resultados del campeonato.',
+            if (!results || results.length === 0) {
+                return sendSuccessResponse({
+                    msg: 'No se han encontrado resultados del campeonato.',
+                    data: [],
                 }, res);
             }
 
             return sendSuccessResponse({
                 data: results,
                 msg: 'A',
-                status: 201
+                status: 200
             }, res);
         } catch (e) {
             handleRequestError(e, res);
