@@ -15,7 +15,8 @@ import { LeagueSidebarComponent } from "../league-sidebar/league-sidebar.compone
     AsyncPipe,
     RouterOutlet,
     TabMenuModule,
-],
+    LeagueSidebarComponent,
+  ],
   templateUrl: './league-main.component.html',
   styleUrl: './league-main.component.scss'
 })

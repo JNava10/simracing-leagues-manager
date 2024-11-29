@@ -1,5 +1,11 @@
 @if (league$ | async; as league) {
-  <div class="py-3">
-    <router-outlet class="min-w-md w-md"></router-outlet>
-  </div>
+  <section class="grid grid-cols-12 gap-9">
+    <app-league-sidebar
+      class="col-span-3"
+    />
+
+    <div class="py-3 col-span-9">
+      <router-outlet class="min-w-md w-md"></router-outlet>
+    </div>
+  </section>
 }

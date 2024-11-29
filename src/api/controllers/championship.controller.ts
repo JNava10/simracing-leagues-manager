@@ -194,9 +194,13 @@ export class ChampionshipController {
         try {
             const body = req.body as PresetCreation;
 
-            const createdChampioship = await ChampionshipQuery.createPreset(body, req.user.id);
+            const executed = await ChampionshipQuery.createPreset(body, req.user.id) !== null;
 
-            res.status(201).send(createdChampioship);
+            return sendSuccessResponse({
+                data: executed,
+                msg: 'Se ha obtenido correctamente el campeonato.',
+                status: 200
+            }, res);
         } catch (e) {
             handleRequestError(e, res);
         }

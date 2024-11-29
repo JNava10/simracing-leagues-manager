@@ -80,24 +80,20 @@ export class ChampionshipApiService {
 
   getById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}`, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener el campeonato:', err, caught);
-        return caught;
-      }),
-      map(res => res.data)
-    );
-  };
+      catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
 
-  getByIdNew = (id: number) => {
-    const url = `${devEnv.apiEndpoint}/championship/${id}`;
-    const options = { params: { ...sendTokenParam } };
-
-    return this.http.get<DefaultRes<LeagueChampionship>>(url, options).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener el campeonato:', err, caught);
-        return caught;
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map((res) => res.data!)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+      })
     );
   };
 
@@ -141,71 +137,134 @@ export class ChampionshipApiService {
 
   getResults = (id: number) => {
     return this.http.get<DefaultRes<PositionCreation[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener los resultados:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<PositionCreation[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<PositionCreation[]>(res)!;
+      })
     );
   };
 
   getCalendarById =  (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/calendar`, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener el calendario del campeonato:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+      })
     );
   };
 
   getEntriesById = (id: number) => {
     return this.http.get<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/entries`, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener las entradas del campeonato:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+      })
     );
   };
 
   enter = (data: EnterChampionship, champId: number) => {
-    return this.http.post<DefaultRes>(`${devEnv.apiEndpoint}/championship/${champId}/enter`, data, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al inscribirse en el campeonato:', err, caught);
-        return caught;
+    return this.http.post<DefaultRes<ChampionshipPreset[]>>(`${devEnv.apiEndpoint}/championship/${champId}/enter`, data, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<ChampionshipPreset[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<ChampionshipPreset[]>(res)!;
+      })
     );
   };
 
   getTeams = (champId: number) => {
     return this.http.get<DefaultRes<GetTeam[]>>(`${devEnv.apiEndpoint}/championship/teams/${champId}`, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener los equipos del campeonato:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<GetTeam[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<GetTeam[]>(res)!;
+      })
     );
   };
 
   createPreset = (championship: LeagueChampionship) => {
-    return this.http.post<DefaultRes>(`${devEnv.apiEndpoint}/championship/preset`, championship, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al crear el preset del campeonato:', err, caught);
-        return caught;
+    return this.http.post<DefaultRes<ChampionshipPreset>>(`${devEnv.apiEndpoint}/championship/preset`, championship, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<ChampionshipPreset>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<ChampionshipPreset>(res)!;
+      })
     );
   };
 
   getAllPresets = () => {
     return this.http.get<DefaultRes<ChampionshipPreset[]>>(`${devEnv.apiEndpoint}/championship/preset`, {params: {...sendTokenParam}}).pipe(
-      catchError((err: HttpResponse<DefaultRes>, caught) => {
-        this.globalHelper.handleApiError('Error al obtener los presets:', err, caught);
-        return caught;
+      catchError((res: HttpResponse<DefaultRes<ChampionshipPreset[]>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res, caught);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
       }),
-      map(res => res.data)
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<ChampionshipPreset[]>(res)!;
+      })
     );
   };
 

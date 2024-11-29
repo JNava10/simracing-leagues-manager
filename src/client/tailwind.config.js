@@ -10,11 +10,11 @@ module.exports = {
       colors: {
         dark: {
           mainbg: '#090510',
-          background: '#261E43',
+          background: '#1B1624',
           main: '#9273F7',
           accent: '#FF0080',
           text: '#374151',
-          hover: '#FEFDFF',
+          hover: '#3D3067',
           border: '#FF0080',
         },
         light: {
@@ -26,6 +26,7 @@ module.exports = {
           border: '#D1D5DB',
         },
       }
+    },
   },
   plugins: [require('daisyui'),   require('preline/plugin'),     require('@tailwindcss/forms'),],
 

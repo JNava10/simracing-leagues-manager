@@ -7,4 +7,5 @@ export interface LoginData {
 export interface LoggedData {
   token?: string,
   success?: string
+  id?: number
 }

@@ -20,6 +20,8 @@ export class LeagueSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.league)
+    this.globalHelper.showSuccessMessage({title: 'ss', message: 'aaa'})
+
   }
 
   @Input() league?:League;

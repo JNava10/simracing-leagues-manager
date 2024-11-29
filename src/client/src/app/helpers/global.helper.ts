@@ -165,8 +165,12 @@ handleApiError = (
     return `${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
   };
 
-  getDefaultColor = () => {
+  setUserId = (id: number) => {
+    this.storageHelper.save('user', id)
+  }
 
+  getUserId = () => {
+    return this.storageHelper.get('user');
   }
 }
 

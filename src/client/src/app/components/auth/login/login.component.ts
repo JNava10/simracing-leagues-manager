@@ -24,7 +24,6 @@ import { Router } from '@angular/router';
     DividerModule,
     ToggleButtonModule,
     FormsModule,
-    Button,
     ModeSwitchComponent,
     NgIf
   ],
@@ -76,7 +75,8 @@ export class LoginComponent {
       return;
     }
 
-    this.globalHelper.saveToken(loggedData.token!);
+    this.globalHelper.saveToken(loggedData.token!); // TODO: Cambiar el !
+    this.globalHelper.setUserId(loggedData.id!);
     this.globalHelper.navigateFromRoot("leagues")
   }
 }

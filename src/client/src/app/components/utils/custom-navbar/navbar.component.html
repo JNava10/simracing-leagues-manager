@@ -1,0 +1,15 @@
+<nav class="font-sans rounded-lg flex flex-col text-center w-full p-3 h-[5rem] bg-none">
+  <div class="flex gap-3">
+    <span class="text-2xl no-underline text-grey-darkest hover:text-dark-main">SLM</span>
+  </div>
+
+  <div class="flex gap-3">
+    <div (click)="globalHelper.navigateFromRoot('leagues')" class="text-lg no-underline text-grey-darkest hover:text-dark-main select-none cursor-pointer">Mis ligas</div>
+    <div (click)="globalHelper.navigateFromRoot('leagues')" class="text-lg no-underline text-grey-darkest cursor-pointer select-none hover:text-dark-main">Buscar ligas</div>
+    <div (click)="globalHelper.navigateFromRoot('invites')" class="text-lg no-underline text-grey-darkest cursor-pointer select-none hover:text-dark-main">Invitaciones</div>
+    <div (click)="globalHelper.navigateFromRoot('presets')" class="text-lg no-underline text-grey-darkest cursor-pointer select-none hover:text-dark-main">Comunidad</div>
+    <div (click)="globalHelper.navigateFromRoot('strategy')" class="text-lg no-underline text-grey-darkest cursor-pointer select-none hover:text-dark-main">Estrategias</div>
+    <div (click)="globalHelper.navigateFromRoot(getProfileRoute())" class="text-lg no-underline text-grey-darkest cursor-pointer select-none hover:text-dark-main">Perfil</div>
+    <div class="text-lg no-underline text-grey-darkest cursor-pointer select-none hover:text-dark-main">Cerrar Sesión</div>
+  </div>
+</nav>

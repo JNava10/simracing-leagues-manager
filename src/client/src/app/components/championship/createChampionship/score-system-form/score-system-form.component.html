@@ -8,9 +8,16 @@
       formArrayName="scores"
     >
       @for (score of scores.controls; track $index) {
-        <div class="relative bg-neutral-700/70 p-3">
+        <div [formGroupName]="$index" class="relative bg-neutral-700/70 p-3">
           <span class="absolute left-0 top-0 pl-1 text-sm">{{$index + 1}}</span>
-          <app-custom-text-input inputmode="numeric" placeholder="0" [debug]="true" [showLabel]="false" [formControlName]="$index.toString()" inputClass="w-[3.5rem]" maxLength="3" />
+          <app-custom-text-input
+            [showPlaceholder]="true"
+            placeholder="0"
+            [debug]="true"
+            [showLabel]="false"
+            formControlName="score"
+            inputClass="w-[3.5rem]"
+            maxLength="3" />
         </div>
       }
     </form>

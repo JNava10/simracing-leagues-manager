@@ -74,7 +74,9 @@ export class ScoreSystemFormComponent implements OnInit {
   private buildScoreForm(array: FormArray)  {
     for (let i = 0; i < this.gridSize; i++) {
       array.push(
-        this.formBuilder.control(`${this.scoreValues[i]}` || "")
+        this.formBuilder.group({
+          score: this.scoreValues[i]
+        })
       )
     }
   }

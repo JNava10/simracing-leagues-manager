@@ -10,7 +10,7 @@ const userService = new UserQuery();
 export const login = async (req: Request, res: Response) => {
     try {
         const {nickname, email, password} = req.body as LoginData;
-        let user: User
+        let user: User;
 
         if (nickname) user = await userService.getUserByNickname(nickname);
         else if (email) user = await userService.getUserByEmail(email);
@@ -29,9 +29,9 @@ export const login = async (req: Request, res: Response) => {
         // const accessToken = await generateToken(payload, process.env['JWT_ACCESS_EXP_TIME'])
         // const refreshToken = await generateToken(payload, process.env['JWT_REFRESH_EXP_TIME']);
 
-        const loggedData = {success: true, token};
+        const loginData = {success: true, token, id: user.id};
 
-        res.send(loggedData);
+        res.send(loginData);
     } catch (error) {
         console.error(error);
 
