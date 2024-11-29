@@ -18,12 +18,11 @@ export class TeamFormComponent implements OnInit {
   ngOnInit(): void {
     if (this.preset) {
       this.teams = this.preset.teams;
-
     } else if (this.championship) {
       this.teams = this.championship.teams!
     }
 
-    if (this.teams.length < 1) {
+    if (!this.teams) {
       this.teams = [];
 
       this.teams.push(this.defaultTeam)

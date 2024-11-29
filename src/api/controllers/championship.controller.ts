@@ -56,7 +56,6 @@ export class ChampionshipController {
             const id = Number(req.params['championshipId']!);
             const entries = await ChampionshipQuery.getEntries(id);
 
-            // @ts-ignore
             console.log(entries);
 
             return sendSuccessResponse({
@@ -88,10 +87,10 @@ export class ChampionshipController {
             const body = req.body as EnterChampionship;
             const champId = Number(req.params['championshipId']!);
 
-            const createdChampioship = await ChampionshipQuery.enter(body, req.user.id, champId);
+            const executed = await ChampionshipQuery.enter(body, req.user.id, champId);
 
             return sendSuccessResponse({
-                data: createdChampioship,
+                data: {executed},
                 msg: 'A',
                 status: 201
             }, res);

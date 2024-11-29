@@ -31,18 +31,11 @@ export class ChampEditOverviewComponent {
 
   @Input() championship?: LeagueChampionship;
 
-  createChampionship() {
-    this.championshipService.create(this.championship!)
-      .subscribe(res => {
-        this.afterCreatingChampionship(res!)
-      })
-  }
-
-  afterCreatingChampionship(res: LeagueChampionship) {
-    this.globalHelper.navigateFromRoot(`league/${this.championship?.leagueId}/championships/${res.id}`)
-  }
-
   editChamp = () => {
-    this.championshipService.edit(this.championship!.id!, this.championship!)
+    this.championshipService.edit(this.championship!.id!, this.championship!).subscribe(res => this.handleEdit(res))
   };
+
+  private handleEdit(res: LeagueChampionship) {
+
+  }
 }

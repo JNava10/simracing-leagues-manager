@@ -27,8 +27,8 @@ export class ChampionshipApiService {
   private globalHelper = inject(GlobalHelper);
 
   create = (championship: LeagueChampionship) => {
-    return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
-      catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>, caught) => {
+    return this.http.post<DefaultRes<number>>(`${devEnv.apiEndpoint}/championship`, championship, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<number>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
@@ -40,7 +40,7 @@ export class ChampionshipApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+        return this.globalHelper!.handleDefaultData<number>(res)!;
       })
     );
   };
@@ -193,8 +193,8 @@ export class ChampionshipApiService {
   };
 
   enter = (data: EnterChampionship, champId: number) => {
-    return this.http.post<DefaultRes<ChampionshipPreset[]>>(`${devEnv.apiEndpoint}/championship/${champId}/enter`, data, {params: {...sendTokenParam}}).pipe(
-      catchError((res: HttpResponse<DefaultRes<ChampionshipPreset[]>>, caught) => {
+    return this.http.post<DefaultRes<QueryIsExecuted>>(`${devEnv.apiEndpoint}/championship/${champId}/enter`, data, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<QueryIsExecuted>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
@@ -206,7 +206,7 @@ export class ChampionshipApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return this.globalHelper!.handleDefaultData<ChampionshipPreset[]>(res)!;
+        return this.globalHelper!.handleDefaultData<QueryIsExecuted>(res)!;
       })
     );
   };

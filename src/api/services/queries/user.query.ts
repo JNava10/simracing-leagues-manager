@@ -1,4 +1,4 @@
-import { User } from "../../utils/interfaces/user.interface";
+import {User, UserDataQuery} from "../../utils/interfaces/user.interface";
 import { hashPassword } from "../../helpers/common.helper";
 import {prisma} from "../../app";
 
@@ -22,7 +22,7 @@ export class UserQuery {
     getUserByNickname = async (nickname: string) => prisma.user.findFirst({where: {nickname}});
 
     static getById = async (userId: number) => {
-        return prisma.user.findFirst({where: {id: userId}});
+        return prisma.user.findFirst({where: {id: userId}}) as UserDataQuery;
     }
 
     getUserByEmail = async (email: string) => prisma.user.findFirst({where: {email}});

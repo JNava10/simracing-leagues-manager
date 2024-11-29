@@ -70,12 +70,11 @@ export class EnterChampionshipFormComponent implements OnInit {
       number: Number(this.registrationForm.value.number),
     }
 
-    console.log(this.champId)
 
     this.championshipService.enter(data, this.champId!).subscribe(res => {
-      /*if (res.data) {
-        this.globalHelper.showSuccessMessage('Exito', res.msg!)
-      }*/
+      if (res.executed) {
+        this.globalHelper.navigateFromRoot(`league/${this.leagueId}/championships/${this.champId}`);
+      }
     })
 
   }

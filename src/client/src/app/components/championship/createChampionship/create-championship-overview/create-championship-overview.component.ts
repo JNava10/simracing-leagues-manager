@@ -23,18 +23,16 @@ export class CreateChampionshipOverviewComponent implements OnInit {
     console.log(this.championship);
   }
 
-  showingSummary = false;
-
   @Input() championship?: LeagueChampionship;
 
   createChampionship() {
     this.championshipService.create(this.championship!)
       .subscribe(res => {
-        this.afterCreatingChampionship(res!)
+        this.afterCreatingChampionship(res)
       })
   }
 
-  afterCreatingChampionship(res: LeagueChampionship) {
-    this.globalHelper.navigateFromRoot(`league/${this.championship?.leagueId}/championships/${res.id}`)
+  afterCreatingChampionship(champId: number) {
+    this.globalHelper.navigateFromRoot(`league/${this.championship?.leagueId}/championships/${champId}/enter`)
   }
 }

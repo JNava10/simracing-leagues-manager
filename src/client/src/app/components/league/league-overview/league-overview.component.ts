@@ -18,7 +18,6 @@ export class LeagueOverviewComponent {
   createChampClick = () => {
     const leagueId = this.route.snapshot.paramMap.get('leagueId');
 
-    // Con rutas relativas no detecta la ruta, ni tira un error.
     this.globalHelper.navigateFromRoot(`league/${leagueId}/championships/new`);
   }
 }

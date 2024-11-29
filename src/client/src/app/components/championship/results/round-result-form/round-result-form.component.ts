@@ -51,17 +51,26 @@ export class RoundResultFormComponent implements OnInit {
       this.calendar = res!.calendar
     });
 
-    this.championshipService.getEntriesById(this.champId).subscribe(res => {
-      res!.users!.forEach(_ => { // Se utiliza _ para indicar que la variable no se va a usar.
-        this.positionsForm.push(
-          this.getPositionFormGroup()
-        )
-      });
+    this.championshipService.getEntriesById(this.champId).subscribe(res => this.handleEntries(res));
+  }
 
-      this.members = res!.users?.map(item => item.user!)
-      this.round = this.route.snapshot.params['round'];
+  private handleEntries(res: LeagueChampionship) {
+    if (!res.users) {
+      // TODO: Informar al usuario con un mensaje.
+      console.log('No se encuentran los usuarios.')
+      return;
+    }
 
+    console.log(res )
+
+    res.users.forEach(_ => { // Se utiliza _ para indicar que la variable no se va a usar.
+      this.positionsForm.push(
+        this.getPositionFormGroup()
+      )
     });
+
+    this.members = res!.users?.map(item => item.user!)
+    this.round = this.route.snapshot.params['round'];
   }
 
   round = 0

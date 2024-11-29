@@ -22,7 +22,7 @@ import {CustomDropdownItemComponent} from "../../utils/dropdown/custom-dropdown-
 @Component({
   selector: 'app-championship-results',
   standalone: true,
-  imports: [CustomButtonComponent, DialogModule, CustomSelectComponent, ReactiveFormsModule, CustomRadioGroupComponent, NgClass, SlicePipe, RouterLink, CustomDropdownComponent, CustomDropdownItemComponent],
+  imports: [DialogModule, ReactiveFormsModule, SlicePipe, RouterLink],
   templateUrl: './championship-results.component.html',
   styleUrl: './championship-results.component.scss'
 })
@@ -36,11 +36,11 @@ export class ChampionshipResultsComponent implements OnInit {
   ngOnInit(): void {
     this.champId = +this.route.snapshot.params['champId'];
 
-    this.championshipApiService.getByIdFull(this.champId).subscribe(res => {
-      this.championship = res!;
-    });
-
     this.championshipApiService.getCalendarById(this.champId).subscribe(res => {
+      if (!res) {
+        throw new Error('No se ha podido obtener el calendario')
+      }
+
       this.calendar = res!.calendar!
     });
 

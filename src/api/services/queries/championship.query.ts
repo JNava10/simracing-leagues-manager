@@ -17,6 +17,7 @@ import {
     ChampionshipPresetFull,
     presetChampionshipFull
 } from "../../prisma/types/championship.types";
+import {UserQuery} from "./user.query";
 
 export class ChampionshipQuery {
     static get = async (id: number) => {
@@ -100,6 +101,8 @@ export class ChampionshipQuery {
                 championshipId: created.id
             }})
         }
+
+        const author = await UserQuery.getById(authorId);
 
         return created.id;
     };
