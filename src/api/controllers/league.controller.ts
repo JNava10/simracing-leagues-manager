@@ -79,7 +79,7 @@ export const createLeague = async (req: CustomRequest, res: Response) => {
             msg: "Se ha creado la liga correctamente."
         }, res);
     } catch (e) {
-        sendErrorResponse({ error: e.message }, res);
+        handleRequestError(e, res)
     }
 };
 
@@ -99,7 +99,7 @@ export const addMemberToLeague = async (req: CustomRequest, res: Response) => {
             msg: "Se ha añadido correctamente el miembro a la liga."
         }, res);
     } catch (e) {
-        sendErrorResponse({ error: e.message }, res);
+        handleRequestError(e, res)
     }
 };
 

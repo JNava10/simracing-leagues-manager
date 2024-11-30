@@ -29,6 +29,11 @@
 <app-custom-button color="gray" (click)="navigateToCreate()">Añadir liga</app-custom-button>
 
 
-
-
+<app-custom-dropdown [bodyTemplate]="body">
+  <ng-template #body>
+    <app-custom-dropdown-item>
+      <span>aaa</span>
+    </app-custom-dropdown-item>
+  </ng-template>
+</app-custom-dropdown>
 

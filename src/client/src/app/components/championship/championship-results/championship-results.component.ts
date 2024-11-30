@@ -47,7 +47,6 @@ export class ChampionshipResultsComponent implements OnInit {
     this.championshipApiService.getEntriesById(this.champId).subscribe(res => {
       this.users = res!.users?.map(item => item.user!)
 
-
       this.getResults();
     });
   }

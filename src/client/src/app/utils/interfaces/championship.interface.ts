@@ -46,6 +46,9 @@ export interface ChampionshipRound {
 }
 
 export interface ChampionshipEntry {
+  gameName?: string
+  number?: number
+  team?: Team
   user?: User
 }
 
@@ -140,7 +143,7 @@ export interface EnterChampionship {
 }
 
 export interface Position {
-  driver?: User;
+  driver?: ChampionshipEntry;
   position?: number;
   driverId?: number;
   finishState: number;

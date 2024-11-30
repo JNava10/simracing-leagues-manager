@@ -59,7 +59,7 @@ export class ChampionshipApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+        return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!.users;
       })
     );
   };

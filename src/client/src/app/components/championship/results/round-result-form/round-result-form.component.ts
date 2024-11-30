@@ -5,6 +5,7 @@ import {CustomSelectComponent} from "../../../utils/custom/input/custom-select/c
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {
+  ChampionshipEntry,
   ChampionshipRound,
   LeagueChampionship,
   Position,
@@ -28,7 +29,9 @@ import {Driver} from "../../../../utils/interfaces/rfactor.interface";
     CustomRadioGroupComponent,
     CustomSelectComponent,
     ReactiveFormsModule,
-    NgClass
+    NgClass,
+    CustomDropdownComponent,
+    CustomDropdownItemComponent
   ],
   templateUrl: './round-result-form.component.html',
   styleUrl: './round-result-form.component.scss'
@@ -57,11 +60,8 @@ export class RoundResultFormComponent implements OnInit {
   private handleEntries(res: LeagueChampionship) {
     if (!res.users) {
       // TODO: Informar al usuario con un mensaje.
-      console.log('No se encuentran los usuarios.')
       return;
     }
-
-    console.log(res )
 
     res.users.forEach(_ => { // Se utiliza _ para indicar que la variable no se va a usar.
       this.positionsForm.push(
@@ -69,7 +69,7 @@ export class RoundResultFormComponent implements OnInit {
       )
     });
 
-    this.members = res!.users?.map(item => item.user!)
+    this.members = res!.users!;
     this.round = this.route.snapshot.params['round'];
   }
 
@@ -78,7 +78,7 @@ export class RoundResultFormComponent implements OnInit {
   calendar?: ChampionshipRound[];
   championship?: LeagueChampionship;
   results: Position[] = [];
-  members?: User[];
+  members?: ChampionshipEntry[];
   positions: Position[] = [];
   editing = true
 
@@ -107,7 +107,7 @@ export class RoundResultFormComponent implements OnInit {
 
     positionsCreated.forEach((position) => {
       this.positions.push({
-        driver: this.members!.find(item => item.id === Number(position.driverId))!,
+        driver: this.members!.find(item => item.user?.id === Number(position.driverId))!,
         finishState: position.finishState
       })
     })
@@ -129,8 +129,6 @@ export class RoundResultFormComponent implements OnInit {
       }
     });
 
-    console.log(results);
-
     this.championshipService.saveRoundResults(results, this.champId!).subscribe(res => {})
   }
 
@@ -143,22 +141,21 @@ export class RoundResultFormComponent implements OnInit {
   };
 
   private handleRfactorResults(drivers: Driver[]) {
-    console.log(this.members)
-    drivers.forEach(driver => {
+    console.log(this.positionsForm)
+    drivers.forEach((driver, index) => {
 
-      const driverMatch = this.members?.find(member => member.nickname === driver.Name);
+      const driverMatch = this.members?.find(member => member.user!.nickname || member.gameName === driver.Name);
+      const driverControl = this.positionsForm.at(driver.Position - 1);
 
-      if (driverMatch) {
-        console.log(driverMatch)
-        this.positionsForm.at(driver.Position - 1).patchValue({
+      if (driverMatch && driverControl) {
+        console.log(driverMatch, index)
+        driverControl.patchValue({
           position: driver.Position,
           driver: driverMatch,
-          driverId: driverMatch.id,
+          driverId: driverMatch.user!.id,
           finishState: 0
         })
       }
     })
-
-    console.log(this.positions);
   }
 }

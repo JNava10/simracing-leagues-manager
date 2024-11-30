@@ -5,11 +5,14 @@ import {UserQuery} from './user.query';
 import {fa, tr} from "@faker-js/faker";
 import {leagueInviteFull} from "../../prisma/types/league.types";
 import {ExpectedError} from "../../utils/classes/error";
+import {defaults} from "../../utils/constants/default.constants";
 
 export class LeagueQuery {
     static createLeague = async (league: League, authorId: number) => {
         const createdLeague = await prisma.league.create({
             data: {
+                picUrl: league.picUrl || defaults.leagueIcon,
+                bannerUrl: league.bannerUrl || defaults.leagueBanner,
                 name: league.name,
                 description: league.description,
                 authorId: authorId,

@@ -5,6 +5,8 @@ export interface League {
     name: string;
     description?: string;
     color?: string;
+    picUrl?: string;
+    bannerUrl?: string;
 }
 
 export interface NewLeagueMember {

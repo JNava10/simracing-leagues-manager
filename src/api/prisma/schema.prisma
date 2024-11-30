@@ -94,6 +94,8 @@ model AppRole {
 model League {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255)
+  picUrl      String   @db.VarChar(255)
+  bannerUrl   String   @db.VarChar(255)
   description String   @db.VarChar(255)
   createdAt   DateTime @default(now()) @db.DateTime(6)
   category    Int?
