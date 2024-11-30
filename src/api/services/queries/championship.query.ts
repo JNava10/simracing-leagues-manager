@@ -173,7 +173,8 @@ export class ChampionshipQuery {
                 data: {
                     championshipId,
                     name: round.name,
-                    layoutId: round.layoutId
+                    layoutId: round.layoutId,
+                    roundNum: createdRounds.length + 1,
                 }
             });
 

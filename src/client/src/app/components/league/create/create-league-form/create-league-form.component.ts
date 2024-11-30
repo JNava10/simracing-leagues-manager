@@ -52,7 +52,7 @@ export class CreateLeagueFormComponent {
     })
   }
 
-  private afterCreatingLeague = (data: League) => {
-    this.globalHelper.navigateFromRoot('leagues')
+  private afterCreatingLeague = async (data: League) => {
+    await this.globalHelper.navigateFromRoot('leagues')
   }
 }

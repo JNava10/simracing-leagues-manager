@@ -26,7 +26,7 @@
                 </td>
                 @for (_ of this.calendar; track $index) {
                   <td class="text-center">
-                    @if ((results!)[$index] !== undefined) {
+                    @if (results![$index]) {
                       <span class="text-neutral-200">{{results![$index].position}}</span>
                     } @else {
                       <button [routerLink]="($index + 1).toString()" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-neutral-200 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">

@@ -104,8 +104,6 @@ export class ChampionshipController {
             const body = req.body as PositionCreation[];
             const round = Number(req.params['round']!);
 
-            console.log(round)
-
             const roundsCreated = await ChampionshipQuery.saveRoundResults(body, round);
 
             if (!roundsCreated) {

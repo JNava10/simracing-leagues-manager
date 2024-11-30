@@ -85,10 +85,15 @@ handleApiError = (
       route = route.slice(1, route.length);
     }
 
-    if (params) {
-      this.router.navigate([`${devEnv.rootRoute}/${route}`], {queryParams: params});
-    } else {
-      this.router.navigate([`${devEnv.rootRoute}/${route}`]);
+    try {
+      if (params) {
+        return this.router.navigate([`${devEnv.rootRoute}/${route}`], {queryParams: params})
+      } else {
+        return this.router.navigate([`${devEnv.rootRoute}/${route}`]);
+      }
+    } catch (e) {
+      console.log(e)
+      return false
     }
   }
 

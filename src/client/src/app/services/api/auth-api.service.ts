@@ -7,6 +7,7 @@ import {DefaultRes} from "../../utils/interfaces/responses/response.interface";
 import {LeagueChampionship} from "../../utils/interfaces/championship.interface";
 import {map} from "rxjs/operators";
 import {GlobalHelper} from "../../helpers/global.helper";
+import {sendTokenParam} from "../../utils/constants/global.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,9 @@ export class AuthApiService {
   }
 
   isAuth = () => {
-    return this.http.get<DefaultRes<AuthData>>(`${devEnv.apiEndpoint}/auth/`).pipe(
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<AuthData>>(`${devEnv.apiEndpoint}/auth/`, options).pipe(
       catchError((res: HttpResponse<DefaultRes<AuthData>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 

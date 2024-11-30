@@ -61,6 +61,8 @@ export class ScoreSystemFormComponent implements OnInit {
 
   protected saveScoreSystem() {
     const scoreSystem: ScoreSystem = {positions: []};
+    
+    console.log(this.scores.value)
 
     this.scores.value.forEach((score, i) => {
       scoreSystem.positions![i] = {

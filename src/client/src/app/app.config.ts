@@ -11,7 +11,6 @@ import {GlobalHelper} from "./helpers/global.helper";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    GlobalHelper,
     MessageService,
     provideAnimations(),
     provideCharts(withDefaultRegisterables()),
