@@ -7,15 +7,15 @@ import {NgStyle} from "@angular/common";
 import {devEnv} from "../../../../environments/environment.development";
 
 @Component({
-  selector: 'app-league-sidebar',
+  selector: 'app-league-navbar',
   standalone: true,
   imports: [
     NgStyle
   ],
-  templateUrl: './league-sidebar.component.html',
-  styleUrl: './league-sidebar.component.scss'
+  templateUrl: './league-navbar.component.html',
+  styleUrl: './league-navbar.component.scss'
 })
-export class LeagueSidebarComponent implements OnInit {
+export class LeagueNavbarComponent implements OnInit {
   constructor(protected globalHelper: GlobalHelper) {}
 
   ngOnInit(): void {

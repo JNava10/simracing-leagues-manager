@@ -1,7 +1,7 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import { GlobalHelper } from './../../../helpers/global.helper';
 import {Component, OnInit} from '@angular/core';
-import {LeagueSidebarComponent} from "../league-sidebar/league-sidebar.component";
+import {LeagueNavbarComponent} from "../league-sidebar/league-navbar.component";
 import {MessageService} from "primeng/api";
 
 @Component({

@@ -169,7 +169,7 @@ export class LeagueApiService {
     );
   }
 
-  getLeagueMembers = (leagueId: number) => {
+  getMembers = (leagueId: number) => {
     const url = `${devEnv.apiEndpoint}/league/${leagueId}/members`;
     const options = { params: { ...sendTokenParam } };
 

@@ -10,8 +10,9 @@ module.exports = {
       colors: {
         dark: {
           mainbg: '#090510',
-          background: '#1B1624',
+          background: '#171226',
           main: '#9273F7',
+          "text-inactive": '#48397A',
           accent: '#FF0080',
           text: '#f1f1f1',
           hover: '#3D3067',

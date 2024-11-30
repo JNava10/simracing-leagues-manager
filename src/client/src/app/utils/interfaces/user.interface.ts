@@ -8,4 +8,8 @@ export interface User {
   createdAt?: Date;
   email?: string
   isYou?: boolean;
+  profileUrl?: string;
+  bannerUrl?: string;
+  bio?: string;
+  colorHex?: string;
 }

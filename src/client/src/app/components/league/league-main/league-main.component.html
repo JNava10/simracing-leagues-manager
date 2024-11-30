@@ -1,12 +1,29 @@
-@if (league$ | async; as league) {
-  <section class="grid grid-cols-12 gap-9">
-    <app-league-sidebar
-      [league]="league"
-      class="col-span-3"
-    />
+<section class="flex-1 w-full">
+  @if (league$ | async; as league) {
+    <section class="w-full flex gap-3">
+      <div class=" flex flex-col w-full gap-3">
 
-    <div class="py-3 col-span-9">
-      <router-outlet class="min-w-md w-md"></router-outlet>
-    </div>
-  </section>
-}
+        <div class="w-full p-3 dark:bg-dark-background rounded-2xl flex gap-3">
+          <app-image type="Rounded" [ngStyle]="[{'background': league.color}]" styleClass="border-2 size-[10rem]" [url]="league.picUrl!"/>
+          <div>
+            <p [ngStyle]="[{'color': league.color}]" class=" text-2xl font-bold">{{league.name}}</p>
+            <p class="text-gray-900 text-lg dark:text-gray-300">{{league.description}}</p>
+          </div>
+        </div>
+
+        <app-league-navbar
+          [league]="league"
+          class="w-full"
+        />
+
+        <div class="w-full max-h-full flex">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+
+      <app-league-members-bar [leagueId]="league.id"/>
+    </section>
+
+  }
+
+</section>

@@ -3,10 +3,12 @@ import {Observable} from "rxjs";
 import {League} from "../../../utils/interfaces/league.interface";
 import {LeagueApiService} from "../../../services/api/league-api.service";
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from "@angular/router";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, NgStyle} from "@angular/common";
 import { MenuItem } from 'primeng/api';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { LeagueSidebarComponent } from "../league-sidebar/league-sidebar.component";
+import { LeagueNavbarComponent } from "../league-sidebar/league-navbar.component";
+import {ImageComponent} from "../../utils/images/rounded-images/image.component";
+import {LeagueMembersBarComponent} from "../league-members-bar/league-members-bar.component";
 
 @Component({
   selector: 'app-league-main',
@@ -15,7 +17,10 @@ import { LeagueSidebarComponent } from "../league-sidebar/league-sidebar.compone
     AsyncPipe,
     RouterOutlet,
     TabMenuModule,
-    LeagueSidebarComponent,
+    LeagueNavbarComponent,
+    ImageComponent,
+    NgStyle,
+    LeagueMembersBarComponent,
   ],
   templateUrl: './league-main.component.html',
   styleUrl: './league-main.component.scss'

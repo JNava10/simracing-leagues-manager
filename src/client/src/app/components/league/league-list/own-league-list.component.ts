@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {League} from "../../../utils/interfaces/league.interface";
 import {LeagueApiService} from "../../../services/api/league-api.service";
 import {Router} from "@angular/router";
-import {RoundedImageComponent} from "../../utils/images/rounded-images/rounded-image.component";
+import {ImageComponent} from "../../utils/images/rounded-images/image.component";
 import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
 import {TooltipComponent} from "../../utils/tooltip/tooltip.component";
 import {GlobalHelper} from "../../../helpers/global.helper";
@@ -12,7 +12,7 @@ import {tooltipClasses} from "../../../utils/constants/global.constants";
   selector: 'app-own-league-list',
   standalone: true,
   imports: [
-    RoundedImageComponent,
+    ImageComponent,
     CustomButtonComponent,
     TooltipComponent
   ],

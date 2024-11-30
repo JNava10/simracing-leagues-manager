@@ -49,7 +49,7 @@ export class  LeagueMemberListComponent implements OnInit {
   handleAddingMember = (memberIsAdded: QueryIsExecuted) => {
     this.globalHelper?.showSuccessMessage({message: "Se ha añadido al miembro correctamente."})
 
-    this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
+    this.$members = this.leagueService.getMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
   }
 
   kickMember = (userId: number) => {
@@ -78,7 +78,7 @@ export class  LeagueMemberListComponent implements OnInit {
   }
 
   private refreshList() {
-    this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
+    this.$members = this.leagueService.getMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
   }
 
   toggleSearch = (show: boolean) => {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoundedImageComponent } from './rounded-image.component';
+import { LeagueNavbarComponent } from './league-navbar.component';
 
-describe('RoundedImagesComponent', () => {
-  let component: RoundedImageComponent;
-  let fixture: ComponentFixture<RoundedImageComponent>;
+describe('LeagueSidebarComponent', () => {
+  let component: LeagueNavbarComponent;
+  let fixture: ComponentFixture<LeagueNavbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RoundedImageComponent]
+      imports: [LeagueNavbarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RoundedImageComponent);
+    fixture = TestBed.createComponent(LeagueNavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

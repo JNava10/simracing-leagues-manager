@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterOutlet} from "@angular/router";
-import {LeagueSidebarComponent} from "../../league-sidebar/league-sidebar.component";
+import {LeagueNavbarComponent} from "../../league-sidebar/league-navbar.component";
 import { League } from '../../../../utils/interfaces/league.interface';
 import {ChampionshipApiService} from "../../../../services/api/championship-api.service";
 import {Observable} from "rxjs";
@@ -14,7 +14,7 @@ import {LeagueAdminSidebarComponent} from "../league-admin-sidebar/league-admin-
   standalone: true,
   imports: [
     RouterOutlet,
-    LeagueSidebarComponent,
+    LeagueNavbarComponent,
     AsyncPipe,
     LeagueAdminSidebarComponent
   ],

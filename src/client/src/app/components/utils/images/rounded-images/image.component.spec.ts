@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LeagueSidebarComponent } from './league-sidebar.component';
+import { ImageComponent } from './image.component';
 
-describe('LeagueSidebarComponent', () => {
-  let component: LeagueSidebarComponent;
-  let fixture: ComponentFixture<LeagueSidebarComponent>;
+describe('RoundedImagesComponent', () => {
+  let component: ImageComponent;
+  let fixture: ComponentFixture<ImageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeagueSidebarComponent]
+      imports: [ImageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LeagueSidebarComponent);
+    fixture = TestBed.createComponent(ImageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
