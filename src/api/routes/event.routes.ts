@@ -1,6 +1,6 @@
 // @ts-ignore
 import * as express from "express";
-import {validateToken} from "../middlewares/auth.middleware";
+import {validateToken} from "../middlewares/socketAuth";
 import { ChampionshipController } from "../controllers/championship.controller";
 import {EventController} from "../controllers/event.controller";
 

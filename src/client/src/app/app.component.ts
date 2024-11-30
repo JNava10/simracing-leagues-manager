@@ -8,6 +8,8 @@ import { IStaticMethods } from 'preline/preline';
 import {NavbarComponent} from "./components/utils/custom-navbar/navbar.component";
 import {MessageModule} from "primeng/message";
 import {GlobalHelper} from "./helpers/global.helper";
+import {SocketService} from "./services/socket/socket.service";
+import {SocketClientService} from "./services/socket/socket-client.service";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,12 @@ import {GlobalHelper} from "./helpers/global.helper";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent{
+export class AppComponent implements OnInit {
+  constructor(private socketClient: SocketClientService) { }
+
+  ngOnInit(): void {
+    this.socketClient.connect();
+  }
 
   title = 'leagueManagerClient';
 

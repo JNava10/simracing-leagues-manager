@@ -5,6 +5,7 @@ import colors from 'tailwindcss/colors'; // Usar si se quieren setear colores de
  */
 export const devEnv = {
   apiEndpoint: "http://localhost:3000",
+  socketEndpoint: "http://localhost:3000",
 
   rootRoute: "/lm",
 

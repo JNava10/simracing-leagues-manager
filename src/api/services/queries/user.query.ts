@@ -7,8 +7,6 @@ export class UserQuery {
     static createUser = async ({ name, lastnames, password, nickname, profileUrl }: User) => {
         if (!password) password = await hashPassword(process.env['DEFAULT_PASSWORD_TEXT']);
 
-        console.log( process.env['DEFAULT_PROFILE_PIC'])
-
         return prisma.user.create({
             data: {
                 name,

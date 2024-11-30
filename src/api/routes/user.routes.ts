@@ -3,7 +3,7 @@ import * as express from "express";
 import {body} from "express-validator";
 import {UserController} from "../controllers/user.controller";
 import {verifyToken} from "../helpers/auth.helper";
-import {validateToken} from "../middlewares/auth.middleware";
+import {validateToken} from "../middlewares/socketAuth";
 
 const router = express.Router();
 const controller = UserController

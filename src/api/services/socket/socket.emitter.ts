@@ -2,14 +2,14 @@ import {Server} from "socket.io";
 import {SocketService} from "./socket.service";
 import {SocketRequest} from "../../utils/classes/socket";
 
-export class SocketEmitter<T> {
-    constructor(socket: SocketRequest<T>, io: Server) {
+export class SocketEmitter {
+    constructor(socket: SocketRequest, io: Server) {
         this.socket = socket;
         this.io = io;
     }
 
     io: Server;
-    socket: SocketRequest<T>
+    socket: SocketRequest
 
 
     disconnected(count: number) {
@@ -17,6 +17,6 @@ export class SocketEmitter<T> {
     }
 
     connected(count: number) {
-        this.io.emit("connect", {count});
+        this.io.emit("user-connected", {count});
     }
 }

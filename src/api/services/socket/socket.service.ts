@@ -3,16 +3,16 @@ import {SocketRequest} from "../../utils/classes/socket";
 import {SocketEmitter} from "./socket.emitter";
 
 
-export class SocketService<T> {
-    constructor(socket: SocketRequest<T>, io: Server) {
+export class SocketService {
+    constructor(socket: SocketRequest, io: Server) {
         this.socket = socket;
-        this.emitter = new SocketEmitter<T>(socket, io);
+        this.emitter = new SocketEmitter(socket, io);
         this.io = io;
     }
 
     io: Server;
-    emitter: SocketEmitter<T>;
-    socket: SocketRequest<T>
+    emitter: SocketEmitter;
+    socket: SocketRequest;
 
     static usersConnected: Map<number, Socket> = new Map();
 
@@ -27,20 +27,12 @@ export class SocketService<T> {
         // return userList.filter(([id]) => ids.includes(id));
     };
 
-    /**
-     * Evento que se ejecuta al conectar un socket.
-     *
-     * @param socket Socket conectado.
-     * @param io Instancia del servidor de Socket.IO.
-     */
-    connect = async (socket: Socket & { user: { userId: number } }, io: Server): Promise<void> => {
-        try {
-            this.addUser();
+    connectUser = () => {
+        this.addUser();
 
-            this.emitter.connected(SocketService.usersConnected.size);
-        } catch (e) {
-            console.error(e);
-        }
+        console.log(this.socket.id)
+
+        this.emitter.connected(SocketService.usersConnected.size);
     };
 
     disconnect = (): void => {

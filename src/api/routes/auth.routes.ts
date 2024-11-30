@@ -5,7 +5,7 @@ import {checkBodyFields} from "../middlewares/body.middleware";
 import {match} from "node:assert";
 import {regexList} from "../utils/constants/regex.constants";
 import {identifierExists, isCustomEmail, isNick} from "../helpers/validators.helper";
-import {validateToken} from "../middlewares/auth.middleware";
+import {validateToken} from "../middlewares/socketAuth";
 import {AuthController} from "../controllers/auth.controller";
 
 const router = express.Router();

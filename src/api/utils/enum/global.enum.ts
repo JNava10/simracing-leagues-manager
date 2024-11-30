@@ -15,5 +15,9 @@ export enum TrackGrip {
 
 export enum StrategyType {
     Manage,
+}
 
+export enum TokenType {
+    Socket,
+    Api
 }

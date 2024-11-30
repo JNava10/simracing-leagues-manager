@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AccessPayload, LoginData } from "../utils/interfaces/login.interface";
+import {AccessPayload, LoginData, SocketPayload} from "../utils/interfaces/login.interface";
 import { UserQuery } from "../services/queries/user.query";
 import { generateToken } from "../helpers/auth.helper";
 import {handleRequestError, sendSuccessResponse, verifyPassword} from "../helpers/common.helper";
@@ -7,6 +7,7 @@ import { User } from "../utils/interfaces/user.interface";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {Messages} from "../utils/enum/messages.enum";
 import {tr} from "@faker-js/faker";
+import {TokenType} from "../utils/enum/global.enum";
 
 export class AuthController {
     private static userService = new UserQuery();
@@ -39,6 +40,8 @@ export class AuthController {
             const { nickname, email, password } = req.body as LoginData;
             let user: User;
 
+            console.log(nickname, email, password);
+
             if (nickname) {
                 user = await AuthController.userService.getUserByNickname(nickname);
             } else if (email) {
@@ -57,13 +60,17 @@ export class AuthController {
                 return;
             }
 
-            const payload: AccessPayload = {
+            const apiPayload: AccessPayload = {
                 nickname: user.nickname,
                 email: user.email,
                 id: user.id
             };
 
-            const token = await generateToken(payload, "2d");
+            const socketPayload: SocketPayload = {user: apiPayload, type: TokenType.Socket};
+
+
+            const apiKey = await generateToken(apiPayload, "2d");
+            const socketKey = await generateToken(socketPayload, "2d");
 
             // TODO: Generate access and refresh token.
             // const accessToken = await generateToken(payload, process.env['JWT_ACCESS_EXP_TIME']);
@@ -71,7 +78,8 @@ export class AuthController {
 
             const loginData = {
                 success: true,
-                token,
+                apiKey,
+                socketKey,
                 id: user.id
             };
 

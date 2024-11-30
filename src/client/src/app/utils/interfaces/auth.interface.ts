@@ -5,7 +5,8 @@ export interface LoginData {
 }
 
 export interface LoggedData {
-  token?: string,
+  apiKey?: string,
+  socketKey?: string,
   success?: string
   id?: number
 }

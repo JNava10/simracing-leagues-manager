@@ -1,12 +1,11 @@
-import { Component, inject, Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {StorageHelper} from "./storage.helper";
-import {Message, MessageService} from "primeng/api";
-import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import { Router } from '@angular/router';
-import { devEnv } from '../../environments/environment.development';
+import {MessageService} from "primeng/api";
+import {HttpResponse} from "@angular/common/http";
+import {Router} from '@angular/router';
+import {devEnv} from '../../environments/environment.development';
 import {DefaultRes} from "../utils/interfaces/responses/response.interface";
-import {Observable, of, throwError} from "rxjs";
-import {Form} from "@angular/forms";
+import {throwError} from "rxjs";
 import {OpenFileDialogProps} from "../utils/props/file.props";
 
 @Injectable({
@@ -19,14 +18,15 @@ export class GlobalHelper {
 
   private router = inject(Router);
   private storageHelper = inject(StorageHelper);
-  private tokenKey = 'token'
+  private apiName = 'api-key'
+  private socketName = 'socket-key'
 
-  /**
-   * Guarda el token en el navegador.
-   * @param token
-   */
-  saveToken = (token: string) => {
-    this.storageHelper!.save(this.tokenKey, token);
+  saveApiKey = (token: string) => {
+    this.storageHelper!.save(this.apiName, token);
+  }
+
+  saveSocketKey = (token: string) => {
+    this.storageHelper!.save(this.socketName, token);
   }
 
   /**
@@ -34,11 +34,15 @@ export class GlobalHelper {
    * @param token
    */
   getToken = () => {
-    return this.storageHelper!.get(this.tokenKey);
+    return this.storageHelper!.get(this.apiName);
+  }
+
+  getSocketToken = () => {
+    console.log(this.storageHelper!.get(this.socketName))
+    return this.storageHelper!.get(this.socketName);
   }
 
   showErrorMessage = (title: string, message: string, messageService?: MessageService) => {
-
     this.messageService.add({severity: 'error', summary: title, detail: message});
   }
 
