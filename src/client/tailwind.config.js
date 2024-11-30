@@ -28,6 +28,5 @@ module.exports = {
       }
     },
   },
-  plugins: [require('daisyui'),   require('preline/plugin'),     require('@tailwindcss/forms'),],
-
+  plugins: [require('daisyui'), require('preline/plugin'), require('@tailwindcss/forms'),],
 };

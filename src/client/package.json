@@ -24,6 +24,7 @@
     "@preline/dropdown": "^2.5.0",
     "@preline/overlay": "^2.5.0",
     "@preline/select": "^2.5.1",
+    "@preline/tooltip": "^2.5.0",
     "chart.js": "^4.4.6",
     "flowbite": "^2.5.2",
     "http-proxy-middleware": "^3.0.3",

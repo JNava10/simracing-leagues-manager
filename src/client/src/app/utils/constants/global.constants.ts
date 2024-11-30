@@ -8,6 +8,8 @@ export const sendTokenParam = {
   sendToken: true
 }
 
+export const tooltipClasses = "hs-tooltip [--placement:right] inline-block"
+
 /**
  * Tipos disponibles al definir la duración de una ronda de campeonato.
  */

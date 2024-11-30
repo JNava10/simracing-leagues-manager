@@ -1,6 +1,28 @@
-<section class="flex flex-col w-full max-w-32 h-full">
+<section class="p-3 gap-3 rounded-xl bg-[#1A142B] flex flex-col w-full max-w-64 h-full">
+  <div>
+    <app-custom-button
+      (click)="goToCreateLeague()"
+      [class]="tooltipClasses"
+      styleClass="w-[4rem] text-lg text-center h-[4rem]"
+      color="pink"
+    >
+      <span class="text-xl">
+        +
+      </span>
+      <app-tooltip
+        text="Añadir liga"
+      />
+    </app-custom-button>
+  </div>
 
   @for (league of leagues; track league.id) {
-    
+    <div [class]="tooltipClasses" (click)="goToLeague(league.id)">
+      <app-rounded-image styleClass="size-[4rem]" [url]="league.picUrl!"/>
+      @if (league.name) {
+        <app-tooltip
+          [text]="league.name"
+        />
+      }
+    </div>
   }
 </section>

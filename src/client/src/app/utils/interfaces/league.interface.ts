@@ -1,11 +1,13 @@
 import { User } from "./user.interface";
 
 export interface League {
-  id?: number,
-  name: string,
-  description?: string
+  id?: number;
+  name: string;
+  description?: string;
+  color?: string;
+  picUrl?: string;
+  bannerUrl?: string;
 }
-
 export interface LeagueMember {
   user: User
   joinedAt: Date

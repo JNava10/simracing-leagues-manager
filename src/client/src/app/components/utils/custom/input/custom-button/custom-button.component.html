@@ -1,10 +1,16 @@
-<button
-  [ngClass]="[
-    'py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent',
+@if (style == styles.Soft) {
+  <button
+    class="py-2 px-4 items-center gap-x-2 text-center"
+    [ngClass]="[
+
+    '',
     themes[color],
-    styleClass
+    styleClass,
+    ButtonType[type]
   ]"
-  (click)="$event.preventDefault()"
+    [ngStyle]="{'background-color': globalHelper.getHexWithAlpha(colors[this.color!][800], 30), 'color': colors[this.color!][500]}"
+    (click)="$event.preventDefault()"
   >
-  <ng-content></ng-content>
-</button>
+    <ng-content></ng-content>
+  </button>
+}
