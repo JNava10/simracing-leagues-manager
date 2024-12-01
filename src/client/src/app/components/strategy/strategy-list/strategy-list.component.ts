@@ -14,14 +14,6 @@ import {GlobalHelper} from "../../../helpers/global.helper";
   templateUrl: './strategy-list.component.html',
   styleUrl: './strategy-list.component.scss'
 })
-export class StrategyListComponent implements OnInit {
-  constructor(private router: Router, private strategyService: StrategyApiService) { }
+export class StrategyListComponent  {
 
-  ngOnInit(): void {
-    this.strategyService.getStrategies().subscribe(strategies => {
-      this.strategies = strategies;
-    })
-  }
-
-  strategies?: Strategy[]
 }

@@ -1,15 +1,97 @@
-<section class="flex flex-col gap-3">
-  <form class="p-3 grid gap-2 grid-cols-3 rounded-xl dark:bg-neutral-800/70">
-    <app-custom-search-input
-      class="join-item"
-      (onSearch)="searchCars($event)"
-      placeholder="Introduce el nombre del coche base"
-    />
+<section>
+  @if (strategies) {
+    <div class="flex-col w-[95%] mx-[5%]">
+      <app-strategy-chart
+        [strategy]="strategies[0]"
+      />
+    </div>
+  }
 
-    <app-custom-search-input
-      class="join-item"
-      (onSearch)="searchTrack($event)"
-      placeholder="Introduce el nombre del circuito"
-    />
-  </form>
+
+  <div class="flex-col mx-[5%]">
+    <div class="grid gap-12 p-3 grid-cols-2 max-h-full w-full  rounded-2xl bg-dark-background">
+      <form class="grid grid-cols-3 gap-3">
+        <div>
+          @if (selectedLayout) {
+            <div class="flex max-w-full overflow-y-auto justify-center items-center flex-col p-3 bg-dark-background-deepest w-full h-full">
+              <h2 class="font-bold text-2xl text-dark-text">Circuito</h2>
+
+              <div class="flex flex-col justify-center items-center">
+                <span class="font-medium text-xl text-dark-main">{{selectedLayout.parent?.name}}</span>
+                <span class="font-sm text-md text-dark-main/50">{{selectedLayout.name}}</span>
+              </div>
+            </div>
+          } @else {
+            <div class="flex flex-col items-center pb-2 bg-dark-background-deepest justify-center">
+
+              <app-custom-empty
+                title="No hay ningun trazado selec."
+                description="Pulsa en la lupa para buscar"
+                [showDescription]="false"
+              />
+
+              <div class="flex justify-center">
+                <app-soft-button color="indigo" (click)="showSearchTrack()">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </app-soft-button>
+              </div>
+
+            </div>
+          }
+        </div>
+
+        <div>
+          @if (selectedCar) {
+            <div class="flex max-w-full overflow-y-auto justify-center items-center flex-col p-3 bg-dark-background-deepest w-full h-full">
+              <h2 class="font-bold text-2xl text-dark-text">Coche</h2>
+
+              <div class="flex flex-col justify-center items-center">
+                <span class="font-medium text-xl text-dark-main">{{selectedCar.name}}</span>
+              </div>
+            </div>
+          } @else {
+            <div class="flex flex-col items-center pb-2 bg-dark-background-deepest justify-center">
+
+              <app-custom-empty
+                title="No hay ningun trazado selec."
+                description="Pulsa en la lupa para buscar"
+                [showDescription]="false"
+              />
+
+              <div class="flex justify-center">
+                <app-soft-button color="indigo" (click)="showSearchTrack()">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </app-soft-button>
+              </div>
+
+            </div>
+          }
+        </div>
+
+        <div>
+          <div class="flex flex-col gap-3">
+            <app-custom-text-input
+              label="Vueltas"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </section>
+
+<p-dialog
+  contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+  showHeader="false"
+  styleClass="flex gap-1 dark:bg-dark-background"
+  [(visible)]="searchingTrack" [modal]="true"
+  [dismissableMask]="true">
+  <ng-template pTemplate="headless">
+    <div>
+      <app-track-search-form
+        (onConfirm)="confirmLayout($event)"
+      />
+    </div>
+  </ng-template>
+</p-dialog>
+

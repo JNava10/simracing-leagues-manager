@@ -1,5 +1,5 @@
-<section class="col-span-12 h-full w-full flex-1">
-  @if (league) {
+@if (league) {
+  <section class="col-span-12 h-full w-full flex-1">
     <section class="w-full flex gap-3">
       <div class="mx-10 flex flex-col w-full gap-3">
 
@@ -16,14 +16,12 @@
           class="w-full"
         />
 
-        <div class="mx-[20%]">
+        <div class="mx-[20%] overflow-y-auto">
           <router-outlet></router-outlet>
         </div>
       </div>
 
       <app-league-members-bar [leagueId]="league.id"/>
     </section>
-
-  }
-
 </section>
+}

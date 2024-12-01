@@ -1,4 +1,8 @@
 <div>
+  @if (showLabel) {
+    <label class="block text-sm font-medium mb-2 dark:text-white">{{label}}<span *ngIf="this.required">*</span></label>
+  }
+
   <select
     #select
   [className]="[

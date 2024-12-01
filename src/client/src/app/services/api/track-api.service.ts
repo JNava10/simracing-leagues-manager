@@ -4,7 +4,13 @@ import {devEnv} from "../../../environments/environment.development";
 import {League} from "../../utils/interfaces/league.interface";
 import {sendTokenParam} from "../../utils/constants/global.constants";
 import {ScoreSystem} from "../../utils/interfaces/score.interface";
-import {SearchTrackProps, StrategyLayout, Track, TrackLayout} from "../../utils/interfaces/track.interface";
+import {
+  SearchTrackProps,
+  StrategyLayout,
+  StrategyTrack,
+  Track,
+  TrackLayout
+} from "../../utils/interfaces/track.interface";
 import { DefaultRes } from '../../utils/interfaces/responses/response.interface';
 import {catchError, Observable, of} from 'rxjs';
 import {BaselineCar} from "../../utils/interfaces/strategy.interface";
@@ -38,9 +44,8 @@ export class TrackApiService {
 
   searchLayouts = (props: SearchTrackProps) => {
 
-    console.log(props);
-    return this.http.get<DefaultRes<Track[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
-      catchError((res: HttpResponse<DefaultRes<Track[]>>, caught) => {
+    return this.http.get<DefaultRes<StrategyTrack[]>>(`${devEnv.apiEndpoint}/track/layout/search`, {params: {...sendTokenParam, ...props}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<StrategyTrack[]>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
@@ -52,7 +57,7 @@ export class TrackApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return this.globalHelper!.handleDefaultData<Track[]>(res)!;
+        return this.globalHelper!.handleDefaultData<StrategyTrack[]>(res)!;
       })
     )
   }

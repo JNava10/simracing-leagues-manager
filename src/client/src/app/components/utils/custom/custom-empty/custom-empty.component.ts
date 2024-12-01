@@ -14,10 +14,16 @@ import colors from "tailwindcss/colors";
 export class CustomEmptyComponent {
   @Input() imageSrc: string = '';
   @Input() imageAlt: string = 'Imagen';
-  @Input() title: string = 'Titulo';
-  @Input() description: string = 'Descripción';
   @Input() buttonText?: string;
   @Input() buttonTheme?:  keyof typeof colors;
+
+  @Input() title: string = 'Titulo';
+  @Input() showTitle: boolean = true;
+
+
+  @Input() description: string = 'Descripción';
+  @Input() showDescription: boolean = true;
+
 
   @Output() buttonClick = new EventEmitter<void>();
 

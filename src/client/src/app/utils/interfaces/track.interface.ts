@@ -43,6 +43,11 @@ export interface SearchLayoutProps {
   country?: string
 }
 
+export interface StrategyTrack extends TrackLayout {
+  layouts?: StrategyLayout[]
+}
+
+
 export interface StrategyLayout extends TrackLayout {
   traction: number;
   braking: number;

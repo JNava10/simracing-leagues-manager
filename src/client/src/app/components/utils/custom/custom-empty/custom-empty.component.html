@@ -1,10 +1,15 @@
 <div class="flex flex-col h-full justify-center p-3 items-center">
-  <h1 class="dark:text-dark-title font-medium text-2xl text-center pb-3">
-    {{ title }}
-  </h1>
-  <p class="text-neutral-600 dark:text-dark-text text-center mb-6">
-    {{ description }}
-  </p>
+  @if (showTitle) {
+    <h1 class="dark:text-dark-title font-medium text-2xl text-center pb-3">
+      {{ title }}
+    </h1>
+  }
+
+  @if (showDescription) {
+    <p class="text-neutral-600 dark:text-dark-text text-center">
+      {{ description }}
+    </p>
+  }
 
   <ng-content/>
 
@@ -17,7 +22,6 @@
       </app-solid-button>
     </div>
   }
-
 </div>
 
 <!--[color]="buttonTheme"-->

@@ -129,7 +129,7 @@
 <p-dialog  showHeader="false" [modal]="true" [(visible)]="settingRace">
   <ng-template pTemplate="headless">
     <app-track-search-form
-      (onConfirmLayout)="selectLayout($event)"
+      (onConfirm)="selectLayout($event)"
     />
   </ng-template>
 </p-dialog>

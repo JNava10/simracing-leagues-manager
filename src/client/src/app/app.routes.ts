@@ -44,11 +44,11 @@ export const routes: Routes = [
       { path: 'presets', component: PresetListComponent },
       { path: 'not-auth', component: NotAuthComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
-      { path: 'strategy', title: 'Estrategias', component: StrategyListComponent },
+      { path: 'strategy', title: 'Estrategias', component: DefineStrategiesFormComponent },
       { path: 'strategy/create', title: 'Estrategias', component: DefineStrategiesFormComponent },
       { path: 'notifications', title: 'Notificaciones', component: NotificationMenuComponent },
       { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
-          { path: '', redirectTo: 'overview', pathMatch: 'full' },
+          { path: '', redirectTo: 'championships', pathMatch: 'full' },
           { path: 'overview', component: LeagueOverviewComponent },
           { path: 'members', component: LeagueOverviewComponent },
           { path: 'admin', component: LeagueAdminPanelComponent, children: [

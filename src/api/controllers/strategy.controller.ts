@@ -14,6 +14,8 @@ import {Messages} from "../utils/enum/messages.enum";
 export class StrategyController {
     static getStrategies = async (req: Request, res: Response): Promise<void> => {
         try {
+            const availableTyres = [1, 2, 3];
+
             const laps = 50;
             const strategyService = new StrategyService({
                 raceLength: laps,
@@ -24,7 +26,7 @@ export class StrategyController {
                     {lapTimeMilis: 93843, tyreId: 2},
                     {lapTimeMilis: 94731, tyreId: 1},
                 ],
-                tyres: [3, 3, 3]
+                tyres: availableTyres,
             });
 
             const strategy = strategyService.sim();

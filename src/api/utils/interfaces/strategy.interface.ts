@@ -63,7 +63,7 @@ export interface CreateStrategyProps {
     car: BaselineCar,
     startFuel?: number,
     estimatedLapTimes: EstimatedLapTime[]
-    tyres: number[],
+    tyres: number[]
 }
 
 

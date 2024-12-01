@@ -79,7 +79,7 @@ export class GlobalHelper {
     if ("data" in res) {
       return res.data as T;
     } else {
-      return
+      throw new Error('Respuesta de API con mala estructuracion')
     }
   }
 
@@ -195,6 +195,21 @@ export class GlobalHelper {
     const formattedMilliseconds = String(milliseconds).padStart(3, '0');
 
     return `${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
+  };
+
+  milisToTime = (ms: number): string => {
+    const totalSeconds = Math.floor(ms / 1000); // 1 segundo = 1000 ms
+
+    const hours = Math.floor(totalSeconds / 3600); // 1h = 3600s
+    const minutes = Math.floor((totalSeconds % 3600) / 60); // 1 minuto = 60s
+    const seconds = totalSeconds % 60; // Resto de segundos que sobran
+
+    // PadStart se utiliza para rellenar un string al principio. Queremos rellenar con ceros.
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
 
   setUserId = (id: number) => {

@@ -37,16 +37,16 @@ export class OwnLeagueListComponent implements OnInit {
     this.leagues = leagues;
   }
 
-  goToLeague = (id: number | undefined) => {
+  goToLeague = async (id: number | undefined) => {
     if (id === undefined) {
       throw new Error("ID de liga no existe");
     }
 
-    this.globalHelper.navigateFromRoot(`league/${id}`);
+    await this.globalHelper.navigateFromRoot(`league/${id}`);
   };
 
   goToCreateLeague = () => {
-    this.globalHelper.navigateFromRoot(`newleague`);
+     this.globalHelper.navigateFromRoot(`newleague`);
   };
   protected readonly tooltipClasses = tooltipClasses;
 }

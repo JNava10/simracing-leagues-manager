@@ -59,7 +59,7 @@ export class StrategyService {
     sim = () => {
         this.initRace();
 
-        for (let i = 0; i < this.raceLapLength - 1; i++) {
+        for (let i = 0; i < this.raceLapLength; i++) {
             this.raceLaps.push(
                 this.simulateLap()
             )

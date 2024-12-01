@@ -28,6 +28,10 @@ import {LeagueMembersBarComponent} from "../league-members-bar/league-members-ba
 export class LeagueMainComponent implements OnInit {
   constructor(private leagueService: LeagueApiService, protected route: ActivatedRoute, protected router: Router) {}
 
+  league?: League;
+  leagueId?: number;
+  subroute?: string;
+
   ngOnInit() {
 
     // Obteniendo el ID de la liga desde los parametros de la ruta.
@@ -37,14 +41,10 @@ export class LeagueMainComponent implements OnInit {
       this.leagueId = Number(id) ?? null;
     })
 
-    if (this.leagueId) {
-      this.leagueService.getLeague(this.leagueId).subscribe(this.handleLeague)
+    if (this.leagueId !== null && this.leagueId !== undefined) {
+      this.leagueService.getLeague(this.leagueId).subscribe(res => this.handleLeague(res))
     }
   }
-
-  league!: League;
-  leagueId?: number;
-  subroute?: string;
 
   // Botones para el panel de pestañas
   items: MenuItem[] = [
@@ -53,7 +53,9 @@ export class LeagueMainComponent implements OnInit {
     {label: 'Miembros', routerLink: 'members'},
     {label: 'Estadisticas'},
   ];
+
   private handleLeague = (res: League) => {
+    console.log(this.league)
     this.league = res
   }
 }

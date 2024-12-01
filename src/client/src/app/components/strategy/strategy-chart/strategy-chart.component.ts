@@ -4,19 +4,22 @@ import {BaseChartDirective} from "ng2-charts";
 import {ChartConfiguration, ChartData, ChartOptions} from "chart.js";
 import {GlobalHelper} from "../../../helpers/global.helper";
 import {HttpClient} from "@angular/common/http";
+import {CustomTextInputComponent} from "../../utils/custom/input/custom-text-input/custom-text-input.component";
+import {CustomSelectComponent} from "../../utils/custom/input/custom-select/custom-select.component";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-strategy-chart',
   standalone: true,
   imports: [
-    BaseChartDirective
+    BaseChartDirective,
   ],
   templateUrl: './strategy-chart.component.html',
   styleUrl: './strategy-chart.component.scss'
 })
 export class StrategyChartComponent implements OnInit {
-  constructor(private globalHelper: GlobalHelper) {
-  }
+  constructor(protected globalHelper: GlobalHelper) {}
+
   @Input() strategy?: Strategy;
 
   data?: ChartData
@@ -44,11 +47,12 @@ export class StrategyChartComponent implements OnInit {
 
   ngOnInit(): void {
     const lapTimes = this.strategy?.laps.map(item => item.lapTime!)!;
-
-    console.log(this.strategy);
-
     const lapNumbers = this.strategy?.laps.map(item => item.raceLap)!;
 
+    this.setStrategyData(lapNumbers, lapTimes);
+  }
+
+  private setStrategyData = (lapNumbers: (number | undefined)[], lapTimes: number[]) => {
     this.data = {
       labels: lapNumbers,
       datasets: [{

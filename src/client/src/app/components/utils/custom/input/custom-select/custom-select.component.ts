@@ -2,11 +2,12 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { BaseCustomInputComponent } from '../base-custom-input/base-custom-input.component';
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-custom-select',
   standalone: true,
-  imports: [DropdownModule, ReactiveFormsModule, FormsModule],
+  imports: [DropdownModule, ReactiveFormsModule, FormsModule, NgIf],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -17,7 +18,7 @@ import { BaseCustomInputComponent } from '../base-custom-input/base-custom-input
   templateUrl: './custom-select.component.html',
   styleUrl: './custom-select.component.scss'
 })
-export class CustomSelectComponent<KeyType> extends BaseCustomInputComponent {
+export class CustomSelectComponent extends BaseCustomInputComponent {
   // TODO: Comprobar que existe en los objetos entrantes.
   @Input() keyProp? = "";
 

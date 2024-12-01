@@ -27,7 +27,7 @@ export class TrackSearchFormComponent {
   @Input() showLabel = false;
   @Input() showButtons = true;
 
-  @Output() public onConfirmLayout = new EventEmitter<TrackLayout>();
+  @Output() public onConfirm = new EventEmitter<TrackLayout>();
 
   protected tracks!: Track[]
 
@@ -44,7 +44,7 @@ export class TrackSearchFormComponent {
 
     this.selectedLayout.parent = track; // Esto servirá para mostrar el circuito al que pertenece el trazado.
 
-    this.onConfirmLayout.emit(this.selectedLayout);
+    this.onConfirm.emit(this.selectedLayout);
   }
 
 
@@ -53,7 +53,6 @@ export class TrackSearchFormComponent {
   }
 
   confirmLayout() {
-    this.onConfirmLayout.emit(this.selectedLayout);
-    this.selectedLayout = undefined;
+    this.onConfirm.emit(this.selectedLayout);
   }
 }

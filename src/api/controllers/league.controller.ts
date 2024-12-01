@@ -40,6 +40,7 @@ export const editLeague = async (req: CustomRequest, res: Response) => {
 export const getLeague = async (req: CustomRequest, res: Response) => {
     try {
         const validId = isValidNumber(req.params['leagueId']);
+
         if (!validId) {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }

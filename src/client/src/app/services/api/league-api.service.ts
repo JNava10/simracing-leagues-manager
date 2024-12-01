@@ -140,9 +140,7 @@ export class LeagueApiService {
         }
       }),
       map((res) => {
-        this.globalHelper?.showSuccessMessage({message: res.msg!})
-
-        return res.data!
+        return this.globalHelper?.handleDefaultData<League>(res);
       })
     );
   }
