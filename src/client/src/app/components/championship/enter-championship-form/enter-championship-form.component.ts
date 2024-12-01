@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomTextInputComponent } from "../../utils/custom/input/custom-text-input/custom-text-input.component";
 import { EnteringChampStates } from '../../../utils/enums/states.enum';
-import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
+import { CustomSolidButtonComponent } from "../../utils/button/solid-button/custom-solid-button.component";
 import { CustomSelectComponent } from "../../utils/custom/input/custom-select/custom-select.component";
 import { EnterChampionship, Team } from '../../../utils/interfaces/championship.interface';
 import { ChampionshipApiService } from '../../../services/api/championship-api.service';
@@ -15,7 +15,7 @@ import { GlobalHelper } from '../../../helpers/global.helper';
 @Component({
   selector: 'app-enter-championship-form',
   standalone: true,
-  imports: [CustomTextInputComponent, ReactiveFormsModule, CustomButtonComponent, CustomSelectComponent],
+  imports: [CustomTextInputComponent, ReactiveFormsModule, CustomSolidButtonComponent, CustomSelectComponent],
   templateUrl: './enter-championship-form.component.html',
   styleUrl: './enter-championship-form.component.scss'
 })

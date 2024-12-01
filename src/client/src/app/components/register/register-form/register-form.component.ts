@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {CustomTextInputComponent} from "../../utils/custom/input/custom-text-input/custom-text-input.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserApiService} from "../../../services/api/user-api.service";
-import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 
 @Component({
   selector: 'app-register-form',
@@ -10,7 +10,7 @@ import {CustomButtonComponent} from "../../utils/custom/input/custom-button/cust
   imports: [
     CustomTextInputComponent,
     ReactiveFormsModule,
-    CustomButtonComponent
+    CustomSolidButtonComponent
   ],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.scss'

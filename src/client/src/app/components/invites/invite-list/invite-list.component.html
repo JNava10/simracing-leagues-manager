@@ -6,9 +6,9 @@
           <span>{{invite.league.name}}</span>
           <sub>{{invite.invitedAt | date}}</sub>
         </div>
-        <app-custom-button (click)="acceptLeague(invite.league.id!)" color="indigo">
+        <app-solid-button (click)="acceptLeague(invite.league.id!)" color="indigo">
           Aceptar
-        </app-custom-button>
+        </app-solid-button>
       </div>
     }
   </div>

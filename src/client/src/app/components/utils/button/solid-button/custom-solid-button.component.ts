@@ -2,44 +2,28 @@ import {NgClass, NgStyle} from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, output, Output, SimpleChanges } from '@angular/core';
 
 import colors from "tailwindcss/colors";
-import {GlobalHelper} from "../../../../../helpers/global.helper";
+import {GlobalHelper} from "../../../../helpers/global.helper";
 
 @Component({
-  selector: 'app-custom-button',
+  selector: 'app-solid-button',
   standalone: true,
   imports: [NgClass, NgStyle],
-  templateUrl: './custom-button.component.html',
-  styleUrl: './custom-button.component.scss'
+  templateUrl: './custom-solid-button.component.html',
 })
-export class CustomButtonComponent {
+export class CustomSolidButtonComponent {
   constructor(protected globalHelper: GlobalHelper) {}
 
   @Input() styleClass: string = '';
-  @Input() type?: keyof typeof ButtonStyle;
-  @Input() border?: keyof typeof ButtonBorder;
+  @Input() border?: keyof typeof ButtonBorder = "Rounded";
   @Input() color?: keyof typeof colors; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 
-  readonly themes= SoftButtons;
-  readonly types= ButtonStyle;
   protected readonly colors = colors;
   protected readonly borders = ButtonBorder;
-
-  getContent(innerHTML: string) {
-    const element = document.createElement("div");
-
-    element.innerHTML = innerHTML;
-
-    return element;
-  }
 }
 
 export enum ButtonBorder {
-  Rounded = "rounded-full border border-transparent"
-}
-
-export enum ButtonStyle {
-  Soft,
-  Solid
+  Circle = "rounded-full border border-transparent",
+  Rounded = "rounded-2xl border border-transparent"
 }
 
 // TODO: Quizá mover esto a otro archivo, aunque así considero que está bien organizado de momento.

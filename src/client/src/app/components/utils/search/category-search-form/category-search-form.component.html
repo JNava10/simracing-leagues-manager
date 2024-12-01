@@ -1,19 +1,27 @@
 <div
- [ngClass]="[
+  [ngClass]="[
    'rounded-xl w-3xl p-3 bg-light-background dark:bg-dark-background  min-w-2xl',
    styleClass,
  ]"
 >
   @if (selected) {
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col h-48 gap-3">
+      <div class="flex flex-col gap-3 justify-center items-center">
+        <h2 class="text-2xl ">¿Quieres seleccionar la categoría?</h2>
+        <div class="flex flex-col gap-3 justify-center items-center">
+          <span>(Logo)</span>
+          <span>{{selected.name}}</span>
+        </div>
+      </div>
+
       @if (showButtons) {
-        <div class="flex justify-center gap-3">
-          <app-custom-button *ngIf="showConfirm" (click)="confirm()" color="red">
-            Aceptar
-          </app-custom-button>
-          <app-custom-button *ngIf="showCancel" color="purple" (click)="cancel()">
-            Cancelar
-          </app-custom-button>
+        <div class="flex  justify-center gap-3">
+          <app-solid-button *ngIf="showConfirm" (click)="confirm()" type="Soft" color="red" border="Rounded">
+            <span>Aceptar</span>
+          </app-solid-button>
+          <app-solid-button *ngIf="showCancel" type="Soft" border="Rounded" color="purple" (click)="cancel()">
+            <span>Aceptar</span>
+          </app-solid-button>
         </div>
       }
     </div>

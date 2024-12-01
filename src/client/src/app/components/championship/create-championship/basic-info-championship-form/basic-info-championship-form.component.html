@@ -1,4 +1,4 @@
-<section class="grid grid-cols-12 gap-6 w-full">
+<section class="flex flex-col gap-6 w-full">
   <!--  flex flex-col w-[100%] mx-3 justify-between gap-3-->
   <form
     class="p-3 col-span-6 rounded-xl border-1 dark:bg-dark-background"
@@ -19,72 +19,27 @@
         class="col-span-2 placeholder:text-green-400"
       />
     </div>
-
-    <div>
-      <span>Rondas del campeonato</span>
-      <div class="border flex flex-col justify-center border-dark-main h-full rounded-2xl p-3">
-        <div class="flex gap-4 overflow-x-auto">
-          @for (round of raceCalendar; track $index) {
-            <div title="{{round.name}}" class="card bg-base-200 w-md p-3">
-              <div class="card-title flex items-center justify-between">
-                <span class="text-sm dark:text-gray-400">
-                  {{ $index + 1 }}
-                </span>
-                <span class="text-gray-400">{{ round.layout?.parent?.country }}</span>
-                <hr>
-              </div>
-              <div class="card-body flex justify-between gap-3">
-                @if (round.name) {
-                  <h5 class="mb-2 text-gray-200 text-xl font-semibold">
-                    {{ (round.name!.length > 20) ? ((round.name | slice:0:20) + "...") : round.name }}
-                  </h5>
-                } @else {
-                  <h5 class="mb-2 text-gray-200 text-xl font-semibold">
-                    {{ (round.layout?.parent?.name!.length > 20) ? ((round.layout?.parent?.name | slice:0:20) + "...") : round.layout!.parent!.name }}
-                  </h5>
-                }
-              </div>
-            </div>
-          } @empty {
-            <div class="w-full min-w-full flex flex-col justify-center items-center">
-              <i class=" fa-solid text-[10rem] text-dark-text-inactive fa-circle-xmark"></i>
-
-              <h2 class="text-center text-dark-text-inactive text-xl font-semibold leading-loose pb-2">No hay ningun
-                campeonato creado</h2>
-            </div>
-          }
-        </div>
-
-        <app-custom-button
-          (click)="showAddRace()"
-          border="Rounded"
-          color="red"
-          type="Soft"
-          content="soft"
-        ><span content-soft>Añadir carrera</span>
-        </app-custom-button>
-      </div>
-    </div>
   </form>
 
-  <div class="grid col-span-6 grid-rows-2 justify-center min-w-lg gap-3 min-w-full rounded-xl">
+  <div class="col-span-6 flex flex-col grow justify-center gap-3 min-w-full w-full rounded-xl">
 
     <!-- Buscar categoria -->
-    <div>
-      <app-category-search-form
-        styleClass="border-none dark:border-none"
-        (onConfirm)="confirmCategory($event)"
-      />
-
-      <div class="flex flex-col">
+    <div class="dark:bg-dark-background p-3">
+      <div class="flex gap-3 justify-start items-center">
+        <div>
+          <app-solid-button  styleClass="size-[1rem] rounded-md" color="indigo">
+            +
+          </app-solid-button>
+        </div>
         @for (category of selectedCategories; track $index) {
           <app-custom-badge
-            type="Soft"
-            border="Rounded"
-            color="red"
+            colorTheme="red"
             [text]="category.name!"
           />
+        } @empty {
+          <span class="bg-text">No se ha seleccionado ninguna categoria. Pulsa "+" para añadir</span>
         }
+
       </div>
     </div>
 
@@ -94,6 +49,52 @@
       (onConfirm)="selectedSimulator = $event"
       [showConfirm]="false"
     />
+  </div>
+
+  <div>
+    <span>Rondas del campeonato</span>
+    <div class="border flex flex-col justify-center border-dark-main h-full rounded-2xl p-3">
+      <div class="flex gap-4 overflow-x-auto">
+        @for (round of raceCalendar; track $index) {
+          <div title="{{round.name}}" class="card bg-base-200 w-md p-3">
+            <div class="card-title flex items-center justify-between">
+                <span class="text-sm dark:text-gray-400">
+                  {{ $index + 1 }}
+                </span>
+              <span class="text-gray-400">{{ round.layout?.parent?.country }}</span>
+              <hr>
+            </div>
+            <div class="card-body flex justify-between gap-3">
+              @if (round.name) {
+                <h5 class="mb-2 text-gray-200 text-xl font-semibold">
+                  {{ (round.name!.length > 20) ? ((round.name | slice:0:20) + "...") : round.name }}
+                </h5>
+              } @else {
+                <h5 class="mb-2 text-gray-200 text-xl font-semibold">
+                  {{ (round.layout?.parent?.name!.length > 20) ? ((round.layout?.parent?.name | slice:0:20) + "...") : round.layout!.parent!.name }}
+                </h5>
+              }
+            </div>
+          </div>
+        } @empty {
+          <div class="w-full min-w-full flex flex-col justify-center items-center">
+            <i class=" fa-solid text-[10rem] text-dark-text-inactive fa-circle-xmark"></i>
+
+            <h2 class="text-center text-dark-text-inactive text-xl font-semibold leading-loose pb-2">
+              No hay ningun campeonato creado</h2>
+          </div>
+        }
+      </div>
+
+      <app-solid-button
+        (click)="showAddRace()"
+        border="Rounded"
+        color="red"
+        type="Soft"
+        content="soft"
+      ><span content-soft>Añadir carrera</span>
+      </app-solid-button>
+    </div>
   </div>
 
   <button class="btn" (click)="goToNextPage()">Siguiente</button>
@@ -190,31 +191,42 @@
 
     <!-- Botones -->
     <div class="flex gap-1 mt-3">
-      <app-custom-button
+      <app-solid-button
         type="Soft"
         border="Rounded"
         color="red"
         (click)="saveRoundAndContinue()"
       >
-        <span content-soft>Guardar y crear otra ronda</span>
+        Guardar y crear otra ronda
+      </app-solid-button>
 
-      </app-custom-button>
-
-      <app-custom-button
+      <app-solid-button
         type="Soft"
         border="Rounded"
         color="red"
         (click)="saveRoundAndClose()">
         <span content-soft>Guardar y cerrar</span>
-      </app-custom-button>
+      </app-solid-button>
 
-      <app-custom-button
+      <app-solid-button
         type="Soft"
         border="Rounded"
         color="red"
         (click)="addingRace = false">
         <span content-soft>Cancelar</span>
-      </app-custom-button>
+      </app-solid-button>
     </div>
   </div>
+</p-dialog>
+
+<p-dialog
+  contentStyleClass="dark:bg-dark-mainbg"
+  showHeader="false"
+  styleClass="flex gap-1 dark:bg-dark-background"
+  [(visible)]="addingCategory" [modal]="true"
+  [dismissableMask]="true">
+  <app-category-search-form
+    styleClass="border-none dark:border-none"
+    (onConfirm)="confirmCategory($event)"
+  />
 </p-dialog>

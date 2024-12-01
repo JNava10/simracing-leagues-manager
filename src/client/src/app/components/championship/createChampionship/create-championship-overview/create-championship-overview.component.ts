@@ -1,7 +1,7 @@
 import { ScoreApiService } from './../../../../services/api/score-api.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { LeagueChampionship } from '../../../../utils/interfaces/championship.interface';
-import { CustomButtonComponent } from "../../../utils/custom/input/custom-button/custom-button.component";
+import { CustomSolidButtonComponent } from "../../../utils/button/solid-button/custom-solid-button.component";
 import { NgStyle } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ChampionshipApiService } from '../../../../services/api/championship-api.service';
@@ -12,7 +12,7 @@ import { GlobalHelper } from '../../../../helpers/global.helper';
 @Component({
   selector: 'app-championship-overview',
   standalone: true,
-  imports: [CustomButtonComponent, NgStyle, DialogModule],
+  imports: [CustomSolidButtonComponent, NgStyle, DialogModule],
   templateUrl: './championship-overview.component.html',
   styleUrl: './championship-overview.component.scss'
 })

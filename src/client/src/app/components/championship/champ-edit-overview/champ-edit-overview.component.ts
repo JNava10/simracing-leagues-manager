@@ -3,7 +3,7 @@ import {ChampionshipApiService} from "../../../services/api/championship-api.ser
 import {GlobalHelper} from "../../../helpers/global.helper";
 import {ScoreApiService} from "../../../services/api/score-api.service";
 import {LeagueChampionship} from "../../../utils/interfaces/championship.interface";
-import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {NgStyle} from "@angular/common";
 import {
   CreateChampionshipOverviewComponent
@@ -13,7 +13,7 @@ import {
   selector: 'app-champ-edit-overview',
   standalone: true,
   imports: [
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     NgStyle,
     CreateChampionshipOverviewComponent
   ],

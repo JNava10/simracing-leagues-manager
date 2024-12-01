@@ -23,7 +23,7 @@ import {CustomTextInputComponent} from "../../../utils/custom/input/custom-text-
 import {TrackSearchFormComponent} from "../../../utils/forms/track-search-form/track-search-form.component";
 import {CustomCardComponent} from "../../../utils/custom/custom-card/custom-card.component";
 import {CustomEmptyComponent} from "../../../utils/custom/custom-empty/custom-empty.component";
-import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../../utils/button/solid-button/custom-solid-button.component";
 
 @Component({
   selector: 'app-basic-info-event-form',

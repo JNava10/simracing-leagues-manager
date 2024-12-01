@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import {CustomButtonComponent} from "../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../utils/button/solid-button/custom-solid-button.component";
 
 @Component({
   selector: 'app-not-auth',
   standalone: true,
   imports: [
-    CustomButtonComponent
+    CustomSolidButtonComponent
   ],
   templateUrl: './not-auth.component.html',
   styleUrl: './not-auth.component.scss'

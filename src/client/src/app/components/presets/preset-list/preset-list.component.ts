@@ -4,7 +4,7 @@ import { GlobalHelper } from './../../../helpers/global.helper';
 import { Component, OnInit } from '@angular/core';
 import { ChampionshipApiService } from '../../../services/api/championship-api.service';
 import { Observable } from 'rxjs';
-import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
+import { CustomSolidButtonComponent } from "../../utils/button/solid-button/custom-solid-button.component";
 import { Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { League } from '../../../utils/interfaces/league.interface';
@@ -12,7 +12,7 @@ import { League } from '../../../utils/interfaces/league.interface';
 @Component({
   selector: 'app-preset-list',
   standalone: true,
-  imports: [CustomButtonComponent, DialogModule],
+  imports: [CustomSolidButtonComponent, DialogModule],
   templateUrl: './preset-list.component.html',
   styleUrl: './preset-list.component.scss'
 })

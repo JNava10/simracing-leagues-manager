@@ -6,7 +6,7 @@ import {ChampionshipApiService} from "../../../../services/api/championship-api.
 import {GlobalHelper} from "../../../../helpers/global.helper";
 import {ScoreApiService} from "../../../../services/api/score-api.service";
 import {EventApiService} from "../../../../services/api/event-api.service";
-import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../../utils/button/solid-button/custom-solid-button.component";
 import {CustomCardComponent} from "../../../utils/custom/custom-card/custom-card.component";
 import {NgStyle} from "@angular/common";
 
@@ -14,7 +14,7 @@ import {NgStyle} from "@angular/common";
   selector: 'app-event-overview',
   standalone: true,
   imports: [
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     CustomCardComponent,
     NgStyle
   ],

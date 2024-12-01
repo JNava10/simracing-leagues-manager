@@ -6,7 +6,7 @@ import {DefaultRes} from "../../../../utils/interfaces/responses/response.interf
 import {SimulatorApiService} from "../../../../services/api/simulator-api.service";
 import {SimulatorGame} from "../../../../utils/interfaces/simulator.interface";
 import {AsyncPipe, NgIf} from "@angular/common";
-import {CustomButtonComponent} from "../../custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../button/solid-button/custom-solid-button.component";
 import {CustomCardComponent} from "../../custom/custom-card/custom-card.component";
 import {CustomEmptyComponent} from "../../custom/custom-empty/custom-empty.component";
 import {CustomSearchInputComponent} from "../../custom/input/custom-search-input/custom-search-input.component";
@@ -16,7 +16,7 @@ import {CustomSearchInputComponent} from "../../custom/input/custom-search-input
   standalone: true,
   imports: [
     AsyncPipe,
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     CustomCardComponent,
     CustomEmptyComponent,
     CustomSearchInputComponent,

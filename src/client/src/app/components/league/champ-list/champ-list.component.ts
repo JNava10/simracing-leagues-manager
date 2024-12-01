@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {LeagueChampionship} from "../../../utils/interfaces/championship.interface";
-import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {Route} from "@angular/router";
 import {GlobalHelper} from "../../../helpers/global.helper";
 
@@ -8,7 +8,7 @@ import {GlobalHelper} from "../../../helpers/global.helper";
   selector: 'app-champ-list',
   standalone: true,
   imports: [
-    CustomButtonComponent
+    CustomSolidButtonComponent
   ],
   templateUrl: './champ-list.component.html',
   styleUrl: './champ-list.component.scss'

@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {SoftColors} from "../input/custom-button/custom-button.component";
+import {SoftColors} from "../../button/solid-button/custom-solid-button.component";
 
 @Component({
   selector: 'app-custom-table',

@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {booleanAttribute, Component, EventEmitter, Input, Output} from '@angular/core';
 import {AsyncPipe, NgClass, NgIf} from "@angular/common";
-import {CustomButtonComponent} from "../../custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../button/solid-button/custom-solid-button.component";
 import {CustomCardComponent} from "../../custom/custom-card/custom-card.component";
 import {CustomEmptyComponent} from "../../custom/custom-empty/custom-empty.component";
 import {CustomSearchInputComponent} from "../../custom/input/custom-search-input/custom-search-input.component";
@@ -17,7 +17,7 @@ import {style} from "@angular/animations";
   standalone: true,
   imports: [
     AsyncPipe,
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     CustomCardComponent,
     CustomEmptyComponent,
     CustomSearchInputComponent,
@@ -37,7 +37,7 @@ export class CategorySearchFormComponent {
   @Input() public selected?: Category;
   @Input() public showConfirm = true;
   @Input() public showCancel = true;
-  @Input() public showButtons = true;
+  @Input() showButtons = true;
   @Input() styleClass = ""
 
   protected search = (value: string) => {

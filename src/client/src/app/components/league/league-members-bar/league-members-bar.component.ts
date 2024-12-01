@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {ImageComponent} from "../../utils/images/rounded-images/image.component";
 import {TooltipComponent} from "../../utils/tooltip/tooltip.component";
 import {tooltipClasses} from "../../../utils/constants/global.constants";
@@ -12,7 +12,7 @@ import {LeagueMember} from "../../../utils/interfaces/league.interface";
   selector: 'app-league-members-bar',
   standalone: true,
   imports: [
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     ImageComponent,
     TooltipComponent
   ],

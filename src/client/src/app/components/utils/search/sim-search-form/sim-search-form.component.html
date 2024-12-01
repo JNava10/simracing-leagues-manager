@@ -11,12 +11,12 @@
 
       @if (showButtons) {
         <div class="flex justify-center gap-3">
-          <app-custom-button *ngIf="showConfirm" (click)="confirmLayout()" color="red">
+          <app-solid-button *ngIf="showConfirm" (click)="confirmLayout()" color="red">
             Aceptar
-          </app-custom-button>
-          <app-custom-button *ngIf="showCancel"  color="purple" (click)="removeCurrentLayout()">
+          </app-solid-button>
+          <app-solid-button *ngIf="showCancel"  color="purple" (click)="removeCurrentLayout()">
             Cancelar
-          </app-custom-button>
+          </app-solid-button>
         </div>
       }
     </div>

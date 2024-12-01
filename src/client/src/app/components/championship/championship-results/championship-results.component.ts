@@ -1,7 +1,7 @@
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { ChampionshipApiService } from './../../../services/api/championship-api.service';
 import {Component, inject, OnInit} from '@angular/core';
-import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
+import { CustomSolidButtonComponent } from "../../utils/button/solid-button/custom-solid-button.component";
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import { TrackLayout } from '../../../utils/interfaces/track.interface';
 import { DialogModule } from 'primeng/dialog';

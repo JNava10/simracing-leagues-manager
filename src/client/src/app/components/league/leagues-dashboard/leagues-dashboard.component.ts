@@ -8,7 +8,7 @@ import {ListboxModule} from "primeng/listbox";
 import {ActivatedRoute, ParamMap, RouterLink} from "@angular/router";
 import {TableModule} from "primeng/table";
 import { SearchLeaguesBarComponent } from "../search-leagues-bar/search-leagues-bar.component";
-import { CustomButtonComponent } from "../../utils/custom/input/custom-button/custom-button.component";
+import { CustomSolidButtonComponent } from "../../utils/button/solid-button/custom-solid-button.component";
 import {CustomDropdownComponent} from "../../utils/dropdown/custom-dropdown/custom-dropdown.component";
 import {CustomDropdownItemComponent} from "../../utils/dropdown/custom-dropdown-item/custom-dropdown-item.component";
 // import {BrowseLeaguesListComponent} from "../browse-leagues-list/browse-leagues-list.component";
@@ -21,7 +21,7 @@ import {CustomDropdownItemComponent} from "../../utils/dropdown/custom-dropdown-
     RouterLink,
     TableModule,
     SearchLeaguesBarComponent,
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     CustomDropdownComponent,
     CustomDropdownItemComponent
   ],

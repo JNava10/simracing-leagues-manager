@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../../utils/button/solid-button/custom-solid-button.component";
 import {CustomRadioGroupComponent} from "../../../utils/custom/input/custom-radio-group/custom-radio-group.component";
 import {CustomSelectComponent} from "../../../utils/custom/input/custom-select/custom-select.component";
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -25,7 +25,7 @@ import {Driver} from "../../../../utils/interfaces/rfactor.interface";
   selector: 'app-round-result-form',
   standalone: true,
   imports: [
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     CustomRadioGroupComponent,
     CustomSelectComponent,
     ReactiveFormsModule,

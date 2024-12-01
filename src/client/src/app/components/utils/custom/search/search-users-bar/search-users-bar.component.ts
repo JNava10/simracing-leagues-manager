@@ -8,7 +8,7 @@ import {League} from "../../../../../utils/interfaces/league.interface";
 import {User} from "../../../../../utils/interfaces/user.interface";
 import {UserApiService} from "../../../../../services/api/user-api.service";
 import {CustomSearchInputComponent} from "../../input/custom-search-input/custom-search-input.component";
-import {CustomButtonComponent} from "../../input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../../button/solid-button/custom-solid-button.component";
 import {LoginComponent} from "../../../../auth/login/login.component";
 
 @Component({

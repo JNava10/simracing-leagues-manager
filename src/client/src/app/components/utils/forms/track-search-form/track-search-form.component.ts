@@ -7,7 +7,7 @@ import {DefaultRes} from "../../../../utils/interfaces/responses/response.interf
 import {Track, TrackLayout} from "../../../../utils/interfaces/track.interface";
 import {CustomEmptyComponent} from "../../custom/custom-empty/custom-empty.component";
 import {CustomCardComponent} from "../../custom/custom-card/custom-card.component";
-import {CustomButtonComponent} from "../../custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../button/solid-button/custom-solid-button.component";
 
 @Component({
   selector: 'app-track-search-form',
@@ -17,7 +17,7 @@ import {CustomButtonComponent} from "../../custom/input/custom-button/custom-but
     CustomSearchInputComponent,
     CustomEmptyComponent,
     CustomCardComponent,
-    CustomButtonComponent
+    CustomSolidButtonComponent
   ],
   templateUrl: './track-search-form.component.html',
 })

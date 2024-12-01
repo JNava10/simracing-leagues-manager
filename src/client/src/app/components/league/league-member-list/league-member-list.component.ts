@@ -16,7 +16,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { FormsModule } from '@angular/forms';
 import { GlobalHelper } from '../../../helpers/global.helper';
 import { MessagesModule } from 'primeng/messages';
-import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {DialogModule} from "primeng/dialog";
 import {SearchUsersBarComponent} from "../../utils/custom/search/search-users-bar/search-users-bar.component";
 import {BaseCustomInputComponent} from "../../utils/custom/input/base-custom-input/base-custom-input.component";
@@ -25,7 +25,7 @@ import {CustomTextInputComponent} from "../../utils/custom/input/custom-text-inp
 @Component({
   selector: 'app-league-member-list',
   standalone: true,
-  imports: [AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe, CustomButtonComponent, DialogModule, SearchUsersBarComponent, CustomTextInputComponent],
+  imports: [AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe, CustomSolidButtonComponent, DialogModule, SearchUsersBarComponent, CustomTextInputComponent],
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.scss'
 })

@@ -1,7 +1,7 @@
 @if (leagues) {
   <section class="p-3 gap-3 rounded-2xl bg-dark-background flex flex-col w-full max-w-64 h-full">
     <div>
-      <app-custom-button
+      <app-soft-button
         (click)="goToCreateLeague()"
         [class]="tooltipClasses"
         styleClass="w-[4rem] h-[4rem] text-lg text-center"
@@ -10,10 +10,10 @@
       <span class="text-xl">
         +
       </span>
-        <app-tooltip
-          text="Añadir liga"
-        />
-      </app-custom-button>
+      </app-soft-button>
+      <app-tooltip
+        text="Añadir liga"
+      />
     </div>
 
     @for (league of leagues; track league.id) {

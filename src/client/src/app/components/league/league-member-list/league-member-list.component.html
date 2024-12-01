@@ -21,19 +21,23 @@
                   <td>
                     <div class="flex gap-2">
                       <!-- Botón para kickear al miembro -->
-                      <app-custom-button
+                      <app-solid-button
                         (click)="kickMember(member.user.id!)"
+                        border="Rounded"
+                        type="Solid"
                         color="red">
-                        Kickear
-                      </app-custom-button>
+                        <span content-solid>Kickear</span>
+                      </app-solid-button>
 
                       <!-- Botón para banear permanentemente al miembro -->
-                      <app-custom-button
+                      <app-solid-button
                         color="red"
+                        border="Rounded"
+                        type="Solid"
                         (click)="showBanReason(member)"
                       >
-                        Banear
-                      </app-custom-button>
+                        <span content-solid>Banear</span>
+                      </app-solid-button>
                     </div>
 
                   </td>
@@ -46,9 +50,9 @@
     </div>
   </div>
 
-  <app-custom-button color="blue" (click)="toggleSearch(true)">
+  <app-solid-button color="blue" (click)="toggleSearch(true)">
     Invitar miembro
-  </app-custom-button>
+  </app-solid-button>
 </div>
 
 <p-dialog [(visible)]="searching">
@@ -68,8 +72,8 @@
      />
 
      <div class="flex gap-3">
-       <app-custom-button color="red" (click)="showBanConfirm()">Continuar</app-custom-button>
-       <app-custom-button color="stone" (click)="banning = false">Cerrar</app-custom-button>
+       <app-solid-button color="red" (click)="showBanConfirm()">Continuar</app-solid-button>
+       <app-solid-button color="stone" (click)="banning = false">Cerrar</app-solid-button>
      </div>
    </div>
   </ng-template>
@@ -81,8 +85,8 @@
     <span>Razon: {{ banReason }}</span>
     <h2>¿Quieres continuar?</h2>
     <div class="flex gap-3">
-      <app-custom-button color="stone">No</app-custom-button>
-      <app-custom-button color="red" (click)="banMember(memberToBan!.user.id!)">Si</app-custom-button>
+      <app-solid-button color="stone">No</app-solid-button>
+      <app-solid-button color="red" (click)="banMember(memberToBan!.user.id!)">Si</app-solid-button>
     </div>
   </ng-template>
 </p-dialog>

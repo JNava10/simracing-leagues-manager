@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {SoftButtons} from "../custom-button/custom-button.component";
+import {SoftButtons} from "../../../button/solid-button/custom-solid-button.component";
 
 @Component({
   selector: 'app-base-custom-input',

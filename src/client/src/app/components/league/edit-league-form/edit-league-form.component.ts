@@ -3,7 +3,7 @@ import {LeagueApiService} from "../../../services/api/league-api.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {League} from "../../../utils/interfaces/league.interface";
-import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {CustomTextInputComponent} from "../../utils/custom/input/custom-text-input/custom-text-input.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgxColorsModule} from "ngx-colors";
@@ -14,7 +14,7 @@ import {CustomColorPickerComponent} from "../../utils/custom/custom-color-picker
   selector: 'app-edit-league-form',
   standalone: true,
   imports: [
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     CustomTextInputComponent,
     ReactiveFormsModule,
     NgxColorsModule,

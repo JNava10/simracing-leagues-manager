@@ -18,7 +18,7 @@
             formControlName="number"
           />
         </div>
-        <app-custom-button (click)="nextStep()" color="violet">Siguiente</app-custom-button>
+        <app-solid-button (click)="nextStep()" color="violet">Siguiente</app-solid-button>
       </form>
     </div>
   }
@@ -35,8 +35,8 @@
         />
 
         <div class="flex justify-between">
-          <app-custom-button color="cyan" (click)="prevStep()">Volver</app-custom-button>
-          <app-custom-button color="green" (click)="onSubmit()">Entrar</app-custom-button>
+          <app-solid-button color="cyan" (click)="prevStep()">Volver</app-solid-button>
+          <app-solid-button color="green" (click)="onSubmit()">Entrar</app-solid-button>
         </div>
       </div>
     </section>

@@ -1,0 +1,13 @@
+@if ((border && borders[border]) && (color && colors[color])) {
+  <button
+    [ngClass]="[
+    'py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium flex justify-center gap-2 justify-center items-center',
+    styleClass,
+    borders[border]
+  ]"
+    [ngStyle]="{'background-color': globalHelper.getHexWithAlpha(colors[this.color][500], 100), 'color': colors[this.color][100]}"
+    (click)="$event.preventDefault()"
+  >
+    <ng-content/>
+  </button>
+}

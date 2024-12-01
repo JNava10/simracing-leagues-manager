@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {LeagueInvite, QueryIsExecuted} from "../../../utils/interfaces/league.interface";
 import {DatePipe} from "@angular/common";
-import {CustomButtonComponent} from "../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {LeagueApiService} from "../../../services/api/league-api.service";
 import {IndexableMap} from "../../../utils/classes/IndexableMap";
 
@@ -10,7 +10,7 @@ import {IndexableMap} from "../../../utils/classes/IndexableMap";
   standalone: true,
   imports: [
     DatePipe,
-    CustomButtonComponent
+    CustomSolidButtonComponent
   ],
   templateUrl: './invite-list.component.html',
   styleUrl: './invite-list.component.scss'

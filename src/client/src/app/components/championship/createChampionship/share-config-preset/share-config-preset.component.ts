@@ -1,7 +1,7 @@
 import { GlobalHelper } from './../../../../helpers/global.helper';
 import { MessageService } from 'primeng/api';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {CustomButtonComponent, SoftButtons} from "../../../utils/custom/input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent, SoftButtons} from "../../../utils/button/solid-button/custom-solid-button.component";
 import { LeagueChampionship } from '../../../../utils/interfaces/championship.interface';
 import { ChampionshipApiService } from '../../../../services/api/championship-api.service';
 import { DefaultRes } from '../../../../utils/interfaces/responses/response.interface';
@@ -9,7 +9,7 @@ import { DefaultRes } from '../../../../utils/interfaces/responses/response.inte
 @Component({
   selector: 'app-share-config-preset',
   standalone: true,
-  imports: [CustomButtonComponent],
+  imports: [CustomSolidButtonComponent],
   templateUrl: './share-config-preset.component.html',
   styleUrl: './share-config-preset.component.scss'
 })

@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CustomButtonComponent} from "../input/custom-button/custom-button.component";
+import {CustomSolidButtonComponent} from "../../button/solid-button/custom-solid-button.component";
 import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-custom-card',
   standalone: true,
   imports: [
-    CustomButtonComponent,
+    CustomSolidButtonComponent,
     NgIf
   ],
   templateUrl: './custom-card.component.html',

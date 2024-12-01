@@ -1,10 +1,10 @@
 import { GlobalHelper } from '../../../../helpers/global.helper';
-import { PositionScore, ScoreSystem } from './../../../../utils/interfaces/score.interface';
+import { PositionScore, ScoreSystem } from '../../../../utils/interfaces/score.interface';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CustomTextInputComponent } from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
 import { ChampionshipPreset, Team } from '../../../../utils/interfaces/championship.interface';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomButtonComponent } from "../../../utils/custom/input/custom-button/custom-button.component";
+import { CustomSolidButtonComponent } from "../../../utils/button/solid-button/custom-solid-button.component";
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -12,7 +12,7 @@ import { NgClass } from '@angular/common';
   standalone: true,
   templateUrl: './score-system-form.component.html',
   styleUrl: './score-system-form.component.scss',
-  imports: [CustomTextInputComponent, CustomButtonComponent, NgClass, ReactiveFormsModule]
+  imports: [CustomTextInputComponent, CustomSolidButtonComponent, NgClass, ReactiveFormsModule]
 })
 export class ScoreSystemFormComponent implements OnInit {
 
@@ -61,7 +61,7 @@ export class ScoreSystemFormComponent implements OnInit {
 
   protected saveScoreSystem() {
     const scoreSystem: ScoreSystem = {positions: []};
-    
+
     console.log(this.scores.value)
 
     this.scores.value.forEach((score, i) => {

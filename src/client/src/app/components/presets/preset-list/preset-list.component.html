@@ -4,7 +4,7 @@
     <div>
       <span>{{preset.name}}</span>
       <div class="flex gap-3">
-        <app-custom-button (click)="selectPreset(preset)" color="indigo">Utilizar</app-custom-button>
+        <app-solid-button (click)="selectPreset(preset)" color="indigo">Utilizar</app-solid-button>
       </div>
 
     </div>
@@ -28,7 +28,7 @@
         } @empty {
           <div>
             <span>No hay ninguna liga creada.</span>
-            <app-custom-button (click)="goToCreateLeague()" routerLinkActive="router-link-active" >Crear liga</app-custom-button>
+            <app-solid-button (click)="goToCreateLeague()" routerLinkActive="router-link-active" >Crear liga</app-solid-button>
           </div>
         }
       </ul>
