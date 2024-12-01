@@ -53,7 +53,7 @@ export class TrackSearchFormComponent {
   }
 
   confirmLayout() {
-    this.selectedLayout = undefined;
     this.onConfirmLayout.emit(this.selectedLayout);
+    this.selectedLayout = undefined;
   }
 }

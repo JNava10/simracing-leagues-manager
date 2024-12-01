@@ -68,4 +68,26 @@ export class UserApiService {
     );
   }
 
+  getOwn = () => {
+    const url = `${devEnv.apiEndpoint}/user/own`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<User>>(url, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<User>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<User>(res)!;
+      })
+    );
+  }
+
 }

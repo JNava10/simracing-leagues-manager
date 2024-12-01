@@ -28,6 +28,8 @@ router.post("/register", [
 
 router.get("/search/nick/:input", controller.searchByNick);
 
+router.get("/own", controller.getOwnData);
+
 router.get("/:id", [validateToken], controller.getById);
 
 router.get("/notifications", controller.getAllNotifications);

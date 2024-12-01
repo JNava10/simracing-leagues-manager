@@ -50,6 +50,7 @@ export const routes: Routes = [
       { path: 'league/:leagueId', title: 'Informacion de la liga', component: LeagueMainComponent, children: [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },
           { path: 'overview', component: LeagueOverviewComponent },
+          { path: 'members', component: LeagueOverviewComponent },
           { path: 'admin', component: LeagueAdminPanelComponent, children: [
               { path: 'edit', component: EditLeagueFormComponent, title: 'Editar info. de liga' },
               { path: 'members', component: LeagueMemberListComponent, title: 'Miembros de liga' },

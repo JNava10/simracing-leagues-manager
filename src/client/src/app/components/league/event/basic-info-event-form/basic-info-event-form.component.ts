@@ -50,6 +50,7 @@ import {SoftButtonComponent} from "../../../utils/button/soft-button/soft-button
   styleUrl: './basic-info-event-form.component.scss'
 })
 export class BasicInfoEventFormComponent {
+  protected settingSim = false;
   constructor(
     private categoryService: CategoryApiService,
     private simulatorService: SimulatorApiService,
@@ -102,7 +103,7 @@ export class BasicInfoEventFormComponent {
 
   protected durationTypeList = roundDurationTypes
 
-  protected addingRace: boolean = false;
+  protected settingRace: boolean = false;
 
   protected roundTrackSelected?: Track;
 
@@ -163,20 +164,9 @@ export class BasicInfoEventFormComponent {
     this.simulators$ = this.simulatorService.search({name: value});
   }
 
-  // Circuitos //
-
-  protected searchTrackLayouts = (value: string) => {
-    this.tracks
-
-    if (value.length === 0) return
-
-    this.trackService.searchLayouts({name: value}).subscribe(res => this.tracks = res);
-  }
-
-  /// Circuitos ///
-
-
   selectLayout = (layout: TrackLayout) => {
+    console.log(layout)
+    this.settingRace = false;
     this.selectedLayout = layout;
   }
 
@@ -195,12 +185,6 @@ export class BasicInfoEventFormComponent {
 
   toggleCategory = (category: Category, checked: boolean, index: number) => {
     checked ? this.addCategory(category) : this.removeCategory(category)
-  }
-
-  private setRoundName = () => {
-    let nameToSet = this.roundName.value || this.getRoundLayoutName();
-
-    this.roundName.setValue(nameToSet);
   }
 
   /// Gestionar las categorias ///
@@ -223,30 +207,16 @@ export class BasicInfoEventFormComponent {
   protected goToNextPage = () => {
 
     let event = this.eventForm.value as LeagueEvent;
-    //
-    // event.leagueId = this.leagueId;
-    // event.leagueId = this.leagueId;
-    // event.layout = this.selectedLayout!;
 
-    // this.selectedCategories.forEach(item => {
-    //   event.categoryIds?.push(item.id!);
-    // });
-    //
-    // event.simulatorId = this.selectedSimulator?.id;
+    event.leagueId = this.leagueId;
+    event.leagueId = this.leagueId;
+    event.layout = this.selectedLayout!;
 
-    event = {
-      name: "Gran Final de la Temporada",
-      description: "El evento culminante de la temporada, donde los mejores equipos compiten por el campeonato.",
-      categoryIds: [1],
-      simulatorId: 1,
-      layout: {
-        name: 'AAAA',
-        parent: {
-          name: "SSSS",
-        },
-      },
-      layoutId: 1
-    }
+    this.selectedCategories.forEach(item => {
+      event.categoryIds?.push(item.id!);
+    });
+
+    event.simulatorId = this.selectedSimulator?.id;
 
     this.basicDataCreated.emit(event);
   }
@@ -262,7 +232,20 @@ export class BasicInfoEventFormComponent {
     this.addingCategory = true;
   };
 
-  handleTrackSelected = ($event: TrackLayout) => {
-
+  showSetRace = () => {
+    this.settingRace = true
   };
+
+  showSetSim() {
+    this.settingSim = true
+  }
+
+  selectSim($event: SimulatorGame) {
+    this.selectedSimulator = $event
+    this.settingSim = false
+  }
+
+  removeSim() {
+    this.selectedSimulator = undefined;
+  }
 }

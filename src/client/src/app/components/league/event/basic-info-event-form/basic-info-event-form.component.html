@@ -47,30 +47,7 @@
     </div>
 
     <div class="dark:bg-dark-background flex flex-col gap-3 justify-center p-3 rounded-2xl">
-      <app-custom-empty
-        title="No se ha introducido ningun circuito"
-        description="Haz click en la lupa para buscar."
-      />
-
-      <app-soft-button
-        color="indigo">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </app-soft-button>
-
-    </div>
-
-    <!-- Buscar simuladores -->
-    <app-sim-search-form
-      [selected]="this.selectedSimulator"
-      (onConfirm)="selectedSimulator = $event"
-      [showConfirm]="false"
-    />
-  </div>
-
-  <div class="w-full">
-    <!-- Preview del circuito elegido -->
-    @if (selectedLayout) {
-      <div class="flex flex-col">
+      @if (selectedLayout) {
         <app-custom-card
           (onCloseBtn)="removeLayout()"
           [showCloseBtn]="true"
@@ -78,83 +55,59 @@
           [subtitle]="selectedLayout.name!"
           [content]="selectedLayout.parent!.country!"
         />
-      </div>
-    } @else {
-      <div>
+      } @else {
+        <div>
+          <app-custom-empty
+            title="No se ha introducido ningun circuito"
+            description="Haz click en la lupa para buscar."
+          />
 
-      </div>
-    }
+          <app-soft-button
+            color="indigo"
+            (click)="showSetRace()"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </app-soft-button>
+        </div>
+      }
+    </div>
   </div>
+
+
+  <div class="dark:bg-dark-background flex flex-col gap-3 justify-center p-3 rounded-2xl">
+    <div>
+      @if (selectedSimulator) {
+        <app-custom-card
+          (onCloseBtn)="removeSim()"
+          [showCloseBtn]="true"
+          [title]="selectedSimulator.name!"
+          [subtitle]="selectedSimulator.description!"
+        />
+      } @else {
+        <div>
+          <app-custom-empty
+            title="No se ha introducido ningun simulador"
+            description="Haz click en la lupa para buscar."
+          />
+
+          <app-soft-button
+            color="indigo"
+            (click)="showSetSim()"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </app-soft-button>
+        </div>
+      }
+    </div>
+  </div>
+
+
 
 
   <button class="btn" (click)="goToNextPage()">Siguiente</button>
 </section>
 
 <!--- Modales --->
-
-<!-- Modal para crear rondas -->
-<p-dialog contentStyleClass="bg-base-100" showHeader="false" styleClass="flex gap-1 bg-base-100"
-          [(visible)]="addingRace" [modal]="true"
-          [dismissableMask]="true">
-  <div [formGroup]="championshipRoundForm">
-    <div>
-      <div class="card dark:bg-base-100 image-full w-full my-3">
-        <div class="card-body">
-          <div class="card-title"></div>
-          @if (roundLayout.value) {
-            <div class="flex gap-1">
-              <span>{{ roundName.value || (getRoundLayoutName()) || "Nombre" }}</span>
-              <p>{{ roundLayout.value.parent?.country }}</p>
-            </div>
-          } @else {
-            <p>No se ha indicado ningun circuito</p>
-          }
-        </div>
-      </div>
-    </div>
-    <div>
-      <div>
-        <div class="mb-3 col-span-2">
-          <label
-            class="block mb-1 text-sm font-medium">Nombre <span class="text-gray-700">(Opcional)</span>
-          </label> <!-- Sacar label a componente aparte -->
-
-          <!-- Sacar clases de input a enum aparte -->
-          <input formControlName="name" type="text"
-                 class="input input-bordered w-full outline-none">
-          @if (form.touched && form.invalid) {
-            <label *ngIf="description.errors"
-                   class="text-sm text-red-600 dark:text-red-400">
-              El nombre no es valido.
-            </label>
-          }
-        </div>
-      </div>
-    </div>
-    <div formGroupName="length" class="flex gap-3 mt-3">
-      <!-- TODO: Sacar a componente aparte -->
-
-      <input type="text" placeholder="10" [disabled]="durationLocked" formControlName="value"
-             class="input input-bordered rounded-xl w-[5rem]" maxlength="4"/>
-
-      <select [disabled]="durationLocked" formControlName="type">
-        <option value="0" disabled selected>Selecciona una duración</option>
-        @for (item of durationTypeList; track $index) {
-          <option value="{{item.type}}">{{ item.name }}</option>
-        }
-      </select>
-
-      <button class="btn" (click)="lockDuration()">
-        @if (durationLocked) {
-          Desbloquear
-        } @else {
-          Bloquear
-        }
-      </button>
-
-    </div>
-  </div>
-</p-dialog>
 
 <p-dialog
   contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
@@ -173,11 +126,21 @@
 
 </p-dialog>
 
-
-<p-dialog [(visible)]="addingRace">
-  <ng-template  pTemplate="headless">
+<p-dialog  showHeader="false" [modal]="true" [(visible)]="settingRace">
+  <ng-template pTemplate="headless">
     <app-track-search-form
       (onConfirmLayout)="selectLayout($event)"
     />
   </ng-template>
 </p-dialog>
+
+<p-dialog  showHeader="false" [modal]="true" [(visible)]="settingSim">
+  <ng-template pTemplate="headless">
+    <app-sim-search-form
+      [selected]="this.selectedSimulator"
+      (onConfirm)="selectSim($event)"
+      [showConfirm]="false"
+    />
+  </ng-template>
+</p-dialog>
+

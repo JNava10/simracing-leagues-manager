@@ -19,7 +19,7 @@
                   <td>{{member.user.nickname}}</td>
                   <td>{{member.joinedAt | date}}</td>
                   <td>
-                    <div class="flex gap-2">
+                    <div *ngIf="isAdmin()" class="flex gap-2">
                       <!-- Botón para kickear al miembro -->
                       <app-solid-button
                         (click)="kickMember(member.user.id!)"

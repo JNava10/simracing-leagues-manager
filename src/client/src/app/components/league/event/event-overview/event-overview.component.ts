@@ -32,6 +32,6 @@ export class EventOverviewComponent {
   }
 
   afterCreatingEvent(res: LeagueEvent) {
-    this.globalHelper.navigateFromRoot(`league/${this.event?.leagueId}/event/${res.id}`)
+    // this.globalHelper.navigateFromRoot(`league/${this.event?.leagueId}/event/${res.id}`)
   }
 }

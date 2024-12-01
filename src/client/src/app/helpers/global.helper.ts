@@ -7,13 +7,16 @@ import {devEnv} from '../../environments/environment.development';
 import {DefaultRes} from "../utils/interfaces/responses/response.interface";
 import {throwError} from "rxjs";
 import {OpenFileDialogProps} from "../utils/props/file.props";
+import {UserApiService} from "../services/api/user-api.service";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalHelper {
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) {
+  }
 
 
   private router = inject(Router);
@@ -46,19 +49,19 @@ export class GlobalHelper {
     this.messageService.add({severity: 'error', summary: title, detail: message});
   }
 
-  showSuccessMessage = ({ title = "exito", message }: ShowSuccessMessageProps) => {
+  showSuccessMessage = ({title = "exito", message}: ShowSuccessMessageProps) => {
     console.log(message);
     // this.messageService.add({ severity: 'success', summary: title, detail: message });
-    this.messageService.add({ summary: title });
+    this.messageService.add({summary: title});
   };
 
 
-handleApiError = (
+  handleApiError = (
     errorMsg: string, res: HttpResponse<DefaultRes<any>>
-) => {
-    const defaultRes = { data: {} } as DefaultRes<any>
+  ) => {
+    const defaultRes = {data: {}} as DefaultRes<any>
 
-    if (res.status === 0)  {
+    if (res.status === 0) {
       this.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet');
 
       return defaultRes
@@ -99,6 +102,19 @@ handleApiError = (
       console.log(e)
       return false
     }
+  }
+
+  getProfileData = (route: string, params?: any) => {
+    return new Promise((resolve, reject) => {
+      const service= inject(UserApiService)
+
+      service.getOwn().pipe(
+        map(res => {
+          if (res) resolve(res)
+        })
+      )
+    })
+
   }
 
   arrayByNumber = (count: number) => {

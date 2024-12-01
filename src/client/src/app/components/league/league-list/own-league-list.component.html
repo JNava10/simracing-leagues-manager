@@ -7,9 +7,7 @@
         styleClass="w-[4rem] h-[4rem] text-lg text-center"
         color="pink"
       >
-      <span class="text-xl">
-        +
-      </span>
+        <i class="fa-solid font-thin text-[0.7rem] fa-plus"></i>
       </app-soft-button>
       <app-tooltip
         text="Añadir liga"
@@ -18,7 +16,7 @@
 
     @for (league of leagues; track league.id) {
       <div [class]="tooltipClasses" (click)="goToLeague(league.id)">
-        <app-image styleClass="size-[4rem]" [url]="league.picUrl!"/>
+        <app-image styleClass="size-[4rem] rounded-xl" [url]="league.picUrl!"/>
         @if (league.name) {
           <app-tooltip
             [text]="league.name"

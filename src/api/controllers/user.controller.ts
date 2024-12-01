@@ -109,4 +109,22 @@ export class UserController {
             }, res)
         }
     }
+
+    static getOwnData = async (req: CustomRequest, res: Response) => {
+        try {
+            const data = await UserQuery.getById(req.user.id);
+
+            sendSuccessResponse(
+                {
+                    data: data,
+                    status: 200,
+                    msg: `Se ha obtenido los datos del usuario correctamente`,
+                }, res);
+        } catch (error) {
+            console.error(error);
+            sendErrorResponse({
+                error: `Ha ocurrido un error al buscar usuarios: ${error}`
+            }, res)
+        }
+    }
 }
