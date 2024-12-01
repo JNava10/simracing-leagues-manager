@@ -38,11 +38,11 @@ export class LeagueMainComponent implements OnInit {
     })
 
     if (this.leagueId) {
-      this.league$ = this.leagueService.getLeague(this.leagueId)
+      this.leagueService.getLeague(this.leagueId).subscribe(this.handleLeague)
     }
   }
 
-  league$!: Observable<League>;
+  league!: League;
   leagueId?: number;
   subroute?: string;
 
@@ -53,4 +53,7 @@ export class LeagueMainComponent implements OnInit {
     {label: 'Miembros', routerLink: 'members'},
     {label: 'Estadisticas'},
   ];
+  private handleLeague = (res: League) => {
+    this.league = res
+  }
 }

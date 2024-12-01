@@ -1,8 +1,15 @@
 @if (championships) {
-  <section>
+  <section class="h-full min-h-full w-full min-w-full flex flex-col gap-3 justify-center overflow-y-auto">
     @for (champ of championships; track $index) {
       <div class="flex gap-3">
         <span>{{champ.name}}</span>
+      </div>
+    } @empty {
+      <div class="w-full min-w-full flex flex-col justify-center items-center">
+        <i class=" fa-solid text-[10rem] text-dark-text-inactive fa-circle-xmark"></i>
+
+        <h2 class="text-center text-dark-main text-xl font-semibold leading-loose pb-2">No hay ningun campeonato creado</h2>
+        <a class="text-center cursor-pointer hover:underline text-dark-text-inactive text-base font-normal" (click)="goToCreateChamp()">Haz click aqui para crear uno nuevo.</a>
       </div>
     }
   </section>

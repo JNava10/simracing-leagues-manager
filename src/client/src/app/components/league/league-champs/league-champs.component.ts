@@ -17,6 +17,8 @@ import {ChampListComponent} from "../champ-list/champ-list.component";
 export class LeagueChampsComponent implements OnInit {
   constructor(private leagueService: LeagueApiService, private route: ActivatedRoute) { }
 
+  @Input() leagueId?: number
+
   ngOnInit(): void {
     let leagueId = this.route.snapshot.params['leagueId'];
     this.leagueService.getChamps(leagueId).subscribe(res => this.handleChamps(res));

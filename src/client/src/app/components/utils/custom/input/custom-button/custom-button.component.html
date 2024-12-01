@@ -1,16 +1,32 @@
-@if (style == styles.Soft) {
+@if ((type && types[type] === types.Soft) &&( border && borders[border]) && (color && colors[color])) {
   <button
     class="py-2 px-4 items-center gap-x-2 text-center"
     [ngClass]="[
-
-    '',
-    themes[color],
+    'py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium',
     styleClass,
-    ButtonType[type]
+    borders[border]
   ]"
-    [ngStyle]="{'background-color': globalHelper.getHexWithAlpha(colors[this.color!][800], 30), 'color': colors[this.color!][500]}"
+    [ngStyle]="{'background-color': globalHelper.getHexWithAlpha(colors[this.color][800], 30), 'color': colors[this.color][500]}"
     (click)="$event.preventDefault()"
   >
-    <ng-content></ng-content>
+    <div class="flex justify-center gap-2 items-center">
+      <ng-content select="[content-soft]"></ng-content>
+
+    </div>
+  </button>
+} @else if ((type && types[type] === types.Solid) &&( border && borders[border]) && (color && colors[color])) {
+  <button
+    [ngClass]="[
+    'py-3 px-4 inline-flex items-center gap-x-2 text-sm font-mediumr',
+    styleClass,
+    borders[border]
+  ]"
+    [ngStyle]="{'background-color': globalHelper.getHexWithAlpha(colors[this.color][500], 100), 'color': colors[this.color][100]}"
+    (click)="$event.preventDefault()"
+  >
+    <div class="flex justify-center gap-2 items-center">
+      <ng-content  select="[content-solid]"></ng-content>
+
+    </div>
   </button>
 }

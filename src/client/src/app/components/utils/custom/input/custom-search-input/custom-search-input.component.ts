@@ -18,6 +18,8 @@ export class CustomSearchInputComponent {
    */
   @Input() searchMilis: number | undefined = 325;
 
+  @Input() styleClass = ""
+
   /**
    * Evento que se lanzará al terminar de teclear
    */

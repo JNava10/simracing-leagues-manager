@@ -1,22 +1,73 @@
-<section class="flex flex-col gap-3">
-  <form class="p-3 grid gap-2 grid-cols-3 rounded-xl dark:bg-neutral-800/70"
-        #form="ngForm" [formGroup]="championshipForm">
+<section class="grid grid-cols-12 gap-6 w-full">
+  <!--  flex flex-col w-[100%] mx-3 justify-between gap-3-->
+  <form
+    class="p-3 col-span-6 rounded-xl border-1 dark:bg-dark-background"
+    #form="ngForm" [formGroup]="championshipForm"
+  >
 
-    <!-- Nombre -->
-    <app-custom-text-input
-      label="Nombre"
-      formControlName="name"
-    />
+    <div class="grid grid-cols-3 gap-3">
+      <!-- Nombre -->
+      <app-custom-text-input
+        label="Nombre"
+        formControlName="name"
+      />
 
-    <!-- Descripción -->
-    <app-custom-text-input
-      label="Descripción"
-      formControlName="description"
-      class="col-span-2"
-    />
+      <!-- Descripción -->
+      <app-custom-text-input
+        label="Descripción"
+        formControlName="description"
+        class="col-span-2 placeholder:text-green-400"
+      />
+    </div>
+
+    <div>
+      <span>Rondas del campeonato</span>
+      <div class="border flex flex-col justify-center border-dark-main h-full rounded-2xl p-3">
+        <div class="flex gap-4 overflow-x-auto">
+          @for (round of raceCalendar; track $index) {
+            <div title="{{round.name}}" class="card bg-base-200 w-md p-3">
+              <div class="card-title flex items-center justify-between">
+                <span class="text-sm dark:text-gray-400">
+                  {{ $index + 1 }}
+                </span>
+                <span class="text-gray-400">{{ round.layout?.parent?.country }}</span>
+                <hr>
+              </div>
+              <div class="card-body flex justify-between gap-3">
+                @if (round.name) {
+                  <h5 class="mb-2 text-gray-200 text-xl font-semibold">
+                    {{ (round.name!.length > 20) ? ((round.name | slice:0:20) + "...") : round.name }}
+                  </h5>
+                } @else {
+                  <h5 class="mb-2 text-gray-200 text-xl font-semibold">
+                    {{ (round.layout?.parent?.name!.length > 20) ? ((round.layout?.parent?.name | slice:0:20) + "...") : round.layout!.parent!.name }}
+                  </h5>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="w-full min-w-full flex flex-col justify-center items-center">
+              <i class=" fa-solid text-[10rem] text-dark-text-inactive fa-circle-xmark"></i>
+
+              <h2 class="text-center text-dark-text-inactive text-xl font-semibold leading-loose pb-2">No hay ningun
+                campeonato creado</h2>
+            </div>
+          }
+        </div>
+
+        <app-custom-button
+          (click)="showAddRace()"
+          border="Rounded"
+          color="red"
+          type="Soft"
+          content="soft"
+        ><span content-soft>Añadir carrera</span>
+        </app-custom-button>
+      </div>
+    </div>
   </form>
 
-  <div class="flex justify-center gap-3 rounded-xl dark:bg-neutral-800/70">
+  <div class="grid col-span-6 grid-rows-2 justify-center min-w-lg gap-3 min-w-full rounded-xl">
 
     <!-- Buscar categoria -->
     <div>
@@ -28,7 +79,9 @@
       <div class="flex flex-col">
         @for (category of selectedCategories; track $index) {
           <app-custom-badge
-            colorTheme="red"
+            type="Soft"
+            border="Rounded"
+            color="red"
             [text]="category.name!"
           />
         }
@@ -43,104 +96,62 @@
     />
   </div>
 
-  <!-- Modal para la creación de rondas -->
-  <span>Rondas del campeonato</span>
-  <div class="border rounded-lg p-3 border-neutral">
-    <div class="flex gap-4 overflow-x-scroll">
-      @for (round of raceCalendar; track $index) {
-        <div title="{{round.name}}" class="card bg-base-200 w-md p-3">
-          <div class="card-title flex items-center justify-between">
-          <span class="text-sm dark:text-gray-400">
-            {{ $index + 1 }}
-          </span>
-            <span class="text-gray-400">{{ round.layout?.parent?.country }}</span>
-            <hr>
-          </div>
-          <div class="card-body flex justify-between gap-3">
-            @if (round.name) {
-              <h5 class="mb-2 text-gray-200 text-xl font-semibold">
-                {{ (round.name!.length > 20) ? ((round.name | slice:0:20) + "...") : round.name }}
-              </h5>
-            } @else {
-              <h5 class="mb-2 text-gray-200 text-xl font-semibold">
-                {{ (round.layout?.parent?.name!.length > 20) ? ((round.layout?.parent?.name | slice:0:20) + "...") : round.layout!.parent!.name }}
-              </h5>
-            }
-          </div>
-        </div>
-      } @empty {
-        <p>Se debe añadir una carrera obligatoriamente.</p>
-      }
-    </div>
-
-
-    <button (click)="addingRace = true" class="btn btn-neutral">
-      Añadir carrera
-    </button>
-  </div>
-
   <button class="btn" (click)="goToNextPage()">Siguiente</button>
 </section>
 
 <!--- Modales --->
 
 <!-- Modal para crear rondas -->
-<p-dialog contentStyleClass="bg-base-100" showHeader="false" styleClass="flex gap-1 bg-base-100"
+<p-dialog contentStyleClass="dark:bg-dark-mainbg" showHeader="false" styleClass="flex gap-1 dark:bg-dark-background"
           [(visible)]="addingRace" [modal]="true"
           [dismissableMask]="true">
   <div [formGroup]="championshipRoundForm">
     <div>
-      <div class="card dark:bg-base-100 image-full w-full my-3">
-        <div class="card-body">
-          <div class="card-title"></div>
-          @if (roundLayout.value) {
-            <div class="flex gap-1">
-              <span>{{ roundName.value || (getRoundLayoutName()) || "Nombre" }}</span>
-              <p>{{ roundLayout.value.parent?.country }}</p>
-            </div>
-          } @else {
-            <p>No se ha indicado ningun circuito</p>
-          }
-        </div>
-      </div>
-    </div>
-    <div>
       <div>
-        <div class="mb-3 col-span-2">
-          <label
-            class="block mb-1 text-sm font-medium">Nombre <span class="text-gray-700">(Opcional)</span>
-          </label> <!-- Sacar label a componente aparte -->
+        <div class="card dark:bg-dark-background image-full w-full my-3">
+          <div class="card-body">
+            <div class="card-title"></div>
+            @if (roundLayout.value) {
+              <div class="flex gap-1">
+                <span>{{ roundName.value || (getRoundLayoutName()) || "Nombre" }}</span>
+                <p>{{ roundLayout.value.parent?.country }}</p>
+              </div>
+            } @else {
+              <p>No se ha indicado ningun circuito</p>
+            }
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <div class="mb-3 col-span-2">
 
-          <!-- Sacar clases de input a enum aparte -->
-          <input formControlName="name" type="text"
-                 class="input input-bordered w-full outline-none">
-          @if (form.touched && form.invalid) {
-            <label *ngIf="description.errors"
-                   class="text-sm text-red-600 dark:text-red-400">
-              El nombre no es valido.
-            </label>
-          }
+            <app-custom-text-input
+              styleClass="dark:bg-dark-background-deepest"
+              formControlName="name"
+              placeholder="Haz click para cambiar el nombre (opcional)"
+              label="Nombre"
+            />
+          </div>
         </div>
       </div>
 
-      <label
-        class="block mb-1 text-sm font-medium">Circuito
-      </label>
-      <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
+      <div class="min-w-full w-full items-center rounded-md p-3 bg-dark-background-deepest">
         <app-custom-search-input
-          class="join-item"
+          [showPlaceholder]="true"
+          styleClass="mb-2"
           (onSearch)="searchTrackLayouts($event)"
           placeholder="Introduce el nombre de un circuito"
         />
         <ul
-          class="text-gray-200 overflow-y-auto h-48 flex-col justify-center w-full items-center p-3"
+          class="text-gray-200 m-3 flex flex-col justify-center overflow-y-auto h-48 w-full items-center p-3"
         >
           @if (tracks && tracks.length > 0) {
             @for (track of tracks; track $index) {
-              <span class="text-gray-600">{{ track.name }}</span>
+              <span class="text-dark-text-inactive-dark text-sm">{{ track.name }}</span>
               @for (layout of track.layouts; track $index) {
-                <div (click)="selectLayout(track, layout)"
-                     class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
+                <div (click)="selectLayout(layout, track)"
+                     class="flex text-base text-dark-text-inactive p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
                   {{ track.name }} - {{ layout.name }}
                 </div>
               }
@@ -148,19 +159,21 @@
               <p>No se han encontrado resultados.</p>
             }
           } @else {
-            <div class="flex flex-col justify-center gap-1 items-center text-neutral">
-              <i class="fa-solid fa-magnifying-glass fa-5x "></i>
-              <span class="font-bold">Introduce alguna busqueda</span>
+            <div class="flex flex-col justify-center gap-1 items-center">
+              <i class="fa-solid fa-magnifying-glass fa-5x text-dark-text-inactive"></i>
+              <span class="text-dark-text">No se han encontrado circuitos</span>
             </div>
           }
         </ul>
       </div>
     </div>
+
     <div formGroupName="length" class="flex gap-3 mt-3">
       <!-- TODO: Sacar a componente aparte -->
 
       <app-custom-text-input
         placeholder="La duración debe ser un num."
+        styleClass="dark:bg-dark-background-deepest"
         [showLabel]="false"
         formControlName="value"
       />
@@ -178,23 +191,29 @@
     <!-- Botones -->
     <div class="flex gap-1 mt-3">
       <app-custom-button
-        color="indigo"
+        type="Soft"
+        border="Rounded"
+        color="red"
         (click)="saveRoundAndContinue()"
       >
-        Guardar y crear otra ronda
+        <span content-soft>Guardar y crear otra ronda</span>
+
       </app-custom-button>
 
       <app-custom-button
-        color="indigo"
-        (click)="saveRoundAndClose()"
-      >
-        Guardar y cerrar
+        type="Soft"
+        border="Rounded"
+        color="red"
+        (click)="saveRoundAndClose()">
+        <span content-soft>Guardar y cerrar</span>
       </app-custom-button>
+
       <app-custom-button
-        color="gray"
-        (click)="addingRace = false"
-      >
-        Cancelar
+        type="Soft"
+        border="Rounded"
+        color="red"
+        (click)="addingRace = false">
+        <span content-soft>Cancelar</span>
       </app-custom-button>
     </div>
   </div>

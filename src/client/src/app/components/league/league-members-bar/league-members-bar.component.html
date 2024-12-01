@@ -1,8 +1,11 @@
-<section class="p-3 gap-3 rounded-2xl bg-dark-background flex flex-col w-full h-full">
-  @for (member of members; track member.user.id) {
-    <div class="flex gap-3">
-      <app-image type="Circular" styleClass="size-24" [url]="member.user.profileUrl!"/>
-      <span>{{member.user.nickname}}</span>
-    </div>
-  }
-</section>
+@if (members) {
+  <section class="p-3 gap-3 rounded-2xl bg-dark-background flex flex-col w-full min-h-full h-full">
+    @for (member of members; track member.user.id) {
+      <div class="flex gap-3">
+        <app-image type="Circular" styleClass="size-24" [url]="member.user.profileUrl!"/>
+        <span>{{member.user.nickname}}</span>
+      </div>
+    }
+  </section>
+
+}

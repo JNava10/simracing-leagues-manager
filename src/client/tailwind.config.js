@@ -5,16 +5,24 @@ module.exports = {
     'node_modules/preline/dist/*.js',
   ],
   darkMode: 'class',
+  corePlugins: {
+    placeholderColor: true
+  },
   theme: {
     extend: {
       colors: {
         dark: {
           mainbg: '#090510',
-          background: '#171226',
+          'background-deepest': '#110A1F',
+          background: '#160C26',
+          'background-medium': '#171226',
+          'background-light': '#1E1136',
+          'background-lightest': '#251542',
           main: '#9273F7',
           "text-inactive": '#48397A',
           accent: '#FF0080',
-          text: '#f1f1f1',
+          text: '#DDC9FF',
+          title: '#785DA8',
           hover: '#3D3067',
           border: '#FF0080',
         },

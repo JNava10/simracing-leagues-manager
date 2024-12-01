@@ -45,7 +45,6 @@ export class BaseCustomInputComponent implements ControlValueAccessor {
 
   @Input() errorMessage: string = '';
 
-  @Input() inputClass: string = '';
 
   @Input() themeName!: keyof typeof SoftButtons; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 

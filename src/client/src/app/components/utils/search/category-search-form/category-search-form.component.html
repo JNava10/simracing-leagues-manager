@@ -1,7 +1,11 @@
-<div class="border w-96 border-neutral-300 dark:border-neutral-700 rounded-md p-3 bg-neutral-100 dark:bg-neutral-800"
-     [ngClass]="styleClass">
+<div
+ [ngClass]="[
+   'rounded-xl w-3xl p-3 bg-light-background dark:bg-dark-background  min-w-2xl',
+   styleClass,
+ ]"
+>
   @if (selected) {
-    <div class="flex flex-col h-48 gap-3">
+    <div class="flex flex-col gap-3">
       @if (showButtons) {
         <div class="flex justify-center gap-3">
           <app-custom-button *ngIf="showConfirm" (click)="confirm()" color="red">
@@ -15,19 +19,19 @@
     </div>
   } @else {
     <ul
-      class="text-neutral-800 dark:text-neutral-200 h-48 flex-col justify-center w-full items-center"
+      class="text-neutral-800 w-full  min-w-2xl h-48 flex-col justify-center items-center"
     >
       @if (categories$ | async; as res) {
         <div class="overflow-y-auto h-44 py-3">
           @for (simulator of res.data; track $index) {
             <span
               (click)="selectItem(simulator)"
-              class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
+              class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full min-w-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
             >
             {{ simulator.name }}
           </span>
           } @empty {
-            <p class="text-neutral-500 dark:text-neutral-400">No se han encontrado resultados.</p>
+            <p class="dark:text-dark-text">No se han encontrado resultados.</p>
           }
         </div>
       } @else {

@@ -1,7 +1,6 @@
 import {NgClass, NgStyle} from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, output, Output, SimpleChanges } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ChampionshipPreset } from '../../../../../utils/interfaces/championship.interface';
+
 import colors from "tailwindcss/colors";
 import {GlobalHelper} from "../../../../../helpers/global.helper";
 
@@ -15,25 +14,32 @@ import {GlobalHelper} from "../../../../../helpers/global.helper";
 export class CustomButtonComponent {
   constructor(protected globalHelper: GlobalHelper) {}
 
-  // TODO: Componente o clase generica con atributos y eventos de todos los inputs HTML.
-
   @Input() styleClass: string = '';
-  @Input() style: ButtonStyle = ButtonStyle.Soft;
-  @Input() type:  keyof typeof ButtonType = "Rounded";
-  @Input() color!: keyof typeof SoftButtons; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
+  @Input() type?: keyof typeof ButtonStyle;
+  @Input() border?: keyof typeof ButtonBorder;
+  @Input() color?: keyof typeof colors; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 
   readonly themes= SoftButtons;
-  readonly styles= ButtonStyle;
+  readonly types= ButtonStyle;
   protected readonly colors = colors;
-  protected readonly ButtonType = ButtonType;
+  protected readonly borders = ButtonBorder;
+
+  getContent(innerHTML: string) {
+    const element = document.createElement("div");
+
+    element.innerHTML = innerHTML;
+
+    return element;
+  }
 }
 
-export enum ButtonType {
+export enum ButtonBorder {
   Rounded = "rounded-full border border-transparent"
 }
 
 export enum ButtonStyle {
-  Soft
+  Soft,
+  Solid
 }
 
 // TODO: Quizá mover esto a otro archivo, aunque así considero que está bien organizado de momento.

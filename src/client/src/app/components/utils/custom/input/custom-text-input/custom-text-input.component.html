@@ -1,12 +1,11 @@
 <div>
   @if (showLabel) {
-    <label for="input-label" class="block text-sm font-medium mb-2 dark:text-white">{{label}}<span *ngIf="this.required === true">*</span></label>
+    <label class="block text-sm font-medium mb-2 dark:text-white">{{label}}<span *ngIf="this.required === true">*</span></label>
   }
 
   <input
     #input
 
-    [className]="inputClass"
     [type]="type"
     [maxlength]="maxLength!"
     [value]="value"
@@ -18,8 +17,8 @@
     [(ngModel)]="value"
     (ngModelChange)="writeValue($event)"
     [ngClass]="[
-      'py-3 px-4 block border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-neutral-400 outline-offset-0 transition-all dark:bg-neutral-900 dark:text-neutral-300/70dark:placeholder-neutral-500 outline-none w-full',
-      inputClass
+      'py-3 px-4 block border-none rounded-lg text-sm disabled:opacity-50 placeholder:text-green-400 disabled:pointer-events-none focus:ring-1 ring-dark-main outline-offset-0 dark:bg-dark-mainbg dark:text-neutral-300/70 dark:placeholder-neutral-500  w-full',
+      styleClass
     ]"
     (keyup)="onInputKeyUp($event)"
     (keydown)="onInputKeyDown($event)"

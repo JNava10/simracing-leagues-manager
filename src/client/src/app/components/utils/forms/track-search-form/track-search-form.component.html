@@ -1,7 +1,10 @@
-<label
-  class="block mb-1 text-sm font-medium text-neutral-800 dark:text-neutral-200">Circuito
-</label>
-<div class="border w-96 border-neutral-300 dark:border-neutral-700 rounded-md p-3 join-vertical bg-neutral-100 dark:bg-neutral-800">
+@if (showLabel) {
+  <label
+    class="block mb-1 text-sm font-medium text-neutral-800 dark:text-neutral-200">Circuito
+  </label>
+}
+<div
+  class="border w-96 border-neutral-300 dark:border-neutral-700 rounded-md p-3 join-vertical bg-light-mainbg dark:bg-dark-mainbg">
   @if (selectedLayout) {
     <div class="flex flex-col gap-3">
       <app-custom-card
@@ -10,14 +13,26 @@
         [content]="selectedLayout.parent!.country!"
       />
 
-      <div class="flex justify-center gap-3">
-        <app-custom-button (click)="confirmLayout()" color="red">
-          Aceptar
-        </app-custom-button>
-        <app-custom-button color="stone" (click)="removeCurrentLayout()">
-          Cancelar
-        </app-custom-button>
-    </div>
+      @if (showButtons) {
+        <div class="flex justify-center gap-3">
+          <app-custom-button
+            (click)="confirmLayout()"
+            color="red"
+            border="Rounded"
+            type="Solid"
+          >
+            <span content-solid>Aceptar</span>
+          </app-custom-button>
+          <app-custom-button
+            color="stone"
+            border="Rounded"
+            type="Solid"
+            (click)="removeCurrentLayout()">
+            <span content-solid>Cancelar</span>
+
+          </app-custom-button>
+        </div>
+      }
     </div>
   } @else {
     <ul
@@ -50,7 +65,7 @@
     </ul>
 
     <app-custom-search-input
-      class="join-item"
+      class="join-item bg-dark-background"
       (onSearch)="searchTrackLayouts($event)"
       placeholder="Introduce el nombre de un circuito"
     />

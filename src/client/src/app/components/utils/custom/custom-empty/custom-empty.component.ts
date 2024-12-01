@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {SoftButtons, CustomButtonComponent} from "../input/custom-button/custom-button.component";
+import colors from "tailwindcss/colors";
 
 @Component({
   selector: 'app-custom-empty',
@@ -16,7 +17,7 @@ export class CustomEmptyComponent {
   @Input() title: string = 'Titulo';
   @Input() description: string = 'Descripción';
   @Input() buttonText?: string;
-  @Input() buttonTheme?:  keyof typeof SoftButtons;
+  @Input() buttonTheme?:  keyof typeof colors;
 
   @Output() buttonClick = new EventEmitter<void>();
 

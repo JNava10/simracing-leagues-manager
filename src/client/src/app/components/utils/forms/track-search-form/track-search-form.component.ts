@@ -24,6 +24,8 @@ import {CustomButtonComponent} from "../../custom/input/custom-button/custom-but
 export class TrackSearchFormComponent {
   constructor(private trackService: TrackApiService) {}
 
+  @Input() showLabel = false;
+  @Input() showButtons = true;
 
   @Output() public onConfirmLayout = new EventEmitter<TrackLayout>();
 

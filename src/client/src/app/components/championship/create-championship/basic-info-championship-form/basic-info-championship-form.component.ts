@@ -36,6 +36,7 @@ import {RoundListComponent} from "../../round-list/round-list.component";
 import {LoginComponent} from "../../../auth/login/login.component";
 import {CustomSelectComponent} from "../../../utils/custom/input/custom-select/custom-select.component";
 import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/custom-button.component";
+import {TrackSearchFormComponent} from "../../../utils/forms/track-search-form/track-search-form.component";
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -55,7 +56,8 @@ import {CustomButtonComponent} from "../../../utils/custom/input/custom-button/c
     CustomBadgeComponent,
     SlicePipe,
     CustomSelectComponent,
-    CustomButtonComponent
+    CustomButtonComponent,
+    TrackSearchFormComponent
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
@@ -143,6 +145,7 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   }
 
   selectedSimulator?: SimulatorGame;
+  private layoutsSearched = false;
 
   // Rondas de campeonato //
 
@@ -204,6 +207,8 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   protected searchTrackLayouts = (value: string) => {
     if (value.length === 0) return;
 
+    this.layoutsSearched = true
+
     this.trackService.searchLayouts({name: value}).subscribe(res => this.tracks = res);
   }
 
@@ -223,18 +228,18 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     this.raceCalendar.splice(index, 1);
   }
 
-  selectLayout = (track: Track, layout: TrackLayout) => {
-    const layoutWithTrack = layout;
+  showAddRace = () => {
+    this.addingRace = true
+  }
 
-    layoutWithTrack.parent = track; // Esto servirá para mostrar los datos del circuito al que pertenece el trazado.
-
+  selectLayout = (layout: TrackLayout, track: Track) => {
+    layout.parent = track;
     this.roundLayout.setValue(layout);
   }
 
   /// Gestionar las rondas de campeonatos ///
 
   getRoundLayoutName = () => {
-    console.log(this.roundLayout)
     // Esto se mostrará si no se ha introducido ningun nombre.
     // Ej: Suzuka Circuit - East Loop.
     return `${this.roundLayout.value?.parent?.name} - ${this.roundLayout.value?.name}`
