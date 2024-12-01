@@ -44,7 +44,6 @@ import { TrackSearchFormComponent } from '../../../utils/forms/track-search-form
   selector: 'app-basic-info-championship-form',
   standalone: true,
   imports: [
-    NgIf,
     ReactiveFormsModule,
     DropdownModule,
     AccordionModule,
@@ -59,7 +58,6 @@ import { TrackSearchFormComponent } from '../../../utils/forms/track-search-form
     SlicePipe,
     CustomSelectComponent,
     CustomSolidButtonComponent,
-    TrackSearchFormComponent
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
@@ -79,7 +77,7 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   protected durationTypeList = roundDurationTypes;
 
   raceCalendar: ChampionshipRound[] = [];
-  selectedCategories: Category[] = [];
+  selectedCategories: Map<number, Category> = new Map();
   championshipForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     description: new FormControl('')
@@ -216,16 +214,18 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     checked ? this.addCategory(category) : this.removeCategory(category);
   }
 
-  private addCategory(category: Category) {
-    this.selectedCategories.push(category);
-  }
+  private addCategory = (category: Category) => {
+    category.id = this.selectedCategories.size + 1
+    this.selectedCategories.set(category.id, category);
+  };
 
-  private removeCategory(category: Category) {
-    const index = this.selectedCategories.findIndex(finding => finding.id === category.id);
-    this.selectedCategories.splice(index, 1);
-  }
+  private removeCategory = (category: Category) => {
+    if (!category.id) throw new Error('No se ha encontrado la categoria a borrar')
 
-  protected goToNextPage() {
+    this.selectedCategories.delete(category.id);
+  };
+
+  protected goToNextPage = () => {
     const championship = this.championshipForm.value as LeagueChampionship;
     championship.leagueId = this.leagueId;
     championship.calendar = this.raceCalendar;
@@ -240,9 +240,18 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     championship.simulatorId = this.selectedSimulator?.id;
 
     this.basicDataCreated.emit(championship);
-  }
+  };
 
-  confirmCategory($event: Category) {
-    this.selectedCategories.push($event);
-  }
+  confirmCategory = ($event: Category) => {
+    this.addCategory($event)
+    this.addingCategory = false;
+  };
+
+  showAddCategory = () => {
+    this.addingCategory = true;
+  };
+
+  deleteCategory = (id: number) => {
+    this.selectedCategories.delete(id);
+  };
 }

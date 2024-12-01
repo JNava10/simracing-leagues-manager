@@ -1,106 +1,76 @@
-<section>
+<section class="flex flex-col gap-9 w-full">
+
   <form
-    class="p-3 grid gap-2 grid-cols-3"
-    #form="ngForm"
-    [formGroup]="createChampionshipForm"
+    class="p-3 col-span-6 rounded-xl border-1 dark:bg-dark-background"
+    #form="ngForm" [formGroup]="eventForm"
   >
 
-    <!-- Nombre -->
-    <div>
+    <div class="grid grid-cols-3 gap-9">
+      <!-- Nombre -->
       <app-custom-text-input
         label="Nombre"
         formControlName="name"
       />
-    </div>
 
-    <!-- Descripción -->
-    <div class="col-span-2">
+      <!-- Descripción -->
       <app-custom-text-input
-        class="col-span-2"
         label="Descripción"
         formControlName="description"
+        class="col-span-2 placeholder:text-green-400"
       />
     </div>
   </form>
 
-  <div class="flex justify-center gap-3">
-    <!-- Buscar categoria -->
-    <div class="flex flex-col gap-1 items-center max-w-md m-3">
-      <span>Categorías</span>
-      <!-- TODO: Extraer lista a componente generico -->
-      <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
-        <app-custom-search-input
-          class="join-item"
-          (onSearch)="searchCategories($event)"
-          placeholder="Introduce el nombre de una categoria"
-        />
+  <div class="col-span-6 flex flex-col grow justify-center gap-9 min-w-full w-full rounded-xl">
 
-        <ul
-          class="menu join-item mt-1 text-gray-200 min-h-sm overflow-y-scroll z-[1000] flex-col w-full items-center p-3 no-scrollbar"
-        >
-          @if (categories$ | async; as res) {
-            @for (category of res.data; track $index) {
-              <div class="flex gap-3 items-center w-full my-1">
-                <input type="checkbox" #box class="checkbox" (click)="toggleCategory(category, box.checked, $index)">
-                <span>{{ category.name }}</span>
-              </div>
-            } @empty {
-              <p>No se han encontrado resultados.</p>
-            }
-          } @else {
-            <div class="flex flex-col justify-center gap-1 items-center text-neutral">
-              <i class="fa-solid fa-magnifying-glass fa-5x "></i>
-              <span class="font-bold">Introduce alguna busqueda</span>
-            </div>
-          }
-        </ul>
+    <!-- Buscar categoria -->
+    <div class="dark:bg-dark-background p-3 rounded-2xl">
+      <div class="flex gap-3 justify-start items-center">
+        <div>
+          <app-solid-button (click)="showAddCategory()" styleClass="size-[1rem] rounded-md" color="indigo">
+            +
+          </app-solid-button>
+        </div>
+        @for (category of selectedCategories.values(); track $index) {
+          <app-custom-badge
+            colorTheme="red"
+            textProp="name"
+            keyProp="id"
+            (delete)="removeCategory($event)"
+            [object]="category"
+          />
+        } @empty {
+          <span class="text-dark-text-inactive">No se ha seleccionado ninguna categoria. Pulsa "+" para añadir</span>
+        }
+
       </div>
+    </div>
+
+    <div class="dark:bg-dark-background flex flex-col gap-3 justify-center p-3 rounded-2xl">
+      <app-custom-empty
+        title="No se ha introducido ningun circuito"
+        description="Haz click en la lupa para buscar."
+      />
+
+      <app-soft-button
+        color="indigo">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </app-soft-button>
+
     </div>
 
     <!-- Buscar simuladores -->
-    <div class="flex flex-col gap-1 items-center max-w-md m-3">
-      <span>Simulador</span>
-      <!-- TODO: Extraer lista a componente generico -->
-      <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
-        <app-custom-search-input class="join-item" (onSearch)="searchSimulator($event)"
-                                 placeholder="Introduce el nombre de un simulador"/>
-        <ul
-          class="menu join-item mt-1  text-gray-200 min-h-sm overflow-y-scroll flex-col w-full items-center p-3 no-scrollbar"
-        >
-          @if (simulators$ | async; as res) {
-            @for (item of res.data; track $index) {
-              @if (selectedSimulator !== null && selectedSimulator !== undefined && item.id === selectedSimulator!.id) {
-
-                <!-- Item seleccionado -->
-                <div class="flex p-3 rounded-xl gap-3 items-center w-full bg-base-200 cursor-pointer">
-                  <span>{{ item.name }}</span>
-                </div>
-              } @else {
-
-                <!-- Todos los items -->
-                <div (click)="selectedSimulator = item"
-                     class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
-                  <span>{{ item.name }}</span>
-                </div>
-              }
-            } @empty {
-              <p>No se han encontrado resultados.</p>
-            }
-          } @else {
-            <div class="flex flex-col justify-center gap-1 items-center text-neutral">
-              <i class="fa-solid fa-magnifying-glass fa-5x "></i>
-              <span class="font-bold">Introduce alguna busqueda</span>
-            </div>
-          }
-        </ul>
-      </div>
-    </div>
+    <app-sim-search-form
+      [selected]="this.selectedSimulator"
+      (onConfirm)="selectedSimulator = $event"
+      [showConfirm]="false"
+    />
   </div>
 
-  <div class="w-96">
+  <div class="w-full">
     <!-- Preview del circuito elegido -->
     @if (selectedLayout) {
-      <div class="flex flex-col w-96">
+      <div class="flex flex-col">
         <app-custom-card
           (onCloseBtn)="removeLayout()"
           [showCloseBtn]="true"
@@ -110,11 +80,12 @@
         />
       </div>
     } @else {
-      <app-track-search-form
-        (onConfirmLayout)="selectLayout($event)"
-      />
+      <div>
+
+      </div>
     }
   </div>
+
 
   <button class="btn" (click)="goToNextPage()">Siguiente</button>
 </section>
@@ -183,4 +154,30 @@
 
     </div>
   </div>
+</p-dialog>
+
+<p-dialog
+  contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+  showHeader="false"
+  styleClass="flex gap-1 dark:bg-dark-background"
+  [(visible)]="addingCategory" [modal]="true"
+  [dismissableMask]="true">
+  <ng-template pTemplate="headless">
+    <div>
+      <app-category-search-form
+        styleClass="border-none dark:border-none"
+        (onConfirm)="confirmCategory($event)"
+      />
+    </div>
+  </ng-template>
+
+</p-dialog>
+
+
+<p-dialog [(visible)]="addingRace">
+  <ng-template  pTemplate="headless">
+    <app-track-search-form
+      (onConfirmLayout)="selectLayout($event)"
+    />
+  </ng-template>
 </p-dialog>

@@ -1,28 +1,32 @@
-<section>
-  <h1>Sistema de puntuacion</h1>
+<section class="flex flex-col gap-6 w-full">
+  <div class="flex justify-center p-3">
+    <h1 class="text-4xl font-bold">Sistema de puntuacion</h1>
+  </div>
+  <div>
+    <div class="flex-1" [formGroup]="scoresForm">
+      <form
+        [ngClass]="{'grid-cols-2': gridSize % 2 === 0, 'grid-cols-3': gridSize % 3 === 0, 'grid-cols-5': gridSize % 5 === 0}"
+        class="grid w-full overflow-auto gap-3 items-center bg-dark-background p-3 rounded-md"
+        formArrayName="scores"
+      >
+        @for (score of scores.controls; track $index) {
+          <div [formGroupName]="$index" class="relative p-3">
+            <span class="absolute left-0 top-0 mr-1 text-sm">{{$index + 1}}</span>
+            <app-custom-text-input
+              [showPlaceholder]="true"
+              [placeholder]="getPlaceholder($index)"
+              [debug]="true"
+              [showLabel]="false"
+              formControlName="score"
+              styleClass="w-[5rem]"
+              maxLength="3" />
+          </div>
+        }
+      </form>
 
-  <div class="flex flex-col justify-center items-center gap-3" [formGroup]="scoresForm">
-    <form
-      [ngClass]="{'grid-cols-2': gridSize % 2 === 0, 'grid-cols-3': gridSize % 3 === 0}"
-      class="grid overflow-auto h-sm gap-3 items-center bg-neutral-800/50 p-3 rounded-md"
-      formArrayName="scores"
-    >
-      @for (score of scores.controls; track $index) {
-        <div [formGroupName]="$index" class="relative bg-neutral-700/70 p-3">
-          <span class="absolute left-0 top-0 pl-1 text-sm">{{$index + 1}}</span>
-          <app-custom-text-input
-            [showPlaceholder]="true"
-            placeholder="0"
-            [debug]="true"
-            [showLabel]="false"
-            formControlName="score"
-            styleClass="w-[3.5rem]"
-            maxLength="3" />
-        </div>
-      }
-    </form>
-
-    <app-solid-button (click)="saveScoreSystem()">Guardar puntuación</app-solid-button>
-    <button (click)="saveScoreSystem()">Guardar puntuación</button>
+      <div class="flex p-3 justify-center">
+        <app-solid-button (click)="saveScoreSystem()" color="red">Guardar puntuación</app-solid-button>
+      </div>
+    </div>
   </div>
 </section>

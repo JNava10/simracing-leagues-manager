@@ -1,0 +1,107 @@
+<section class="w-full h-full flex flex-col gap-3">
+
+  <div class="w-full h-full flex gap-3">
+    <!-- Formulario del equipo seleccionado -->
+    <form [formGroup]="selectedTeam.controls" class="w-1/3 col-span-6 gap-3 h-md items-center">
+
+      <!-- Formulario del los asientos del equipo -->
+      <div class="flex relative flex-col bg-dark-background w-sm rounded-md gap-3 p-3">
+        <span class="absolute right-0 top-0 py-1 px-3 text-sm">{{ selectedTeam.index + 1 }}</span>
+        <app-custom-text-input
+          class="w-sm"
+          (inputChange)="onChangeName($event)"
+          formControlName="name"
+          label="Nombre"
+        />
+
+        <div class="flex gap-16">
+          <div>
+            <label class="block text-sm font-medium mb-2 w-sm dark:text-white">Color</label>
+            <ngx-colors ngx-colors-trigger class="dark:bg-stone-600" formControlName="hexColor"></ngx-colors>
+          </div>
+
+          <div>
+            <app-custom-text-input
+              styleClass="w-[3rem]"
+              maxLength="1"
+              formControlName="carEntries"
+              label="Entradas del equipo"
+            />
+          </div>
+        </div>
+
+        <button type="button" (click)="saveTeam(this.selectedTeam.index)"
+                class="w-sm py-3 px-4 items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20">
+          Guardar cambios
+        </button>
+      </div>
+
+    </form>
+
+    @if (championship!.categories!.length > 1) {
+      <div class="gap-3">
+        @for (category of championship?.categories; track $index) {
+          <div class="p-3 bg-neutral-900">
+            {{ category.name }}
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Lista de equipos creados -->
+    <div class="w-full flex flex-col gap-3 h-full col-span-6 items-center p-3 justify-center rounded-md bg-dark-background">
+      <div class="grid grid-cols-3 overflow-y-auto h-48 w-full gap-3">
+        @for (team of teams!; track $index) {
+          @if (this.selectedTeam.index === $index) {
+
+            <!--    Item seleccionado      -->
+            <div class="bg-dark-background-lightest h-26 flex gap-3 justify-center items-center p-3 h-full rounded-md">
+              <span>{{ team.name }}</span>
+              <div class="inline-flex items-center">
+              <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                    [ngStyle]="{'background-color': team.hexColor}"></span>
+              </div>
+            </div>
+
+          } @else {
+
+            <!--    Item sin seleccionar      -->
+            <div (click)="selectTeam($index)"
+                 class="bg-dark-background-light h-26 flex gap-3 justify-center items-center p-3 rounded-md cursor-pointer hover:bg-neutral-600">
+              <span>{{ team.name }}</span>
+              <div class="inline-flex items-center">
+              <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                    [ngStyle]="{'background-color': team.hexColor}"></span>
+              </div>
+            </div>
+
+          }
+        }
+      </div>
+      <div class="w-full items-end">
+        <!-- Boton para crear equipo -->
+        <app-solid-button
+          (click)="addTeam()"
+          color="indigo"
+        >
+          <span>Añadir equipo</span>
+          <i class="fa-solid font-thin text-[0.7rem] fa-plus"></i>
+
+        </app-solid-button>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center">
+    <!-- Boton para guardar equipos -->
+    <app-solid-button
+      color="red"
+      (click)="saveTeams()"
+    >
+      Guardar equipos
+    </app-solid-button>
+
+  </div>
+</section>
+
+
+

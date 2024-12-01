@@ -5,7 +5,7 @@ import {Component, OnInit} from '@angular/core';
 import { ChampFormStates } from '../../../utils/enums/states.enum';
 import { BasicInfoChampionshipFormComponent } from "./basic-info-championship-form/basic-info-championship-form.component";
 import { ChampionshipPreset, LeagueChampionship, Team } from '../../../utils/interfaces/championship.interface';
-import { TeamFormComponent } from "./team-form/team-form.component";
+import { CreateTeamsComponent } from "../../team/team-form/create-teams.component";
 import { ScoreSystemFormComponent } from "../createChampionship/score-system-form/score-system-form.component";
 import { ScoreSystem } from '../../../utils/interfaces/score.interface';
 import { CreateChampionshipOverviewComponent } from "../createChampionship/create-championship-overview/create-championship-overview.component";
@@ -17,7 +17,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-create-championship',
   standalone: true,
-  imports: [BasicInfoChampionshipFormComponent, TeamFormComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent],
+  imports: [BasicInfoChampionshipFormComponent, CreateTeamsComponent, ScoreSystemFormComponent, CreateChampionshipOverviewComponent, ShareConfigPresetComponent],
   templateUrl: './create-championship-form.component.html',
 })
 export class CreateChampionshipFormComponent implements OnInit {

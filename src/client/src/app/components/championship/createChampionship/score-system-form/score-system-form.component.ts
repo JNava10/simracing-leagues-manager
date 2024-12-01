@@ -36,11 +36,11 @@ export class ScoreSystemFormComponent implements OnInit {
   scoreValues: number[] = []
 
   scoresForm = this.formBuilder.group({
-    scores: this.formBuilder.array<string>([])
+    scores: this.formBuilder.array<FormGroup>([])
   })
 
   get scores() {
-    return this.scoresForm.controls.scores;
+    return this.scoresForm.controls.scores as FormArray<FormGroup>;
   }
 
   gridSize: number = 0
@@ -62,11 +62,11 @@ export class ScoreSystemFormComponent implements OnInit {
   protected saveScoreSystem() {
     const scoreSystem: ScoreSystem = {positions: []};
 
-    console.log(this.scores.value)
+    const scores = this.scores.value.map(item => item.score);
 
-    this.scores.value.forEach((score, i) => {
+    scores.forEach((score, i) => {
       scoreSystem.positions![i] = {
-        score: (Number(score!) > 0 ? Number(score!) : 0)
+        score: (Number(score) > 0 ? Number(score) : 0)
       }
     });
 
@@ -82,4 +82,8 @@ export class ScoreSystemFormComponent implements OnInit {
       )
     }
   }
+
+  getPlaceholder = (index: number) => {
+    return `Puntuación para ${index + 1}ª pos.`
+  };
 }

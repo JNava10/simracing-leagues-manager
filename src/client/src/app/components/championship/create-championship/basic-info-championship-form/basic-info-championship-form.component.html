@@ -1,11 +1,13 @@
-<section class="flex flex-col gap-6 w-full">
+<section class="flex flex-col gap-9 w-full">
+  <h2 class="text-xl font-medium">Información básica</h2>
+
   <!--  flex flex-col w-[100%] mx-3 justify-between gap-3-->
   <form
     class="p-3 col-span-6 rounded-xl border-1 dark:bg-dark-background"
     #form="ngForm" [formGroup]="championshipForm"
   >
 
-    <div class="grid grid-cols-3 gap-3">
+    <div class="grid grid-cols-3 gap-9">
       <!-- Nombre -->
       <app-custom-text-input
         label="Nombre"
@@ -21,23 +23,26 @@
     </div>
   </form>
 
-  <div class="col-span-6 flex flex-col grow justify-center gap-3 min-w-full w-full rounded-xl">
+  <div class="col-span-6 flex flex-col grow justify-center gap-9 min-w-full w-full rounded-xl">
 
     <!-- Buscar categoria -->
-    <div class="dark:bg-dark-background p-3">
+    <div class="dark:bg-dark-background p-3 rounded-2xl">
       <div class="flex gap-3 justify-start items-center">
         <div>
-          <app-solid-button  styleClass="size-[1rem] rounded-md" color="indigo">
+          <app-solid-button (click)="showAddCategory()" styleClass="size-[1rem] rounded-md" color="indigo">
             +
           </app-solid-button>
         </div>
-        @for (category of selectedCategories; track $index) {
+        @for (category of selectedCategories.values(); track $index) {
           <app-custom-badge
             colorTheme="red"
-            [text]="category.name!"
+            textProp="name"
+            keyProp="id"
+            (delete)="deleteCategory($event)"
+            [object]="category"
           />
         } @empty {
-          <span class="bg-text">No se ha seleccionado ninguna categoria. Pulsa "+" para añadir</span>
+          <span class="text-dark-text-inactive">No se ha seleccionado ninguna categoria. Pulsa "+" para añadir</span>
         }
 
       </div>
@@ -220,13 +225,18 @@
 </p-dialog>
 
 <p-dialog
-  contentStyleClass="dark:bg-dark-mainbg"
+  contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
   showHeader="false"
   styleClass="flex gap-1 dark:bg-dark-background"
   [(visible)]="addingCategory" [modal]="true"
   [dismissableMask]="true">
-  <app-category-search-form
-    styleClass="border-none dark:border-none"
-    (onConfirm)="confirmCategory($event)"
-  />
+  <ng-template pTemplate="headless">
+    <div>
+      <app-category-search-form
+        styleClass="border-none dark:border-none"
+        (onConfirm)="confirmCategory($event)"
+      />
+    </div>
+  </ng-template>
+
 </p-dialog>

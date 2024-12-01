@@ -17,7 +17,7 @@ export class SoftButtonComponent {
   constructor(protected globalHelper: GlobalHelper) {}
 
   @Input() styleClass: string = '';
-  @Input() border?: keyof typeof ButtonBorder;
+  @Input() border?: keyof typeof ButtonBorder = "MediumRounded";
   @Input() color?: keyof typeof colors; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 
   protected readonly borders = ButtonBorder;

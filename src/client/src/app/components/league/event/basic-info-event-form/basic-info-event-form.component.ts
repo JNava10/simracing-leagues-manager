@@ -24,19 +24,27 @@ import {TrackSearchFormComponent} from "../../../utils/forms/track-search-form/t
 import {CustomCardComponent} from "../../../utils/custom/custom-card/custom-card.component";
 import {CustomEmptyComponent} from "../../../utils/custom/custom-empty/custom-empty.component";
 import {CustomSolidButtonComponent} from "../../../utils/button/solid-button/custom-solid-button.component";
+import {CustomBadgeComponent} from "../../../utils/custom/badge/custom-badge.component";
+import {SimSearchFormComponent} from "../../../utils/search/sim-search-form/sim-search-form.component";
+import {CategorySearchFormComponent} from "../../../utils/search/category-search-form/category-search-form.component";
+import {SoftButtonComponent} from "../../../utils/button/soft-button/soft-button.component";
 
 @Component({
   selector: 'app-basic-info-event-form',
   standalone: true,
   imports: [
-    AsyncPipe,
-    CustomSearchInputComponent,
     DialogModule,
     NgIf,
     ReactiveFormsModule,
     CustomTextInputComponent,
     TrackSearchFormComponent,
     CustomCardComponent,
+    CustomBadgeComponent,
+    CustomSolidButtonComponent,
+    SimSearchFormComponent,
+    CategorySearchFormComponent,
+    CustomEmptyComponent,
+    SoftButtonComponent,
   ],
   templateUrl: './basic-info-event-form.component.html',
   styleUrl: './basic-info-event-form.component.scss'
@@ -73,19 +81,19 @@ export class BasicInfoEventFormComponent {
 
   selectedLayout?: TrackLayout;
 
-  selectedCategories: Category[] = [];
+  selectedCategories: Map<number, Category> = new Map();
 
-  createChampionshipForm: FormGroup = new FormGroup({
+  eventForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     description: new FormControl('')
   });
 
   get name() {
-    return this.createChampionshipForm.get('name')!.value;
+    return this.eventForm.get('name')!.value;
   }
 
   get description() {
-    return this.createChampionshipForm.get('description')!.value;
+    return this.eventForm.get('description')!.value;
   }
 
   selectedSimulator?: SimulatorGame
@@ -197,23 +205,24 @@ export class BasicInfoEventFormComponent {
 
   /// Gestionar las categorias ///
 
-  private addCategory = (category: Category) => {
-    this.selectedCategories.push(category)
-  }
-
-  private removeCategory = (category: Category) => {
-    const index = this.selectedCategories.findIndex(finding => finding.id === category.id)
-
-    this.selectedCategories.splice(index, 1);
-  }
-
   protected removeLayout() {
     this.selectedLayout = undefined;
   }
 
+  private addCategory = (category: Category) => {
+    category.id = this.selectedCategories.size + 1
+    this.selectedCategories.set(category.id, category);
+  };
+
+  protected removeCategory = (category: Category) => {
+    if (!category.id) throw new Error('No se ha encontrado la categoria a borrar')
+
+    this.selectedCategories.delete(category.id);
+  };
+
   protected goToNextPage = () => {
 
-    let event = this.createChampionshipForm.value as LeagueEvent;
+    let event = this.eventForm.value as LeagueEvent;
     //
     // event.leagueId = this.leagueId;
     // event.leagueId = this.leagueId;
@@ -241,6 +250,17 @@ export class BasicInfoEventFormComponent {
 
     this.basicDataCreated.emit(event);
   }
+
+  protected addingCategory = false;
+
+  confirmCategory = ($event: Category) => {
+    this.addCategory($event)
+    this.addingCategory = false;
+  };
+
+  showAddCategory = () => {
+    this.addingCategory = true;
+  };
 
   handleTrackSelected = ($event: TrackLayout) => {
 

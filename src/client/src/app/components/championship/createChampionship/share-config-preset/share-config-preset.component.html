@@ -1,5 +1,17 @@
-<h1>Publicar configuración a la comunidad</h1>
-<span>Al publicar la configuracion, cualquiera puede copiarla y usarla en sus campeonatos</span>
 
-<app-solid-button (click)="createPreset()" theme="fuchsia">Si</app-solid-button>
-<app-solid-button (click)="ended.emit()">No</app-solid-button>
+<div class="flex flex-col gap-9 justify-center">
+  <h1 class="text-xl font-medium">Publicar configuración a la comunidad</h1>
+
+  <div class="w-full h-full justify-center items-center dark:bg-dark-background rounded-xl">
+    <div class="flex flex-col gap-3 justify-center items-center">
+
+      <span>Al publicar la configuracion, cualquiera puede copiarla y usarla en sus campeonatos</span>
+    </div>
+
+    <div class="flex gap-3 justify-center items-center">
+      <app-solid-button (click)="createPreset()" color="fuchsia">Si</app-solid-button>
+      <app-solid-button (click)="ended.emit()" color="fuchsia">No</app-solid-button>
+    </div>
+  </div>
+
+</div>

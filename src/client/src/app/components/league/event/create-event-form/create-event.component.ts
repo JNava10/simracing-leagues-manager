@@ -15,7 +15,7 @@ import {
 import {
   ShareConfigPresetComponent
 } from "../../../championship/createChampionship/share-config-preset/share-config-preset.component";
-import {TeamFormComponent} from "../../../championship/create-championship/team-form/team-form.component";
+import {CreateTeamsComponent} from "../../../team/team-form/create-teams.component";
 import {BasicInfoEventFormComponent} from "../basic-info-event-form/basic-info-event-form.component";
 import {EventOverviewComponent} from "../event-overview/event-overview.component";
 
@@ -24,7 +24,7 @@ import {EventOverviewComponent} from "../event-overview/event-overview.component
   standalone: true,
   imports: [
     ShareConfigPresetComponent,
-    TeamFormComponent,
+    CreateTeamsComponent,
     BasicInfoEventFormComponent,
     EventOverviewComponent
   ],

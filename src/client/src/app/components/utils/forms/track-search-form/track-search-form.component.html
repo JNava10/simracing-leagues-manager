@@ -1,73 +1,76 @@
-@if (showLabel) {
-  <label
-    class="block mb-1 text-sm font-medium text-neutral-800 dark:text-neutral-200">Circuito
-  </label>
-}
-<div
-  class="border w-96 border-neutral-300 dark:border-neutral-700 rounded-md p-3 join-vertical bg-light-mainbg dark:bg-dark-mainbg">
-  @if (selectedLayout) {
-    <div class="flex flex-col gap-3">
-      <app-custom-card
-        [title]="selectedLayout.parent!.name!"
-        [subtitle]="selectedLayout.name"
-        [content]="selectedLayout.parent!.country!"
-      />
+<div class="w-full">
+  @if (showLabel) {
+    <label
+      class="block mb-1 text-sm font-medium text-neutral-800 dark:text-neutral-200">Circuito
+    </label>
+  }
+  <div
+    class="rounded-xl w-full border-neutral-300 p-3 join-vertical bg-light-mainbg dark:bg-dark-background">
+    @if (selectedLayout) {
+      <div class="flex flex-col gap-3">
+        <app-custom-card
+          [title]="selectedLayout.parent!.name!"
+          [subtitle]="selectedLayout.name"
+          [content]="selectedLayout.parent!.country!"
+        />
 
-      @if (showButtons) {
-        <div class="flex justify-center gap-3">
-          <app-solid-button
-            (click)="confirmLayout()"
-            color="red"
-            border="Rounded"
-            type="Solid"
-          >
-            <span content-solid>Aceptar</span>
-          </app-solid-button>
-          <app-solid-button
-            color="stone"
-            border="Rounded"
-            type="Solid"
-            (click)="removeCurrentLayout()">
-            <span content-solid>Cancelar</span>
+        @if (showButtons) {
+          <div class="flex justify-center gap-3">
+            <app-solid-button
+              (click)="confirmLayout()"
+              color="red"
+              border="Rounded"
+              type="Solid"
+            >
+              Aceptar
+            </app-solid-button>
+            <app-solid-button
+              color="stone"
+              border="Rounded"
+              type="Solid"
+              (click)="removeCurrentLayout()">
+              Cancelar
 
-          </app-solid-button>
-        </div>
-      }
-    </div>
-  } @else {
-    <ul
-      class="text-neutral-800 dark:text-neutral-200 h-48 flex-col justify-center w-full items-center"
-    >
-      @if (tracks) {
-        <div class="overflow-y-auto h-44 py-3">
-          @for (track of tracks; track $index) {
-            <span class="text-neutral-600 dark:text-neutral-400">{{ track.name }}</span>
-            @for (layout of track.layouts; track $index) {
-              <span
-                (click)="selectLayout(track, layout)"
-                class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
-              >
+            </app-solid-button>
+          </div>
+        }
+      </div>
+    } @else {
+      <ul
+        class="text-neutral-800 dark:text-neutral-200 h-48 flex-col justify-center w-full items-center"
+      >
+        @if (tracks) {
+          <div class="overflow-y-auto h-44 py-3">
+            @for (track of tracks; track $index) {
+              <span class="text-neutral-600 dark:text-neutral-400">{{ track.name }}</span>
+              @for (layout of track.layouts; track $index) {
+                <span
+                  (click)="selectLayout(track, layout)"
+                  class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                >
             {{ track.name }} - {{ layout.name }}
           </span>
+              }
+            } @empty {
+              <p class="text-neutral-500 dark:text-neutral-400">No se han encontrado resultados.</p>
             }
-          } @empty {
-            <p class="text-neutral-500 dark:text-neutral-400">No se han encontrado resultados.</p>
-          }
-        </div>
-      } @else {
-        <div class="h-full">
-          <app-custom-empty
-            title="Es obligatorio elegir un circuito"
-            description="Introduce un nombre en el buscador."
-          />
-        </div>
-      }
-    </ul>
+          </div>
+        } @else {
+          <div class="h-full">
+            <app-custom-empty
+              title="Es obligatorio elegir un circuito"
+              description="Introduce un nombre en el buscador."
+            />
+          </div>
+        }
+      </ul>
 
-    <app-custom-search-input
-      class="join-item bg-dark-background"
-      (onSearch)="searchTrackLayouts($event)"
-      placeholder="Introduce el nombre de un circuito"
-    />
-  }
+      <app-custom-search-input
+        class="join-item bg-dark-background"
+        (onSearch)="searchTrackLayouts($event)"
+        placeholder="Introduce el nombre de un circuito"
+      />
+    }
+  </div>
+
 </div>

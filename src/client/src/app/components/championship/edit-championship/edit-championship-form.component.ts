@@ -15,7 +15,7 @@ import {
 } from "../createChampionship/create-championship-overview/create-championship-overview.component";
 import {ScoreSystemFormComponent} from "../createChampionship/score-system-form/score-system-form.component";
 import {ShareConfigPresetComponent} from "../createChampionship/share-config-preset/share-config-preset.component";
-import {TeamFormComponent} from "../create-championship/team-form/team-form.component";
+import {CreateTeamsComponent} from "../../team/team-form/create-teams.component";
 import {ChampEditOverviewComponent} from "../champ-edit-overview/champ-edit-overview.component";
 
 @Component({
@@ -26,7 +26,7 @@ import {ChampEditOverviewComponent} from "../champ-edit-overview/champ-edit-over
     CreateChampionshipOverviewComponent,
     ScoreSystemFormComponent,
     ShareConfigPresetComponent,
-    TeamFormComponent,
+    CreateTeamsComponent,
     ChampEditOverviewComponent
   ],
   templateUrl: './edit-championship-form.component.html',

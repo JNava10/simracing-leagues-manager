@@ -1,7 +1,7 @@
-<section class="min-w-full min-h-full h-full w-full flex-1">
+<section class="col-span-12 h-full w-full flex-1">
   @if (league) {
     <section class="w-full flex gap-3">
-      <div class=" flex flex-col w-full gap-3">
+      <div class="mx-10 flex flex-col w-full gap-3">
 
         <div class="w-full p-3 dark:bg-dark-background rounded-2xl flex gap-3">
           <app-image type="Rounded" [ngStyle]="[{'background': league.color}]" styleClass="border-2 size-[10rem]" [url]="league.picUrl!"/>
@@ -16,7 +16,7 @@
           class="w-full"
         />
 
-        <div class="w-full min-h-full flex">
+        <div class="mx-[20%]">
           <router-outlet></router-outlet>
         </div>
       </div>

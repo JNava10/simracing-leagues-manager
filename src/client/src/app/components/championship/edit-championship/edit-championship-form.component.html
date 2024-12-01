@@ -15,12 +15,12 @@
 
 @else if (currentCreatingState === creatingStates.Teams) {
   @if (preset) {
-    <app-team-form
+    <app-create-teams
       [preset]="preset"
       (teamsCreated)="handleTeamsCreated($event)"
     />
   } @else {
-    <app-team-form
+    <app-create-teams
       [championship]="championship"
       (teamsCreated)="handleTeamsCreated($event)"
     />

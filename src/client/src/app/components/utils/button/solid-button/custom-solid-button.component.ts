@@ -14,7 +14,7 @@ export class CustomSolidButtonComponent {
   constructor(protected globalHelper: GlobalHelper) {}
 
   @Input() styleClass: string = '';
-  @Input() border?: keyof typeof ButtonBorder = "Rounded";
+  @Input() border?: keyof typeof ButtonBorder = "MediumRounded";
   @Input() color?: keyof typeof colors; // Con keyof se obtienen las palabras clave del enum. Es mas comodo usarlo para evitar ponerlos a mano.
 
   protected readonly colors = colors;
@@ -23,7 +23,8 @@ export class CustomSolidButtonComponent {
 
 export enum ButtonBorder {
   Circle = "rounded-full border border-transparent",
-  Rounded = "rounded-2xl border border-transparent"
+  Rounded = "rounded-2xl border border-transparent",
+  MediumRounded = "rounded-xl border border-transparent"
 }
 
 // TODO: Quizá mover esto a otro archivo, aunque así considero que está bien organizado de momento.

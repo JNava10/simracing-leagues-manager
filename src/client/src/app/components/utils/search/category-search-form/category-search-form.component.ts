@@ -59,5 +59,6 @@ export class CategorySearchFormComponent {
   confirm() {
     this.onConfirm.emit(this.selected);
     this.selected = undefined;
+    this.categories$ = of()
   }
 }

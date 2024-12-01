@@ -1,28 +1,70 @@
-import { NgFor, NgStyle } from '@angular/common';
+import {NgClass, NgFor, NgStyle} from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomTextInputComponent } from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
-import {ChampionshipPreset, LeagueChampionship, Team} from '../../../../utils/interfaces/championship.interface';
+import { CustomTextInputComponent } from "../../utils/custom/input/custom-text-input/custom-text-input.component";
+import {ChampionshipPreset, LeagueChampionship, Team} from '../../../utils/interfaces/championship.interface';
 import { NgxColorsModule } from 'ngx-colors';
-import {Category} from "../../../../utils/interfaces/category.interface";
+import {Category} from "../../../utils/interfaces/category.interface";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 
 @Component({
-  selector: 'app-team-form',
+  selector: 'app-create-teams',
   standalone: true,
-  imports: [FormsModule, CustomTextInputComponent, ReactiveFormsModule, NgStyle, NgxColorsModule],
-  templateUrl: './team-form.component.html',
-  styleUrl: './team-form.component.scss'
+  imports: [FormsModule, CustomTextInputComponent, ReactiveFormsModule, NgStyle, NgxColorsModule, NgClass, CustomSolidButtonComponent],
+  templateUrl: './create-teams.component.html',
 })
-export class TeamFormComponent implements OnInit {
+export class CreateTeamsComponent implements OnInit {
 
   ngOnInit(): void {
+    this.championship = {
+      "name": "dasda",
+      "description": "dsada",
+      "leagueId": 4,
+      "calendar": [
+        {
+          "name": "Silverstone Circuit - Grand Prix",
+          "length": {
+            "value": undefined,
+            "type": 0
+          },
+          "layoutId": 1
+        },
+        {
+          "name": "Suzuka Circuit - Grand Prix",
+          "length": {
+            "value": undefined,
+            "type": undefined
+          },
+          "layoutId": 4
+        },
+        {
+          "name": "Sebring International Raceway - Original",
+          "length": {
+            "value": undefined,
+            "type": undefined
+          },
+          "layoutId": 5
+        }
+      ],
+      "categories": [
+        {
+          "id": 1,
+          "name": "Formula 1",
+          "description": ""
+        }
+      ],
+      "simulatorId": 3
+    }
+
     if (this.preset) {
       this.teams = this.preset.teams;
     } else if (this.championship) {
       this.teams = this.championship.teams!
+      console.log(this.championship)
     }
 
-    if (!this.teams) {
+
+    if (this.teams === undefined || this.teams === null) {
       this.teams = [];
 
       this.teams.push(this.defaultTeam)
