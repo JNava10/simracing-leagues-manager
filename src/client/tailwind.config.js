@@ -13,14 +13,14 @@ module.exports = {
       colors: {
         dark: {
           mainbg: '#06030A',
-          'background-deepest': '#110A1F',
+          'background-deepest': '#0F091C',
           // background: '#140C26',
-          background: '#140C26',
+          background: '#180E2E',
           'background-medium': '#171226',
           'background-light': '#1E1136',
           'background-lightest': '#251542',
           main: '#9273F7',
-          "text-inactive": '#48397A',
+          "text-inactive": '#54438F',
           accent: '#FF0080',
           text: '#DDC9FF',
           title: '#785DA8',

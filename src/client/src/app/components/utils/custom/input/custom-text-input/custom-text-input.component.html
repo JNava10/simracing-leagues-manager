@@ -17,7 +17,7 @@
     [(ngModel)]="value"
     (ngModelChange)="writeValue($event)"
     [ngClass]="[
-      'py-3 px-4 block border-none rounded-lg text-sm disabled:opacity-50 placeholder:text-green-400 disabled:pointer-events-none focus:ring-1 ring-dark-main outline-offset-0 dark:bg-dark-mainbg dark:text-neutral-300/70 dark:placeholder-neutral-500  w-full',
+      'py-3 px-4 block border-none rounded-lg text-sm disabled:opacity-50 outline-none transition-all dark:text-dark-main focus:dark:placeholder-dark-text-inactive disabled:pointer-events-none focus:ring-1 ring-dark-main outline-offset-0 dark:bg-dark-background-deepest dark:placeholder-dark-text-inactive  w-full',
       styleClass
     ]"
     (keyup)="onInputKeyUp($event)"

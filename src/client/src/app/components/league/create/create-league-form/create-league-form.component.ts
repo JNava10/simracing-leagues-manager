@@ -7,6 +7,10 @@ import {LeagueApiService} from "../../../../services/api/league-api.service";
 import {League} from "../../../../utils/interfaces/league.interface";
 import {MessageService} from "primeng/api";
 import {GlobalHelper} from "../../../../helpers/global.helper";
+import {CustomTextInputComponent} from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
+import {CustomSolidButtonComponent} from "../../../utils/button/solid-button/custom-solid-button.component";
+import {CustomFileDragDropComponent} from "../../../utils/custom/custom-file-drag-drop/custom-file-drag-drop.component";
+import {CustomColorPickerComponent} from "../../../utils/custom/custom-color-picker/custom-color-picker.component";
 
 @Component({
   selector: 'app-create-league-form',
@@ -16,7 +20,11 @@ import {GlobalHelper} from "../../../../helpers/global.helper";
     InputTextModule,
     FormsModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CustomTextInputComponent,
+    CustomSolidButtonComponent,
+    CustomFileDragDropComponent,
+    CustomColorPickerComponent
   ],
   templateUrl: './create-league-form.component.html',
   styleUrl: './create-league-form.component.scss'
@@ -27,6 +35,7 @@ export class CreateLeagueFormComponent {
   createLeagueForm = new FormGroup({
     name: new FormControl(''),
     description: new FormControl(''),
+    color: new FormControl(''),
   });
 
   get name() {
@@ -37,8 +46,8 @@ export class CreateLeagueFormComponent {
     return this.createLeagueForm.get('description')!;
   }
 
-  get category() {
-    return this.createLeagueForm.get('category')!;
+  get color() {
+    return this.createLeagueForm.get('color')!;
   }
 
   createLeague = () => {

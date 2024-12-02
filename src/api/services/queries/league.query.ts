@@ -16,7 +16,8 @@ export class LeagueQuery {
                 name: league.name,
                 description: league.description,
                 authorId: authorId,
-                category: null
+                color: league.color,
+
             }
         });
 

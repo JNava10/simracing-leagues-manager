@@ -140,12 +140,23 @@ export class GlobalHelper {
     {
       validExtensions,
       invalidExtensions,
+      multiple,
       returnFormData
     }: OpenFileDialogProps
   ) => {
     return new Promise<FileList | FormData>((resolve, reject) => {
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
+
+      if (validExtensions) {
+        fileInput.accept = validExtensions.join(',');
+      }
+
+      console.log('a')
+
+      fileInput.multiple = multiple;
+
+      fileInput.click();
 
       fileInput.onchange = ($event) => {
         const {files: fileList} = fileInput;
@@ -184,7 +195,6 @@ export class GlobalHelper {
         }
       }
 
-      fileInput.click();
     });
   }
 

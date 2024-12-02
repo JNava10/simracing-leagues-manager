@@ -96,6 +96,7 @@ model League {
   picUrl      String   @db.VarChar(255)
   bannerUrl   String   @db.VarChar(255)
   description String   @db.VarChar(255)
+  color       String   @default("#FFFFFF") @db.VarChar(7)
   createdAt   DateTime @default(now()) @db.DateTime(6)
   category    Int?
   authorId    Int

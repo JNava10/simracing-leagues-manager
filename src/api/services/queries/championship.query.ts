@@ -19,6 +19,8 @@ import {
 } from "../../prisma/types/championship.types";
 import {UserQuery} from "./user.query";
 import {ExpectedError} from "../../utils/classes/error";
+import {defaults} from "../../utils/constants/default.constants";
+import {LeagueChampionship} from "@prisma/client";
 
 export class ChampionshipQuery {
     static get = async (id: number) => {
@@ -74,26 +76,26 @@ export class ChampionshipQuery {
         });
     }
 
-    static create = async (incoming: ChampionshipCreation, authorId: number) => {
+    static create = async (championship: ChampionshipCreation, authorId: number) => {
 
         // Insercion de los datos basicos del campeonato.
         const created = await prisma.leagueChampionship.create({
             data: {
-                name: incoming.name,
-                description: incoming.description,
-                leagueId: Number(incoming.leagueId)!,
+                name: championship.name,
+                description: championship.description,
+                picUrl: championship.picUrl || defaults.leagueIcon,
+                backgroundUrl: championship.backgroundUrl || defaults.leagueBanner,
+                leagueId: Number(championship.leagueId)!,
                 authorId: authorId,
-                simulatorId: incoming.simulatorId,
-                backgroundUrl: "",
-                picUrl: ""
+                simulatorId: championship.simulatorId,
             }
-        });
+        }) as LeagueChampionship;
         
         // Inserción del calendario
-        await ChampionshipQuery.createCalendar(incoming.calendar, created.id);
+        await ChampionshipQuery.createCalendar(championship.calendar, created.id);
       
         const teamService = new TeamQuery();
-        const createdTeams = await teamService.createTeamsReturningIds(incoming.teams);
+        const createdTeams = await teamService.createTeamsReturningIds(championship.teams);
 
         // Inserción de la tabla foranea de los equipos y su campeonato.
         for (const i in createdTeams) {

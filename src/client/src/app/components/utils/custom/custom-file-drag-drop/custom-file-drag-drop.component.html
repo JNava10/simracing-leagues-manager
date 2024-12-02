@@ -1,16 +1,28 @@
-<div class="flex items-center justify-center w-full p-4">
-  <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 max-w-lg border-2 border-neutral-300 border-dashed rounded-xl cursor-pointer bg-neutral-50 dark:bg-neutral-800 hover:bg-neutral-100 dark:border-neutral-600 dark:hover:border-neutral-500 dark:hover:bg-neutral-700 transition-all shadow-md hover:shadow-lg">
-    <div class="flex flex-col items-center justify-center p-6">
-      <svg class="w-12 h-12 mb-3 text-neutral-400 dark:text-neutral-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 16h4a4 4 0 1 0 0-8h-.033A6.572 6.572 0 0 0 17 7.5 6.5 6.5 0 0 0 6.208 6.021C6.131 6.017 6.06 6 5.98 6A5 5 0 1 0 5.98 16h3.5M12 18V8m0 0L9 11m3-3 3 3"/>
-      </svg>
-      <p class="mb-1 text-lg font-semibold text-neutral-600 dark:text-neutral-300 text-center">Sube tu archivo</p>
-      <p class="mb-2 text-sm text-neutral-500 dark:text-neutral-400 text-center">Haz click o arrastra y suelta aquí</p>
-      <!-- Texto de ayuda opcional -->
-      <p class="text-xs text-neutral-400 dark:text-neutral-500 hidden sm:block">Formatos permitidos: SVG, PNG, JPG, GIF (Máx. 800x400px)</p>
-    </div>
-    <input id="dropzone-file" type="file" class="hidden" />
-  </label>
+<div (click)="triggerFileInput($event)" [ngClass]="[styleClass, ' w-full']">
+  <div class="flex items-center justify-center">
+    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 max-w-lg border-2 dark:border-dark-text-inactive bg-dark-background-deepest rounded-xl cursor-pointer transition-all">
+      @if (showLabel) {
+        <label class="block font-medium mb-3  text-2xl dark:text-dark-main">{{label}}<span *ngIf="this.required">*</span></label>
+      }
+      <div class="flex flex-col items-center justify-center p-6">
+        <i class="dark:text-dark-text-inactive fa-5x fa-solid fa-cloud"></i>
+        <p class="mb-1 text-lg font-semibold text-light-text dark:text-dark-text-inactive text-center">Sube tu archivo</p>
+
+        @if (file) {
+          <p class="text-xs text-light-text text-center dark:text-dark-text-inactive hidden sm:block">
+            {{file.name}}
+          </p>
+
+        }
+      </div>
+      <input
+        [(ngModel)]="value"
+        (ngModelChange)="writeValue($event)"
+        id="dropzone-file"
+        type="file"
+        class="hidden" />
+    </label>
+  </div>
 </div>
 
 

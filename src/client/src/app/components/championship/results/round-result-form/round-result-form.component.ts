@@ -135,6 +135,7 @@ export class RoundResultFormComponent implements OnInit {
   importRfactorFile = async () => {
     const files = await this.globalHelper.openFileDialog({
       validExtensions: ['xml'],
+      multiple: false
     }) as FileList;
 
     this.championshipService.sendRfactorResults(files[0], this.champId!, this.round).subscribe(res => this.handleRfactorResults(res));
