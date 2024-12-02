@@ -164,20 +164,23 @@ export class ChampionshipController {
         try {
             const id = Number(req.params['championshipId']!);
             const data = await ChampionshipQuery.getFull(id);
+
+            if (!data) {
+                return sendSuccessResponse({
+                    msg: 'No se han encontrado resultados del campeonato.',
+                    status: 404
+                }, res);
+            }
+
             const championship: Championship = {
                 id: data.id,
                 name: data.name,
                 description: data.description,
+                categories: data.categories.map(item => item.category),
                 calendar: data.calendar,
                 simulator: data.simulator,
                 teams: data.teams.map(item => item.team),
             };
-
-            if (!data) {
-                return sendErrorResponse({
-                    error: 'No se han encontrado resultados del campeonato.',
-                }, res);
-            }
 
             return sendSuccessResponse({
                 data: championship,

@@ -154,6 +154,12 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
       description: championship.description
     });
 
+    if (championship.categories) {
+      championship.categories.forEach(category => {
+        if (category && category.id) this.selectedCategories.set(category.id, category);
+      })
+    }
+
     this.raceCalendar = championship.calendar!;
   }
 

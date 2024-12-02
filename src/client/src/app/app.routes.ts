@@ -23,12 +23,10 @@ import {ProfileInfoComponent} from "./components/profile/profile-info/profile-in
 import {
   EditChampionshipFormComponent
 } from "./components/championship/edit-championship/edit-championship-form.component";
-import {StrategyListComponent} from "./components/strategy/strategy-list/strategy-list.component";
 import {
   DefineStrategiesFormComponent
 } from "./components/strategy/define-strategies-form/define-strategies-form.component";
 import {InvitesComponent} from "./components/invites/invites/invites.component";
-import {ChampListComponent} from "./components/league/champ-list/champ-list.component";
 import {LeagueChampsComponent} from "./components/league/league-champs/league-champs.component";
 import {NotAuthComponent} from "./components/not-auth/not-auth.component";
 import {hasSessionGuard} from "./guards/has-session.guard";

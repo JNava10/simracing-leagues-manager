@@ -48,5 +48,6 @@ export class OwnLeagueListComponent implements OnInit {
   goToCreateLeague = () => {
      this.globalHelper.navigateFromRoot(`newleague`);
   };
+
   protected readonly tooltipClasses = tooltipClasses;
 }

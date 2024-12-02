@@ -84,8 +84,10 @@ export class ChampionshipQuery {
                 leagueId: Number(incoming.leagueId)!,
                 authorId: authorId,
                 simulatorId: incoming.simulatorId,
+                backgroundUrl: "",
+                picUrl: ""
             }
-        }) as Championship;
+        });
         
         // Inserción del calendario
         await ChampionshipQuery.createCalendar(incoming.calendar, created.id);

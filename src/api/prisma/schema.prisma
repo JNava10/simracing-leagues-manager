@@ -13,11 +13,10 @@ model Category {
   description String @db.VarChar(255)
 
   userFavourites FavouriteCategories[]
-  championships  ChampionshipCategories[]
-
-  ChampionshipPresetCategories ChampionshipPresetCategories[]
-
-  TeamCategory TeamCategory[]
+  championships  ChampionshipCategory[]
+  presets        ChampionshipPresetCategories[]
+  events         EventCategory[]
+  TeamCategory   TeamCategory[]
 }
 
 // Usuarios
@@ -126,14 +125,16 @@ model LeagueMember {
 }
 
 model LeagueEvent {
-  id          Int      @id @default(autoincrement())
-  leagueId    Int
-  name        String   @db.VarChar(255)
-  description String   @db.VarChar(255)
-  authorId    Int
-  layoutId    Int
-  simulatorId Int
-  createdAt   DateTime @default(now()) @db.DateTime(6)
+  id            Int      @id @default(autoincrement())
+  leagueId      Int
+  name          String   @db.VarChar(255)
+  description   String   @db.VarChar(255)
+  authorId      Int
+  layoutId      Int
+  picUrl        String   @db.VarChar(255)
+  backgroundUrl String   @db.VarChar(255)
+  simulatorId   Int
+  createdAt     DateTime @default(now()) @db.DateTime(6)
 
   author    User?          @relation(fields: [authorId], references: [id])
   league    League?        @relation(fields: [leagueId], references: [id])
@@ -141,8 +142,8 @@ model LeagueEvent {
   layout    TrackLayout?   @relation(fields: [layoutId], references: [id])
 
   users      ChampionshipEntry[]
-  categories ChampionshipCategories[]
   teams      EventTeam[]
+  categories EventCategory[]
 }
 
 model EventTeam {
@@ -158,22 +159,25 @@ model EventTeam {
 // Campeonatos de cada liga
 
 model LeagueChampionship {
-  id          Int      @id @default(autoincrement())
-  leagueId    Int
-  name        String   @db.VarChar(255)
-  authorId    Int
-  description String   @db.VarChar(255)
-  simulatorId Int
-  createdAt   DateTime @default(now()) @db.DateTime(6)
+  id            Int      @id @default(autoincrement())
+  leagueId      Int
+  name          String   @db.VarChar(255)
+  picUrl        String   @db.VarChar(255)
+  backgroundUrl String   @db.VarChar(255)
+  description   String   @db.VarChar(255)
+  authorId      Int
+  simulatorId   Int
+  createdAt     DateTime @default(now()) @db.DateTime(6)
 
   author    User?          @relation(fields: [authorId], references: [id])
   league    League?        @relation(fields: [leagueId], references: [id])
   simulator SimulatorGame? @relation(fields: [simulatorId], references: [id])
 
-  calendar   ChampionshipRound[]
-  users      ChampionshipEntry[]
-  categories ChampionshipCategories[]
-  teams      ChampionshipTeam[]
+  calendar    ChampionshipRound[]
+  users       ChampionshipEntry[]
+  categories  ChampionshipCategory[]
+  teams       ChampionshipTeam[]
+  scoreSystem ScoreSystem[]
 }
 
 model ChampionshipRound {
@@ -191,13 +195,22 @@ model ChampionshipRound {
   layout       TrackLayout        @relation(fields: [layoutId], references: [id])
 }
 
-model ChampionshipCategories {
+model ChampionshipCategory {
   championshipId Int
   categoryId     Int
 
-  championship        LeagueChampionship @relation(fields: [championshipId], references: [id])
-  categories          Category           @relation(fields: [categoryId], references: [id])
-  EventChampionship   LeagueEvent?       @relation(fields: [eventChampionshipId], references: [id])
+  championship LeagueChampionship @relation(fields: [championshipId], references: [id])
+  categories   Category           @relation(fields: [categoryId], references: [id])
+
+  @@id(name: "keys", [championshipId, categoryId])
+}
+
+model EventCategory {
+  championshipId Int
+  categoryId     Int
+
+  event               LeagueEvent? @relation(fields: [eventChampionshipId], references: [id])
+  category            Category     @relation(fields: [categoryId], references: [id])
   eventChampionshipId Int?
 
   @@id(name: "keys", [championshipId, categoryId])
@@ -325,10 +338,10 @@ model ChampionshipPresetCategories {
 model ScoreSystem {
   id Int @id @default(autoincrement())
 
-  positions ScoreSystemPosition[]
-  extra     ScoreSystemExtra[]
-
-  ChampionshipPreset ChampionshipPreset[]
+  positions    ScoreSystemPosition[]
+  extra        ScoreSystemExtra[]
+  preset       ChampionshipPreset[]
+  championship LeagueChampionship[]
 }
 
 // Valores de puntuación de cada posición dentro de un sistema de puntuación.

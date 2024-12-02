@@ -1,5 +1,5 @@
 @if (members) {
-  <section class="p-3 gap-2 rounded-2xl bg-dark-background flex flex-col w-full h-[calc(100vh-8rem)]">
+  <section class="fixed p-3 gap-2 rounded-2xl bg-dark-background flex flex-col w-64 h-[calc(100vh-8rem)]">
     @for (member of members; track member.user.id) {
       <div class="flex gap-3">
         <app-image type="Circular" styleClass="size-24" [url]="member.user.profileUrl!"/>

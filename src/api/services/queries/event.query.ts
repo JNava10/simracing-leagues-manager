@@ -20,7 +20,9 @@ export class EventQuery {
                 authorId,
                 layoutId: event.layoutId,
                 simulatorId: event.simulatorId,
-                leagueId: event.leagueId
+                leagueId: event.leagueId,
+                backgroundUrl: event.backgroundUrl,
+                picUrl: event.picUrl,
             }}) as LeagueEvent;
 
         console.log(created);

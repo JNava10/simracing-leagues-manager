@@ -92,6 +92,8 @@ CREATE TABLE `LeagueEvent` (
     `description` VARCHAR(255) NOT NULL,
     `authorId` INTEGER NOT NULL,
     `layoutId` INTEGER NOT NULL,
+    `picUrl` VARCHAR(255) NOT NULL,
+    `backgroundUrl` VARCHAR(255) NOT NULL,
     `simulatorId` INTEGER NOT NULL,
     `createdAt` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
 
@@ -111,8 +113,10 @@ CREATE TABLE `LeagueChampionship` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `leagueId` INTEGER NOT NULL,
     `name` VARCHAR(255) NOT NULL,
-    `authorId` INTEGER NOT NULL,
+    `picUrl` VARCHAR(255) NOT NULL,
+    `backgroundUrl` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
+    `authorId` INTEGER NOT NULL,
     `simulatorId` INTEGER NOT NULL,
     `createdAt` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
 
@@ -134,7 +138,15 @@ CREATE TABLE `ChampionshipRound` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `ChampionshipCategories` (
+CREATE TABLE `ChampionshipCategory` (
+    `championshipId` INTEGER NOT NULL,
+    `categoryId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`championshipId`, `categoryId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `EventCategory` (
     `championshipId` INTEGER NOT NULL,
     `categoryId` INTEGER NOT NULL,
     `eventChampionshipId` INTEGER NULL,
@@ -349,6 +361,15 @@ CREATE TABLE `TyreWear` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `_LeagueChampionshipToScoreSystem` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_LeagueChampionshipToScoreSystem_AB_unique`(`A`, `B`),
+    INDEX `_LeagueChampionshipToScoreSystem_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `FavouriteSimulator` ADD CONSTRAINT `FavouriteSimulator_simulatorId_fkey` FOREIGN KEY (`simulatorId`) REFERENCES `SimulatorGame`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -410,13 +431,16 @@ ALTER TABLE `ChampionshipRound` ADD CONSTRAINT `ChampionshipRound_championshipId
 ALTER TABLE `ChampionshipRound` ADD CONSTRAINT `ChampionshipRound_layoutId_fkey` FOREIGN KEY (`layoutId`) REFERENCES `TrackLayout`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `ChampionshipCategories` ADD CONSTRAINT `ChampionshipCategories_championshipId_fkey` FOREIGN KEY (`championshipId`) REFERENCES `LeagueChampionship`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `ChampionshipCategory` ADD CONSTRAINT `ChampionshipCategory_championshipId_fkey` FOREIGN KEY (`championshipId`) REFERENCES `LeagueChampionship`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `ChampionshipCategories` ADD CONSTRAINT `ChampionshipCategories_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `ChampionshipCategory` ADD CONSTRAINT `ChampionshipCategory_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `ChampionshipCategories` ADD CONSTRAINT `ChampionshipCategories_eventChampionshipId_fkey` FOREIGN KEY (`eventChampionshipId`) REFERENCES `LeagueEvent`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `EventCategory` ADD CONSTRAINT `EventCategory_eventChampionshipId_fkey` FOREIGN KEY (`eventChampionshipId`) REFERENCES `LeagueEvent`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `EventCategory` ADD CONSTRAINT `EventCategory_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ChampionshipEntry` ADD CONSTRAINT `ChampionshipEntry_championshipId_fkey` FOREIGN KEY (`championshipId`) REFERENCES `LeagueChampionship`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -486,3 +510,9 @@ ALTER TABLE `Tyre` ADD CONSTRAINT `Tyre_carId_fkey` FOREIGN KEY (`carId`) REFERE
 
 -- AddForeignKey
 ALTER TABLE `TyreWear` ADD CONSTRAINT `TyreWear_tyreId_fkey` FOREIGN KEY (`tyreId`) REFERENCES `Tyre`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_LeagueChampionshipToScoreSystem` ADD CONSTRAINT `_LeagueChampionshipToScoreSystem_A_fkey` FOREIGN KEY (`A`) REFERENCES `LeagueChampionship`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_LeagueChampionshipToScoreSystem` ADD CONSTRAINT `_LeagueChampionshipToScoreSystem_B_fkey` FOREIGN KEY (`B`) REFERENCES `ScoreSystem`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

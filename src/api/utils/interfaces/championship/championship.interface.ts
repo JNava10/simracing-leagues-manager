@@ -9,12 +9,14 @@ export interface Championship {
     id?: number,
     name?: string,
     description?: string
-    categoryIds?: number[]
+    categories?: Category[]
     calendar?: ChampionshipRound[]
     scoreSystem?: ScoreSystem
     teams?: Team[]
     users?: ChampionshipEntry[]
     simulatorId?: number
+    picUrl?: string
+    backgroundUrl?: string
     simulator?: SimulatorGame
     leagueId?: number
 }
@@ -25,8 +27,9 @@ export interface ChampionshipCreation {
     description?: string
     categoryId?: number
     scoreSystemId?: number,
-    scoreSystem?: ScoreSystem,
     simulatorId?: number
+    picUrl?: string
+    backgroundUrl?: string
     calendar?: ChampionshipRoundCreating[]
     teams?: Team[]
     leagueId?: number
@@ -130,6 +133,8 @@ export interface LeagueEventCreation {
     id?: number,
     layoutId?: number,
     name?: string,
+    picUrl?: string
+    backgroundUrl?: string
     description?: string
     categoryIds?: number[]
     layout?: Layout
@@ -141,6 +146,8 @@ export interface LeagueEventCreation {
 export interface LeagueEvent {
     id?: number;
     name?: string;
+    picUrl?: string
+    backgroundUrl?: string
     description?: string;
     authorId?: number;
     layoutId?: number;
@@ -194,6 +201,7 @@ export interface LeagueChampionshipQuery {
     author: User;
     league: League;
     teams: ChampionshipTeamQuery[];
+    categories: ChampCategoryQuery[];
 }
 
 interface CalendarQuery {
@@ -211,4 +219,10 @@ interface ChampionshipTeamQuery {
     championshipId: number;
     teamId: number;
     team: Team;
+}
+
+interface ChampCategoryQuery {
+    championshipId: number;
+    categoryId: number;
+    category: Category;
 }

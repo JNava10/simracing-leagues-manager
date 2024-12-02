@@ -98,7 +98,7 @@ export class LeagueQuery {
             include: memberLeague.include
         }) as LeagueMemberQuery[];
 
-        return results.map(item => item.user);
+        return results.map(item => item.league);
     }
 
     static getUserLeagueIds = async (userId: number) => {
