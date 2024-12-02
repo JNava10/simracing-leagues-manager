@@ -209,7 +209,6 @@ export class BasicInfoEventFormComponent {
     let event = this.eventForm.value as LeagueEvent;
 
     event.leagueId = this.leagueId;
-    event.leagueId = this.leagueId;
     event.layout = this.selectedLayout!;
 
     this.selectedCategories.forEach(item => {

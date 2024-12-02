@@ -160,7 +160,7 @@ export interface LeagueEvent {
     layout?: Layout;
 
     users: ChampionshipEntry[];
-    eventTeams: EventTeam[];
+    teams: EventTeam[];
 }
 
 export interface EventTeam {

@@ -32,9 +32,11 @@ import {
 
 @Component({
   selector: 'app-league-member-list',
+  providers: [
+
+  ],
   standalone: true,
   imports: [
-    AsyncPipe,
     ButtonModule,
     ToolbarModule,
     ListboxModule,
@@ -45,7 +47,6 @@ import {
     DialogModule,
     SearchUsersBarComponent,
     CustomTextInputComponent,
-    NgIf
   ],
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.scss'

@@ -8,24 +8,22 @@ import {
 } from "../../utils/interfaces/championship/championship.interface";
 import {TeamQuery} from "./team.query";
 import {Layout} from "../../utils/interfaces/layout.interface";
+import {defaults} from "../../utils/constants/default.constants";
 
 export class EventQuery {
 
     static create = async (event: LeagueEventCreation, authorId: number) => {
-        // @ts-ignore
         const created = await prisma.leagueEvent.create({
+            // @ts-ignore
             data: {
                 name: event.name,
                 description: event.description,
-                authorId,
                 layoutId: event.layoutId,
                 simulatorId: event.simulatorId,
                 leagueId: event.leagueId,
-                backgroundUrl: event.backgroundUrl,
-                picUrl: event.picUrl,
-            }}) as LeagueEvent;
-
-        console.log(created);
+                backgroundUrl: event.backgroundUrl || defaults.leagueBanner,
+                picUrl: event.picUrl || defaults.leagueIcon,
+            }});
 
         const teamService = new TeamQuery();
         const createdTeams = await teamService.createTeamsReturningIds(event.teams);

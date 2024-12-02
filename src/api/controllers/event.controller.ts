@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {User} from "../utils/interfaces/user.interface";
 import {UserQuery} from "../services/queries/user.query";
-import {sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
+import {handleRequestError, sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {Notification} from "../utils/interfaces/notification.interface";
 import {EventQuery} from "../services/queries/event.query";
@@ -22,11 +22,7 @@ export class EventController {
                 }, res
             );
         } catch (error) {
-            console.error(error);
-            
-            sendErrorResponse({
-                error: `Ha ocurrido un error al crear el usuario: ${error}`
-            }, res)
+            handleRequestError(error, res);
         }
     };
 }

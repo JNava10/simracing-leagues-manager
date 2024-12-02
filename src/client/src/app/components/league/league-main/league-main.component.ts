@@ -39,13 +39,7 @@ export class LeagueMainComponent implements OnInit {
   subroute?: string;
 
   ngOnInit() {
-
-    // Obteniendo el ID de la liga desde los parametros de la ruta.
-    // Puede usarse route.snapshot como alternativa sin tener que suscribirse.
-    this.route.paramMap.subscribe(params => {
-      const id = params.get("leagueId");
-      this.leagueId = Number(id) ?? null;
-    })
+    this.leagueId = this.route.snapshot.params['leagueId'];
 
     if (this.leagueId !== null && this.leagueId !== undefined) {
       this.leagueService.getLeague(this.leagueId).subscribe(res => this.handleLeague(res))

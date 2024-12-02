@@ -8,10 +8,13 @@ import {authInterceptor} from "./interceptor/auth.interceptor";
 import {provideCharts, withDefaultRegisterables} from "ng2-charts";
 import {MessageService} from "primeng/api";
 import {GlobalHelper} from "./helpers/global.helper";
+import {TableModule, TableService} from "primeng/table";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
+    TableModule,
+    TableService,
     provideAnimations(),
     provideCharts(withDefaultRegisterables()),
     provideZoneChangeDetection({ eventCoalescing: true }),

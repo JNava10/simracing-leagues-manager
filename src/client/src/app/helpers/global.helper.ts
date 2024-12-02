@@ -76,6 +76,8 @@ export class GlobalHelper {
       return defaultRes
     }
 
+    console.log(res)
+
     return throwError(() => new Error(errorMsg));
   };
 

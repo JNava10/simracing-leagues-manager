@@ -4,12 +4,16 @@ import {CustomDropdownComponent} from "../dropdown/custom-dropdown/custom-dropdo
 import {Router} from "@angular/router";
 import {AuthApiService} from "../../../services/api/auth-api.service";
 import {AuthData} from "../../../utils/interfaces/auth.interface";
+import {CustomSolidButtonComponent} from "../button/solid-button/custom-solid-button.component";
+import {SoftButtonComponent} from "../button/soft-button/soft-button.component";
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    CustomDropdownComponent
+    CustomDropdownComponent,
+    CustomSolidButtonComponent,
+    SoftButtonComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'

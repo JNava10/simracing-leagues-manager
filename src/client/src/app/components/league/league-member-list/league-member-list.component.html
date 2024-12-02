@@ -19,14 +19,14 @@
                   <td>{{member.user.nickname}}</td>
                   <td>{{member.joinedAt | date}}</td>
                   <td>
-                    <div *ngIf="isAdmin()" class="flex gap-2">
+                    <div class="flex gap-2">
                       <!-- Botón para kickear al miembro -->
                       <app-solid-button
                         (click)="kickMember(member.user.id!)"
                         border="Rounded"
                         type="Solid"
                         color="red">
-                        <span content-solid>Kickear</span>
+                        Kickear
                       </app-solid-button>
 
                       <!-- Botón para banear permanentemente al miembro -->
@@ -36,7 +36,7 @@
                         type="Solid"
                         (click)="showBanReason(member)"
                       >
-                        <span content-solid>Banear</span>
+                        Banear
                       </app-solid-button>
                     </div>
 

@@ -4,13 +4,15 @@ import {DatePipe} from "@angular/common";
 import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {LeagueApiService} from "../../../services/api/league-api.service";
 import {IndexableMap} from "../../../utils/classes/IndexableMap";
+import {CustomEmptyComponent} from "../../utils/custom/custom-empty/custom-empty.component";
 
 @Component({
   selector: 'app-invite-list',
   standalone: true,
   imports: [
     DatePipe,
-    CustomSolidButtonComponent
+    CustomSolidButtonComponent,
+    CustomEmptyComponent
   ],
   templateUrl: './invite-list.component.html',
   styleUrl: './invite-list.component.scss'
