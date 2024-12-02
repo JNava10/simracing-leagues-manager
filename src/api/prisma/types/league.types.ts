@@ -1,9 +1,16 @@
 import { Prisma } from '@prisma/client'
 
-export const leagueInviteFull = Prisma.validator<Prisma.LeagueMemberDefaultArgs>()({
+export const memberLeague = Prisma.validator<Prisma.LeagueMemberDefaultArgs>()({
     include: {
         league: true
     }
 })
 
-export type LeagueInviteFull = Prisma.LeagueMemberGetPayload<typeof leagueInviteFull>;
+export const memberUser = Prisma.validator<Prisma.LeagueMemberDefaultArgs>()({
+    include: {
+        league: true
+    }
+})
+
+export type LeagueInviteFull = Prisma.LeagueMemberGetPayload<typeof memberLeague>;
+export type MemberLeaguesQuery = Prisma.LeagueMemberGetPayload<typeof memberLeague>;

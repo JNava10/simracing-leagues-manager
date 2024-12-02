@@ -12,8 +12,8 @@ export class SocketRouter {
 
     service: SocketService
 
-    listen = () => {
-        this.service.connectUser()
+    listen = async () => {
+        await this.service.connectUser()
 
         this.socket.on("disconnect", () => this.service.disconnect);
     }

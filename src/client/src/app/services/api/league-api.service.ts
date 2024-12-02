@@ -185,6 +185,28 @@ export class LeagueApiService {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
         return this.globalHelper!.handleDefaultData<LeagueMember[]>(res)!;
+      })
+    );
+  }
+
+  getMemberById = (leagueId: number, userId: number) => {
+    const url = `${devEnv.apiEndpoint}/league/${leagueId}/members/${userId}`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<LeagueMember>>(url, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<LeagueMember>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<LeagueMember>(res)!;
 
       })
     );

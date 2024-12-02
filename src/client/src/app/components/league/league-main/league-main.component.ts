@@ -9,6 +9,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { LeagueNavbarComponent } from "../league-sidebar/league-navbar.component";
 import {ImageComponent} from "../../utils/images/rounded-images/image.component";
 import {LeagueMembersBarComponent} from "../league-members-bar/league-members-bar.component";
+import {ListenerSocketService} from "../../../services/socket/listener.socket.service";
 
 @Component({
   selector: 'app-league-main',
@@ -26,7 +27,12 @@ import {LeagueMembersBarComponent} from "../league-members-bar/league-members-ba
   styleUrl: './league-main.component.scss'
 })
 export class LeagueMainComponent implements OnInit {
-  constructor(private leagueService: LeagueApiService, protected route: ActivatedRoute, protected router: Router) {}
+  constructor(
+    private leagueService: LeagueApiService,
+    protected route: ActivatedRoute,
+    protected router: Router,
+    private socketListener: ListenerSocketService
+  ) {}
 
   league?: League;
   leagueId?: number;
@@ -44,6 +50,8 @@ export class LeagueMainComponent implements OnInit {
     if (this.leagueId !== null && this.leagueId !== undefined) {
       this.leagueService.getLeague(this.leagueId).subscribe(res => this.handleLeague(res))
     }
+
+    this.socketListener.leagueEdit(this.onSocketEdit)
   }
 
   // Botones para el panel de pestañas
@@ -57,5 +65,9 @@ export class LeagueMainComponent implements OnInit {
   private handleLeague = (res: League) => {
     console.log(this.league)
     this.league = res
+  }
+
+  private onSocketEdit = (id: number) => {
+    this.leagueId = Number(id);
   }
 }

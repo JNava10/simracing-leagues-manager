@@ -79,5 +79,6 @@ export class LoginComponent {
     this.globalHelper.saveSocketKey(loggedData.socketKey);
     this.globalHelper.setUserId(loggedData.id!);
     this.globalHelper.navigateFromRoot("leagues")
+
   }
 }

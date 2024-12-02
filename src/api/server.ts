@@ -14,10 +14,10 @@ import {socketAuth} from "./middlewares/socketAuth";
 const setupWebSockets = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, handleSocketListening: () => void) => {
     io.httpServer.on("listening", handleSocketListening)
     io.use(socketAuth);
-    io.on('connection', (socket: SocketRequest) => {
-        const listener = new SocketRouter(socket, io);
+    io.on('connection', async (socket: SocketRequest) => {
+        const router = new SocketRouter(socket, io);
 
-        listener.listen();
+        await router.listen();
     });
 };
 

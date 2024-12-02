@@ -2,7 +2,7 @@ import {User} from "@prisma/client";
 
 export interface League {
     id?: number;
-    name: string;
+    name?: string;
     description?: string;
     color?: string;
     picUrl?: string;

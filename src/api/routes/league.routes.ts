@@ -50,6 +50,14 @@ router.get("/", [validateToken, isBanned], controller.searchLeagues);
  */
 router.get("/:leagueId/members", [validateToken, isBanned], controller.getLeagueMembers);
 
+
+/**
+ * @route GET /:id/members
+ * @description Obtener miembros de una liga específica
+ */
+router.get("/:leagueId/members/:userId", [validateToken, isBanned], controller.getMemberById);
+
+
 /**
  * @route GET /:id/not-members
  * @description Buscar usuarios que no son miembros de la liga especificada

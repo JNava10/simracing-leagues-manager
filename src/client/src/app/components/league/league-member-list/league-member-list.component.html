@@ -14,7 +14,7 @@
             </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-              @for (member of ($members | async)!; track $index) {
+              @for (member of (members.values())!; track $index) {
                 <tr>
                   <td>{{member.user.nickname}}</td>
                   <td>{{member.joinedAt | date}}</td>

@@ -8,6 +8,8 @@ import {LeagueChampionship} from "../../../../utils/interfaces/championship.inte
 import {AsyncPipe} from "@angular/common";
 import {LeagueApiService} from "../../../../services/api/league-api.service";
 import {LeagueAdminSidebarComponent} from "../league-admin-sidebar/league-admin-sidebar.component";
+import {Socket} from "socket.io-client";
+import {ListenerSocketService} from "../../../../services/socket/listener.socket.service";
 
 @Component({
   selector: 'app-league-admin-panel',
@@ -24,7 +26,8 @@ import {LeagueAdminSidebarComponent} from "../league-admin-sidebar/league-admin-
 export class LeagueAdminPanelComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private leagueService: LeagueApiService
+    private leagueService: LeagueApiService,
+    private socketListener: ListenerSocketService
   ) {}
 
   ngOnInit(): void {

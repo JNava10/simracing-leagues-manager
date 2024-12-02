@@ -13,6 +13,7 @@ import {isValidNumber} from "../helpers/validators.helper";
 import {handleRequestError, sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import {LeagueInviteFull} from "../prisma/types/league.types";
 import {Championship} from "../utils/interfaces/championship/championship.interface";
+import {SocketService} from "../services/socket/socket.service";
 
 export const editLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -27,6 +28,8 @@ export const editLeague = async (req: CustomRequest, res: Response) => {
         const leagueId = Number(req.params['leagueId']);
         const data = req.body as League;
         const league = await LeagueQuery.editLeague(leagueId, data);
+
+
 
         sendSuccessResponse({
             data: league,
@@ -116,6 +119,26 @@ export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
 
         sendSuccessResponse({
             data: leagueMembers,
+            msg: "Se han obtenido los miembros de la liga correctamente."
+        }, res);
+    } catch (e) {
+        sendErrorResponse({ error: e.message }, res);
+    }
+};
+
+export const getMemberById = async (req: CustomRequest, res: Response) => {
+    try {
+        const validId = isValidNumber(req.params['leagueId']);
+        if (!validId) {
+            return res.send(`No se ha indicado un ID de liga válido.`);
+        }
+
+        const leagueId = Number(req.params['leagueId']);
+        const userId = Number(req.params['userId']);
+        const leagueMember = await LeagueQuery.getLeagueMember(leagueId, userId);
+
+        sendSuccessResponse({
+            data: leagueMember,
             msg: "Se han obtenido los miembros de la liga correctamente."
         }, res);
     } catch (e) {
@@ -220,6 +243,8 @@ export const acceptLeagueInvite = async (req: CustomRequest, res: Response) => {
         const leagueId = Number(req.params['leagueId']);
         const userId = req.user.id;
         const executed = await LeagueQuery.acceptPendingMember(userId, leagueId) !== null;
+
+        SocketService.leagueMemberAdded(leagueId, userId)
 
         sendSuccessResponse({
             data: {executed},

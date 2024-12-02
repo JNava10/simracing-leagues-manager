@@ -9,7 +9,6 @@ import {NavbarComponent} from "./components/utils/custom-navbar/navbar.component
 import {MessageModule} from "primeng/message";
 import {GlobalHelper} from "./helpers/global.helper";
 import {SocketService} from "./services/socket/socket.service";
-import {SocketClientService} from "./services/socket/socket-client.service";
 import {initFlowbite} from "flowbite";
 import {OwnLeagueListComponent} from "./components/league/league-list/own-league-list.component";
 
@@ -21,11 +20,12 @@ import {OwnLeagueListComponent} from "./components/league/league-list/own-league
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit, AfterViewInit {
-  constructor(private socketClient: SocketClientService) { }
+export class AppComponent implements AfterViewInit, OnInit {
+
+  constructor(private socketService: SocketService) {}
 
   ngOnInit(): void {
-    this.socketClient.connect();
+      this.socketService.connect()
   }
 
   ngAfterViewInit(): void {

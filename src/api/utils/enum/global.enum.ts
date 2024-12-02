@@ -1,3 +1,7 @@
+
+/**
+ * Nivel de rendimiento del piloto, dependiendo de cuanto rendimiento se quiera simular
+ */
 export enum DrivingPerformance {
     Qualy = 99.5,
     Fast = 98.5,
@@ -5,6 +9,9 @@ export enum DrivingPerformance {
     Managing = 95,
 }
 
+/**
+ * Grados de agarre (grip) del asfalto, dependiendo de las condiciones que se quieran simular. (Sacados de Assetto Corsa)
+ */
 export enum TrackGrip {
     Dusty = 86,
     Green = 90,
@@ -13,11 +20,20 @@ export enum TrackGrip {
     Optimum = 100,
 }
 
-export enum StrategyType {
-    Manage,
-}
-
+/**
+ * Tipos de token de autenticacion para la API
+ */
 export enum TokenType {
     Socket,
     Api
+}
+
+/**
+ * Tipos de rooms de Socket.io
+ * Cada valor contiene el prefix del tipo correspondiente.
+*/
+export enum RoomType {
+    League = 'l',
+    Championship = 'c',
+    Other = ''
 }

@@ -151,7 +151,7 @@
     [dismissableMask]="true">
     <ng-template pTemplate="headless">
       <div class="grid grid-cols-3">
-        @for (tyre of selectedCar?.tyres; track $index) {
+        @for (tyre of selectedCar.tyres; track $index) {
           <div (click)="selectTyre(tyre)" class="w-10 h-5 hover:bg-dark-background-deepest cursor-pointer">
             <span>{{tyre.name}}</span>
             <span>{{tyre.description}}</span>
