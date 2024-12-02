@@ -43,4 +43,23 @@ export class AuthApiService {
       })
     )
   }
+
+  logout = () => {
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.put<DefaultRes<AuthData>>(`${devEnv.apiEndpoint}/auth/logout`, {}, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<AuthData>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        return this.globalHelper!.handleDefaultData<AuthData>(res)!;
+      })
+    )
+  }
 }

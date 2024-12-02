@@ -10,6 +10,6 @@
     <div (click)="globalHelper.navigateFromRoot('presets')" class="text-lg no-underline  cursor-pointer select-none hover:text-dark-main">Comunidad</div>
     <div (click)="globalHelper.navigateFromRoot('strategy')" class="text-lg no-underline cursor-pointer select-none hover:text-dark-main">Estrategias</div>
     <div (click)="globalHelper.navigateFromRoot(getProfileRoute())" class="text-lg no-underline  cursor-pointer select-none hover:text-dark-main">Perfil</div>
-    <div class="text-lg dark:text-white cursor-pointer select-none dark:hover:text-dark-main">Cerrar Sesión</div>
+    <div class="text-lg dark:text-white cursor-pointer select-none dark:hover:text-dark-main" (click)="logout()">Cerrar Sesión</div>
   </div>
 </nav>

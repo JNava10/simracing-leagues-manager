@@ -40,6 +40,10 @@ export class GlobalHelper {
     return this.storageHelper!.get(this.apiName);
   }
 
+  removeTokens = () => {
+    this.storageHelper!.removeAll();
+  }
+
   getSocketToken = () => {
     console.log(this.storageHelper!.get(this.socketName))
     return this.storageHelper!.get(this.socketName);

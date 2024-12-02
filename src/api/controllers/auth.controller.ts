@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 import {AccessPayload, LoginData, SocketPayload} from "../utils/interfaces/login.interface";
-import { UserQuery } from "../services/queries/user.query";
-import { generateToken } from "../helpers/auth.helper";
+import {UserQuery} from "../services/queries/user.query";
+import {generateToken} from "../helpers/auth.helper";
 import {handleRequestError, sendSuccessResponse, verifyPassword} from "../helpers/common.helper";
-import { User } from "../utils/interfaces/user.interface";
+import {User} from "../utils/interfaces/user.interface";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {Messages} from "../utils/enum/messages.enum";
 import {tr} from "@faker-js/faker";
@@ -37,10 +37,8 @@ export class AuthController {
 
     static async login(req: Request, res: Response): Promise<void> {
         try {
-            const { nickname, email, password } = req.body as LoginData;
+            const {nickname, email, password} = req.body as LoginData;
             let user: User;
-
-            console.log(nickname, email, password);
 
             if (nickname) {
                 user = await AuthController.userService.getUserByNickname(nickname);
@@ -88,4 +86,31 @@ export class AuthController {
             handleRequestError(error, res)
         }
     }
+
+    static logout = (req, res) => {
+        const token = req.header('token');
+
+        if (!token) {
+            sendSuccessResponse({msg: "No se ha encontrado el token", status: 400, data: {}}, res)
+            return;
+        }
+
+        const isBlacklisted = !this.addToBlacklist(token);
+
+        sendSuccessResponse({
+                msg: "Se ha cerrado sesión correctamente",
+                status: 200,
+                data: {auth: isBlacklisted},
+            }, res)
+    }
+
+    private static addToBlacklist = (token: string) => {
+        AuthController.blacklistedTokens.push(token)
+
+        return AuthController.blacklistedTokens.find(token => token) !== null
+    }
+
+    private static blacklistedTokens = [];
+
+
 }

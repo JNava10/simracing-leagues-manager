@@ -28,5 +28,6 @@ router.post("/login", [
 
 router.post("/login", [validateToken], controller.login);
 router.get("/", [validateToken], controller.isAuth);
+router.put("/logout", [validateToken], controller.logout);
 
 export default router;

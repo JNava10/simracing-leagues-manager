@@ -22,7 +22,7 @@ export class StorageHelper {
   }
 
   remove = (key: string)  => {
-    return localStorage.removeItem(key)
+    return localStorage.removeItem(`${this.prefix}_${key}`)
   }
 
   removeAll = ()  => {
