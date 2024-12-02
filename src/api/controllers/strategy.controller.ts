@@ -10,6 +10,7 @@ import {trackSeedList} from "../default/track.list";
 import {StrategyService} from "../services/strategy.service";
 import {StrategyQuery} from "../services/queries/strategy.query";
 import {Messages} from "../utils/enum/messages.enum";
+import {SearchCarProps, SearchCategoryProps} from "../utils/props/category.prop";
 
 export class StrategyController {
     static getStrategies = async (req: Request, res: Response): Promise<void> => {
@@ -50,12 +51,15 @@ export class StrategyController {
 
     static getBaselineCars = async (req: Request, res: Response): Promise<void> => {
         try {
-            const cars = await StrategyQuery.getAllCars();
+
+            const props = req.query as SearchCarProps;
+
+            const cars = await StrategyQuery.searchCarsByName(props.name);
 
             sendSuccessResponse(
                 {
                     data: cars,
-                    status: 201,
+                    status: 200,
                     msg: Messages.searchSuccess,
                 },
                 res

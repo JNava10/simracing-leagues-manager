@@ -9,8 +9,8 @@
 
 
   <div class="flex-col mx-[5%]">
-    <div class="grid gap-12 p-3 grid-cols-2 max-h-full w-full  rounded-2xl bg-dark-background">
-      <form class="grid grid-cols-3 gap-3">
+    <div class="grid gap-12 p-3 grid-cols-6 max-h-full w-full  rounded-2xl bg-dark-background">
+      <form class="grid grid-cols-3 gap-3 col-span-3">
         <div>
           @if (selectedLayout) {
             <div class="flex max-w-full overflow-y-auto justify-center items-center flex-col p-3 bg-dark-background-deepest w-full h-full">
@@ -53,13 +53,13 @@
             <div class="flex flex-col items-center pb-2 bg-dark-background-deepest justify-center">
 
               <app-custom-empty
-                title="No hay ningun trazado selec."
+                title="No hay ningun coche selec."
                 description="Pulsa en la lupa para buscar"
                 [showDescription]="false"
               />
 
               <div class="flex justify-center">
-                <app-soft-button color="indigo" (click)="showSearchTrack()">
+                <app-soft-button color="indigo" (click)="showSearchCar()">
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </app-soft-button>
               </div>
@@ -76,6 +76,37 @@
           </div>
         </div>
       </form>
+
+      <div class="flex h-full col-span-2 flex-col gap-2">
+        <span class="text-3xl font-bold">Stints</span>
+        @if (selectedCar) {
+          <div class="flex justify-start items-start gap-3">
+            @for (tyre of selectedTyres; track $index) {
+              <div class="w-20 h-20">
+                <span class="font-extrabold text-2xl" [ngStyle]="{'color': tyre.color}">{{tyre.name}}</span>
+              </div>
+            }
+            <div>
+              <div>
+                <app-soft-button (click)="showChoosingTyre()" color="red">
+                  <i class="fa-solid fa-plus"></i>
+                </app-soft-button>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <app-custom-empty
+            title="Selecciona primero un coche"
+            description="Debes seleccionar primero un coche para seleccionar neumaticos"
+          />
+        }
+      </div>
+
+      <div class="flex flex-col justify-center">
+        <app-soft-button color="purple" (click)="getStrategy()">
+          Obtener estrategia
+        </app-soft-button>
+      </div>
     </div>
   </div>
 </section>
@@ -95,3 +126,39 @@
   </ng-template>
 </p-dialog>
 
+<p-dialog
+  contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+  showHeader="false"
+  styleClass="flex gap-1 dark:bg-dark-background"
+  [(visible)]="searchingCar" [modal]="true"
+  [dismissableMask]="true">
+  <ng-template pTemplate="headless">
+    <div>
+      <app-baseline-car-search
+        (onConfirm)="confirmCar($event)"
+      />
+    </div>
+  </ng-template>
+</p-dialog>
+
+
+@if (selectedCar) {
+  <p-dialog
+    contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+    showHeader="false"
+    styleClass="flex gap-1 dark:bg-dark-background w-30 h-15"
+    [(visible)]="choosingTyre" [modal]="true"
+    [dismissableMask]="true">
+    <ng-template pTemplate="headless">
+      <div class="grid grid-cols-3">
+        @for (tyre of selectedCar?.tyres; track $index) {
+          <div (click)="selectTyre(tyre)" class="w-10 h-5 hover:bg-dark-background-deepest cursor-pointer">
+            <span>{{tyre.name}}</span>
+            <span>{{tyre.description}}</span>
+          </div>
+        }
+      </div>
+    </ng-template>
+  </p-dialog>
+
+}

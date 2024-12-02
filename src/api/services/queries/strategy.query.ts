@@ -14,9 +14,9 @@ export class StrategyQuery {
         });
     };
 
-    static getCarById = async (id: number) => {
-        return prisma.baselineCar.findFirst({
-            where: {id},
+    static searchCarsByName = async (name: string) => {
+        return prisma.baselineCar.findMany({
+            where: {name: {contains: name}},
             include: {
                 tyres: {
                     include: {wearList: true}

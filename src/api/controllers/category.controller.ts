@@ -18,7 +18,6 @@ export const getAll = async (req: CustomRequest, res: Response) => {
 
 export const search = async (req: CustomRequest, res: Response) => {
     try {
-        console.log('Debug: buscando categorias...', now()); // TODO: Borrar
         const props = req.query as SearchCategoryProps;
 
         const categories = await CategoryQuery.search(props);

@@ -12,5 +12,6 @@ const controller = StrategyController
  * @description Crear una nueva liga
  */
 router.post("/", [], controller.getStrategies);
+router.get("/car/search", [], controller.getBaselineCars);
 
 export default router;
