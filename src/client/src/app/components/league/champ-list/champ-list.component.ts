@@ -3,12 +3,14 @@ import {LeagueChampionship} from "../../../utils/interfaces/championship.interfa
 import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {Route} from "@angular/router";
 import {GlobalHelper} from "../../../helpers/global.helper";
+import {ImageComponent} from "../../utils/images/rounded-images/image.component";
 
 @Component({
   selector: 'app-champ-list',
   standalone: true,
   imports: [
-    CustomSolidButtonComponent
+    CustomSolidButtonComponent,
+    ImageComponent
   ],
   templateUrl: './champ-list.component.html',
   styleUrl: './champ-list.component.scss'

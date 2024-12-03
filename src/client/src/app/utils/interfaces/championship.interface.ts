@@ -19,6 +19,7 @@ export interface LeagueChampionship {
   simulatorId?: number
   simulator?: SimulatorGame
   leagueId?: number
+  picUrl?: string
 }
 
 export interface LeagueEvent {
