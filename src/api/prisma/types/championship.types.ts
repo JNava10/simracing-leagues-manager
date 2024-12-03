@@ -53,6 +53,12 @@ export const championshipFull = Prisma.validator<Prisma.LeagueChampionshipDefaul
                 team: true
             }
         },
+        simulator: true,
+        scoreSystem: {
+            include: {
+                positions: true
+            }
+        }
     }
 })
 

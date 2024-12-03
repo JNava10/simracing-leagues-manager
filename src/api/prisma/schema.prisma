@@ -161,24 +161,25 @@ model EventTeam {
 
 model LeagueChampionship {
   id            Int      @id @default(autoincrement())
-  leagueId      Int
   name          String   @db.VarChar(255)
   picUrl        String   @db.VarChar(255)
   backgroundUrl String   @db.VarChar(255)
   description   String   @db.VarChar(255)
   authorId      Int
+  leagueId      Int
   simulatorId   Int
+  scoreSystemId Int
   createdAt     DateTime @default(now()) @db.DateTime(6)
 
-  author    User?          @relation(fields: [authorId], references: [id])
-  league    League?        @relation(fields: [leagueId], references: [id])
-  simulator SimulatorGame? @relation(fields: [simulatorId], references: [id])
+  author      User?          @relation(fields: [authorId], references: [id])
+  league      League?        @relation(fields: [leagueId], references: [id])
+  simulator   SimulatorGame? @relation(fields: [simulatorId], references: [id])
+  scoreSystem ScoreSystem?   @relation(fields: [scoreSystemId], references: [id])
 
-  calendar    ChampionshipRound[]
-  users       ChampionshipEntry[]
-  categories  ChampionshipCategory[]
-  teams       ChampionshipTeam[]
-  scoreSystem ScoreSystem[]
+  calendar   ChampionshipRound[]
+  users      ChampionshipEntry[]
+  categories ChampionshipCategory[]
+  teams      ChampionshipTeam[]
 }
 
 model ChampionshipRound {
@@ -357,7 +358,6 @@ model ScoreSystemPosition {
 // Definición de las opciones extra dentro de los sistemas de puntuación (pole, vuelta rapida...).
 model ExtraScore {
   id               Int                @id @default(autoincrement())
-  name             String
   scoreSystemExtra ScoreSystemExtra[]
 }
 

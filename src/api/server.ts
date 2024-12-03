@@ -1,5 +1,6 @@
 import {config} from "dotenv";
 import { v2 as cloudinary } from 'cloudinary';
+import childProcess from "child_process";
 
 config()
 
@@ -10,6 +11,7 @@ const port = process.env.PORT || 3000;
 import {DefaultEventsMap, Server} from "socket.io";
 import {SocketRequest} from "./utils/classes/socket";
 import {socketAuth} from "./middlewares/socketAuth";
+
 
 const setupWebSockets = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, handleSocketListening: () => void) => {
     io.httpServer.on("listening", handleSocketListening)
@@ -30,22 +32,34 @@ function setupCloudService() {
 }
 
 const listenServer = () => {
-    const server = app.listen(port, handleListening)
+    try {
+        const server = app.listen(port, handleListening)
 
-    const io = new Server(server, {
-        cors: {
-            origin: process.env.FRONTEND_ORIGIN,
-            methods: '*'
+        const io = new Server(server, {
+            cors: {
+                origin: process.env.FRONTEND_ORIGIN,
+                methods: '*'
+            }
+        });
+
+        const handleSocketListening = () => {
+            console.log("Socket.io server ready.");
+        };
+
+        setupWebSockets(io, handleSocketListening);
+
+        setupCloudService();
+    } catch (e) {
+        console.error('a')
+        if (e.name === "EADDRINUSE") {
+            // Solo vale en Windows.
+            const findPortProcessCmd = `netstat -ano | findstr :${port}`;
+            const execSync = childProcess.execSync(findPortProcessCmd);
+
+
+            console.log(execSync.toString());
         }
-    });
-
-    const handleSocketListening = () => {
-        console.log("Socket.io server ready.");
-    };
-
-    setupWebSockets(io, handleSocketListening);
-
-    setupCloudService();
+    }
 };
 
 const handleListening = () => {

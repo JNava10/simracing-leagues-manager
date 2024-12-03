@@ -24,18 +24,34 @@ import {LeagueChampionship} from "@prisma/client";
 
 export class ChampionshipQuery {
     static get = async (id: number) => {
-        return prisma.leagueChampionship.findFirst({where: {id}});
+        return prisma.leagueChampionship.findFirst({
+            where: {id}
+        });
     };
 
 
     static getFull = async (championshipId: number) => {
         // @ts-ignore
-        return prisma.leagueChampionship.findFirst({
+        const result = await prisma.leagueChampionship.findFirst({
             where: {
                 id: championshipId,
             },
             include: championshipFull.include
         }) as LeagueChampionshipQuery;
+
+        console.log('result', result);
+
+        return {
+            name: result.name,
+            calendar: result.calendar,
+            scoreSystem: result.scoreSystem,
+            categories: result.categories.map(category => {
+                return category.categories
+            }),
+            description: result.description,
+            createdAt: result.createdAt,
+            leagueId: result.leagueId,
+        } as Championship;
     }
 
     static getTeams = async (championshipId: number) => {
@@ -78,16 +94,22 @@ export class ChampionshipQuery {
 
     static create = async (championship: ChampionshipCreation, authorId: number) => {
 
+        const createdScoreId = await ScoreQuery.createScoreSystem(championship.scoreSystem);
+
+        console.log('champ', championship);
+
         // Insercion de los datos basicos del campeonato.
         const created = await prisma.leagueChampionship.create({
+            // @ts-ignore
             data: {
                 name: championship.name,
                 description: championship.description,
                 picUrl: championship.picUrl || defaults.leagueIcon,
                 backgroundUrl: championship.backgroundUrl || defaults.leagueBanner,
-                leagueId: Number(championship.leagueId)!,
+                leagueId: Number(championship.leagueId),
                 authorId: authorId,
                 simulatorId: championship.simulatorId,
+                scoreSystemId: createdScoreId
             }
         }) as LeagueChampionship;
         
@@ -107,7 +129,15 @@ export class ChampionshipQuery {
             }})
         }
 
-        const author = await UserQuery.getById(authorId);
+        // Inserción de la tabla foranea de los equipos y su campeonato.
+        for (const i in championship.categoryIds) {
+            const categoryId = championship.categoryIds[i];
+
+            await prisma.championshipCategory.create({data: {
+                    categoryId,
+                    championshipId: created.id
+                }});
+        }
 
         return created.id;
     };

@@ -17,12 +17,16 @@
     @if (preset) {
       <app-create-teams
         [preset]="preset"
-        [championship]="championship"
+        [teams]="preset.teams"
+        (teamsCreated)="handleTeamsCreated($event)"
+      />
+    } @else if (this.championship && this.championship.teams) {
+      <app-create-teams
+        [teams]="championship.teams!"
         (teamsCreated)="handleTeamsCreated($event)"
       />
     } @else {
       <app-create-teams
-        [championship]="championship"
         (teamsCreated)="handleTeamsCreated($event)"
       />
     }
@@ -32,12 +36,11 @@
     @if (preset) {
       <app-score-system-form
         [preset]="preset"
-        [teams]="championship!.teams!"
         (scoreSystemCreated)="handleScoreCreated($event)"
       />
     } @else {
       <app-score-system-form
-        [teams]="championship!.teams!"
+        [championship]="championship"
         (scoreSystemCreated)="handleScoreCreated($event)"
       />
     }

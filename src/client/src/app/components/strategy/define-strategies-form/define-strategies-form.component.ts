@@ -38,7 +38,8 @@ import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom
     TrackSearchFormComponent,
     BaselineCarSearchComponent,
     NgStyle,
-    CustomSolidButtonComponent
+    CustomSolidButtonComponent,
+    StrategyChartComponent
   ],
   templateUrl: './define-strategies-form.component.html',
   styleUrl: './define-strategies-form.component.scss'
@@ -49,10 +50,6 @@ export class DefineStrategiesFormComponent implements OnInit {
   strategies?: Strategy[];
 
   ngOnInit(): void {
-    this.strategyService.getStrategies().subscribe(strategies => {
-      this.strategies = strategies;
-    })
-
     this.setStrategyForm();
   }
 
@@ -177,8 +174,13 @@ export class DefineStrategiesFormComponent implements OnInit {
   getStrategy = () => {
     if (!this.strategyForm) throw new Error('Error al obtener el Formulario');
 
-    const data = this.strategyForm.value as CreateStrategyProps;
+    let data = this.strategyForm.value as CreateStrategyProps;
 
-    console.log(data)
+    data.tyres = this.selectedTyres.map(item => item.id!)
+
+    this.strategyService.getStrategy(data).subscribe(strategies => {
+      this.strategies = strategies;
+    })
   };
+  protected readonly StrategyChartComponent = StrategyChartComponent;
 }

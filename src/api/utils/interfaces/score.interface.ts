@@ -1,7 +1,7 @@
 import {ExtraScoreName} from "../constants/score.constants";
 
 export interface ScoreSystem {
-    id: number
+    id?: number
     name?: string;
     description?: string;
     positions?: PositionScore[],

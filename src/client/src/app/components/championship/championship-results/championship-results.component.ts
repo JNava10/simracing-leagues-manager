@@ -18,6 +18,7 @@ import {SessionFinishStates} from "../../../utils/enums/championship.enum";
 import {NgClass, SlicePipe} from "@angular/common";
 import {CustomDropdownComponent} from "../../utils/dropdown/custom-dropdown/custom-dropdown.component";
 import {CustomDropdownItemComponent} from "../../utils/dropdown/custom-dropdown-item/custom-dropdown-item.component";
+import {ignoreElements} from "rxjs";
 
 @Component({
   selector: 'app-championship-results',
@@ -35,6 +36,12 @@ export class ChampionshipResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.champId = +this.route.snapshot.params['champId'];
+
+    if (isNaN(this.champId)) throw new Error('El ID de campeonato debe ser un numero');
+
+    this.championshipApiService.getByIdFull(this.champId).subscribe(res => {
+      this.championship = res;
+    })
 
     this.championshipApiService.getCalendarById(this.champId).subscribe(res => {
       if (!res) {
@@ -72,5 +79,20 @@ export class ChampionshipResultsComponent implements OnInit {
 
   getDriverResults(driverId: number) {
     return this.results!.find(result => result.driverId === driverId);
+  }
+
+  getDriverScore(user: User) {
+    const results = this.results!.filter(result => result.driverId === user.id);
+    const positionScores = this.championship?.scoreSystem!.positions!
+    let totalScore = 0;
+
+
+    results.forEach((result) => {
+      if (result.position && positionScores[result.position - 1]) {
+       totalScore += positionScores[result.position -1].score!;
+      }
+    })
+
+    return totalScore;
   }
 }

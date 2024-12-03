@@ -23,4 +23,8 @@ export class ChampListComponent {
   goToCreateChamp = () => {
     this.globalHelper.navigateFromRoot(`league/${this.leagueId}/championships/new`);
   };
+
+  goToChamp(champId: number) {
+    this.globalHelper.navigateFromRoot(`league/${this.leagueId}/championships/${champId}`);
+  }
 }

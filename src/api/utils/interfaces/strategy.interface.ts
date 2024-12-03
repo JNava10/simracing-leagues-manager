@@ -67,6 +67,15 @@ export interface CreateStrategyProps {
 }
 
 
+export interface CreateStrategyRequest {
+    raceLength: number,
+    layoutId: number,
+    carId: number,
+    startFuel?: number,
+    tyres: number[]
+}
+
+
 export interface EstimatedLapTime {
     tyreId?: number;
     lapTimeMilis?: number;

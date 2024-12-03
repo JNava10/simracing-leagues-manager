@@ -10,6 +10,10 @@ export class TrackQuery {
             console.error(e.message);
         }
     };
+
+    static getById = (id: number) => {
+        return prisma.trackLayout.findUnique({where: {id}})
+    }
     
     search = async ({name, id, country}: SearchTrackProps) => {
         return prisma.track.findMany({

@@ -18,11 +18,11 @@ export class StrategyApiService {
 
   constructor(private http: HttpClient, private globalHelper: GlobalHelper) { }
 
-  getStrategies = () => {
+  getStrategy = (data: CreateStrategyProps) => {
     const url = `${devEnv.apiEndpoint}/strategy`;
     const options = { params: { ...sendTokenParam } };
 
-    return this.http.post<DefaultRes<StrategyApiService[]>>(url, {}, options).pipe(
+    return this.http.post<DefaultRes<StrategyApiService[]>>(url, data, options).pipe(
       catchError((res: HttpResponse<DefaultRes<StrategyApiService[]>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 

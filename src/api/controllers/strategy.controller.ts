@@ -11,23 +11,33 @@ import {StrategyService} from "../services/strategy.service";
 import {StrategyQuery} from "../services/queries/strategy.query";
 import {Messages} from "../utils/enum/messages.enum";
 import {SearchCarProps, SearchCategoryProps} from "../utils/props/category.prop";
+import {CreateStrategyRequest} from "../utils/interfaces/strategy.interface";
+import {TrackQuery} from "../services/queries/track.query";
+import {BaselineCar} from "../utils/interfaces/car.interface";
 
 export class StrategyController {
     static getStrategies = async (req: Request, res: Response): Promise<void> => {
         try {
-            const availableTyres = [1, 2, 3];
+            const {
+                carId,
+                layoutId,
+                tyres,
+                startFuel,
+                raceLength
+            } = req.body as CreateStrategyRequest
 
-            const laps = 50;
+            const trackLayout = await TrackQuery.getById(layoutId);
+            const car = await StrategyQuery.getCarByIdFull(carId) as BaselineCar;
             const strategyService = new StrategyService({
-                raceLength: laps,
-                car: carSeedList[0],
-                trackLayout: trackSeedList[1].layouts[0],
+                raceLength,
+                car,
+                trackLayout,
                 estimatedLapTimes: [
-                    {lapTimeMilis: 93021, tyreId: 3},
-                    {lapTimeMilis: 93843, tyreId: 2},
-                    {lapTimeMilis: 94731, tyreId: 1},
+                    {lapTimeMilis: 93021, tyreId: tyres[0]},
+                    {lapTimeMilis: 93843, tyreId: tyres[1]},
+                    {lapTimeMilis: 94731, tyreId: tyres[2]},
                 ],
-                tyres: availableTyres,
+                tyres,
             });
 
             const strategy = strategyService.sim();

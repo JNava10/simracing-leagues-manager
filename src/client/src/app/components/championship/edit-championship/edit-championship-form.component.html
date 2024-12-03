@@ -19,24 +19,24 @@
       [preset]="preset"
       (teamsCreated)="handleTeamsCreated($event)"
     />
-  } @else {
+  } @else if (championship)  {
     <app-create-teams
-      [championship]="championship"
+      [teams]="championship.teams"
       (teamsCreated)="handleTeamsCreated($event)"
     />
   }
 }
 
-@else if (currentCreatingState === creatingStates.ScoreSystem) {
+@else if (currentCreatingState === creatingStates.ScoreSystem && championship) {
   @if (preset) {
     <app-score-system-form
       [preset]="preset"
-      [teams]="championship!.teams!"
+      [championship]="championship"
       (scoreSystemCreated)="handleScoreCreated($event)"
     />
   } @else {
     <app-score-system-form
-      [teams]="championship!.teams!"
+      [championship]="championship"
       (scoreSystemCreated)="handleScoreCreated($event)"
     />
   }

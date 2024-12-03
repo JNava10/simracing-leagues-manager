@@ -241,8 +241,12 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
       entry.layout = undefined;
     });
 
-    championship.categories = [];
-    this.selectedCategories.forEach(item => championship.categories?.push(item));
+    championship.categoryIds = [];
+
+    this.selectedCategories.forEach(item => {
+      if (item.id) championship.categoryIds?.push(item.id);
+    });
+
     championship.simulatorId = this.selectedSimulator?.id;
 
     this.basicDataCreated.emit(championship);

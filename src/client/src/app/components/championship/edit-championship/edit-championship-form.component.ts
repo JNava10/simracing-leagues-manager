@@ -23,7 +23,6 @@ import {ChampEditOverviewComponent} from "../champ-edit-overview/champ-edit-over
   standalone: true,
   imports: [
     BasicInfoChampionshipFormComponent,
-    CreateChampionshipOverviewComponent,
     ScoreSystemFormComponent,
     ShareConfigPresetComponent,
     CreateTeamsComponent,

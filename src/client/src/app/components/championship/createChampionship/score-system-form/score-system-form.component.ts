@@ -2,7 +2,7 @@ import { GlobalHelper } from '../../../../helpers/global.helper';
 import { PositionScore, ScoreSystem } from '../../../../utils/interfaces/score.interface';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CustomTextInputComponent } from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
-import { ChampionshipPreset, Team } from '../../../../utils/interfaces/championship.interface';
+import {ChampionshipPreset, LeagueChampionship, Team} from '../../../../utils/interfaces/championship.interface';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomSolidButtonComponent } from "../../../utils/button/solid-button/custom-solid-button.component";
 import { NgClass } from '@angular/common';
@@ -17,10 +17,20 @@ import { NgClass } from '@angular/common';
 export class ScoreSystemFormComponent implements OnInit {
 
   ngOnInit(): void {
-    this.gridSize = this.getGridSize()
+    if (this.championship && this.championship.teams) {
+      this.gridSize = this.getGridSize()
+    }
 
     if (this.preset) {
       this.scoreValues = this.preset.scoreSystem.positions!.map(item => item.score!)
+    }
+
+    console.log(this.championship)
+
+
+    if (this.championship && this.championship.scoreSystem) {
+      this.scoreValues = this.championship.scoreSystem.positions!.map(item => item.score!)
+
     }
 
     this.buildScoreForm(this.scores)
@@ -29,6 +39,7 @@ export class ScoreSystemFormComponent implements OnInit {
   }
 
   @Input() preset?: ChampionshipPreset
+  @Input() championship?: LeagueChampionship
 
   globalHelper = inject(GlobalHelper);
   formBuilder = inject(FormBuilder);
@@ -45,15 +56,15 @@ export class ScoreSystemFormComponent implements OnInit {
 
   gridSize: number = 0
 
-  @Input() teams: Team[] = [];
+  @Input() scoreSystem?: ScoreSystem;
 
   @Output() scoreSystemCreated = new EventEmitter<ScoreSystem>();
 
   private getGridSize() {
     let size = 0
 
-    this.teams.forEach(team => {
-     size += team.carEntries!;
+    this.championship!.teams!.forEach(team => {
+      size += team.carEntries!;
     })
 
     return size;

@@ -25,8 +25,8 @@ export interface ChampionshipCreation {
     id?: number,
     name?: string,
     description?: string
-    categoryId?: number
-    scoreSystemId?: number,
+    categoryIds?: number[]
+    scoreSystem?: ScoreSystem,
     simulatorId?: number
     picUrl?: string
     backgroundUrl?: string
@@ -88,7 +88,9 @@ export interface ChampionshipRound {
     id?: number,
     name?: string,
     description?: string
-    
+    finished?: boolean
+    createdAt?: Date
+    roundNum?: number
     layoutId?: number
     championshipId?: number
 }
@@ -202,15 +204,17 @@ export interface LeagueChampionshipQuery {
     league: League;
     teams: ChampionshipTeamQuery[];
     categories: ChampCategoryQuery[];
+    scoreSystem: ScoreSystem;
 }
 
 interface CalendarQuery {
     id: number;
     championshipId: number;
     layoutId: number;
+    roundNum: number;
     name: string;
     description: string | null;
-    createdAt: string;
+    createdAt: Date;
     finished: boolean;
     layout: Layout;
 }
@@ -224,5 +228,5 @@ interface ChampionshipTeamQuery {
 interface ChampCategoryQuery {
     championshipId: number;
     categoryId: number;
-    category: Category;
+    categories: Category;
 }

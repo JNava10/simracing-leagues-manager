@@ -24,4 +24,15 @@ export class StrategyQuery {
             }
         });
     };
+
+    static getCarByIdFull = async (id: number) => {
+        return prisma.baselineCar.findFirst({
+            where: {id},
+            include: {
+                tyres: {
+                    include: {wearList: true}
+                }
+            }
+        });
+    };
 }

@@ -176,10 +176,11 @@ export class ChampionshipController {
                 id: data.id,
                 name: data.name,
                 description: data.description,
-                categories: data.categories.map(item => item.category),
+                categories: data.categories,
                 calendar: data.calendar,
                 simulator: data.simulator,
-                teams: data.teams.map(item => item.team),
+                teams: data.teams,
+                scoreSystem: data.scoreSystem
             };
 
             return sendSuccessResponse({

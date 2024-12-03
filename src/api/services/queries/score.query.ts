@@ -23,7 +23,6 @@ export class ScoreQuery {
         if (scoreSystem.positions && scoreSystem.positions.length > 0) {
             for (const position of scoreSystem.positions) {
                 await prisma.scoreSystemPosition.create({
-                    // @ts-ignore
                     data: {
                         parentId: scoreSystemCreated.id,
                         score: position.score
@@ -31,7 +30,6 @@ export class ScoreQuery {
                 });
             }
         }
-
         
         // Inserción de las puntuaciones de posiciones (si existen)
         if (scoreSystem.extra && scoreSystem.extra.length > 0) {
