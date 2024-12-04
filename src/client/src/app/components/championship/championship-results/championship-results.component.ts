@@ -9,7 +9,7 @@ import {
   ChampionshipEntry,
   ChampionshipRound, LeagueChampionship,
   Position,
-  PositionCreation
+  PositionFormItem
 } from '../../../utils/interfaces/championship.interface';
 import { CustomSelectComponent } from "../../utils/custom/input/custom-select/custom-select.component";
 import { User } from '../../../utils/interfaces/user.interface';
@@ -62,9 +62,8 @@ export class ChampionshipResultsComponent implements OnInit {
     this.championshipApiService.getResults(this.champId!).subscribe(res => this.handleResults(res));
   }
 
-  private handleResults(res: PositionCreation[]) {
+  private handleResults(res: PositionFormItem[]) {
     this.results = res!;
-    console.log(this.results)
   }
 
   champId?: number;
@@ -74,7 +73,6 @@ export class ChampionshipResultsComponent implements OnInit {
   users?: User[];
   roundId?: number;
 
-  protected readonly SessionFinishStates = SessionFinishStates;
   protected readonly Object = Object;
 
   getDriverResults(driverId: number) {
@@ -83,12 +81,15 @@ export class ChampionshipResultsComponent implements OnInit {
 
   getDriverScore(user: User) {
     const results = this.results!.filter(result => result.driverId === user.id);
+
     const positionScores = this.championship?.scoreSystem!.positions!
     let totalScore = 0;
 
+    console.log(results)
 
     results.forEach((result) => {
       if (result.position && positionScores[result.position - 1]) {
+        console.log(positionScores[result.position -1].score!)
        totalScore += positionScores[result.position -1].score!;
       }
     })

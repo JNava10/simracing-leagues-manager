@@ -4,8 +4,8 @@
     (mouseout)="hovered = false"
     [ngClass]="[
     'py-3 px-4 flex transition-all justify-center gap-2 items-center gap-x-2 text-sm font-medium',
+    borders[border],
     styleClass,
-    borders[border]
   ]"
     [ngStyle]="buttonStyle"
     (click)="$event.preventDefault()"

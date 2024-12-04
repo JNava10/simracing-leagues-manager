@@ -151,7 +151,8 @@ export interface Position {
   finishState: number;
 }
 
-export interface PositionCreation {
+export interface PositionFormItem {
   driverId: number;
+  position: number
   finishState: number;
 }

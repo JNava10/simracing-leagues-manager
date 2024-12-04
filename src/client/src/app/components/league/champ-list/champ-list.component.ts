@@ -4,13 +4,15 @@ import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom
 import {Route} from "@angular/router";
 import {GlobalHelper} from "../../../helpers/global.helper";
 import {ImageComponent} from "../../utils/images/rounded-images/image.component";
+import {SoftButtonComponent} from "../../utils/button/soft-button/soft-button.component";
 
 @Component({
   selector: 'app-champ-list',
   standalone: true,
   imports: [
     CustomSolidButtonComponent,
-    ImageComponent
+    ImageComponent,
+    SoftButtonComponent
   ],
   templateUrl: './champ-list.component.html',
   styleUrl: './champ-list.component.scss'

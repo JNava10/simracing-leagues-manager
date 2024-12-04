@@ -8,7 +8,7 @@ import {
   EnterChampionship,
   GetChampProps,
   LeagueChampionship, Position,
-  PositionCreation,
+  PositionFormItem,
   Team
 } from "../../utils/interfaces/championship.interface";
 import { DefaultRes } from '../../utils/interfaces/responses/response.interface';
@@ -45,8 +45,8 @@ export class ChampionshipApiService {
     );
   };
 
-  saveRoundResults = (results: PositionCreation[], id: number) => {
-    return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${id}/results/1`, results, {params: {...sendTokenParam}}).pipe(
+  saveRoundResults = (results: Position[], champId: number, roundNum: number) => {
+    return this.http.post<DefaultRes<LeagueChampionship>>(`${devEnv.apiEndpoint}/championship/${champId}/results/${roundNum}`, results, {params: {...sendTokenParam}}).pipe(
       catchError((res: HttpResponse<DefaultRes<LeagueChampionship>>) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
@@ -145,8 +145,8 @@ export class ChampionshipApiService {
   };
 
   getResults = (id: number) => {
-    return this.http.get<DefaultRes<PositionCreation[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
-      catchError((res: HttpResponse<DefaultRes<PositionCreation[]>>, caught) => {
+    return this.http.get<DefaultRes<PositionFormItem[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<PositionFormItem[]>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
@@ -158,7 +158,7 @@ export class ChampionshipApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return this.globalHelper!.handleDefaultData<PositionCreation[]>(res)!;
+        return this.globalHelper!.handleDefaultData<PositionFormItem[]>(res)!;
       })
     );
   };

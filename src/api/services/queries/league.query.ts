@@ -2,7 +2,7 @@ import {League, LeagueBan, LeagueMemberQuery} from "../../utils/interfaces/leagu
 import {prisma} from "../../app";
 import {now} from '../../helpers/common.helper';
 import {UserQuery} from './user.query';
-import {fa, tr} from "@faker-js/faker";
+import {fa, fr, tr} from "@faker-js/faker";
 import {memberLeague, MemberLeaguesQuery} from "../../prisma/types/league.types";
 import {ExpectedError} from "../../utils/classes/error";
 import {defaults} from "../../utils/constants/default.constants";
@@ -303,5 +303,9 @@ export class LeagueQuery {
 
     static isBanned = async (userId: number, leagueId: number) => {
         return await prisma.leagueBan.findFirst({where: {userId, leagueId}}) !== null
+    }
+
+    static getAllLeagues = async (from: number, take: number) => {
+        return prisma.league.findMany({skip: from, take})
     }
 }

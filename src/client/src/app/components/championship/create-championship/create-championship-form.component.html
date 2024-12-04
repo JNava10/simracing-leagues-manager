@@ -20,9 +20,9 @@
         [teams]="preset.teams"
         (teamsCreated)="handleTeamsCreated($event)"
       />
-    } @else if (this.championship && this.championship.teams) {
+    } @else if (championship && championship.teams) {
       <app-create-teams
-        [teams]="championship.teams!"
+        [teams]="championship.teams"
         (teamsCreated)="handleTeamsCreated($event)"
       />
     } @else {

@@ -3,13 +3,13 @@ import {CustomSolidButtonComponent} from "../../../utils/button/solid-button/cus
 import {CustomRadioGroupComponent} from "../../../utils/custom/input/custom-radio-group/custom-radio-group.component";
 import {CustomSelectComponent} from "../../../utils/custom/input/custom-select/custom-select.component";
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
   ChampionshipEntry,
   ChampionshipRound,
   LeagueChampionship,
   Position,
-  PositionCreation
+  PositionFormItem
 } from "../../../../utils/interfaces/championship.interface";
 import {EventApiService} from "../../../../services/api/event-api.service";
 import {SessionFinishStates} from "../../../../utils/enums/championship.enum";
@@ -41,6 +41,7 @@ export class RoundResultFormComponent implements OnInit {
     private route: ActivatedRoute,
     private championshipService: ChampionshipApiService,
     private globalHelper: GlobalHelper,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -102,34 +103,28 @@ export class RoundResultFormComponent implements OnInit {
   protected readonly SessionFinishStates = SessionFinishStates;
   protected readonly Object = Object;
 
-  saveProgress() {
-    const positionsCreated = this.positionsForm.value as PositionCreation[];
+  saveRoundResults() {
+    const positionValues = this.positionsForm.value as PositionFormItem[];
 
-    positionsCreated.forEach((position) => {
+    positionValues.forEach((position, index) => {
       this.positions.push({
-        driver: this.members!.find(item => item.user?.id === Number(position.driverId))!,
+        driverId: +position.driverId,
+        position: index + 1,
         finishState: position.finishState
-      })
+      });
     })
 
-    this.alternateMode(false);
+    this.saveResults();
   }
 
-  alternateMode(editing: boolean) {
-    this.editing = editing;
-  }
+  saveResults() {
+    if (this.positions && this.champId && this.round) {
+      console.log(this.positions);
 
-  saveRoundResults() {
-
-    // Se mapean los resultados para castear el ID de piloto a String a Number.
-    const results: PositionCreation[] = (this.positionsForm.value as PositionCreation[]).map((position) => {
-      return {
-        ...position,
-        driverId: +position.driverId
-      }
-    });
-
-    this.championshipService.saveRoundResults(results, this.champId!).subscribe(res => {})
+      this.championshipService.saveRoundResults(this.positions, this.champId, this.round).subscribe(res => {
+        this.globalHelper.navigateFromRoot(`league/${this.championship?.leagueId}/championships/${this.champId}/results`);
+      });
+    }
   }
 
   importRfactorFile = async () => {
@@ -142,14 +137,12 @@ export class RoundResultFormComponent implements OnInit {
   };
 
   private handleRfactorResults(drivers: Driver[]) {
-    console.log(this.positionsForm)
     drivers.forEach((driver, index) => {
 
       const driverMatch = this.members?.find(member => member.user!.nickname || member.gameName === driver.Name);
       const driverControl = this.positionsForm.at(driver.Position - 1);
 
       if (driverMatch && driverControl) {
-        console.log(driverMatch, index)
         driverControl.patchValue({
           position: driver.Position,
           driver: driverMatch,

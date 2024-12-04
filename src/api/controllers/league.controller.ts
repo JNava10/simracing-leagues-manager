@@ -350,3 +350,19 @@ export const getChampionships = async (req: CustomRequest, res: Response) => {
         sendErrorResponse({ error: e.message }, res);
     }
 };
+
+export const getAllLeagues = async (req: CustomRequest, res: Response) => {
+    try {
+        const from = +req.params['from']
+        const to = +req.params['take']
+
+        const leagues = await LeagueQuery.getAllLeagues(from, to) as League[];
+
+        sendSuccessResponse({
+            data: leagues,
+            msg: "Se ha enviado una invitación a la liga correctamente."
+        }, res);
+    } catch (e) {
+        sendErrorResponse({ error: e.message }, res);
+    }
+};

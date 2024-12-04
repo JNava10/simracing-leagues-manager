@@ -28,7 +28,7 @@ export class SoftButtonComponent implements OnInit {
   ngOnInit(): void {
     if (this.color) {
       this.idleStyle = {
-        'background-color': this.globalHelper.getHexWithAlpha(colors[this.color][800], 30),
+        'background-color': this.globalHelper.getHexWithAlpha(colors[this.color][800], 35),
         'color': colors[this.color][500]
       }
 

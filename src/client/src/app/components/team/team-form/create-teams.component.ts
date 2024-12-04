@@ -6,11 +6,12 @@ import {ChampionshipPreset, LeagueChampionship, Team} from '../../../utils/inter
 import { NgxColorsModule } from 'ngx-colors';
 import {Category} from "../../../utils/interfaces/category.interface";
 import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
+import {SoftButtonComponent} from "../../utils/button/soft-button/soft-button.component";
 
 @Component({
   selector: 'app-create-teams',
   standalone: true,
-  imports: [FormsModule, CustomTextInputComponent, ReactiveFormsModule, NgStyle, NgxColorsModule, CustomSolidButtonComponent],
+  imports: [FormsModule, CustomTextInputComponent, ReactiveFormsModule, NgStyle, NgxColorsModule, CustomSolidButtonComponent, SoftButtonComponent],
   templateUrl: './create-teams.component.html',
 })
 export class CreateTeamsComponent implements OnInit {
@@ -109,4 +110,6 @@ export class CreateTeamsComponent implements OnInit {
         this.teams[index] = newTeam;
       }
     }
+
+  protected readonly Array = Array;
 }

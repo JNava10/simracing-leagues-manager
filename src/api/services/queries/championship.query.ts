@@ -38,9 +38,7 @@ export class ChampionshipQuery {
             },
             include: championshipFull.include
         }) as LeagueChampionshipQuery;
-
-        console.log('result', result);
-
+        
         return {
             name: result.name,
             calendar: result.calendar,
@@ -162,6 +160,8 @@ export class ChampionshipQuery {
         const createdScoreId = await ScoreQuery.createScoreSystem(incoming.scoreSystem)
       
         const teamService = new TeamQuery();
+
+        console.log(incoming)
         const createdTeams = await teamService.createTeamsReturningIds(incoming.teams);
         
         // Insercion de los datos del preset
@@ -279,10 +279,17 @@ export class ChampionshipQuery {
         return preset;
     }
 
-    static saveRoundResults = async (results: PositionCreation[], roundId: number) => {
+    static saveRoundResults = async (results: PositionCreation[], roundNum: number, championshipId: number) => {
+        const round = await prisma.championshipRound.findFirst({
+            where: {
+                roundNum,
+                championshipId,
+            }
+        });
+
         const resultsExists = await prisma.roundEntry.findFirst({
             where: {
-                roundId
+                roundId: round.id,
             }
         }) !== null;
 
@@ -290,12 +297,14 @@ export class ChampionshipQuery {
             throw new ExpectedError('Los resultados de esta ronda ya estan introducidos.')
         }
 
+
         return prisma.roundEntry.createMany({
             // @ts-ignore
             data: results.map((result, index)=> {
                 return {
-                    ...result,
-                    roundId,
+                    driverId: result.driverId,
+                    finishState: result.finishState,
+                    roundId: round.id,
                     position: index + 1
                 }
             })
@@ -307,8 +316,6 @@ export class ChampionshipQuery {
             where: {championshipId},
             select: {id: true}
         }) as ChampionshipRound[];
-
-        console.log(roundIds)
 
         return prisma.roundEntry.findMany({
             where: {

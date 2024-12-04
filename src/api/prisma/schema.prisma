@@ -254,10 +254,10 @@ model Team {
   id         Int    @id @default(autoincrement())
   name       String @db.VarChar(255)
   hexColor   String @db.VarChar(7)
+  logoUrl    String @db.VarChar(255)
   carEntries Int?   @default(2)
 
-  PresetTeam PresetTeam[]
-
+  PresetTeam       PresetTeam[]
   ChampionshipTeam ChampionshipTeam[]
   EventTeam        EventTeam[]
   TeamCategory     TeamCategory[]

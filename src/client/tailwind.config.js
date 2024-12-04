@@ -10,6 +10,9 @@ module.exports = {
   },
   theme: {
     extend: {
+      // fontFamily: {
+      //   sans: ['Inter', 'Arial'],
+      // },
       colors: {
         dark: {
           mainbg: '#06030A',
@@ -22,7 +25,8 @@ module.exports = {
           main: '#9273F7',
           "text-inactive": '#54438F',
           accent: '#FF0080',
-          text: '#DDC9FF',
+          text: '#FFFFFF',
+          textPurple: '#DDC9FF',
           title: '#785DA8',
           hover: '#3D3067',
           border: '#FF0080',

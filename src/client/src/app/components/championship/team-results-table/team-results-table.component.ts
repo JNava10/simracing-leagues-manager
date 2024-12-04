@@ -5,7 +5,7 @@ import {ChampionshipApiService} from "../../../services/api/championship-api.ser
 import {
   ChampionshipRound,
   LeagueChampionship, Position,
-  PositionCreation
+  PositionFormItem
 } from "../../../utils/interfaces/championship.interface";
 import {User} from "../../../utils/interfaces/user.interface";
 
@@ -54,7 +54,7 @@ export class TeamResultsTableComponent implements OnInit {
     this.championshipApiService.getResults(this.champId!).subscribe(res => this.handleResults(res));
   }
 
-  private handleResults(res: PositionCreation[]) {
+  private handleResults(res: PositionFormItem[]) {
     this.results = res!;
     console.log(this.results)
   }

@@ -39,6 +39,7 @@ import { LoginComponent } from '../../../auth/login/login.component';
 import { CustomSelectComponent } from '../../../utils/custom/input/custom-select/custom-select.component';
 import { CustomSolidButtonComponent } from '../../../utils/button/solid-button/custom-solid-button.component';
 import { TrackSearchFormComponent } from '../../../utils/forms/track-search-form/track-search-form.component';
+import {SoftButtonComponent} from "../../../utils/button/soft-button/soft-button.component";
 
 @Component({
   selector: 'app-basic-info-championship-form',
@@ -58,6 +59,7 @@ import { TrackSearchFormComponent } from '../../../utils/forms/track-search-form
     SlicePipe,
     CustomSelectComponent,
     CustomSolidButtonComponent,
+    SoftButtonComponent,
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'

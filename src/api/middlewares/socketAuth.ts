@@ -16,6 +16,8 @@ export const validateToken = (req: CustomRequest, res: Response, next: NextFunct
         req.user = verifyToken(token) as AccessPayload;
 
         if (!req.user) return res.status(403).json("Token invalido.");
+
+        console.log(req.user);
     } catch (error) {
         if (error instanceof TokenExpiredError) {
             return res.status(403).json("Token expirado.");

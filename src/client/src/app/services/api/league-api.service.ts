@@ -427,7 +427,28 @@ export class LeagueApiService {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
         return this.globalHelper!.handleDefaultData<LeagueChampionship[]>(res)!;
+      })
+    );
+  }
 
+  getAllLeagues = (from: number, take: number = 10) => {
+    const url = `${devEnv.apiEndpoint}/league/${from}/${take}`;
+    const options = { params: { ...sendTokenParam } };
+
+    return this.http.get<DefaultRes<League[]>>(url, options).pipe(
+      catchError((res: HttpResponse<DefaultRes<League[]>>) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
+
+        if (error instanceof Observable) {
+          return error
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<League[]>(res)!;
       })
     );
   }

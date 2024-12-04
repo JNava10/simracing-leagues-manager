@@ -31,9 +31,14 @@
         </div>
 
 
-        <app-solid-button type="button" color="red" (click)="saveTeam(this.selectedTeam.index)">
-          Guardar cambios
-        </app-solid-button>
+        <div class="flex justify-center items-center gap-3">
+          <app-soft-button color="red">
+            <i class="fa-regular fa-trash-can text-sm"></i>
+          </app-soft-button>
+          <app-soft-button type="button" color="indigo" (click)="saveTeam(this.selectedTeam.index)">
+            Guardar cambios
+          </app-soft-button>
+        </div>
       </div>
 
     </form>
@@ -47,23 +52,41 @@
 
               <!--    Item seleccionado      -->
               <div
-                class="bg-dark-background-lightest  min-h-22 flex gap-3 justify-center items-center p-3 h-full rounded-md">
-                <span>{{ team.name }}</span>
-                <div class="inline-flex items-center">
-                <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
-                      [ngStyle]="{'background-color': team.hexColor}"></span>
+                class="flex flex-col relative bg-dark-background-lightest min-h-44 gap-3 justify-center items-center p-3 h-full rounded-md">
+
+                @if (team.carEntries) {
+                  <div class="flex gap-3 absolute right-0 top-0 mt-3 mr-3 justify-center items-end">
+                    @for (item of Array(team.carEntries).fill(null); track $index) {
+                      <div class="w-6 h-3 border-dark-main border-r-2 border-t-2"></div>
+                    }
+                  </div>
+                }
+
+                <div class="flex gap-3">
+                  <span class="text-dark-textPurple">{{ team.name }}</span>
+
+                  <div class="inline-flex items-center">
+                    <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                          [ngStyle]="{'background-color': team.hexColor}"></span>
+                  </div>
+
                 </div>
               </div>
-
             } @else {
 
               <!--    Item sin seleccionar      -->
-              <div (click)="selectTeam($index)"
-                   class="bg-dark-background-light h-full min-h-22 flex gap-3 justify-center items-center p-3 rounded-md cursor-pointer hover:bg-neutral-600">
-                <span>{{ team.name }}</span>
-                <div class="inline-flex items-center">
-              <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
-                    [ngStyle]="{'background-color': team.hexColor}"></span>
+              <div
+                (click)="selectTeam($index)"
+                class="flex flex-col cursor-pointer bg-dark-background-light min-h-44 gap-3 justify-center items-center p-3 h-full rounded-md"
+              >
+                <div class="flex gap-3">
+                  <span class="text-dark-main">{{ team.name }}</span>
+
+                  <div class="inline-flex items-center">
+                    <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                          [ngStyle]="{'background-color': team.hexColor}"></span>
+                  </div>
+
                 </div>
               </div>
 

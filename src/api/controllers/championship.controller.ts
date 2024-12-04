@@ -26,8 +26,6 @@ export class ChampionshipController {
 
             const championship = await ChampionshipQuery.get(id);
 
-            console.log(championship);
-
             return sendSuccessResponse({
                 data: championship,
                 msg: 'A'
@@ -55,8 +53,6 @@ export class ChampionshipController {
         try {
             const id = Number(req.params['championshipId']!);
             const entries = await ChampionshipQuery.getEntries(id);
-
-            console.log(entries);
 
             return sendSuccessResponse({
                 data: entries[0],
@@ -103,8 +99,9 @@ export class ChampionshipController {
         try {
             const body = req.body as PositionCreation[];
             const round = Number(req.params['round']!);
+            const champId = Number(req.params['championshipId']!);
 
-            const roundsCreated = await ChampionshipQuery.saveRoundResults(body, round);
+            const roundsCreated = await ChampionshipQuery.saveRoundResults(body, round, champId);
 
             if (!roundsCreated) {
                 return sendSuccessResponse({
