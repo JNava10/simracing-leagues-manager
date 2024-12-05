@@ -143,7 +143,7 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     preset.calendar.forEach(layout => {
       this.raceCalendar.push({
         name: layout.name,
-        layout: layout
+        layout: layout,
       });
     });
 
