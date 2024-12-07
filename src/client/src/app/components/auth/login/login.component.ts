@@ -75,10 +75,12 @@ export class LoginComponent {
       throw new Error('No se ha podido encontrar el Socket Key al iniciar sesión')
     }
 
-    this.globalHelper.saveApiKey(loggedData.apiKey);
-    this.globalHelper.saveSocketKey(loggedData.socketKey);
-    this.globalHelper.setUserId(loggedData.id!);
-    this.globalHelper.navigateFromRoot("leagues")
+    if (loggedData.success && loggedData.id && loggedData.socketKey) {
+      this.globalHelper.saveApiKey(loggedData.apiKey);
+      this.globalHelper.saveSocketKey(loggedData.socketKey);
 
+      this.globalHelper.setUserId(loggedData.id);
+      this.globalHelper.navigateFromRoot("leagues")
+    }
   }
 }

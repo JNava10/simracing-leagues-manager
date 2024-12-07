@@ -30,19 +30,6 @@ export class ScoreQuery {
                 });
             }
         }
-        
-        // Inserción de las puntuaciones de posiciones (si existen)
-        if (scoreSystem.extra && scoreSystem.extra.length > 0) {
-            for (const position of scoreSystem.extra) {
-                await prisma.scoreSystemExtra.create({
-                    // @ts-ignore
-                    data: {
-                        parentId: scoreSystemCreated.id,
-                        score: position.score
-                    }
-                });
-            }
-        }
 
         return scoreSystemCreated.id
     } 

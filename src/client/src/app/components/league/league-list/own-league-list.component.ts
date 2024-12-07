@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {League} from "../../../utils/interfaces/league.interface";
 import {LeagueApiService} from "../../../services/api/league-api.service";
 import {Router} from "@angular/router";
@@ -16,7 +16,6 @@ import {AuthApiService} from "../../../services/api/auth-api.service";
   standalone: true,
   imports: [
     ImageComponent,
-    CustomSolidButtonComponent,
     TooltipComponent,
     SoftButtonComponent
   ],

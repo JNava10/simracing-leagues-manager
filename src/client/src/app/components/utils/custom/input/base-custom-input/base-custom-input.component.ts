@@ -50,6 +50,9 @@ export class BaseCustomInputComponent implements ControlValueAccessor {
 
   @Input() debug? = false;
 
+
+  // Los siguientes metodos heredan una interfaz para que funcionen los formularios reactivos en componentes custom:
+  // https://stackoverflow.com/questions/46141714/use-formcontrolname-for-custom-input-component-in-reactive-form
   writeValue(value: string): void {
     if (value !== undefined) {
       this.updateValue(value)

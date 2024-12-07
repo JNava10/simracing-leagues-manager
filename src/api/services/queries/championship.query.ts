@@ -159,7 +159,6 @@ export class ChampionshipQuery {
       
         const teamService = new TeamQuery();
 
-        console.log(incoming)
         const createdTeams = await teamService.createTeamsReturningIds(incoming.teams);
         
         // Insercion de los datos del preset

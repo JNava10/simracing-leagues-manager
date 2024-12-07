@@ -30,16 +30,17 @@ import {InvitesComponent} from "./components/invites/invites/invites.component";
 import {LeagueChampsComponent} from "./components/league/league-champs/league-champs.component";
 import {NotAuthComponent} from "./components/not-auth/not-auth.component";
 import {hasSessionGuard} from "./guards/has-session.guard";
+import {NotFoundPageComponent} from "./components/not-found-page/not-found-page.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'lm', children: [
-      { path: 'profile/:userId', component: ProfileInfoComponent },
+  { path: 'lm', canActivate: [hasSessionGuard], children: [
+      { path: 'profile/:userId', component: ProfileInfoComponent, },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterFormComponent },
-      { path: 'newleague', component: CreateLeagueFormComponent , canActivate: [hasSessionGuard] },
-      { path: 'invites', component: InvitesComponent },
-      { path: 'presets', component: PresetListComponent },
+      { path: 'newleague', component: CreateLeagueFormComponent },
+      { path: 'invites', component: InvitesComponent, canActivate: [hasSessionGuard] },
+      { path: 'presets', component: PresetListComponent},
       { path: 'not-auth', component: NotAuthComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
       { path: 'strategy', title: 'Estrategias', component: DefineStrategiesFormComponent },
@@ -72,5 +73,7 @@ export const routes: Routes = [
           },
         ]
       },
+
+      { path: '**', pathMatch: 'full', component: NotFoundPageComponent },
     ]},
 ];

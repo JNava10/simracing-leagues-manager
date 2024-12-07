@@ -1,4 +1,4 @@
-@if (leagues !== undefined && leagues) {
+@if (leagues !== undefined && leagues && globalHelper.getUserId()) {
   <section class="p-3 z-[999] gap-3 rounded-2xl fixed bg-dark-background flex flex-col w-full max-w-20 h-[calc(100%-7rem)]">
     <div class="flex flex-col justify-center items-center">
       <app-soft-button

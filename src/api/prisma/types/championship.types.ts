@@ -19,7 +19,6 @@ export const presetChampionshipFull = Prisma.validator<Prisma.ChampionshipPreset
         author: true,
         scoreSystem: {
             include: {
-                extra: true,
                 positions: true
             }
         },

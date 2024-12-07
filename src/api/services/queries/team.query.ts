@@ -37,11 +37,11 @@ export class TeamQuery {
             hexColor
         } = team;
 
-        return await prisma.team.create({
+        return prisma.team.create({
             data: {
-                name, 
-                carEntries, 
-                hexColor
+                name,
+                carEntries,
+                hexColor,
             }
         });
   };

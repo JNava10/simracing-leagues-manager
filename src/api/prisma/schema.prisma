@@ -12,11 +12,11 @@ model Category {
   name        String @db.VarChar(255)
   description String @db.VarChar(255)
 
-  userFavourites FavouriteCategories[]
-  championships  ChampionshipCategory[]
-  presets        ChampionshipPresetCategories[]
-  events         EventCategory[]
-  TeamCategory   TeamCategory[]
+  // userFavourites FavouriteCategories[]
+  championships ChampionshipCategory[]
+  presets       ChampionshipPresetCategories[]
+  events        EventCategory[]
+  TeamCategory  TeamCategory[]
 }
 
 // Usuarios
@@ -41,8 +41,8 @@ model User {
   appRoles             UserRole[]
   // leaguePosts          LeaguePost[]
   // postComments         PostComment[]
-  favouriteSimulators  FavouriteSimulator[]
-  favouriteCategories  FavouriteCategories[]
+  // favouriteSimulators  FavouriteSimulator[]
+  // favouriteCategories  FavouriteCategories[]
   // auditActions         LeagueAuditLog[]
 
   ChampionshipPreset ChampionshipPreset[]
@@ -53,25 +53,25 @@ model User {
   EventChampionship LeagueEvent[]
 }
 
-model FavouriteSimulator {
-  userId      Int
-  simulatorId Int
+// model FavouriteSimulator {
+//   userId      Int
+//   simulatorId Int
+//
+//   simulator SimulatorGame @relation(fields: [simulatorId], references: [id])
+//   user      User          @relation(fields: [userId], references: [id])
+//
+//   @@id([userId, simulatorId])
+// }
 
-  simulator SimulatorGame @relation(fields: [simulatorId], references: [id])
-  user      User          @relation(fields: [userId], references: [id])
-
-  @@id([userId, simulatorId])
-}
-
-model FavouriteCategories {
-  userId     Int
-  categoryId Int
-
-  category Category @relation(fields: [categoryId], references: [id])
-  user     User     @relation(fields: [userId], references: [id])
-
-  @@id([userId, categoryId])
-}
+// model FavouriteCategories {
+//   userId     Int
+//   categoryId Int
+//
+//   category Category @relation(fields: [categoryId], references: [id])
+//   user     User     @relation(fields: [userId], references: [id])
+//
+//   @@id([userId, categoryId])
+// }
 
 model UserRole {
   userId Int
@@ -254,8 +254,7 @@ model Team {
   id         Int    @id @default(autoincrement())
   name       String @db.VarChar(255)
   hexColor   String @db.VarChar(7)
-  logoUrl    String @db.VarChar(255)
-  carEntries Int?   @default(2)
+  carEntries Int    @default(2)
 
   PresetTeam       PresetTeam[]
   ChampionshipTeam ChampionshipTeam[]
@@ -341,7 +340,7 @@ model ScoreSystem {
   id Int @id @default(autoincrement())
 
   positions    ScoreSystemPosition[]
-  extra        ScoreSystemExtra[]
+  // extra        ScoreSystemExtra[]
   preset       ChampionshipPreset[]
   championship LeagueChampionship[]
 }
@@ -355,21 +354,21 @@ model ScoreSystemPosition {
   parentId Int
 }
 
-// Definición de las opciones extra dentro de los sistemas de puntuación (pole, vuelta rapida...).
-model ExtraScore {
-  id               Int                @id @default(autoincrement())
-  scoreSystemExtra ScoreSystemExtra[]
-}
+// // Definición de las opciones extra dentro de los sistemas de puntuación (pole, vuelta rapida...).
+// model ExtraScore {
+//   id               Int                @id @default(autoincrement())
+//   // scoreSystemExtra ScoreSystemExtra[]
+// }
 
 // Valores de puntuación de pole, vuelta rapida y otras opciones extra dentro de un sistema de puntuación.
-model ScoreSystemExtra {
-  id       Int         @id @default(autoincrement())
-  extraId  Int
-  score    String      @db.VarChar(255)
-  parentId Int
-  parent   ScoreSystem @relation(fields: [parentId], references: [id])
-  extra    ExtraScore  @relation(fields: [extraId], references: [id])
-}
+// model ScoreSystemExtra {
+//   id       Int         @id @default(autoincrement())
+//   extraId  Int
+//   score    String      @db.VarChar(255)
+//   parentId Int
+//   parent   ScoreSystem @relation(fields: [parentId], references: [id])
+//   extra    ExtraScore  @relation(fields: [extraId], references: [id])
+// }
 
 /// Circuitos ///
 
@@ -411,9 +410,8 @@ model SimulatorGame {
   picUrl      String? @db.VarChar(255)
   releaseYear Int     @db.Year
 
-  userFavourites FavouriteSimulator[]
-  championships  LeagueChampionship[]
-  events         LeagueEvent[]
+  championships LeagueChampionship[]
+  events        LeagueEvent[]
 }
 
 model LeagueBan {

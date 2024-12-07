@@ -23,6 +23,8 @@ export const hasSessionGuard: (route: ActivatedRouteSnapshot, state: RouterState
 function rejectUser() {
   const globalHelper = inject(GlobalHelper);
 
+  console.log('not auth')
+
   globalHelper.navigateFromRoot('not-auth')
   return false;
 }

@@ -62,6 +62,10 @@ export class CreateLeagueFormComponent {
   }
 
   private afterCreatingLeague = async (data: League) => {
-    await this.globalHelper.navigateFromRoot('leagues')
+    if (data.id) {
+      await this.globalHelper.navigateFromRoot(`leagues/${data.id}`);
+    } else {
+      this.globalHelper.showErrorMessage('Error', "No se ha podido obtener la nueva liga.");
+    }
   }
 }
