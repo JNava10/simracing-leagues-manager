@@ -15,13 +15,6 @@ router.post("/", [validateToken], controller.createLeague);
 
 router.get("/invites/:userId?", [validateToken], controller.getUserInvites);
 
-/**
- * @route POST /
- * @description Crear una nueva liga
- */
-router.get("/:from/:take", [validateToken], controller.getAllLeagues);
-
-
 router.put("/invites/accept/:leagueId", [validateToken], controller.acceptLeagueInvite);
 
 
@@ -38,12 +31,6 @@ router.put("/:leagueId/", [validateToken, isBanned], controller.editLeague);
  */
 router.get("/owned", [validateToken], controller.getOwnLeagues);
 
-/**
- * @route GET /:id
- * @description Obtener detalles de una liga específica por ID
- */
-router.get("/:leagueId", [validateToken, isBanned], controller.getLeague);
-module.exports = router;
 
 /**
  * @route GET /
@@ -121,6 +108,12 @@ router.post("/:leagueId/invite/:userId", [validateToken, isBanned], controller.i
 router.post("/:leagueId/ban/:userId", [validateToken, isBanned], controller.banMember);
 
 router.get("/:leagueId/championships", [validateToken], controller.getChampionships);
+
+/**
+ * @route GET /:id
+ * @description Obtener detalles de una liga específica por ID
+ */
+router.get("/:leagueId", [validateToken, isBanned], controller.getLeague);
 
 
 export default router;

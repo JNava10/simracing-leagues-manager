@@ -14,6 +14,8 @@ import {handleRequestError, sendErrorResponse, sendSuccessResponse} from "../hel
 import {LeagueInviteFull} from "../prisma/types/league.types";
 import {Championship} from "../utils/interfaces/championship/championship.interface";
 import {SocketService} from "../services/socket/socket.service";
+import {CloudService} from "../services/cloud.service";
+import {UploadedFile} from "express-fileupload";
 
 export const editLeague = async (req: CustomRequest, res: Response) => {
     try {
@@ -113,6 +115,8 @@ export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
         if (!validId) {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }
+
+        console.log('sssssssog')
 
         const leagueId = Number(req.params['leagueId']);
         const leagueMembers = await LeagueQuery.getLeagueMembers(leagueId);
@@ -255,6 +259,27 @@ export const acceptLeagueInvite = async (req: CustomRequest, res: Response) => {
     }
 };
 
+// export const uploadImages = async (req: CustomRequest, res: Response) => {
+//     try {
+//         const leagueId = Number(req.params['leagueId']);
+//         const banner = req.files['banner'] as UploadedFile;
+//         const pic = req.files['pic'] as UploadedFile;
+//
+//         if (banner) {
+//             const picUrl = await CloudService.uploadFiles([banner], {fileExtension: ['jpg', 'png'], dir: 'leagues'})
+//         } else if (pic) {
+//             const bannerUrl = await CloudService.uploadFiles([pic], {fileExtension: ['jpg', 'png'], dir: 'leagues'})
+//         }
+//
+//         sendSuccessResponse({
+//             data: { executed },
+//             msg: "Se ha enviado una invitación a la liga correctamente."
+//         }, res);
+//     } catch (e) {
+//         handleRequestError(e, res)
+//     }
+// };
+
 export const denyMember = async (req: CustomRequest, res: Response) => {
     try {
         const leagueId = Number(req.params['leagueId']);
@@ -353,10 +378,8 @@ export const getChampionships = async (req: CustomRequest, res: Response) => {
 
 export const getAllLeagues = async (req: CustomRequest, res: Response) => {
     try {
-        const from = +req.params['from']
-        const to = +req.params['take']
 
-        const leagues = await LeagueQuery.getAllLeagues(from, to) as League[];
+        const leagues = await LeagueQuery.getAllLeagues() as League[];
 
         sendSuccessResponse({
             data: leagues,

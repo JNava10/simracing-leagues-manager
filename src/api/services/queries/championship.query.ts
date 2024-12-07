@@ -94,8 +94,6 @@ export class ChampionshipQuery {
 
         const createdScoreId = await ScoreQuery.createScoreSystem(championship.scoreSystem);
 
-        console.log('champ', championship);
-
         // Insercion de los datos basicos del campeonato.
         const created = await prisma.leagueChampionship.create({
             // @ts-ignore

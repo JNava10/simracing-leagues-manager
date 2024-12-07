@@ -6,7 +6,7 @@ import {v2 as cloudinary} from "cloudinary";
 cloudinary.config(process.env.CLOUDINARY_URL);
 
 export class CloudService {
-    private rootDir = 'lm';
+    static rootDir = 'lm';
 
     /**
      *
@@ -17,7 +17,7 @@ export class CloudService {
      * @param {number?} settings.sizeLimit - Peso limite de cada archivo (en MB).
      * @param {number?} settings.numberLimit - Cantidad limite de archivos que deberian subirse. * @returns {Promise<*>}
      */
-    uploadFiles = async (requestFiles: UploadedFile[], settings ): Promise<any> => {
+    static uploadFiles = async (requestFiles: UploadedFile[], settings: UploadFileProps ): Promise<any> => {
         const filesUploaded = new Map();
         const files = Object.entries(requestFiles);
         const maxBytesSize = settings.sizeLimit * (1024 ** 2) || (1024 ** 2); // 1024^2 B = 1MB
@@ -44,7 +44,7 @@ export class CloudService {
             const { tempFilePath } = file
 
             const uploaded = await cloudinary.uploader.upload(tempFilePath, {
-                folder: `${this.rootDir}/${settings.dir}`,
+                folder: `${CloudService.rootDir}/${settings.dir}`,
             });
 
             filesUploaded.set(key, uploaded)
@@ -60,10 +60,10 @@ export class CloudService {
      * @param {string} settings.dir - Directorio donde se guardarán los archivos
      * @returns {Promise<*>}
      */
-    uploadBuffer = async (buffer, settings) => {
+    static uploadBuffer = async (buffer, settings) => {
         try {
             return await new Promise((resolve) => {
-                cloudinary.uploader.upload_stream({folder: `${this.rootDir}/${settings.dir}`}, (error, uploadResult) => {
+                cloudinary.uploader.upload_stream({folder: `${CloudService.rootDir}/${settings.dir}`}, (error, uploadResult) => {
                     return resolve(uploadResult);
                 }).end(buffer);
             })

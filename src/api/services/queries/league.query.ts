@@ -186,8 +186,6 @@ export class LeagueQuery {
         const leagueExists = await prisma.league.findUnique({where: {id: leagueId}}) !== null;
         const userExists = await prisma.user.findUnique({where: {id: userId}}) !== null;
 
-        console.log(userId, userExists);
-        
         if (!leagueExists) throw new Error(`La liga con ID ${leagueId} no existe.`);
         if (!userExists) throw new Error(`El usuario con ID ${userId} no existe.`);
      
@@ -305,7 +303,7 @@ export class LeagueQuery {
         return await prisma.leagueBan.findFirst({where: {userId, leagueId}}) !== null
     }
 
-    static getAllLeagues = async (from: number, take: number) => {
-        return prisma.league.findMany({skip: from, take})
+    static getAllLeagues = async () => {
+        return prisma.league.findMany()
     }
 }
