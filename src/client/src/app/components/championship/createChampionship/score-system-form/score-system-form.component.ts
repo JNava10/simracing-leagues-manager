@@ -18,10 +18,11 @@ export class ScoreSystemFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.championship && this.championship.teams) {
-      this.gridSize = this.getGridSize()
+      this.gridSize = this.getGridSize(this.championship.teams);
     }
 
     if (this.preset) {
+      this.gridSize = this.getGridSize(this.preset.teams)
       this.scoreValues = this.preset.scoreSystem.positions!.map(item => item.score!)
     }
 
@@ -30,12 +31,9 @@ export class ScoreSystemFormComponent implements OnInit {
 
     if (this.championship && this.championship.scoreSystem) {
       this.scoreValues = this.championship.scoreSystem.positions!.map(item => item.score!)
-
     }
 
     this.buildScoreForm(this.scores)
-
-    this.gridSize = this.getGridSize();
   }
 
   @Input() preset?: ChampionshipPreset
@@ -60,10 +58,10 @@ export class ScoreSystemFormComponent implements OnInit {
 
   @Output() scoreSystemCreated = new EventEmitter<ScoreSystem>();
 
-  private getGridSize() {
+  private getGridSize(teams: Team[]) {
     let size = 0
 
-    this.championship!.teams!.forEach(team => {
+    teams!.forEach(team => {
       size += team.carEntries!;
     })
 

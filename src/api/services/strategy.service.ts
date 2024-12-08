@@ -182,15 +182,16 @@ export class StrategyService {
     }
 
     private getCurrentWearIndex() {
-        const raceLengthFactor = 1 / this.raceLapLength; // Se aumenta o disminuye el desgaste en funcion de cuanto dure la carrera.
+        const raceLengthFactor = this.raceLapLength / 2 * 0.03; // Se aumenta o disminuye el desgaste en funcion de cuanto dure la carrera.
 
         /*
         * Peso de cada valor en el desgaste:
-        * 45% al impacto que tienen los neumaticos en el tiempo por vuelta
-        * 10% a la longitud del circuito. Aunque parezca poco, marca mucho la diferencia.
-        * 55% según lo blando que sea el neumatico actual. Cuanto más blando, más desgaste. Esto marca la durabilidad.
+        * 52% al impacto que tienen los neumaticos en el tiempo por vuelta
+        * 3% a la longitud del circuito. Aunque parezca poco, marca mucho la diferencia.
+        * 52% según lo blando que sea el neumatico actual. Cuanto más blando, más desgaste. Esto marca la durabilidad.
+        * 3% según la distancia de carrera
         */
-        return ((this.tyreImpact * 0.20) + (this.trackLayout.lengthKm * 0.10)) + (this.currentTyre.softness * 0.20) * (raceLengthFactor * 0.50);
+        return ((this.tyreImpact * 0.52) + (this.trackLayout.lengthKm * 0.03)) + (this.currentTyre.softness * 0.52) + raceLengthFactor;
     }
 
     private getTyrePerformance() {

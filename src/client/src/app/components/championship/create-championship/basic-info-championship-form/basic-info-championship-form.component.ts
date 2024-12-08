@@ -75,9 +75,6 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
   protected categories$!: Observable<DefaultRes<Category[]>>;
   protected simulators$!: Observable<DefaultRes<SimulatorGame[]>>;
 
-  protected durationTypes = SESSION_LENGTH_TYPE;
-  protected durationTypeList = roundDurationTypes;
-
   raceCalendar: ChampionshipRound[] = [];
   selectedCategories: Map<number, Category> = new Map();
   championshipForm: FormGroup = new FormGroup({
@@ -141,13 +138,22 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
 
   convertDataFromApi(preset: ChampionshipPreset) {
     preset.calendar.forEach(layout => {
-      this.raceCalendar.push({
-        name: layout.name,
-        layout: layout,
-      });
+      if (layout.parent) {
+        this.raceCalendar.push({
+          name: layout.parent?.name || layout.name,
+          layout: layout,
+        });
+      }
     });
 
-    this.selectedSimulator = preset.simulator;
+    this.selectedCategories = new Map();
+
+    // POST DEFENSA (Se ha quitado el simulador, que no existe, por las categorias del preset.)
+    preset.categories.forEach(category => {
+      if (category.id) {
+        this.selectedCategories.set(category.id, category);
+      }
+    });
   }
 
   private applyChampData(championship: LeagueChampionship) {

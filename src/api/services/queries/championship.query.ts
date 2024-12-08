@@ -280,7 +280,7 @@ export class ChampionshipQuery {
             name: result.name,
             author: result.author,
             calendar: result.layouts.map(item => item.layout),
-            // categories: result.,
+            categories: result.categories.map(item => item.categories),
             scoreSystem: result.scoreSystem,
         }
 

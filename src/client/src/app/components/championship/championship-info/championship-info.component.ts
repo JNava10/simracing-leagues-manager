@@ -3,12 +3,14 @@ import { LeagueChampionship } from '../../../utils/interfaces/championship.inter
 import { ChampionshipApiService } from '../../../services/api/championship-api.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {GlobalHelper} from "../../../helpers/global.helper";
+import {SoftButtonComponent} from "../../utils/button/soft-button/soft-button.component";
 
 @Component({
   selector: 'app-championship-info',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    SoftButtonComponent
   ],
   templateUrl: './championship-info.component.html',
   styleUrl: './championship-info.component.scss'

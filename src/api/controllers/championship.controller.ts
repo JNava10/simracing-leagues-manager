@@ -240,8 +240,6 @@ export class ChampionshipController {
         try {
             const preset = await ChampionshipQuery.getPresetById(Number(req.params['id']));
 
-            console.log(preset)
-
             return sendSuccessResponse({
                 data: preset,
                 msg: 'A'

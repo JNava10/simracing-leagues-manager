@@ -104,9 +104,9 @@ export interface ChampionshipPreset {
   imgUrl: string | null;
   scoreSystemId: number;
   authorId: number;
+  categories: Category[]
   createdAt: string;
   author: User;
-  simulator: SimulatorGame
   scoreSystem: ScoreSystem;
   calendar: TrackLayout[];
   teams: Team[];

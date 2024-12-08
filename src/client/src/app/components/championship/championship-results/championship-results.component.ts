@@ -1,18 +1,18 @@
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { ChampionshipApiService } from './../../../services/api/championship-api.service';
+import {ChampionshipApiService} from './../../../services/api/championship-api.service';
 import {Component, inject, OnInit} from '@angular/core';
-import { CustomSolidButtonComponent } from "../../utils/button/solid-button/custom-solid-button.component";
+import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import { TrackLayout } from '../../../utils/interfaces/track.interface';
-import { DialogModule } from 'primeng/dialog';
+import {TrackLayout} from '../../../utils/interfaces/track.interface';
+import {DialogModule} from 'primeng/dialog';
 import {
   ChampionshipEntry,
   ChampionshipRound, LeagueChampionship,
   Position,
   PositionFormItem
 } from '../../../utils/interfaces/championship.interface';
-import { CustomSelectComponent } from "../../utils/custom/input/custom-select/custom-select.component";
-import { User } from '../../../utils/interfaces/user.interface';
+import {CustomSelectComponent} from "../../utils/custom/input/custom-select/custom-select.component";
+import {User} from '../../../utils/interfaces/user.interface';
 import {CustomRadioGroupComponent} from "../../utils/custom/input/custom-radio-group/custom-radio-group.component";
 import {SessionFinishStates} from "../../../utils/enums/championship.enum";
 import {NgClass, SlicePipe} from "@angular/common";
@@ -32,7 +32,8 @@ export class ChampionshipResultsComponent implements OnInit {
   constructor(
     private championshipApiService: ChampionshipApiService,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.champId = +this.route.snapshot.params['champId'];
@@ -64,8 +65,6 @@ export class ChampionshipResultsComponent implements OnInit {
 
   private handleResults(res: PositionFormItem[]) {
     this.results = res!;
-
-    console.log(this.results)
   }
 
   champId?: number;
@@ -87,12 +86,9 @@ export class ChampionshipResultsComponent implements OnInit {
     const positionScores = this.championship?.scoreSystem!.positions!
     let totalScore = 0;
 
-    console.log(results)
-
     results.forEach((result) => {
       if (result.position && positionScores[result.position - 1]) {
-        console.log(positionScores[result.position -1].score!)
-       totalScore += positionScores[result.position -1].score!;
+        totalScore += positionScores[result.position - 1].score!;
       }
     })
 

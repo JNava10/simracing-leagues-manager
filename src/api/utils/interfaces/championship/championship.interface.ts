@@ -4,6 +4,7 @@ import {Layout} from "../layout.interface";
 import {SimulatorGame} from "../simulator.interface";
 import {League} from "../league.interface";
 import {User} from "../user.interface";
+import {CategoryQuery} from "../../../services/queries/category.query";
 
 export interface Championship {
     id?: number,
@@ -68,6 +69,7 @@ export interface ChampionshipPresetQuery {
     createdAt: string
     author: User,
     scoreSystem: ScoreSystem
+    categories: ChampCategoryQuery[]
     layouts: PresetLayout[]
     teams: PresetTeam[]
 }
