@@ -152,6 +152,17 @@ export class ChampionshipQuery {
         return created !== null;
     };
 
+    static isMember = async (userId: number, championshipId: number) => {
+        const result = await prisma.championshipEntry.findFirst({
+            where: {
+                userId,
+                championshipId,
+            }
+        });
+
+        return result !== null;
+    };
+
 
     static createPreset = async (incoming: PresetCreation, authorId: number) => {
         // Inserción de puntuaciones

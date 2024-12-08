@@ -206,10 +206,26 @@ export class ChampionshipController {
         }
     }
 
+    isMember = async (req: CustomRequest, res: Response) => {
+        try {
+
+            const userId = +req.params['userId'] || req.user.id;
+            const champId = +req.params['championshipId'];
+            const exists = await ChampionshipQuery.isMember(userId, champId);
+
+            return sendSuccessResponse({
+                data: {exists},
+                msg: 'Se ha obtenido correctamente el campeonato.',
+                status: 200
+            }, res);
+        } catch (e) {
+            handleRequestError(e, res);
+        }
+    }
+
     getAllPresets = async (req: CustomRequest, res: Response) => {
         try {
             const presets = await ChampionshipQuery.getAllPresets(1);
-
 
             return sendSuccessResponse({
                 data: presets,

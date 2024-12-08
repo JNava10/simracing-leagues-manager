@@ -64,6 +64,8 @@ export class ChampionshipResultsComponent implements OnInit {
 
   private handleResults(res: PositionFormItem[]) {
     this.results = res!;
+
+    console.log(this.results)
   }
 
   champId?: number;

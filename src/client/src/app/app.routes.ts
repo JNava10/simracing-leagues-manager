@@ -31,6 +31,7 @@ import {LeagueChampsComponent} from "./components/league/league-champs/league-ch
 import {NotAuthComponent} from "./components/not-auth/not-auth.component";
 import {hasSessionGuard} from "./guards/has-session.guard";
 import {NotFoundPageComponent} from "./components/not-found-page/not-found-page.component";
+import {isChampMember} from "./guards/is-champ-member";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -58,11 +59,11 @@ export const routes: Routes = [
           { path: 'championships', children: [
               { path: '', component: LeagueChampsComponent },
               { path: 'new', title: 'Crear un campeonato', component: CreateChampionshipFormComponent },
-              { path: ':champId/edit', title: 'Editar un campeonato', component: EditChampionshipFormComponent },
+              { path: ':champId/edit', title: 'Editar un campeonato', canActivate: [isChampMember], component: EditChampionshipFormComponent },
               { path: ':champId/enter', title: 'Entrar a un campeonato', component: EnterChampionshipFormComponent },
-              { path: ':champId/results', title: 'Resultados de un campeonato', component: ChampionshipResultsComponent },
-              { path: ':champId/results/:round', title: 'Resultados de un campeonato', component: RoundResultFormComponent },
-              { path: ':champId', title: 'Informacion de campeonato', component: ChampionshipInfoComponent },
+              { path: ':champId/results', title: 'Resultados de un campeonato', canActivate: [isChampMember], component: ChampionshipResultsComponent },
+              { path: ':champId/results/:round', title: 'Resultados de un campeonato', canActivate: [isChampMember], component: RoundResultFormComponent },
+              { path: ':champId', title: 'Informacion de campeonato', canActivate: [isChampMember], component: ChampionshipInfoComponent },
             ]
           },
 

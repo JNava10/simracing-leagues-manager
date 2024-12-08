@@ -156,3 +156,7 @@ export interface PositionFormItem {
   position: number
   finishState: number;
 }
+
+export interface IsMember {
+  exists: boolean;
+}

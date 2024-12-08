@@ -6,7 +6,7 @@ import { HttpClient, HttpResponse } from "@angular/common/http";
 import {
   ChampionshipPreset,
   EnterChampionship,
-  GetChampProps,
+  GetChampProps, IsMember,
   LeagueChampionship, Position,
   PositionFormItem,
   Team
@@ -292,6 +292,25 @@ export class ChampionshipApiService {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
         return this.globalHelper!.handleDefaultData<ChampionshipPreset>(res)!;
+      })
+    );
+  }
+
+  isMember(champId: number) {
+    return this.http.get<DefaultRes<IsMember>>(`${devEnv.apiEndpoint}/championship/${champId}/has-member`, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<IsMember>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<IsMember>(res)!;
       })
     );
   }

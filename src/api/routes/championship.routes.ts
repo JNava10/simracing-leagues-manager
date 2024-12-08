@@ -13,6 +13,7 @@ router.get("/:championshipId/full", [validateToken], controller.getFullData);
 router.get("/:championshipId/calendar", [validateToken], controller.getCalendar);
 router.get("/:championshipId/entries", [validateToken], controller.getEntries);
 router.get("/:championshipId/results", [validateToken], controller.getResults);
+router.get("/:championshipId/has-member/:userId?", [validateToken], controller.isMember);
 
 router.post("/", [validateToken], controller.create);
 router.post("/:championshipId/enter", [validateToken], controller.enter);

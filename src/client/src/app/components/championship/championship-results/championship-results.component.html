@@ -12,8 +12,9 @@
                 </td>
 
                 @for (track of this.calendar; track $index) {
-                  <td class="px-6 py-3 text-center text-xs font-medium text-neutral-400 uppercase dark:text-neutral-500">
-                    <span>{{track.name | slice:0:10}}...</span>
+                  <td
+                    class="px-6 py-3 text-center text-xs font-medium text-neutral-400 uppercase dark:text-neutral-500">
+                    <span>{{ track.name | slice:0:10 }}...</span>
                   </td>
                 }
 
@@ -23,28 +24,29 @@
               </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 w-sm dark:divide-neutral-700">
-              <tr>
                 @for (driver of users; track $index) {
-                  <td class=" px-6 py-3 text-start text-xs font-medium dark:text-neutral-300">
-                    {{driver.nickname}}
-                  </td>
-                  @for (round of this.calendar; track $index) {
-                    <td class="text-center">
-                      @if (results![$index]) {
-                        <span class="text-neutral-200">{{results![$index].position}}</span>
-                      } @else {
-                        <button routerLink="{{$index + 1}}" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-neutral-200 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
-                          +
-                        </button>
-                      }
+                  <tr>
+                    <td class=" px-6 py-3 text-start text-xs font-medium dark:text-neutral-300">
+                      {{ driver.nickname }}
                     </td>
-                  }
+                    @for (round of this.calendar; track $index) {
+                      <td class="text-center">
+                        @if (results![$index]) {
+                          <span class="text-neutral-200">{{ results![$index].position }}</span>
+                        } @else {
+                          <button routerLink="{{$index + 1}}"
+                                  class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-neutral-200 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                            +
+                          </button>
+                        }
+                      </td>
+                    }
 
-                  <td class=" px-6 py-3 text-start text-xs font-medium dark:text-neutral-300">
-                    {{getDriverScore(driver)}}
-                  </td>
+                    <td class=" px-6 py-3 text-start text-xs font-medium dark:text-neutral-300">
+                      {{ getDriverScore(driver) }}
+                    </td>
+                  </tr>
                 }
-              </tr>
               </tbody>
             </table>
           </div>
