@@ -4,7 +4,7 @@ import { devEnv } from "../../../environments/environment.development";
 import { sendTokenParam } from "../../utils/constants/global.constants";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import {
-  ChampionshipPreset, ChampionshipRound,
+  ChampionshipPreset, ChampionshipRound, ChampTableResult,
   EnterChampionship,
   GetChampProps, IsMember,
   LeagueChampionship, Position,
@@ -145,8 +145,8 @@ export class ChampionshipApiService {
   };
 
   getResults = (id: number) => {
-    return this.http.get<DefaultRes<PositionFormItem[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
-      catchError((res: HttpResponse<DefaultRes<PositionFormItem[]>>, caught) => {
+    return this.http.get<DefaultRes<ChampTableResult[]>>(`${devEnv.apiEndpoint}/championship/${id}/results`, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<ChampTableResult[]>>, caught) => {
         const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
 
         if (error instanceof Observable) {
@@ -158,7 +158,7 @@ export class ChampionshipApiService {
       map((res) => {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
-        return this.globalHelper!.handleDefaultData<PositionFormItem[]>(res)!;
+        return this.globalHelper!.handleDefaultData<ChampTableResult[]>(res)!;
       })
     );
   };

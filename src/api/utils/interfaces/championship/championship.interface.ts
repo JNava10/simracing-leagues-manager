@@ -232,3 +232,18 @@ interface ChampCategoryQuery {
     categoryId: number;
     categories: Category;
 }
+
+// POST ENTREGA: Las dos interfaces siguientes para reorganizar los resultados y mostrarlos bien.
+export interface RoundEntry {
+    driverId?: number;
+    finishState?: number;
+    roundId?: number;
+    position?: number;
+    driver?: User;
+    round?: ChampionshipRound;
+}
+
+export interface ChampTableResult {
+    driverId?: number;
+    results: RoundEntry[]
+}

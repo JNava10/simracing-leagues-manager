@@ -7,7 +7,7 @@ import {TrackLayout} from '../../../utils/interfaces/track.interface';
 import {DialogModule} from 'primeng/dialog';
 import {
   ChampionshipEntry,
-  ChampionshipRound, LeagueChampionship,
+  ChampionshipRound, ChampTableResult, LeagueChampionship,
   Position,
   PositionFormItem
 } from '../../../utils/interfaces/championship.interface';
@@ -63,35 +63,37 @@ export class ChampionshipResultsComponent implements OnInit {
     this.championshipApiService.getResults(this.champId!).subscribe(res => this.handleResults(res));
   }
 
-  private handleResults(res: PositionFormItem[]) {
+  private handleResults(res: ChampTableResult[]) {
     this.results = res!;
   }
 
   champId?: number;
   calendar?: ChampionshipRound[];
   championship?: LeagueChampionship;
-  results?: Position[];
+  results?: ChampTableResult[];
   users?: User[];
   roundId?: number;
 
   protected readonly Object = Object;
 
-  getDriverResults(driverId: number) {
-    return this.results!.find(result => result.driverId === driverId);
-  }
-
   getDriverScore(user: User) {
-    const results = this.results!.filter(result => result.driverId === user.id);
+    const driverFound = this.results!.find(result => result.driverId === user.id);
 
     const positionScores = this.championship?.scoreSystem!.positions!
     let totalScore = 0;
 
-    results.forEach((result) => {
-      if (result.position && positionScores[result.position - 1]) {
-        totalScore += positionScores[result.position - 1].score!;
+    driverFound?.results.forEach((round) => {
+      const positionFound = positionScores.find((scoreItem, index) => index === round.position)
+
+      if (positionFound && positionFound.score) {
+        totalScore += positionFound.score;
       }
     })
 
     return totalScore;
+  }
+
+  getDriverById = (driverId: number) => {
+    return this.users!.find(user => user.id === driverId);
   }
 }

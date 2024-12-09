@@ -9,7 +9,7 @@ import {
     EnterChampionship,
     PresetCreation,
     GetChampProps,
-    PositionCreation,
+    PositionCreation, ChampTableResult,
 } from "../utils/interfaces/championship/championship.interface";
 import {handleRequestError, sendErrorResponse, sendSuccessResponse} from "../helpers/common.helper";
 import { ChampionshipPresetFull } from "../prisma/types/championship.types";
@@ -138,14 +138,37 @@ export class ChampionshipController {
     getResults = async (req: CustomRequest, res: Response) => {
         try {
             const id = Number(req.params['championshipId']!);
-            const results = await ChampionshipQuery.getResults(id);
+            const data = await ChampionshipQuery.getResults(id);
 
-            if (!results || results.length === 0) {
+            if (!data || data.length === 0) {
                 return sendSuccessResponse({
                     msg: 'No se han encontrado resultados del campeonato.',
                     data: [],
                 }, res);
             }
+
+            // POST ENTREGA: Se tiene que cambiar la forma en la que se devuelven los resultados para que se muestren correctamente.
+            const results: ChampTableResult[] = []
+
+            data.forEach(result => {
+                if (!results.find(item => item.driverId === result.driverId)) {
+                    const resultsItem: ChampTableResult = {
+                        driverId: result.driverId,
+                        results: []
+                    }
+
+                    const driverResults = data.filter(item => item.driverId === result.driverId);
+
+                    driverResults.forEach((round) => {
+                        resultsItem.results.push({
+                            position: round.position,
+                            roundId: result.roundId,
+                        });
+                    })
+
+                    results.push(resultsItem);
+                }
+            })
 
             return sendSuccessResponse({
                 data: results,

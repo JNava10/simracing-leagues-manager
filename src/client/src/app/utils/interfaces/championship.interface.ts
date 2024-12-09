@@ -160,3 +160,9 @@ export interface PositionFormItem {
 export interface IsMember {
   exists: boolean;
 }
+
+// POST ENTREGA: Para manejar los resultados reorganizados de la API
+export interface ChampTableResult {
+  driverId?: number;
+  results: Position[]
+}
