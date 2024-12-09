@@ -64,6 +64,7 @@ export class GlobalHelper {
     errorMsg: string, res: HttpResponse<DefaultRes<any>>
   ) => {
     const defaultRes = {data: {}} as DefaultRes<any>
+    console.log('a')
 
     if (res.status === 0) {
       this.showErrorMessage('No se ha podido conectar con el servidor', 'Comprueba si tienes conexión a internet');
@@ -73,6 +74,11 @@ export class GlobalHelper {
       return defaultRes
     } else if (res.status === 403) {
       defaultRes.data['auth'] = false;
+
+      if (defaultRes.data['banned'] && defaultRes.data['isBanned'] === true) {
+        this.navigateFromRoot('banned')
+      }
+
       return defaultRes
     }
 

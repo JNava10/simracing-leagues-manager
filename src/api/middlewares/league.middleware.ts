@@ -16,7 +16,7 @@ export const isBanned = async (req: CustomRequest, res: Response, next: NextFunc
         const isBanned = await LeagueQuery.isBanned(req.user.id, leagueId)
 
         if (isBanned) return sendSuccessResponse({
-            data: null,
+            data: {banned: true},
             msg: Messages.isBanned,
             status: 403
         }, res);

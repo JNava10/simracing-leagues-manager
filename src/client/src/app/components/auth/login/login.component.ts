@@ -80,7 +80,7 @@ export class LoginComponent {
       this.globalHelper.saveSocketKey(loggedData.socketKey);
 
       this.globalHelper.setUserId(loggedData.id);
-      this.globalHelper.navigateFromRoot("leagues")
+      this.globalHelper.navigateFromRoot(`strategy`) // POST DEFENSA: Antes se redirigia una ruta que ya no se usa. Ahora se redirige al perfil directamente.
     }
   }
 }

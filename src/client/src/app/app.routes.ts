@@ -40,7 +40,7 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterFormComponent },
       { path: 'newleague', component: CreateLeagueFormComponent },
-      { path: 'invites', component: InvitesComponent, canActivate: [hasSessionGuard] },
+      { path: 'invites', component: InvitesComponent },
       { path: 'presets', component: PresetListComponent},
       { path: 'not-auth', component: NotAuthComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },

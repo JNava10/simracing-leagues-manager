@@ -4,7 +4,7 @@ import { devEnv } from "../../../environments/environment.development";
 import { sendTokenParam } from "../../utils/constants/global.constants";
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import {
-  ChampionshipPreset,
+  ChampionshipPreset, ChampionshipRound,
   EnterChampionship,
   GetChampProps, IsMember,
   LeagueChampionship, Position,
@@ -178,6 +178,26 @@ export class ChampionshipApiService {
         this.globalHelper?.showSuccessMessage({message: res.msg!})
 
         return this.globalHelper!.handleDefaultData<LeagueChampionship>(res)!;
+      })
+    );
+  };
+
+  // POST ENTREGA: Es necesario esta ruta para poder guardar correctamente los resultados
+  getRoundById =  (champId: number, roundId: number) => {
+    return this.http.get<DefaultRes<ChampionshipRound>>(`${devEnv.apiEndpoint}/championship/${champId}/calendar/${roundId}`, {params: {...sendTokenParam}}).pipe(
+      catchError((res: HttpResponse<DefaultRes<ChampionshipRound>>, caught) => {
+        const error = this.globalHelper!.handleApiError(res.body?.msg!, res);
+
+        if (error instanceof Observable) {
+          return error;
+        } else {
+          return of(error)
+        }
+      }),
+      map((res) => {
+        this.globalHelper?.showSuccessMessage({message: res.msg!})
+
+        return this.globalHelper!.handleDefaultData<ChampionshipRound>(res)!;
       })
     );
   };

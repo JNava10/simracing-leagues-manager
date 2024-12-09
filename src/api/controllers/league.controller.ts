@@ -116,8 +116,6 @@ export const getLeagueMembers = async (req: CustomRequest, res: Response) => {
             return res.send(`No se ha indicado un ID de liga válido.`);
         }
 
-        console.log('sssssssog')
-
         const leagueId = Number(req.params['leagueId']);
         const leagueMembers = await LeagueQuery.getLeagueMembers(leagueId);
 
