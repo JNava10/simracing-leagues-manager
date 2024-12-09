@@ -6,7 +6,13 @@ import {CustomDropdownItemComponent} from "../../utils/dropdown/custom-dropdown-
 import {CustomSelectComponent} from "../../utils/custom/input/custom-select/custom-select.component";
 import {StrategyApiService} from "../../../services/api/strategy-api.service";
 import {TrackApiService} from "../../../services/api/track-api.service";
-import {BaselineCar, CreateStrategyProps, Strategy, Tyre} from "../../../utils/interfaces/strategy.interface";
+import {
+  BaselineCar,
+  CreateStrategyProps,
+  EstimatedLapTime,
+  Strategy,
+  Tyre
+} from "../../../utils/interfaces/strategy.interface";
 import {StrategyLayout, StrategyTrack, Track, TrackLayout} from "../../../utils/interfaces/track.interface";
 import {CustomSearchInputComponent} from "../../utils/custom/input/custom-search-input/custom-search-input.component";
 import {BaseChartDirective} from "ng2-charts";
@@ -21,6 +27,7 @@ import {TrackSearchFormComponent} from "../../utils/forms/track-search-form/trac
 import {BaselineCarSearchComponent} from "../../utils/search/baseline-car-search/baseline-car-search.component";
 import {NgStyle} from "@angular/common";
 import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom-solid-button.component";
+import {GlobalHelper} from "../../../helpers/global.helper";
 
 @Component({
   selector: 'app-define-strategies-form',
@@ -45,7 +52,7 @@ import {CustomSolidButtonComponent} from "../../utils/button/solid-button/custom
   styleUrl: './define-strategies-form.component.scss'
 })
 export class DefineStrategiesFormComponent implements OnInit {
-  constructor(private strategyService: StrategyApiService, private trackService: TrackApiService, private fb: FormBuilder) {}
+  constructor(private strategyService: StrategyApiService, private trackService: TrackApiService, private fb: FormBuilder, private globalHelper: GlobalHelper) {}
 
   strategies?: Strategy[];
 
@@ -81,6 +88,9 @@ export class DefineStrategiesFormComponent implements OnInit {
       startFuel: [0, [Validators.min(0)]],
       estimatedLapTimes: this.fb.array<FormGroup>([]),
       tyres: this.fb.array<number>([], [Validators.required, Validators.minLength(2)]),
+
+      // POST DEFENSA. Para el formulario de tiempos por vuelta
+      lapTimes: this.fb.array<FormGroup>([]),
     });
   }
 
@@ -114,6 +124,13 @@ export class DefineStrategiesFormComponent implements OnInit {
     if (!this.strategyForm) throw new Error('Error al obtener el formulario');
 
     return this.strategyForm.get('tyres') as FormArray<FormGroup>;
+  }
+
+  // POST DEFENSA: Este get devuelve los formgroups que guardan los tiempos por vuelta de cada neumatico
+  get lapTimes(): FormArray<FormGroup> {
+    if (!this.strategyForm) throw new Error('Error al obtener el formulario');
+
+    return this.strategyForm.get('lapTimes') as FormArray<FormGroup>;
   }
 
   getTyreControl = (tyre: Tyre) => {
@@ -156,17 +173,27 @@ export class DefineStrategiesFormComponent implements OnInit {
   };
 
   selectedTyres: Tyre[] = [];
+  selectedTyresDistinct: Set<Tyre> = new Set();
 
   selectTyre = (tyre: Tyre) => {
     this.addTyre(tyre);
   };
 
   private addTyre = (tyre: Tyre) => {
-    this.selectedTyres.push(tyre);
 
     this.tyres.push(
       this.getTyreControl(tyre)
     );
+
+    this.selectedTyres.push(tyre);
+
+    if (tyre.id && !this.selectedTyresDistinct.has(tyre)) {
+      // POST DEFENSA. Para poder obtener los neumaticos del formulario de tiempos por vuelta.
+      this.selectedTyresDistinct.add(tyre);
+      this.lapTimes?.push(
+        this.getLaptimeFormGroup(tyre.id)
+      )
+    }
 
     this.choosingTyre = false;
   }
@@ -176,11 +203,37 @@ export class DefineStrategiesFormComponent implements OnInit {
 
     let data = this.strategyForm.value as CreateStrategyProps;
 
+    data.estimatedLapTimes = this.lapTimes!.value as EstimatedLapTime[];
+
+    data.estimatedLapTimes.forEach(item => {
+      if (item.lapTime) item.lapTimeMilis = this.globalHelper.timeToMilis(item.lapTime)
+    })
+
     data.tyres = this.selectedTyres.map(item => item.id!)
 
     this.strategyService.getStrategy(data).subscribe(strategies => {
       this.strategies = strategies;
-    })
+    });
   };
+
   protected readonly StrategyChartComponent = StrategyChartComponent;
+
+  // POST DEFENSA. Todos los siguientes están relacionados con el formulario de tiempos por vuelta que faltaba
+  protected getLaptimeFormGroup = (tyreId: number) => {
+    return this.fb.group({
+      tyreId,
+      lapTime: ""
+    })
+  }
+
+  protected getTyre = (tyreId: number) => {
+    return this.selectedCar?.tyres?.find(tyre => tyre.id === tyreId) as Tyre
+  }
+
+  protected showLaptimeForm = () => {
+    this.typingLaptimes = true;
+  }
+
+  // POST ENTREGA. Estas dos variables son para el formulario de tiempos por vuelta que faltaba
+  typingLaptimes = false;
 }

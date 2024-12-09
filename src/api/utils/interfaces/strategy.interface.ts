@@ -73,6 +73,7 @@ export interface CreateStrategyRequest {
     carId: number,
     startFuel?: number,
     tyres: number[]
+    estimatedLapTimes: EstimatedLapTime[]
 }
 
 

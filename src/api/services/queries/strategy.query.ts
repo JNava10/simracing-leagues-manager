@@ -16,7 +16,7 @@ export class StrategyQuery {
 
     static searchCarsByName = async (name: string) => {
         return prisma.baselineCar.findMany({
-            where: {name: {contains: name}},
+            where: {name: {startsWith: name}}, // POST DEFENSA: Se ha cambiado contains por startsWith para que la busqueda sea mas concreta.
             include: {
                 tyres: {
                     include: {wearList: true}

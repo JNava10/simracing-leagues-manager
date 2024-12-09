@@ -68,6 +68,7 @@ export interface CreateStrategyProps {
 export interface EstimatedLapTime {
   tyreId?: number;
   lapTimeMilis?: number;
+  lapTime?: string;
 }
 
 export interface Stint {

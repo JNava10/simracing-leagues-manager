@@ -13,7 +13,6 @@
          description="Rellena el formulario de la parte inferior"
        />
      </div>
-
    }
 
    <div class="flex-col mx-[5%] max-h-[10rem]">
@@ -85,6 +84,38 @@
                />
              </div>
            </div>
+
+
+           <!-- POST DEFENSA. Faltaba este formulario para que no se utilizaran tiempos por vuelta predefinidos -->
+           @if (this.selectedTyresDistinct.size > 0) {
+             <p-dialog
+               contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+               showHeader="false"
+               styleClass="flex gap-1 p-3 dark:bg-dark-background w-30 h-15"
+               [(visible)]="typingLaptimes" [modal]="true"
+               [dismissableMask]="true">
+               <ng-template pTemplate="headless">
+                 <div class="flex flex-col gap-3" formArrayName="lapTimes">
+                   <span>Indicar los tiempos con formato MM:SS:MIL (1:30.000)</span>
+
+                   @for (group of this.lapTimes.controls; track $index) {
+                    <div [formGroupName]="$index">
+                      @if (lapTimes.at($index) && getTyre(lapTimes.at($index).value['tyreId']); as tyre) {
+                        <app-custom-text-input
+                          [label]="tyre.name!"
+                          [debug]="true"
+                          formControlName="lapTime"
+                          placeholder="Ej: 1:10:000"
+                        />
+                      }
+                    </div>
+                   }
+
+                   <app-soft-button color="pink" (click)="getStrategy()">Obtener estrategia</app-soft-button>
+                 </div>
+               </ng-template>
+             </p-dialog>
+           }
          </form>
        }
 
@@ -114,8 +145,8 @@
        </div>
 
        <div class="flex flex-col justify-center">
-         <app-soft-button color="purple" (click)="getStrategy()">
-           Obtener estrategia
+         <app-soft-button color="purple" (click)="showLaptimeForm()">
+           Siguiente
          </app-soft-button>
        </div>
      </div>
@@ -127,7 +158,8 @@
   contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
   showHeader="false"
   styleClass="flex gap-1 dark:bg-dark-background"
-  [(visible)]="searchingTrack" [modal]="true"
+  [(visible)]="searchingTrack"
+  [modal]="true"
   [dismissableMask]="true">
   <ng-template pTemplate="headless">
     <div>
@@ -162,7 +194,7 @@
     [(visible)]="choosingTyre" [modal]="true"
     [dismissableMask]="true">
     <ng-template pTemplate="headless">
-      <div class="grid grid-cols-3">
+      <div>
         @for (tyre of selectedCar.tyres; track $index) {
           <div (click)="selectTyre(tyre)" class="w-10 h-5 hover:bg-dark-background-deepest cursor-pointer">
             <span>{{tyre.name}}</span>
@@ -172,5 +204,4 @@
       </div>
     </ng-template>
   </p-dialog>
-
 }

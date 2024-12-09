@@ -235,6 +235,29 @@ export class GlobalHelper {
   getUserId = () => {
     return this.storageHelper.get('user');
   }
+
+  timeToMilis = (lapTime: string): number => {
+    if (!lapTime.includes(':') || !lapTime.includes('.')) throw new Error('Formato del tiempo incorrecto. Debe ser mm:ss.mil');
+
+    const minuteSplit = lapTime.split(':');
+
+    if (minuteSplit.length !== 2) {
+      throw new Error('Formato del tiempo incorrecto. Debe ser mm:ss.mil');
+    }
+
+    const minutes = +minuteSplit[0];
+
+    const secondsSplit = minuteSplit[1].split('.');
+
+    if (secondsSplit.length !== 2) {
+      throw new Error('Formato del tiempo incorrecto. Debe ser mm:ss.mil');
+    }
+
+    const seconds = +secondsSplit[0];
+    const milis = +secondsSplit[1]
+
+    return (minutes * 60 * 1000) + (seconds * 1000) + milis;
+  };
 }
 
 interface ShowSuccessMessageProps {

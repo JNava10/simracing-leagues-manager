@@ -64,7 +64,7 @@ export class StrategyApiService {
 
   searchCars = (props: SearchCarProps) => {
     const url = `${devEnv.apiEndpoint}/strategy/car/search`;
-    const options = { params: { ...sendTokenParam }, ...props };
+    const options = { params: { ...sendTokenParam, ...props  }}; // POST DEFENSA: Se ha cambiado el props de fuera de los params a adentro
 
     return this.http.get<DefaultRes<BaselineCar[]>>(url, options).pipe(
       catchError((res: HttpResponse<DefaultRes<BaselineCar[]>>, caught) => {

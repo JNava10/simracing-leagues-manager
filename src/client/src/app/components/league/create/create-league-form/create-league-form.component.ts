@@ -63,7 +63,7 @@ export class CreateLeagueFormComponent {
 
   private afterCreatingLeague = async (data: League) => {
     if (data.id) {
-      await this.globalHelper.navigateFromRoot(`leagues/${data.id}`);
+      await this.globalHelper.navigateFromRoot(`league/${data.id}`); // POST DEFENSA: Se me habia colado una 's' en league/
     } else {
       this.globalHelper.showErrorMessage('Error', "No se ha podido obtener la nueva liga.");
     }

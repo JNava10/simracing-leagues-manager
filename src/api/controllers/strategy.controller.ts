@@ -23,7 +23,8 @@ export class StrategyController {
                 layoutId,
                 tyres,
                 startFuel,
-                raceLength
+                raceLength,
+                estimatedLapTimes
             } = req.body as CreateStrategyRequest
 
             const trackLayout = await TrackQuery.getById(layoutId);
@@ -32,11 +33,7 @@ export class StrategyController {
                 raceLength,
                 car,
                 trackLayout,
-                estimatedLapTimes: [
-                    {lapTimeMilis: 93021, tyreId: tyres[0]},
-                    {lapTimeMilis: 93843, tyreId: tyres[1]},
-                    {lapTimeMilis: 94731, tyreId: tyres[2]},
-                ],
+                estimatedLapTimes,
                 tyres,
             });
 
