@@ -20,8 +20,14 @@ export class LeagueChampsComponent implements OnInit {
   @Input() leagueId?: number
 
   ngOnInit(): void {
-    let leagueId = this.route.snapshot.params['leagueId'];
-    this.leagueService.getChamps(leagueId).subscribe(res => this.handleChamps(res));
+    // POST ENTREGA: Se ha cambiado la forma en la que se obtiene el ID de liga para cambios reactivos.
+    this.route.paramMap.subscribe(params => {
+      this.leagueId = +params.get('leagueId')! || 0;
+
+      if (this.leagueId !== null && this.leagueId !== undefined && this.leagueId > 0) {
+        this.leagueService.getChamps(this.leagueId).subscribe(res => this.handleChamps(res));
+      }
+    });
   }
 
   private handleChamps = (championships: LeagueChampionship[]) => {

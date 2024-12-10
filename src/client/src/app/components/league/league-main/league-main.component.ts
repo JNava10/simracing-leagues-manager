@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Observable} from "rxjs";
 import {League} from "../../../utils/interfaces/league.interface";
 import {LeagueApiService} from "../../../services/api/league-api.service";
@@ -39,11 +39,14 @@ export class LeagueMainComponent implements OnInit {
   subroute?: string;
 
   ngOnInit() {
-    this.leagueId = this.route.snapshot.params['leagueId'];
+    // POST ENTREGA: Se ha cambiado la forma en la que se obtiene el ID para que sea reactivo.
+    this.route.paramMap.subscribe(params => {
+      this.leagueId = +params.get('leagueId')! || 0;
 
-    if (this.leagueId !== null && this.leagueId !== undefined) {
-      this.leagueService.getLeague(this.leagueId).subscribe(res => this.handleLeague(res))
-    }
+      if (this.leagueId !== null && this.leagueId !== undefined && this.leagueId > 0) {
+        this.leagueService.getLeague(this.leagueId).subscribe(res => this.handleLeague(res))
+      }
+    });
 
     this.socketListener.leagueEdit(this.onSocketEdit)
   }

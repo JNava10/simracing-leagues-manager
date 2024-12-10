@@ -117,7 +117,9 @@ export class LeagueMemberListComponent implements OnInit {
   }
 
   inviteUser(user: User): void {
-    this.leagueService.inviteMember(this.leagueId!, user.id!).subscribe();
+    this.leagueService.inviteMember(this.leagueId!, user.id!).subscribe(res => {
+      if (res.executed) this.searching = false;
+    });
   }
 
   toggleSearch(show: boolean): void {

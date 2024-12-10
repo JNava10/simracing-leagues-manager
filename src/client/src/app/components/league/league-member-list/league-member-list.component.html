@@ -55,7 +55,7 @@
   </app-solid-button>
 </div>
 
-<p-dialog [(visible)]="searching">
+<p-dialog [dismissableMask]="true" [modal]="true"  [(visible)]="searching">
   <ng-template pTemplate="headless">
     <app-search-users-bar
       (onUserSelect)="inviteUser($event)"
@@ -63,7 +63,7 @@
   </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="banning">
+<p-dialog [dismissableMask]="true" [modal]="true"  [(visible)]="banning">
   <ng-template pTemplate="headless">
    <div class="flex flex-col gap-3">
      <app-custom-text-input
@@ -79,7 +79,7 @@
   </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="banConfirm">
+<p-dialog [dismissableMask]="true" [(visible)]="banConfirm">
   <ng-template pTemplate="headless">
     <h1>El usuario ya no podrá entrar de nuevo a la liga, salvo que se le quite el baneo.</h1>
     <span>Razon: {{ banReason }}</span>

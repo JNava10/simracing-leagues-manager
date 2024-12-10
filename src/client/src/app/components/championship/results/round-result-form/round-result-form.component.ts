@@ -139,7 +139,8 @@ export class RoundResultFormComponent implements OnInit {
   private handleRfactorResults(drivers: Driver[]) {
     drivers.forEach((driver, index) => {
 
-      const driverMatch = this.members?.find(member => member.user!.nickname || member.gameName === driver.Name);
+      // POST ENTREGA: Faltaba completar una comprobacion que estaba a medias, se estaba comprobando si existia el campo en vez de comparandolos.
+      const driverMatch = this.members?.find(member => member.user!.nickname === driver.Name || member.gameName === driver.Name);
       const driverControl = this.positionsForm.at(driver.Position - 1);
 
       if (driverMatch && driverControl) {

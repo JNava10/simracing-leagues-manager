@@ -27,14 +27,14 @@
     </div>
   } @else {
     <ul
-      class="text-neutral-800 w-full  min-w-2xl h-48 flex-col justify-center items-center"
+      class="text-dark-text-inactive w-full  min-w-2xl h-48 flex-col justify-center items-center"
     >
       @if (categories$ | async; as res) {
         <div class="overflow-y-auto h-44 py-3">
           @for (simulator of res.data; track $index) {
             <span
               (click)="selectItem(simulator)"
-              class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full min-w-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
+              class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full min-w-full hover:bg-neutral-200 dark:hover:bg-dark-hover dark:hover:text-dark-main"
             >
             {{ simulator.name }}
           </span>
