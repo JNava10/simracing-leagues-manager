@@ -5,17 +5,23 @@
 
 ## Despliegue de la aplicación
 
-- Por el momento se necesita [**Node.js**](https://nodejs.org/en/) para poder ejecutar el proyecto. En un futuro estará el binario directamente dentro del proyecto.
+ ### Programas necesarios:
+-  [**Node.js**](https://nodejs.org/en/) para poder ejecutar el proyecto.
+- [**PHPMyAdmin**](https://www.phpmyadmin.net/) o [**Laragon**](https://laragon.org/) para poder guardar la base de datos.
 
 1. Descargar el contenido de la **release más reciente**.
 2. Descomprimir el contenido de la release en cualquier carpeta.
-3. Entrar al subdirectorio `src/api` y ejecutar los siguientes comandos:
+3. Hacer una copia del `src/api/.env.example` a `.env` y modificar lo que se considere necesario.
+4. Crear una base de datos con el nombre que aparece en el `.env` de la API. Por defecto `league_manager`.
+5. Encender la base de datos, asegurandonos de que está creada.
+6. Entrar al subdirectorio `src/api` y ejecutar los siguientes comandos:
 ```powershell
 npm i
-npm run seed
+npx prisma migrate dev --name init; npm run seed
 npm run start
 ```
-4. Entrar al subdirectorio `src/client` y ejecutar los siguientes comandos:
+6. Importar el SQL de la defensa (`defensa.sql`, si lo tienes).
+7. Entrar al subdirectorio `src/client` y ejecutar los siguientes comandos:
 ```powershell
 npm i
 ng s --open
