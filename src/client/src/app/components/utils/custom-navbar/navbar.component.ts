@@ -37,4 +37,8 @@ export class NavbarComponent {
 
     this.globalHelper.navigateFromRoot("login")
   }
+
+  goToLanding = () => {
+    this.globalHelper.navigateFromRoot('landing')
+  };
 }

@@ -32,6 +32,7 @@ import {NotAuthComponent} from "./components/not-auth/not-auth.component";
 import {hasSessionGuard} from "./guards/has-session.guard";
 import {NotFoundPageComponent} from "./components/not-found-page/not-found-page.component";
 import {isChampMember} from "./guards/is-champ-member";
+import {LandingComponent} from "./components/landing/landing.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -42,6 +43,7 @@ export const routes: Routes = [
       { path: 'newleague', component: CreateLeagueFormComponent },
       { path: 'invites', component: InvitesComponent },
       { path: 'presets', component: PresetListComponent},
+      { path: 'landing', component: LandingComponent},
       { path: 'not-auth', component: NotAuthComponent },
       { path: 'leagues', title: 'Ligas', component: LeaguesDashboardComponent },
       { path: 'strategy', title: 'Estrategias', component: DefineStrategiesFormComponent },
