@@ -84,13 +84,13 @@ export class LeagueMemberListComponent implements OnInit {
     });
   };
 
-  private handleAddingMember = (memberIsAdded: QueryIsExecuted): void => {
+  private handleAddingMember = (memberIsAdded: QueryIsExecuted, memberInfo: LeagueMemberRequest): void => {
     this.globalHelper.showSuccessMessage({ message: "Se ha añadido al miembro correctamente." });
-    this.refreshList();
+    this.members.delete(memberInfo.userId)
   };
 
-  private handleBanningMember = (): void => {
-    this.refreshList();
+  private handleBanningMember = (res: QueryIsExecuted, member: BanMemberRequest): void => {
+    this.members.delete(member.userId);
   };
 
   private handleMemberAdded = (id: number): void => {
@@ -102,7 +102,7 @@ export class LeagueMemberListComponent implements OnInit {
       leagueId: this.leagueId!,
       userId
     };
-    this.leagueService.kickMember(member).subscribe(this.handleAddingMember);
+    this.leagueService.kickMember(member).subscribe(res => this.handleAddingMember(res, member));
   }
 
   banMember(userId: number): void {
@@ -113,7 +113,8 @@ export class LeagueMemberListComponent implements OnInit {
       userId: this.memberToBan.user.id!,
       reason: this.banReason
     };
-    this.leagueService.banMember(member).subscribe(this.handleBanningMember);
+
+    this.leagueService.banMember(member).subscribe(res => this.handleBanningMember(res, member));
   }
 
   inviteUser(user: User): void {

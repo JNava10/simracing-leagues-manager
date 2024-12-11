@@ -190,6 +190,8 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
     this.setRoundName();
     const round = this.championshipRoundForm.value as ChampionshipRound;
     this.raceCalendar.push(round);
+    console.log(this.raceCalendar);
+
     this.championshipRoundForm.reset();
   }
 
@@ -221,6 +223,7 @@ export class BasicInfoChampionshipFormComponent implements OnInit {
 
   private setRoundName() {
     const nameToSet = this.roundName.value || this.getRoundLayoutName();
+
     this.roundName.setValue(nameToSet);
   }
 

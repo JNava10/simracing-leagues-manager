@@ -17,7 +17,7 @@
     @for (league of leagues; track league.id) {
       @if (league) {
         <div [class]="tooltipClasses" (click)="goToLeague(league.id)">
-          <app-image styleClass="size-[4rem] rounded-xl" [url]="league.picUrl!"/>
+          <app-image styleClass="size-[4rem] rounded-xl cursor-pointer opacity-100 transition-all hover:opacity-50" [url]="league.picUrl!"/>
           @if (league.name) {
             <app-tooltip
               [text]="league.name"

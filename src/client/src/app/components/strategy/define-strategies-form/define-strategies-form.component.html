@@ -190,15 +190,14 @@
   <p-dialog
     contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
     showHeader="false"
-    styleClass="flex gap-1 dark:bg-dark-background w-30 h-15"
+    styleClass="flex gap-1 dark:bg-dark-background w-45 h-30"
     [(visible)]="choosingTyre" [modal]="true"
     [dismissableMask]="true">
     <ng-template pTemplate="headless">
-      <div>
+      <div class="flex gap-3 p-3  rounded-xl">
         @for (tyre of selectedCar.tyres; track $index) {
-          <div (click)="selectTyre(tyre)" class="w-10 h-5 hover:bg-dark-background-deepest cursor-pointer">
-            <span>{{tyre.name}}</span>
-            <span>{{tyre.description}}</span>
+          <div (click)="selectTyre(tyre)" class="w-20 h-10 flex justify-center items-center dark:text-dark-text dark:hover:text-dark-textPurple hover:bg-dark-background-lightest cursor-pointer">
+            <span class="text-xl text-center">{{tyre.name}}</span>
           </div>
         }
       </div>

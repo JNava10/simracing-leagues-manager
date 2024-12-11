@@ -213,6 +213,7 @@ export class DefineStrategiesFormComponent implements OnInit {
 
     this.strategyService.getStrategy(data).subscribe(strategies => {
       this.strategies = strategies;
+      this.typingLaptimes = false;
     });
   };
 

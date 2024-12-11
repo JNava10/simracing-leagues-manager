@@ -1,11 +1,11 @@
-<div class="relative flex flex-col w-md h-md bg-white border shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+<div class="relative flex flex-col w-md h-md bg-white border border-dark-main rounded-xl dark:bg-dark-background-lightest">
   @if (showCloseBtn) {
     <app-solid-button (click)="emitClosing()" color="red" styleClass="absolute right-0 mt-3 mr-3">
       <i class="fa-solid fa-xmark"></i>
     </app-solid-button>
   }
   <div class="p-3 md:p-5">
-    <h3 *ngIf="showTitle" class="text-lg font-bold text-gray-800 dark:text-white">
+    <h3 *ngIf="showTitle" class="text-lg font-bold text-dark-textPurple dark:text-white">
       {{ title }}
     </h3>
     <p *ngIf="showSubtitle" class="mt-1 text-xs font-medium uppercase text-gray-500 dark:text-neutral-500">

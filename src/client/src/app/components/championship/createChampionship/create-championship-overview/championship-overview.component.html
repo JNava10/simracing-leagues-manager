@@ -53,7 +53,7 @@
         <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">Sistema de puntuacion</h2>
         <div>
           <h3>Posiciones</h3>
-            <div class="flex flex-col h-full max-h-30 overflow-y-auto">
+            <div class="grid grid-cols-3 h-full max-w-60 w-full max-h-30 overflow-y-auto">
               @for (positionScore of championship!.scoreSystem?.positions; track $index) {
                 <div class="rounded-md p-3 h-10 bg-neutral-700/50">
                   <span>{{$index + 1}}º - {{positionScore.score}}</span>

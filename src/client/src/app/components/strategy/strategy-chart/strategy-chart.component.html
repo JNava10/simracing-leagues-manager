@@ -2,7 +2,7 @@
   <section class="w-full h-full">
     @if (strategy.overall.raceTime && strategy.overall.raceLaps) {
       <div class="flex justify-center">
-        <span class="font-extrabold text-xl">{{globalHelper.milisToTime(strategy.overall.raceTime)}}</span>
+        <span class="font-extrabold text-xl">{{globalHelper.milisToTime(strategy.overall.raceTime)}}*</span>
         <span>&nbsp;</span>
         <span class="text-bold text-xl">({{strategy.overall.raceLaps}} vueltas, {{strategy.overall.pitStopCount}} paradas)</span>
       </div>
