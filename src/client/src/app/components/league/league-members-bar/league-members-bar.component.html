@@ -1,7 +1,7 @@
 @if (members) {
   <section class="fixed mr-3 mb-3 right-0 p-3 gap-2 rounded-2xl cursor-pointer bg-dark-background flex flex-col w-36 h-[calc(100vh-8rem)]">
     @for (member of members; track member.user.id) {
-      <div class="flex justify-between rounded-xl hover:dark:bg-dark-background-lightest gap-3 p-3 items-center">
+      <div (click)="goToProfile(member.user.id)" class="flex justify-between rounded-xl hover:dark:bg-dark-background-lightest gap-3 p-3 items-center">
         <app-image type="Circular" styleClass="size-12 mr-2" [url]="member.user.profileUrl!"/>
         <span class="text-sm text-dark-text">{{member.user.nickname}}</span>
       </div>

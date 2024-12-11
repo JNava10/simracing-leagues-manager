@@ -83,10 +83,12 @@ export class ChampionshipResultsComponent implements OnInit {
     let totalScore = 0;
 
     driverFound?.results.forEach((round) => {
-      const positionFound = positionScores.find((scoreItem, index) => index === round.position)
+      if (round.position) {
+        const positionFound = positionScores.find((scoreItem, index) => index === round.position! - 1)
 
-      if (positionFound && positionFound.score) {
-        totalScore += positionFound.score;
+        if (positionFound && positionFound.score) {
+          totalScore += positionFound.score;
+        }
       }
     })
 

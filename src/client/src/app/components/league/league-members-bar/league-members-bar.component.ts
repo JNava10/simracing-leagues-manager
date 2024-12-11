@@ -7,6 +7,7 @@ import {User} from "../../../utils/interfaces/user.interface";
 import {LeagueApiService} from "../../../services/api/league-api.service";
 import {ActivatedRoute} from "@angular/router";
 import {LeagueMember} from "../../../utils/interfaces/league.interface";
+import {GlobalHelper} from "../../../helpers/global.helper";
 
 @Component({
   selector: 'app-league-members-bar',
@@ -21,7 +22,7 @@ import {LeagueMember} from "../../../utils/interfaces/league.interface";
 })
 export class LeagueMembersBarComponent implements OnInit, OnChanges {
 
-  constructor(private leagueService: LeagueApiService, private route: ActivatedRoute) {
+  constructor(private leagueService: LeagueApiService, private globalHelper: GlobalHelper) {
   }
 
   ngOnInit(): void {
@@ -43,4 +44,8 @@ export class LeagueMembersBarComponent implements OnInit, OnChanges {
   private handleMembers = (res: LeagueMember[]) => {
     this.members = res
   }
+
+  goToProfile = (id: number | undefined) => {
+    this.globalHelper.navigateFromRoot(`profile/${id}`)
+  };
 }

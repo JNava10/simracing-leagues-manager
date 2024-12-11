@@ -35,7 +35,7 @@ import {isChampMember} from "./guards/is-champ-member";
 import {LandingComponent} from "./components/landing/landing.component";
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'lm/landing', pathMatch: 'full' },
   { path: 'lm', canActivate: [hasSessionGuard], children: [
       { path: 'profile/:userId', component: ProfileInfoComponent, },
       { path: 'login', component: LoginComponent },
