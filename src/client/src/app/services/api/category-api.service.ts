@@ -5,7 +5,7 @@ import {League} from "../../utils/interfaces/league.interface";
 import {sendTokenParam} from "../../utils/constants/global.constants";
 import {ScoreSystem} from "../../utils/interfaces/score.interface";
 import {Category} from "../../utils/interfaces/category.interface";
-import { SearchCategoryProps } from '../../utils/props/category/category.prop';
+import { SearchCategoryProps } from '../../utils/props/category.props';
 import { DefaultRes as DefaultRes } from '../../utils/interfaces/responses/response.interface';
 import { catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';

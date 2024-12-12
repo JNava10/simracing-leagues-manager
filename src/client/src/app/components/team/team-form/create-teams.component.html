@@ -1,0 +1,118 @@
+<section class="w-full h-full flex flex-col gap-3">
+
+  <div class="w-full h-full flex gap-3">
+    <!-- Formulario del equipo seleccionado -->
+    <form [formGroup]="selectedTeam.controls" class="w-1/3 col-span-6 gap-3 h-64 items-center">
+
+      <!-- Formulario del los asientos del equipo -->
+      <div class="flex relative flex-col bg-dark-background w-sm rounded-md gap-3 p-3">
+        <span class="absolute right-0 top-0 py-1 px-3 text-sm">{{ selectedTeam.index + 1 }}</span>
+        <app-custom-text-input
+          class="w-sm"
+          (inputChange)="onChangeName($event)"
+          formControlName="name"
+          label="Nombre"
+        />
+
+        <div class="flex gap-16">
+          <div>
+            <label class="block text-sm font-medium mb-2 w-sm dark:text-white">Color</label>
+            <ngx-colors ngx-colors-trigger class="dark:bg-stone-600" formControlName="hexColor"></ngx-colors>
+          </div>
+
+          <div>
+            <app-custom-text-input
+              styleClass="w-[3rem]"
+              maxLength="1"
+              formControlName="carEntries"
+              label="Entradas del equipo"
+            />
+          </div>
+        </div>
+
+
+        <div class="flex justify-center items-center gap-3">
+          <app-soft-button color="red">
+            <i class="fa-regular fa-trash-can text-sm"></i>
+          </app-soft-button>
+          <app-soft-button type="button" color="indigo" (click)="saveTeam(this.selectedTeam.index)">
+            Guardar cambios
+          </app-soft-button>
+        </div>
+      </div>
+
+    </form>
+
+    @if (teams) {
+      <!-- Lista de equipos creados -->
+      <div class="w-full flex flex-col gap-3 h-64 col-span-6 p-3 rounded-md bg-dark-background">
+        <div class="grid grid-cols-3 overflow-y-scroll grid-rows-auto h-full w-full gap-3">
+          @for (team of teams!; track $index) {
+            @if (this.selectedTeam.index === $index) {
+
+              <!--    Item seleccionado      -->
+              <div
+                class="flex flex-col relative bg-dark-background-lightest min-h-44 gap-3 justify-center items-center p-3 h-full rounded-md">
+
+                @if (team.carEntries) {
+                  <div class="flex gap-3 absolute right-0 top-0 mt-3 mr-3 justify-center items-end">
+                    @for (item of Array(team.carEntries).fill(null); track $index) {
+                      <div class="w-6 h-3 border-dark-main border-r-2 border-t-2"></div>
+                    }
+                  </div>
+                }
+
+                <div class="flex gap-3">
+                  <span class="text-dark-textPurple">{{ team.name }}</span>
+
+                  <div class="inline-flex items-center">
+                    <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                          [ngStyle]="{'background-color': team.hexColor}"></span>
+                  </div>
+
+                </div>
+              </div>
+            } @else {
+
+              <!--    Item sin seleccionar      -->
+              <div
+                (click)="selectTeam($index)"
+                class="flex flex-col cursor-pointer bg-dark-background-light min-h-44 gap-3 justify-center items-center p-3 h-full rounded-md"
+              >
+                <div class="flex gap-3">
+                  <span class="text-dark-main">{{ team.name }}</span>
+
+                  <div class="inline-flex items-center">
+                    <span class="size-4 border-neutral-400 inline-block rounded-full me-2"
+                          [ngStyle]="{'background-color': team.hexColor}"></span>
+                  </div>
+
+                </div>
+              </div>
+
+            }
+          }
+        </div>
+        <div class="flex gap-3">
+          <!-- Boton para crear equipo -->
+          <app-solid-button
+            (click)="addTeam()"
+            color="indigo"
+          >
+            <span>Añadir equipo</span>
+            <i class="fa-solid font-thin text-[0.7rem] fa-plus"></i>
+
+          </app-solid-button>
+
+          <!--    Boton para guardar los equipos      -->
+          <app-solid-button type="button" (click)="saveTeams()" color="purple">
+            Guardar cambios
+          </app-solid-button>
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+
+

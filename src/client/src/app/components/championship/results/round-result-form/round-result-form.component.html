@@ -1,0 +1,48 @@
+@if (editing) {
+  <section>
+    <!--TODO: Cambiar por nombre de ronda o circuito.-->
+    Resultados de la ronda {{this.round}}
+
+    <div class="flex flex-col">
+      <div class="-m-1.5 overflow-x-auto">
+        <div class="p-1.5 min-w-full inline-block align-middle">
+          <div class="overflow-hidden">
+            <table [formGroup]="resultsForm!" class="min-w-full divide-y dark:bg-neutral-800 rounded-md divide-gray-200 dark:divide-neutral-700">
+              <thead>
+              <tr>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Pos.</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Piloto</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Estado</th>
+              </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 dark:divide-neutral-700" formArrayName="positions">
+                @for (user of members; track $index) {
+                  <tr formGroupName="{{$index}}">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                      <span><b>{{$index + 1}}</b></span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                      <app-custom-select keyProp="userId" [debug]="true" formControlName="driverId" [showLabel]="false" showingProp="gameName" [options]="members!"/>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                      <ul class="flex flex-col sm:flex-row">
+                        <app-custom-radio-group formControlName="finishState" [debug]="true" [options]="Object.values(SessionFinishStates)" />
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3 flex gap-3">
+      <app-solid-button color="purple" (click)="importRfactorFile()">Importar de rFactor</app-solid-button>
+      <app-solid-button color="red" (click)="saveRoundResults()">Guardar resultados</app-solid-button>
+    </div>
+  </section>
+
+
+}

@@ -1,0 +1,56 @@
+<div
+  class="rounded-xl w-3xl p-3 bg-light-background dark:bg-dark-background"
+>
+  @if (selected) {
+    <div class="flex flex-col h-48 gap-3">
+      <app-custom-card
+        [title]="selected.name!"
+        [showSubtitle]="false"
+        [showContent]="false"
+      />
+
+      @if (showButtons) {
+        <div class="flex justify-center gap-3">
+          <app-solid-button *ngIf="showConfirm" (click)="confirmLayout()" color="red">
+            Aceptar
+          </app-solid-button>
+          <app-solid-button *ngIf="showCancel"  color="purple" (click)="removeCurrentLayout()">
+            Cancelar
+          </app-solid-button>
+        </div>
+      }
+    </div>
+  } @else {
+    <ul
+      class="text-neutral-800 dark:text-neutral-200 h-48 flex-col justify-center w-full items-center"
+    >
+      @if (sims$ | async; as res) {
+        <div class="overflow-y-auto h-44 py-3">
+          @for (simulator of res.data; track $index) {
+            <span
+              (click)="selectLayout(simulator)"
+              class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full text-dark-main hover:bg-neutral-200 dark:hover:bg-dark-background-lightest"
+            >
+            {{ simulator.name }}
+          </span>
+          } @empty {
+            <p class="text-neutral-500 dark:text-neutral-400">No se han encontrado resultados.</p>
+          }
+        </div>
+      } @else {
+        <div class="h-full">
+          <app-custom-empty
+            title="Es obligatorio elegir un simulador"
+            description="Introduce un nombre en el buscador."
+          />
+        </div>
+      }
+    </ul>
+
+    <app-custom-search-input
+      class="join-item"
+      (onSearch)="search($event)"
+      placeholder="Ej. Assetto Corsa"
+    />
+  }
+</div>

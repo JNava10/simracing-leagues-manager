@@ -1,3 +1,5 @@
+import {TokenType} from "../enum/global.enum";
+
 export interface LoginData {
     email?: string
     nickname?: string
@@ -9,6 +11,12 @@ export interface AccessPayload {
     email: string,
     id: number
 }
+
+export interface SocketPayload {
+    type: TokenType
+    user: AccessPayload;
+}
+
 
 export interface RefreshPayload {
     id: number

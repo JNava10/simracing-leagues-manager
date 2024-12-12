@@ -1,0 +1,59 @@
+
+@if (currentCreatingState === creatingStates.BasicInfo) {
+  @if (preset) {
+    <app-basic-info-championship-form
+      [preset]="preset"
+      (basicDataCreated)="handleBasicDataCreated($event)"
+    />
+  } @else if (this.championship) {
+    <app-basic-info-championship-form
+      [championship]="championship"
+      (basicDataCreated)="handleBasicDataCreated($event)"
+    />
+  }
+}
+
+@else if (currentCreatingState === creatingStates.Teams) {
+  @if (preset) {
+    <app-create-teams
+      [preset]="preset"
+      (teamsCreated)="handleTeamsCreated($event)"
+    />
+  } @else if (championship)  {
+    <app-create-teams
+      [teams]="championship.teams"
+      (teamsCreated)="handleTeamsCreated($event)"
+    />
+  }
+}
+
+@else if (currentCreatingState === creatingStates.ScoreSystem && championship) {
+  @if (preset) {
+    <app-score-system-form
+      [preset]="preset"
+      [championship]="championship"
+      (scoreSystemCreated)="handleScoreCreated($event)"
+    />
+  } @else {
+    <app-score-system-form
+      [championship]="championship"
+      (scoreSystemCreated)="handleScoreCreated($event)"
+    />
+  }
+}
+
+@else if (currentCreatingState === creatingStates.SharePresetConfig) {
+  <app-share-config-preset
+    [championship]="championship"
+    (ended)="handleAfterPresetShare()"
+  />
+}
+
+@else if (currentCreatingState === creatingStates.Overview) {
+  <app-champ-edit-overview
+    [championship]="championship"
+  />
+}
+
+
+

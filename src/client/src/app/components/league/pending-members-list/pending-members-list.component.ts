@@ -33,30 +33,31 @@ export class PendingMembersListComponent implements OnInit {
 
   acceptMember = (user: User) => {
     console.log(user);
-    
+
     this.leagueService.acceptPendingMember(this.leagueId!, user.id!).subscribe(this.handleAcceptingMember)
   }
 
   declineUser = (user: User) => {
     this.leagueService.declinePendingMember(this.leagueId!, user.id!).subscribe(this.handleDecliningMember)
-  } 
+  }
 
   handleAcceptingMember = (data: QueryIsExecuted) => {
     if (data.executed) {
-      this.globalHelper.showSuccessMessage('Exito', data.msg, this.messageService)
+      this.globalHelper?.showSuccessMessage({message: "Se ha aceptado la entrada correctamente."})
     } else {
-      this.globalHelper.showErrorMessage('Error', data.msg, this.messageService)
+      this.globalHelper.showErrorMessage('Error', data.msg)
     }
-    
+
     this.pendingList$ = this.leagueService.getPendingMembers(this.leagueId!);
 
   }
 
   handleDecliningMember = (data: QueryIsExecuted) => {
     if (data.executed) {
-      this.globalHelper.showSuccessMessage('Exito', data.msg, this.messageService)
+      this.globalHelper?.showSuccessMessage({message: "Se ha rechazado la entrada correctamente."})
+
     } else {
-      this.globalHelper.showErrorMessage('Error', data.msg, this.messageService)
+      this.globalHelper.showErrorMessage('Error', data.msg)
     }
 
     this.pendingList$ = this.leagueService.getPendingMembers(this.leagueId!);

@@ -1,0 +1,52 @@
+<div class="max-w-lg mx-auto bg-neutral-900 p-6 rounded-lg shadow-md text-neutral-200">
+  <h2 class="text-2xl font-semibold text-center mb-6">Registro de Usuario</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <app-custom-text-input
+      class="w-full mb-4"
+      formControlName="nickname"
+      label="Nickname"
+    ></app-custom-text-input>
+
+    <app-custom-text-input
+      class="w-full mb-4"
+      formControlName="name"
+      label="Nombre"
+    ></app-custom-text-input>
+
+    <app-custom-text-input
+      class="w-full mb-4"
+      formControlName="lastname"
+      label="Apellido"
+    ></app-custom-text-input>
+
+    <app-custom-text-input
+      class="w-full mb-4"
+      formControlName="secondLastname"
+      label="Segundo Apellido"
+    ></app-custom-text-input>
+
+    <app-custom-text-input
+      class="w-full mb-4"
+      formControlName="password"
+      [type]="'password'"
+      label="Contraseña"
+    ></app-custom-text-input>
+
+    <app-custom-text-input
+      class="w-full mb-4"
+      formControlName="email"
+      label="Correo Electrónico"
+    ></app-custom-text-input>
+
+    <app-custom-text-input
+      class="w-full mb-4"
+      formControlName="profilePicUrl"
+      label="URL de Foto de Perfil"
+    ></app-custom-text-input>
+
+    <app-solid-button (click)="onSubmit()" color="indigo">
+      Registrarse
+    </app-solid-button>
+  </form>
+</div>

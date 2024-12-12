@@ -1,10 +1,14 @@
-export interface User {
+export interface User extends UserDataQuery {
+    isYou?: boolean;
+}
+
+export interface UserDataQuery {
     id?: number;
-    nickname: string;
-    name: string;
-    lastname: string;
-    secondLastname: string;
+    nickname?: string;
+    name?: string;
+    lastnames?: string;
     password?: string;
-    joinedAt?: Date;
-    email?: string
+    createdAt?: Date;
+    email?: string;
+    profileUrl?: string;
 }

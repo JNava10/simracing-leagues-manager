@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {themeKey} from "../../../utils/constants/storage.constants";
-import {Theme} from "../../../utils/enums/themes.enum";
+import {Theme} from "../../../utils/enums/tailwind.enum";
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {FormsModule} from "@angular/forms";
 

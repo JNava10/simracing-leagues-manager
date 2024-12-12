@@ -1,0 +1,13 @@
+<section class="flex flex-col gap-3">
+  @if (championship) {
+    <div>
+      <h1 class="text-xl font-bold">{{championship.name}}</h1>
+      <h2 class="text-sm">{{championship.description}}</h2>
+    </div>
+
+    <ul>
+      <app-soft-button color="pink" routerLink="results">Resultados</app-soft-button>
+    </ul>
+  }
+
+</section>

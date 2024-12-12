@@ -16,18 +16,6 @@ export class CategorySeeder implements Seeder {
                        description: seedList[i].description
                    }
                })
-
-               const subcategories = seedList[i].subcategories
-
-               for (let j in subcategories) {
-                   await prisma.subcategory.create({
-                       data: {
-                           name: subcategories[j].name,
-                           description: subcategories[j].description,
-                           parentId: createdCategory.id
-                       }
-                   })
-               }
            }
 
        } catch (e) {

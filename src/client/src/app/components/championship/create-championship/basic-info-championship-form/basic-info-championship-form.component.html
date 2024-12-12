@@ -1,234 +1,223 @@
-<section>
-  <form class="p-3 grid gap-2 grid-cols-3"
-    #form="ngForm" [formGroup]="createChampionshipForm">
+<section class="flex overflow-y-auto flex-col gap-9 w-full">
+  <h2 class="text-xl font-medium">Información básica</h2>
 
-    <!-- Nombre -->
-    <div class="mb-3">
-      <label
-        class="block mb-2 text-sm font-medium">Nombre</label>
-      <input formControlName="name" type="text"
-        class="input input-bordered w-full outline-none">
-      @if (form.touched && form.invalid && form.errors) {
-      <label *ngIf="form.errors['description'] !== null" class="text-sm text-red-600 dark:text-red-400">
-        El nombre no es valido.
-      </label>
-      }
-    </div>
+  <!--  flex flex-col w-[100%] mx-3 justify-between gap-3-->
+  <form
+    class="p-3 col-span-6 rounded-xl border-1 dark:bg-dark-background"
+    #form="ngForm" [formGroup]="championshipForm"
+  >
 
-    <!-- Descripción -->
-    <div class="mb-3 col-span-2">
-      <label
-        class="block mb-2 text-sm font-medium">Descripción</label>
-      <input formControlName="description" type="text"
-        class="input input-bordered w-full outline-none">
-        @if (form.touched && form.invalid && form.errors) {
-        <label *ngIf="form.errors['description'] !== null"
-          class="text-sm text-red-600 dark:text-red-400">
-          La descripción no es valida.
-        </label>
-        }
+    <div class="grid grid-cols-3 gap-9">
+      <!-- Nombre -->
+      <app-custom-text-input
+        label="Nombre"
+        formControlName="name"
+      />
+
+      <!-- Descripción -->
+      <app-custom-text-input
+        label="Descripción"
+        formControlName="description"
+        class="col-span-2 placeholder:text-green-400"
+      />
     </div>
   </form>
 
-  <div class="flex justify-center gap-3">
-  <!-- Buscar categoria -->
-  <div class="flex flex-col gap-1 items-center max-w-md m-3">
-    <span>Categorías</span>
-    <!-- TODO: Extraer lista a componente generico -->
-    <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
-        <app-custom-search-input class="join-item" (onSearch)="searchCategories($event)" placeholder="Introduce el nombre de una categoria"/>
-        <ul
-          class="menu join-item mt-1 text-gray-200 min-h-sm overflow-y-scroll z-[1000] flex-col w-full items-center p-3 no-scrollbar"
-        >
-        @if (categories$ | async; as res) {
-          @for (category of res.data; track $index) {
-            <div class="flex gap-3 items-center w-full my-1">
-              <input type="checkbox" #box class="checkbox" (click)="toggleCategory(category, box.checked, $index)">
-              <span>{{category.name}}</span>
+  <div class="col-span-6 flex flex-col grow justify-center gap-9 min-w-full w-full rounded-xl">
+
+    <!-- Buscar categoria -->
+    <div class="dark:bg-dark-background p-3 rounded-2xl">
+      <div class="flex gap-3 justify-start items-center">
+        <div>
+          <app-solid-button (click)="showAddCategory()" styleClass="size-[1rem] rounded-md" color="indigo">
+            +
+          </app-solid-button>
+        </div>
+        @for (category of selectedCategories.values(); track $index) {
+          <app-custom-badge
+            colorTheme="red"
+            textProp="name"
+            keyProp="id"
+            (delete)="deleteCategory($event)"
+            [object]="category"
+          />
+        } @empty {
+          <span class="text-dark-text-inactive">No se ha seleccionado ninguna categoria. Pulsa "+" para añadir</span>
+        }
+
+      </div>
+    </div>
+
+    <!-- Buscar simuladores -->
+    <app-sim-search-form
+      [selected]="this.championship?.simulator"
+      (onConfirm)="selectedSimulator = $event"
+      [showConfirm]="false"
+    />
+  </div>
+
+  <div>
+    <div class="flex flex-col justify-center dark:bg-dark-background h-full rounded-2xl p-3">
+      <div class="flex gap-4 overflow-x-auto">
+        @for (round of raceCalendar; track $index) {
+          <div title="{{round.name}}" class="relative border-2 rounded-xl border-dark-main bg-dark-background-lightest w-md p-3">
+            <div class="flex items-center justify-between">
+                <span class="text-sm flex justify-between dark:text-dark-textPurple">
+                  {{ $index + 1 }}
+                </span>
+              <span class="text-gray-400">{{ round.layout?.parent?.country }}</span>
             </div>
-          } @empty {
-            <p>No se han encontrado resultados.</p>
-          }
-        } @else {
-          <div class="flex flex-col justify-center gap-1 items-center text-neutral">
-            <i class="fa-solid fa-magnifying-glass fa-5x "></i>
-            <span class="font-bold">Introduce alguna busqueda</span>
+            <div class="card-body flex justify-between gap-3">
+              @if (round.name) {
+                <h5 class="mb-2 text-gray-200 text-xl font-semibold">
+                  {{ (round.name!.length > 20) ? ((round.name | slice:0:20) + "...") : round.name }}
+                </h5>
+              } @else {
+                <h5 class="mb-2 text-gray-200 text-xl font-semibold">
+                  {{ (round.layout?.parent?.name!.length > 20) ? ((round.layout?.parent?.name | slice:0:20) + "...") : round.layout!.parent!.name }}
+                </h5>
+              }
+            </div>
+          </div>
+        } @empty {
+          <div class="w-full min-w-full dark:text-dark-title  flex flex-col justify-center items-center">
+            <h2 class="text-center  text-3xl font-bold leading-loose pb-2">
+              Rondas del campeonato
+            </h2>
+            <i class=" fa-solid text-[10rem] dark:text-dark-title fa-circle-xmark"></i>
+
+            <h2 class="text-center text-dark-text leading-loose pb-2">
+              No hay ninguna ronda creada
+            </h2>
           </div>
         }
-      </ul>
-    </div>
-  </div>
-
-  <!-- Buscar simuladores -->
-  <div class="flex flex-col gap-1 items-center max-w-md m-3">
-    <span>Simulador</span>
-    <!-- TODO: Extraer lista a componente generico -->
-    <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
-        <app-custom-search-input class="join-item" (onSearch)="searchSimulator($event)" placeholder="Introduce el nombre de un simulador"/>
-        <ul
-          class="menu join-item mt-1  text-gray-200 min-h-sm overflow-y-scroll flex-col w-full items-center p-3 no-scrollbar"
-        >
-        @if (simulators$ | async; as res) {
-          @for (item of res.data; track $index) {
-            @if (selectedSimulator !== null && selectedSimulator !== undefined && item.id === selectedSimulator!.id) {
-
-              <!-- Item seleccionado -->
-              <div class="flex p-3 rounded-xl gap-3 items-center w-full bg-base-200 cursor-pointer">
-                <span>{{item.name}}</span>
-              </div>
-            } @else {
-
-              <!-- Todos los items -->
-              <div (click)="selectedSimulator = item" class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
-                <span>{{item.name}}</span>
-              </div>
-            }
-          } @empty {
-            <p>No se han encontrado resultados.</p>
-          }
-        } @else {
-          <div class="flex flex-col justify-center gap-1 items-center text-neutral">
-            <i class="fa-solid fa-magnifying-glass fa-5x "></i>
-            <span class="font-bold">Introduce alguna busqueda</span>
-          </div>
-        }
-      </ul>
       </div>
+
+      <app-soft-button
+        (click)="showAddRace()"
+        border="Rounded"
+        class="mt-2"
+        color="pink">
+        Añadir carrera
+      </app-soft-button>
     </div>
   </div>
 
-  <!-- Modal para la creación de rondas -->
-  <span>Rondas del campeonato</span>
-  <div class="border rounded-lg p-3 border-neutral">
-    <div class="flex gap-4 overflow-x-scroll">
-      @for (round of raceCalendar; track $index) {
-      <div title="{{round.name}}" class="card bg-base-200 w-md p-3">
-        <div class="card-title flex items-center justify-between">
-          <span class="text-sm dark:text-gray-400">
-            {{$index + 1}}
-          </span>
-          <span class="text-gray-400">{{round.layout?.track?.country}}</span>
-          <hr>
-        </div>
-        <div class="card-body flex justify-between gap-3">
-          <h5 class="mb-2 text-gray-200 text-xl font-semibold">
-            {{(round.name!.length > 20) ? ((round.name | slice:0:20) + "...") : round.name}}
-          </h5>
-        </div>
-      </div>
-      } @empty {
-      <p>Se debe añadir una carrera obligatoriamente.</p>
-      }
-    </div>
-
-
-    <button (click)="addingRace = true" class="btn btn-neutral">
-      Añadir carrera
-    </button>
-  </div>
-
-  <button class="btn" (click)="goToNextPage()">Siguiente</button>
+  <app-soft-button styleClass="w-full" color="pink" (click)="goToNextPage()">Siguiente</app-soft-button>
 </section>
 
 <!--- Modales --->
 
 <!-- Modal para crear rondas -->
-<p-dialog contentStyleClass="bg-base-100" showHeader="false" styleClass="flex gap-1 bg-base-100" [(visible)]="addingRace" [modal]="true"
-[dismissableMask]="true">
+<p-dialog contentStyleClass="dark:bg-dark-mainbg" showHeader="false" styleClass="flex gap-1 dark:bg-dark-background"
+          [(visible)]="addingRace" [modal]="true"
+          [dismissableMask]="true">
   <div [formGroup]="championshipRoundForm">
     <div>
-      <div class="card dark:bg-base-100 image-full w-full my-3">
-        <div class="card-body">
-          <div class="card-title"></div>
-          @if (roundLayout.value) {
-            <div class="flex gap-1">
-              <span>{{roundName.value || (getRoundLayoutName()) || "Nombre"}}</span>
-              <p>{{roundLayout.value.track?.country}}</p>
-            </div>
-          } @else {
-            <p>No se ha indicado ningun circuito</p>
-          }
-        </div>
-      </div>
-    </div>
-    <div>
       <div>
-        <div class="mb-3 col-span-2">
-          <label
-            class="block mb-1 text-sm font-medium">Nombre <span class="text-gray-700">(Opcional)</span>
-          </label> <!-- Sacar label a componente aparte -->
-
-            <!-- Sacar clases de input a enum aparte -->
-          <input formControlName="name" type="text"
-            class="input input-bordered w-full outline-none">
-            @if (form.touched && form.invalid) {
-              <label *ngIf="description.errors"
-                class="text-sm text-red-600 dark:text-red-400">
-                El nombre no es valido.
-              </label>
+        <div class="card dark:bg-dark-background image-full w-full my-3">
+          <div class="card-body">
+            <div class="card-title"></div>
+            @if (roundLayout.value) {
+              <div class="flex gap-1">
+                <span>{{ roundName.value || (getRoundLayoutName()) || "Nombre" }}</span>
+                <p>{{ roundLayout.value.parent?.country }}</p>
+              </div>
+            } @else {
+              <p>No se ha indicado ningun circuito</p>
             }
+          </div>
         </div>
       </div>
-      <!-- TODO: Extraer lista a componente generico -->
-      <label
-      class="block mb-1 text-sm font-medium">Circuito
-      </label>
-      <div class="border min-w-full border-neutral rounded-md p-3 join-vertical">
-        <app-custom-search-input class="join-item" (onSearch)="searchTrackLayouts($event)" placeholder="Introduce el nombre de un circuito"/>
+      <div>
+        <div>
+          <div class="mb-3 col-span-2">
+
+            <app-custom-text-input
+              styleClass="dark:bg-dark-background-deepest"
+              formControlName="name"
+              placeholder="Haz click para cambiar el nombre (opcional)"
+              label="Nombre"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="min-w-full w-full items-center rounded-md p-3 bg-dark-background-deepest">
+        <app-custom-search-input
+          [showPlaceholder]="true"
+          styleClass="mb-2"
+          (onSearch)="searchTrackLayouts($event)"
+          placeholder="Introduce el nombre de un circuito"
+        />
         <ul
-          class="text-gray-200 overflow-y-auto h-48 flex-col justify-center w-full items-center p-3"
+          class="text-gray-200 m-3 flex flex-col justify-center overflow-y-auto h-48 w-full items-center p-3"
         >
-          @if (tracks$ | async; as res) {
-            @for (track of res.data; track $index) {
-              <span class="text-gray-600">{{track.name}}</span>
+          @if (tracks && tracks.length > 0) {
+            @for (track of tracks; track $index) {
+              <span class="text-dark-text-inactive-dark text-sm">{{ track.name }}</span>
               @for (layout of track.layouts; track $index) {
-                <div (click)="selectLayout(track, layout)" class="flex p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
-                  {{track.name}} - {{layout.name}}
+                <div (click)="selectLayout(layout, track)"
+                     class="flex text-base text-dark-text-inactive p-3 rounded-xl transition-all cursor-pointer gap-3 items-center w-full hover:bg-neutral">
+                  {{ track.name }} - {{ layout.name }}
                 </div>
               }
             } @empty {
               <p>No se han encontrado resultados.</p>
             }
           } @else {
-            <div class="flex flex-col justify-center gap-1 items-center text-neutral">
-              <i class="fa-solid fa-magnifying-glass fa-5x "></i>
-              <span class="font-bold">Introduce alguna busqueda</span>
+            <div class="flex flex-col justify-center gap-1 items-center">
+              <i class="fa-solid fa-magnifying-glass fa-5x text-dark-text-inactive"></i>
+              <span class="text-dark-text">No se han encontrado circuitos</span>
             </div>
           }
-      </ul>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex gap-1 mt-3">
+      <app-solid-button
+        type="Soft"
+        border="Rounded"
+        color="red"
+        (click)="saveRoundAndContinue()"
+      >
+        Guardar y crear otra ronda
+      </app-solid-button>
+
+      <app-solid-button
+        type="Soft"
+        border="Rounded"
+        color="red"
+        (click)="saveRoundAndClose()">
+        <span content-soft>Guardar y cerrar</span>
+      </app-solid-button>
+
+      <app-solid-button
+        type="Soft"
+        border="Rounded"
+        color="red"
+        (click)="addingRace = false">
+        <span content-soft>Cancelar</span>
+      </app-solid-button>
     </div>
   </div>
-  <div formGroupName="length" class="flex gap-3 mt-3">
-    <!-- TODO: Sacar a componente aparte -->
+</p-dialog>
 
-    <input type="text" placeholder="10" [disabled]="durationLocked" formControlName="value" class="input input-bordered rounded-xl w-[5rem]" maxlength="4"/>
-
-    <select [disabled]="durationLocked" formControlName="type">
-      <option value="0" disabled selected>Selecciona una duración</option>
-      @for (item of durationTypeList; track $index) {
-        <option value="{{item.type}}">{{item.name}}</option>
-      }
-    </select>
-
-    <button class="btn" (click)="lockRoundDuration()">
-      @if (durationLocked) {
-        Desbloquear
-      } @else {
-        Bloquear
-      }
-    </button>
-
- </div>
-  <!-- Botones -->
-  <div class="flex gap-1 mt-3">
-      <button class="btn"
-        (click)="saveRoundAndContinue()">Guardar y crear
-        otra ronda</button>
-      <button class="btn btn-neutral"
-        (click)="saveRoundAndClose()">Guardar y
-        cerrar</button>
-      <button class="btn ml-2 btn-error"
-        (click)="addingRace = false">Cancelar</button>
+<p-dialog
+  contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+  showHeader="false"
+  styleClass="flex gap-1 dark:bg-dark-background"
+  [(visible)]="addingCategory" [modal]="true"
+  [dismissableMask]="true">
+  <ng-template pTemplate="headless">
+    <div>
+      <app-category-search-form
+        styleClass="border-none dark:border-none"
+        (onConfirm)="confirmCategory($event)"
+      />
     </div>
-  </div>
+  </ng-template>
+
 </p-dialog>

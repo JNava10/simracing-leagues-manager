@@ -1,0 +1,70 @@
+<section class="m-9">
+  <div>
+    <h1 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">Resumen del nuevo campeonato</h1>
+
+    <div>
+      <p class="text-dark mb-2 text-center text-xl text-neutral-50">{{ championship?.name }}</p>
+      <p class="text-dark mb-2 text-center text-md text-neutral-400">{{ championship?.description }}</p>
+    </div>
+
+    <div>
+      <!-- Lista de equipos -->
+      <div
+        class="rounded-xl p-3 bg-dark-background">
+
+        <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">
+          Equipos
+        </h2>
+
+        <div class="grid grid-cols-3 p-3 overflow-y-auto h-40 bg-dark-background w-sm gap-3">
+          @for (team of championship?.teams; track $index) {
+            <div
+              class="bg-dark-background-lightest flex gap-3 justify-center items-center p-3 h-full rounded-md">
+              <span class="text-dark-textPurple">{{ team.name }}</span>
+              <div class="inline-flex items-center">
+                <span
+                  class="size-4 border border-dark-background-deepest inline-block rounded-full me-2"
+                  [ngStyle]="{'background-color': team.hexColor}"></span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="p-3 overflow-y-auto h-40 bg-dark-background w-sm mt-3 gap-3">
+        <h2 class="text-dark mb-3 text-center text-2xl font-semibold dark:text-white">
+          Calendario
+        </h2>
+
+        <div class="grid grid-cols-3 gap-3 h-1/2 overflow-y-auto">
+          @for (race of championship!.calendar!; track $index) {
+            <div class="p-3 text-center flex justify-center items-center rounded-xl w-full h-full text-dark-textPurple bg-dark-background-lightest">
+              <span>{{ race.name }}</span>
+            </div>
+          } @empty {
+            <span>No hay calendario disponible (error).</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3 bg-dark-background p-3 w-full rounded-xl">
+      <div class="flex flex-col gap-3">
+        <h2 class="text-dark mb-2 text-center text-2xl font-semibold dark:text-white">Sistema de puntuacion</h2>
+        <div class="grid grid-cols-3 h-full gap-3  w-full max-h-30 overflow-y-auto">
+          @for (positionScore of championship!.scoreSystem?.positions; track $index) {
+            <div class="flex justify-center rounded-md p-3 bg-dark-background-lightest h-10">
+              <span class="text-center text-dark-textPurple">{{ $index + 1 }}º - {{ positionScore.score }}</span>
+            </div>
+          } @empty {
+            <span>No hay posiciones definidas (error)</span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-solid-button color="green" (click)="createChampionship()">
+    Crear campeonato
+  </app-solid-button>
+</section>

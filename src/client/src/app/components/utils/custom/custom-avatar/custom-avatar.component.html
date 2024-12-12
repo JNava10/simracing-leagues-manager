@@ -1,0 +1,22 @@
+@if (sizes[size] === sizes.S) {
+  <img
+       class="inline-block size-[32px] rounded-full object-cover"
+       src="{{url}}"
+       alt="Avatar">
+} @else if (sizes[size] === sizes.M) {
+  <img
+    class="inline-block size-[64px] rounded-full object-cover"
+    src="{{url}}"
+       alt="Avatar">
+} @else if (sizes[size] === sizes.L) {
+  <img
+       class="inline-block size-[128px] rounded-full object-cover"
+       src="{{url}}"
+       alt="Avatar">
+} @else if (sizes[size] === sizes.XL) {
+  <img
+       class="inline-block size-[256px] rounded-full object-cover"
+       src="{{url}}"
+       alt="Avatar">
+
+}

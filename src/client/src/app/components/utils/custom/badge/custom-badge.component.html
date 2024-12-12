@@ -1,0 +1,15 @@
+<span
+  class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium"
+  [ngStyle]="{'background-color': globalHelper.getHexWithAlpha(colors[this.colorTheme!][800], 30), 'color': colors[this.colorTheme!][500]}"
+>
+  @if (object[textProp]) {
+    {{object[textProp]}}
+  }
+
+  @if (keyProp && object[keyProp]) {
+    <button type="button" (click)="emitDelete(object[keyProp])" class="shrink-0 size-4 inline-flex items-center justify-center rounded-full" [ngStyle]="{'color': colors[this.colorTheme!][700]}">
+    <span class="sr-only">Remove badge</span>
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  }
+</span>

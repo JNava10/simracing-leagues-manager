@@ -1,0 +1,28 @@
+<div (click)="triggerFileInput($event)" [ngClass]="[styleClass, ' w-full']">
+  <div class="flex items-center justify-center">
+    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 max-w-lg border-2 dark:border-dark-text-inactive bg-dark-background-deepest rounded-xl cursor-pointer transition-all">
+      @if (showLabel) {
+        <label class="block font-medium mb-3  text-2xl dark:text-dark-main">{{label}}<span *ngIf="this.required">*</span></label>
+      }
+      <div class="flex flex-col items-center justify-center p-6">
+        <i class="dark:text-dark-text-inactive fa-5x fa-solid fa-cloud"></i>
+        <p class="mb-1 text-lg font-semibold text-light-text dark:text-dark-text-inactive text-center">Sube tu archivo</p>
+
+        @if (file) {
+          <p class="text-xs text-light-text text-center dark:text-dark-text-inactive hidden sm:block">
+            {{file.name}}
+          </p>
+
+        }
+      </div>
+      <input
+        [(ngModel)]="value"
+        (ngModelChange)="writeValue($event)"
+        id="dropzone-file"
+        type="file"
+        class="hidden" />
+    </label>
+  </div>
+</div>
+
+

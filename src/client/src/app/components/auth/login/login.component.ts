@@ -24,7 +24,6 @@ import { Router } from '@angular/router';
     DividerModule,
     ToggleButtonModule,
     FormsModule,
-    Button,
     ModeSwitchComponent,
     NgIf
   ],
@@ -69,14 +68,19 @@ export class LoginComponent {
 
   private handleLogin = (loggedData: LoggedData) => {
     if (!loggedData.success) {
-      // TODO: Mostrar mensaje.
-      return;
-    } else if (!loggedData.token) {
-      // TODO: Mostrar mensaje.
-      return;
+      throw new Error('No se ha podido iniciar sesión')
+    } else if (!loggedData.apiKey) {
+      throw new Error('No se ha podido encontrar la API Key al iniciar sesión')
+    } else if (!loggedData.socketKey) {
+      throw new Error('No se ha podido encontrar el Socket Key al iniciar sesión')
     }
 
-    this.globalHelper.saveToken(loggedData.token!);
-    this.globalHelper.navigateFromRoot("leagues")
+    if (loggedData.success && loggedData.id && loggedData.socketKey) {
+      this.globalHelper.saveApiKey(loggedData.apiKey);
+      this.globalHelper.saveSocketKey(loggedData.socketKey);
+
+      this.globalHelper.setUserId(loggedData.id);
+      this.globalHelper.navigateFromRoot(`strategy`) // POST DEFENSA: Antes se redirigia una ruta que ya no se usa. Ahora se redirige al perfil directamente.
+    }
   }
 }

@@ -37,9 +37,11 @@ export class SearchLeaguesBarComponent {
   enterLeague = () => {
     this.leagueService.sendEnterLeagueRequest(this.leagueChoosed?.id!).subscribe((data) => {
       if (data.executed) {
-        this.globalHelper.showSuccessMessage('Exito', data.msg, this.messageService)
+        // TODO: Mover a servicio.
+        this.globalHelper?.showSuccessMessage({message: "Se ha entrado enviado petición correctamente"})
+
       } else {
-        this.globalHelper.showErrorMessage('Error', data.msg, this.messageService)
+        this.globalHelper.showErrorMessage('Error', data.msg)
       }
 
       this.choosingLeague = false;
@@ -49,9 +51,6 @@ export class SearchLeaguesBarComponent {
   handleSearching = ($event: KeyboardEvent) => {
     // Borramos el timeout anterior, si es que existia antes.
     clearTimeout(this.searchTimeout);
-
-    // const value = ($event.target as HTMLInputElement).value;
-    // console.log(value)
 
     // Esperamos 1 segundo a que el usuario deje de escribir. Si no,
     // se volverá a entrar a esta funcion, por tanto, se creará de nuevo

@@ -1,114 +1,86 @@
-import { GlobalHelper } from './../../../../helpers/global.helper';
-import { roundDurationTypes } from './../../../../utils/constants/global.constants';
-import { Component, Input, Output } from '@angular/core';
-import { Track, TrackLayout } from '../../../../utils/interfaces/track.interface';
-import { Observable, of } from 'rxjs';
-import { LeagueChampionship, ChampionshipRound, RoundLength as RoundLength, RoundDurationType } from '../../../../utils/interfaces/championship.interface';
-import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
-import { CreatingChampRoundStates } from '../../../../utils/enums/states.enum';
-import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
-import { DefaultRes } from '../../../../utils/interfaces/responses/response.interface';
-import { SimulatorGame } from '../../../../utils/interfaces/simulator.interface';
-import { Category } from '../../../../utils/interfaces/category.interface';
-import { ChampionshipApiService } from '../../../../services/api/championship-api.service';
-import { CategoryApiService } from '../../../../services/api/category-api.service';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ScoreApiService } from '../../../../services/api/score-api.service';
-import { SimulatorApiService } from '../../../../services/api/simulator-api.service';
-import { TrackApiService } from '../../../../services/api/track-api.service';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { NgIf, AsyncPipe, NgClass, SlicePipe } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { CustomSearchInputComponent } from '../../../utils/custom-search-input/custom-search-input.component';
-import { SESSION_DURATION_TYPE, SESSION_DURATION_TYPE as SESSION_LENGTH_TYPE } from '../../../../utils/enums/round.enum';
 import { MessagesModule } from 'primeng/messages';
-import { MessageService } from 'primeng/api';
+import { InputTextModule } from 'primeng/inputtext';
+
+import { Category } from '../../../../utils/interfaces/category.interface';
+import { Track, TrackLayout } from '../../../../utils/interfaces/track.interface';
+import { LeagueChampionship, ChampionshipRound, RoundLength, RoundDurationType, ChampionshipPreset } from '../../../../utils/interfaces/championship.interface';
+import { ScoreSystem } from '../../../../utils/interfaces/score.interface';
+import { DefaultRes } from '../../../../utils/interfaces/responses/response.interface';
+import { SimulatorGame } from '../../../../utils/interfaces/simulator.interface';
+
+import { GlobalHelper } from './../../../../helpers/global.helper';
+import { roundDurationTypes } from './../../../../utils/constants/global.constants';
+import { ChampFormStates } from '../../../../utils/enums/states.enum';
+import { SESSION_DURATION_TYPE, SESSION_DURATION_TYPE as SESSION_LENGTH_TYPE } from '../../../../utils/enums/round.enum';
 import { Errors } from '../../../../utils/enums/errors.enum';
-import { EventEmitter } from '@angular/core';
+
+import { ChampionshipApiService } from '../../../../services/api/championship-api.service';
+import { CategoryApiService } from '../../../../services/api/category-api.service';
+import { ScoreApiService } from '../../../../services/api/score-api.service';
+import { SimulatorApiService } from '../../../../services/api/simulator-api.service';
+import { TrackApiService } from '../../../../services/api/track-api.service';
+
+import { CustomSearchInputComponent } from '../../../utils/custom/input/custom-search-input/custom-search-input.component';
+import { CustomTextInputComponent } from '../../../utils/custom/input/custom-text-input/custom-text-input.component';
+import { SimSearchFormComponent } from '../../../utils/search/sim-search-form/sim-search-form.component';
+import { CategorySearchFormComponent } from '../../../utils/search/category-search-form/category-search-form.component';
+import { CustomBadgeComponent } from '../../../utils/custom/badge/custom-badge.component';
+import { RoundListComponent } from '../../round-list/round-list.component';
+import { LoginComponent } from '../../../auth/login/login.component';
+import { CustomSelectComponent } from '../../../utils/custom/input/custom-select/custom-select.component';
+import { CustomSolidButtonComponent } from '../../../utils/button/solid-button/custom-solid-button.component';
+import { TrackSearchFormComponent } from '../../../utils/forms/track-search-form/track-search-form.component';
+import {SoftButtonComponent} from "../../../utils/button/soft-button/soft-button.component";
 
 @Component({
   selector: 'app-basic-info-championship-form',
   standalone: true,
   imports: [
-    NgIf,
     ReactiveFormsModule,
     DropdownModule,
-    AsyncPipe,
-    SlicePipe,
     AccordionModule,
     DialogModule,
     CustomSearchInputComponent,
     FormsModule,
-    MessagesModule
+    MessagesModule,
+    CustomTextInputComponent,
+    SimSearchFormComponent,
+    CategorySearchFormComponent,
+    CustomBadgeComponent,
+    SlicePipe,
+    CustomSelectComponent,
+    CustomSolidButtonComponent,
+    SoftButtonComponent,
   ],
   templateUrl: './basic-info-championship-form.component.html',
   styleUrl: './basic-info-championship-form.component.scss'
 })
-export class BasicInfoChampionshipFormComponent {
-  constructor(
-    private championshipService: ChampionshipApiService,
-    private categoryService: CategoryApiService,
-    private simulatorService: SimulatorApiService,
-    private trackService: TrackApiService,
-    private route: ActivatedRoute,
-    private messageService: MessageService,
-    private globalHelper: GlobalHelper,
-  ) {}
-
+export class BasicInfoChampionshipFormComponent implements OnInit {
   @Input() leagueId?: number;
+  @Input() preset?: ChampionshipPreset;
+  @Input() championship?: LeagueChampionship;
 
-  @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>()
+  @Output() protected basicDataCreated = new EventEmitter<LeagueChampionship>();
 
-  protected tracks$!: Observable<DefaultRes<Track[]>>;
-
+  protected tracks!: Track[];
   protected categories$!: Observable<DefaultRes<Category[]>>;
+  protected simulators$!: Observable<DefaultRes<SimulatorGame[]>>;
 
-  protected scoreSystems$!: Observable<ScoreSystem[]>;
-
-  protected simulators$!:  Observable<DefaultRes<SimulatorGame[]>>;
-
-  ngOnInit() {
-    this.leagueId = this.route.snapshot.params['leagueId'];
-  }
-
-  /// Enums ///
-
-  durationTypes = SESSION_LENGTH_TYPE;
-
-  /// Datos basicos ///
-
-  raceCalendar: ChampionshipRound[] = []
-
-  selectedCategories: Category[] = [];
-
-  createChampionshipForm: FormGroup = new FormGroup({
+  raceCalendar: ChampionshipRound[] = [];
+  selectedCategories: Map<number, Category> = new Map();
+  championshipForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     description: new FormControl('')
   });
-
-
-  get name() {
-    return this.createChampionshipForm.get('name')!.value;
-  }
-
-  get description() {
-    return this.createChampionshipForm.get('description')!.value;
-  }
-
-  selectedSimulator?: SimulatorGame
-
-  // Rondas de campeonato //
-
-  protected durationTypeList = roundDurationTypes
-
-  protected addingRace: boolean = false;
-
-  protected roundTrackSelected?: Track;
-
-  protected roundCreating: ChampionshipRound = {}
-
-  protected durationLocked = false;
 
   championshipRoundForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null),
@@ -118,6 +90,39 @@ export class BasicInfoChampionshipFormComponent {
       type: new FormControl<SESSION_DURATION_TYPE | null>(0)
     })
   });
+
+  selectedSimulator?: SimulatorGame;
+  protected addingRace: boolean = false;
+  protected addingCategory = false;
+  protected roundTrackSelected?: Track;
+  protected roundCreating: ChampionshipRound = {};
+
+  private layoutsSearched = false;
+
+  constructor(
+    private categoryService: CategoryApiService,
+    private simulatorService: SimulatorApiService,
+    private trackService: TrackApiService,
+    private route: ActivatedRoute,
+  ) {}
+
+  ngOnInit() {
+    this.leagueId = this.route.snapshot.params['leagueId'];
+
+    if (this.championship) {
+      this.applyChampData(this.championship);
+    } else if (this.preset) {
+      this.convertDataFromApi(this.preset);
+    }
+  }
+
+  get name() {
+    return this.championshipForm.get('name')!.value;
+  }
+
+  get description() {
+    return this.championshipForm.get('description')!.value;
+  }
 
   protected get roundName() {
     return this.championshipRoundForm.get('name') as FormControl;
@@ -131,137 +136,143 @@ export class BasicInfoChampionshipFormComponent {
     return this.championshipRoundForm.get('length') as FormControl<RoundLength | undefined>;
   }
 
-  protected get roundLengthValue() {
-    return this.roundLength.get('value') as FormControl<number | null>;
+  convertDataFromApi(preset: ChampionshipPreset) {
+    preset.calendar.forEach(layout => {
+      if (layout.parent) {
+        this.raceCalendar.push({
+          name: layout.parent?.name || layout.name,
+          layout: layout,
+        });
+      }
+    });
+
+    this.selectedCategories = new Map();
+
+    // POST DEFENSA (Se ha quitado el simulador, que no existe, por las categorias del preset.)
+    preset.categories.forEach(category => {
+      if (category.id) {
+        this.selectedCategories.set(category.id, category);
+      }
+    });
   }
 
-  protected get roundLengthType() {
-    return this.roundLength.get('type') as FormControl<SESSION_DURATION_TYPE | undefined>;
+  private applyChampData(championship: LeagueChampionship) {
+    this.championshipForm.patchValue({
+      name: championship.name,
+      description: championship.description
+    });
+
+    if (championship.categories) {
+      championship.categories.forEach(category => {
+        if (category && category.id) this.selectedCategories.set(category.id, category);
+      })
+    }
+
+    this.raceCalendar = championship.calendar!;
   }
 
-  /// Busqueda de todos los dropdowns ///
-
-  // Categoria //
-
-  protected searchCategories = (value: string) => {
-    this.categories$ = of();
-
-    if (value.length === 0) return;
-
-    this.categories$ = this.categoryService.search({name: value});
+  protected searchCategories(value: string) {
+    this.categories$ = value.length ? this.categoryService.search({ name: value }) : of();
   }
 
-  protected searchingCategory = false;
-
-  // Simulador //
-
-  protected searchSimulator = (value: string) => {
-    this.simulators$ = of();
-
-    if (value.length === 0) return
-
-    this.simulators$ = this.simulatorService.search({name: value});
+  protected searchSimulator(value: string) {
+    this.simulators$ = value.length ? this.simulatorService.search({ name: value }) : of();
   }
 
-  // Circuitos //
-
-  protected searchTrackLayouts = (value: string) => {
-    this.tracks$ = of();
-
-    if (value.length === 0) return
-
-    this.tracks$ = this.trackService.searchLayouts({name: value});
+  protected searchTrackLayouts(value: string) {
+    if (value.length) {
+      this.layoutsSearched = true;
+      this.trackService.searchLayouts({ name: value }).subscribe(res => (this.tracks = res));
+    }
   }
 
-  /// Circuitos ///
-
-  protected saveRound = () => {
+  protected saveRound() {
     this.setRoundName();
-
-    let round = this.championshipRoundForm.value as ChampionshipRound;
-
-    this.raceCalendar.push(round)
-
-    this.championshipRoundForm.reset()
-
+    const round = this.championshipRoundForm.value as ChampionshipRound;
+    this.raceCalendar.push(round);
     console.log(this.raceCalendar);
+
+    this.championshipRoundForm.reset();
   }
 
-  protected deleteTrack = (index: number) => {
+  protected deleteTrack(index: number) {
     this.raceCalendar.splice(index, 1);
   }
 
-  selectLayout = (track: Track, layout: TrackLayout) => {
-    const layoutWithTrack = layout;
+  showAddRace() {
+    this.addingRace = true;
+  }
 
-    layoutWithTrack.track = track; // Esto servirá para mostrar los datos del circuito al que pertenece el trazado.
-
+  selectLayout(layout: TrackLayout, track: Track) {
+    layout.parent = track;
     this.roundLayout.setValue(layout);
   }
 
-  /// Gestionar las rondas de campeonatos ///
-
-  getRoundLayoutName = () => {
-    console.log(this.roundLayout)
-    // Esto se mostrará si no se ha introducido ningun nombre.
-    // Ej: Suzuka Circuit - East Loop.
-    return `${this.roundLayout.value?.track?.name} - ${this.roundLayout.value?.name}`
+  getRoundLayoutName() {
+    return `${this.roundLayout.value?.parent?.name} - ${this.roundLayout.value?.name}`;
   }
 
-  saveRoundAndContinue = () => {
+  saveRoundAndContinue() {
     this.saveRound();
   }
 
-  saveRoundAndClose = () => {
+  saveRoundAndClose() {
     this.saveRound();
     this.addingRace = false;
   }
 
-  lockRoundDuration = () => {
-    this.durationLocked = !this.durationLocked;
-  }
-
-  private setRoundName = () => {
-    let nameToSet = this.roundName.value || this.getRoundLayoutName();
+  private setRoundName() {
+    const nameToSet = this.roundName.value || this.getRoundLayoutName();
 
     this.roundName.setValue(nameToSet);
   }
 
-  /// Gestionar las categorias ///
-
-  toggleCategory = (category: Category, checked: boolean, index: number) => {
-    checked ? this.addCategory(category) : this.removeCategory(category)
+  toggleCategory(category: Category, checked: boolean) {
+    checked ? this.addCategory(category) : this.removeCategory(category);
   }
 
   private addCategory = (category: Category) => {
-    this.selectedCategories.push(category)
-  }
+    category.id = this.selectedCategories.size + 1
+    this.selectedCategories.set(category.id, category);
+  };
 
   private removeCategory = (category: Category) => {
-    const index = this.selectedCategories.findIndex(finding => finding.id === category.id)
+    if (!category.id) throw new Error('No se ha encontrado la categoria a borrar')
 
-    this.selectedCategories.splice(index, 1);
-  }
+    this.selectedCategories.delete(category.id);
+  };
 
   protected goToNextPage = () => {
-
-    let championship = this.createChampionshipForm.value as LeagueChampionship
-
+    const championship = this.championshipForm.value as LeagueChampionship;
     championship.leagueId = this.leagueId;
     championship.calendar = this.raceCalendar;
 
     championship.calendar.forEach(entry => {
-      // Unicamente se utilizará el ID de cada trazado, por lo que el resto no hará falta.
       entry.layoutId = entry.layout?.id;
       entry.layout = undefined;
     });
 
+    championship.categoryIds = [];
+
     this.selectedCategories.forEach(item => {
-      championship.categoryIds?.push(item.id!);
+      if (item.id) championship.categoryIds?.push(item.id);
     });
 
     championship.simulatorId = this.selectedSimulator?.id;
 
     this.basicDataCreated.emit(championship);
-  }
+  };
+
+  confirmCategory = ($event: Category) => {
+    this.addCategory($event)
+    this.addingCategory = false;
+  };
+
+  showAddCategory = () => {
+    this.addingCategory = true;
+  };
+
+  deleteCategory = (id: number) => {
+    this.selectedCategories.delete(id);
+  };
 }

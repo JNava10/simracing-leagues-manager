@@ -1,0 +1,46 @@
+<form [formGroup]="registrationForm" class="w-full max-w-md bg-neutral-800/50 rounded-md p-6">
+  @if (this.currentStep === states.CreatingBasicInfo) {
+    <div>
+      <h2 class="text-2xl font-bold mb-4">Rellena los siguientes datos</h2>
+      <form>
+        <div class="flex flex-col gap-3">
+          <app-custom-select
+            keyProp="id"
+            showingProp="name"
+            [options]="teams!"
+            label="Equipo"
+            formControlName="team"
+          />
+
+          <app-custom-text-input
+            [debug]="true"
+            label="Dorsal"
+            placeholder="0-999"
+            formControlName="number"
+          />
+        </div>
+        <app-solid-button (click)="nextStep()" color="violet">Siguiente</app-solid-button>
+      </form>
+    </div>
+  }
+
+
+  @if (this.currentStep === states.CreatingGameName) {
+    <section>
+      <h2 class="text-2xl font-bold mb-4">Introduce tu nombre dentro del juego (importante)</h2>
+      <div>
+        <app-custom-text-input
+          formControlName="gameName"
+          label="Nombre dentro del juego"
+          placeholder="tuNombre01"
+        />
+
+        <div class="flex justify-between">
+          <app-solid-button color="cyan" (click)="prevStep()">Volver</app-solid-button>
+          <app-solid-button color="green" (click)="onSubmit()">Entrar</app-solid-button>
+        </div>
+      </div>
+    </section>
+  }
+
+</form>

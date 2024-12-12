@@ -1,26 +1,36 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
+import {ToastModule} from 'primeng/toast';
 import { Router, Event, NavigationEnd } from '@angular/router';
 
 import { IStaticMethods } from 'preline/preline';
-declare global {
-  interface Window {
-    HSStaticMethods: IStaticMethods;
-  }
-}
+import {NavbarComponent} from "./components/utils/custom-navbar/navbar.component";
+import {MessageModule} from "primeng/message";
+import {GlobalHelper} from "./helpers/global.helper";
+import {SocketService} from "./services/socket/socket.service";
+import {initFlowbite} from "flowbite";
+import {OwnLeagueListComponent} from "./components/league/league-list/own-league-list.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MessagesModule],
-  providers: [MessageService],
+  imports: [RouterOutlet, ToastModule, NavbarComponent, OwnLeagueListComponent],
+  providers: [MessageModule, MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  constructor(private router: Router) {}
+export class AppComponent implements AfterViewInit, OnInit {
+
+  constructor(private socketService: SocketService) {}
+
+  ngOnInit(): void {
+      this.socketService.connect()
+  }
+
+  ngAfterViewInit(): void {
+    initFlowbite()
+  }
 
   title = 'leagueManagerClient';
 

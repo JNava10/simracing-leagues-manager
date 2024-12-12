@@ -1,16 +1,17 @@
 import { Track } from './../utils/interfaces/track.interface';
 import {Request, Response} from "express";
-import {LeagueData} from "../utils/interfaces/league.interface";
-import {LeagueService} from "../services/league.service";
+import {League} from "../utils/interfaces/league.interface";
+import {LeagueQuery} from "../services/queries/league.query";
 import {CustomRequest} from "../utils/interfaces/express.interface";
 import {CustomError} from "../utils/classes/error";
-import {TrackService} from "../services/track.service";
+import {TrackQuery} from "../services/queries/track.query";
 import { SearchTrackProps } from "../utils/interfaces/track.interface";
 import { Messages } from '../utils/enum/messages.enum';
-import { sendSuccessResponse } from '../helpers/common.helper';
+import {handleRequestError, sendSuccessResponse} from '../helpers/common.helper';
+import {log} from "node:util";
 
 export class TrackController {
-    private trackService = new TrackService();
+    private trackService = new TrackQuery();
 
     getAll = async (req: CustomRequest, res: Response) => {
         try {
@@ -21,12 +22,11 @@ export class TrackController {
                 return res.status(200).send(tracks);
             }
     
-            // const league = await LeagueService.getLeagueById(track);
+            // const league = await LeagueQuery.getLeagueById(track);
     
             // return res.status(200).send(tracks);
         } catch (e) {
-            const error: CustomError = {error: e.message}
-            return res.status(500).send(error);
+            handleRequestError(e, res);
         }
     };
     
@@ -37,7 +37,7 @@ export class TrackController {
             const tracks = await this.trackService.search(props);
     
             sendSuccessResponse({
-                msg: Messages.SEARCH_SUCCESS,
+                msg: Messages.searchSuccess,
                 data: tracks,
                 status: 200
             }, res)
@@ -51,9 +51,26 @@ export class TrackController {
             const props = req.query as SearchTrackProps;
         
             const tracks = await this.trackService.searchLayouts(props);
+            console.log(tracks);
     
             sendSuccessResponse({
-                msg: Messages.SEARCH_SUCCESS,
+                msg: Messages.searchSuccess,
+                data: tracks,
+                status: 200
+            }, res)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    searchLayoutsWithWear = async (req: Request, res: Response) => {
+        try {
+            const props = req.query as SearchTrackProps;
+
+            const tracks = await this.trackService.searchLayouts(props);
+
+            sendSuccessResponse({
+                msg: Messages.searchSuccess,
                 data: tracks,
                 status: 200
             }, res)

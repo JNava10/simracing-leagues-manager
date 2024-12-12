@@ -1,0 +1,32 @@
+@if (championships) {
+  <section class="bg-dark-background p-3 flex flex-col gap-6">
+    <div class="h-full min-h-full w-full min-w-full grid grid-cols-3 gap-3 justify-center overflow-y-auto">
+      @for (champ of championships; track $index) {
+        @if (champ && champ.id) {
+          <div (click)="goToChamp(champ.id)" class="flex cursor-pointer gap-6 justify-center items-center bg-dark-background-deepest rounded-xl hover:bg-dark-text-inactive/15 p-3">
+            @if (champ.picUrl) {
+              <app-image
+                [url]="champ.picUrl"
+              />
+
+            }
+            <span class="text-md text-dark-text">{{champ.name}}</span>
+          </div>
+        }
+      } @empty {
+        <div  class="w-full col-span-3 min-w-full flex flex-col justify-center items-center">
+          <i class=" fa-solid text-[10rem] text-dark-text-inactive fa-circle-xmark"></i>
+
+          <h2 class="text-center text-dark-main text-xl font-semibold leading-loose pb-2">No hay ningun campeonato creado</h2>
+          <a class="text-center cursor-pointer hover:underline text-dark-text-inactive text-base font-normal" (click)="goToCreateChamp()">Haz click aqui para crear uno nuevo.</a>
+        </div>
+      }
+    </div>
+
+    <div class="flex justify-center">
+      <app-soft-button (click)="goToCreateChamp()" color="red">
+        Añadir
+      </app-soft-button>
+    </div>
+  </section>
+}

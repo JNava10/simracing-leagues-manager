@@ -11,3 +11,11 @@ export const verifyToken = (token: string) => {
         console.error(error)
     }
 }
+
+export const addToBlacklist = (token: string) => {
+    try {
+        return jwt.verify(token, process.env['JWT_SECRET_KEY']);
+    } catch (error) {
+        console.error(error)
+    }
+}

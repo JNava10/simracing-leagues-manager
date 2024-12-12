@@ -1,58 +1,93 @@
-<div>
-    <p-toolbar>
-        <div class="flex flex-row gap-2 items-center">
-            <div class="dropdown dropdown-right">
-                <div tabindex="0" role="button" class="btn m-1">Click</div>
-                <p-listbox
-                    [options]="($elegibleUsers | async)!"
-                    [(ngModel)]="selectedUser"
-                    optionLabel="name"
-                    [filter]="true"
-                    (onFilter)="handleSearch($event)"
-                    class="menu dropdown-content z-[1]"
-                    [style]="{'background-color': 'oklch(var(--n))'}"
-                    listStyleClass="bg-base-100"
-                    styleClass="bg-base-100 w-[15rem]"
-                    emptyMessage="No se han encontrado usuarios"
-                    (onClick)="selectUser($event)"
-                />
-              </div>
+<div class="w-20%">
+  <!--  Tabla  -->
+  <div class="flex flex-col">
+    <div class="-m-1.5 overflow-x-auto">
+      <div class="p-1.5 min-w-full inline-block align-middle">
+        <div class="overflow-hidden">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+            <thead>
+            <tr>
+            <tr>
+              <th pSortableColumn="name">Nombre</th>
+              <th pSortableColumn="name">Fecha de unión</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+              @for (member of (members.values())!; track $index) {
+                <tr>
+                  <td>{{member.user.nickname}}</td>
+                  <td>{{member.joinedAt | date}}</td>
+                  <td>
+                    <div class="flex gap-2">
+                      <!-- Botón para kickear al miembro -->
+                      <app-solid-button
+                        (click)="kickMember(member.user.id!)"
+                        border="Rounded"
+                        type="Solid"
+                        color="red">
+                        Kickear
+                      </app-solid-button>
+
+                      <!-- Botón para banear permanentemente al miembro -->
+                      <app-solid-button
+                        color="red"
+                        border="Rounded"
+                        type="Solid"
+                        (click)="showBanReason(member)"
+                      >
+                        Banear
+                      </app-solid-button>
+                    </div>
+
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
-    </p-toolbar>
-    <p-table [value]="($members | async)!">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="name">Nombre</th>
-                <th pSortableColumn="name">Fecha de unión</th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-member>
-            <tr>
-                <td>{{member.user.nickname}}</td>
-                <td>{{member.joinedAt | date}}</td>
-                <td>
-                  <div class="flex gap-2">
-                    <!-- Botón para kickear al miembro -->
-                    <p-button
-                      icon="fa-solid fa-xmark"
-                      styleClass="bg-red-500 focus:ring-2 focus:ring-red-300 border-none"
-                      rounded="true"
-                      outlined="false"
-                      (onClick)="kickMember(member.user.id)"
-                    />
+      </div>
+    </div>
+  </div>
 
-                    <!-- Botón para banear permanentemente al miembro -->
-                    <p-button
-                        icon="fa-solid fa-ban"
-                        styleClass="bg-red-500 focus:ring-2 focus:ring-red-300 border-none"
-                        rounded="true"
-                        outlined="false"
-                      />
-                  </div>
-
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+  <app-solid-button color="blue" (click)="toggleSearch(true)">
+    Invitar miembro
+  </app-solid-button>
 </div>
+
+<p-dialog [dismissableMask]="true" [modal]="true"  [(visible)]="searching">
+  <ng-template pTemplate="headless">
+    <app-search-users-bar
+      (onUserSelect)="inviteUser($event)"
+    />
+  </ng-template>
+</p-dialog>
+
+<p-dialog [dismissableMask]="true" [modal]="true"  [(visible)]="banning">
+  <ng-template pTemplate="headless">
+   <div class="flex flex-col gap-3">
+     <app-custom-text-input
+       label="Razón del baneo"
+       [(ngModel)]="banReason"
+     />
+
+     <div class="flex gap-3">
+       <app-solid-button color="red" (click)="showBanConfirm()">Continuar</app-solid-button>
+       <app-solid-button color="stone" (click)="banning = false">Cerrar</app-solid-button>
+     </div>
+   </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [dismissableMask]="true" [(visible)]="banConfirm">
+  <ng-template pTemplate="headless">
+    <h1>El usuario ya no podrá entrar de nuevo a la liga, salvo que se le quite el baneo.</h1>
+    <span>Razon: {{ banReason }}</span>
+    <h2>¿Quieres continuar?</h2>
+    <div class="flex gap-3">
+      <app-solid-button color="stone">No</app-solid-button>
+      <app-solid-button color="red" (click)="banMember(memberToBan!.user.id!)">Si</app-solid-button>
+    </div>
+  </ng-template>
+</p-dialog>
+

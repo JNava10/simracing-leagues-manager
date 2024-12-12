@@ -1,0 +1,15 @@
+<nav class="dark:text-dark-text  font-sans justify-between items-center rounded-lg flex gap-9 text-center w-full p-3 h-[5rem] ">
+  <div class="flex cursor-pointer ml-[0.3rem] gap-3 justify-start items-start">
+    <span class="text-2xl no-underline text-d ark-text-inactive hover:text-dark-main" (click)="goToLanding()">SLM</span>
+  </div>
+
+  <div class="flex gap-12">
+<!--    <div (click)="globalHelper.navigateFromRoot('leagues')" class="text-lg no-underline transition-all cursor-pointer select-none hover:text-dark-main">Buscar ligas</div>-->
+    <div (click)="globalHelper.navigateFromRoot('invites')" class="text-lg no-underline transition-all cursor-pointer select-none hover:text-dark-main">Invitaciones</div>
+    <div (click)="globalHelper.navigateFromRoot('presets')" class="text-lg no-underline transition-all cursor-pointer select-none hover:text-dark-main">Comunidad</div>
+    <div (click)="globalHelper.navigateFromRoot('strategy')" class="text-lg no-underline transition-all cursor-pointer select-none hover:text-dark-main">Estrategias</div>
+    <div (click)="globalHelper.navigateFromRoot(getProfileRoute())" class="text-lg no-underline transition-all cursor-pointer select-none hover:text-dark-main">Perfil</div>
+  </div>
+  <app-soft-button color="pink" (click)="logout()">Cerrar Sesión</app-soft-button>
+
+</nav>

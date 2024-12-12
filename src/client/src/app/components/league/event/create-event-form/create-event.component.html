@@ -1,0 +1,38 @@
+@if (currentCreatingState === creatingStates.BasicInfo) {
+  @if (preset) {
+    <app-basic-info-event-form
+      [preset]="preset"
+      (basicDataCreated)="handleBasicDataCreated($event)"
+    />
+  } @else {
+    <app-basic-info-event-form
+      (basicDataCreated)="handleBasicDataCreated($event)"
+    />
+  }
+}
+
+@else if (currentCreatingState === creatingStates.Teams) {
+  @if (preset) {
+    <app-create-teams
+      [preset]="preset"
+      (teamsCreated)="handleTeamsCreated($event)"
+    />
+  } @else {
+    <app-create-teams
+      (teamsCreated)="handleTeamsCreated($event)"
+    />
+  }
+}
+
+@else if (currentCreatingState === creatingStates.SharePresetConfig) {
+  <app-share-config-preset
+    [championship]="eventCreating"
+    (ended)="handleAfterPresetShare()"
+  />
+}
+
+@else if (currentCreatingState === creatingStates.Overview) {
+  <app-event-overview
+    [event]="eventCreating"
+  />
+}

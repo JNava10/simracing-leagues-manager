@@ -1,0 +1,67 @@
+<div class="w-full">
+  @if (showLabel) {
+    <label
+      class="block mb-1 text-sm font-medium text-neutral-800 dark:text-neutral-200">Circuito
+    </label>
+  }
+  <div
+    class="rounded-xl w-full border-neutral-300 p-3 join-vertical bg-light-mainbg dark:bg-dark-background">
+    @if (selectedCar) {
+      <div class="flex flex-col gap-3">
+        <app-custom-card
+          [title]="selectedCar!.name!"
+        />
+
+        @if (showButtons) {
+          <div class="flex justify-center gap-3">
+            <app-solid-button
+              (click)="confirm()"
+              color="red"
+              border="Rounded"
+              type="Solid"
+            >
+              Aceptar
+            </app-solid-button>
+            <app-solid-button
+              color="stone"
+              border="Rounded"
+              type="Solid"
+              (click)="removeCurrent()">
+              Cancelar
+
+            </app-solid-button>
+          </div>
+        }
+      </div>
+    } @else {
+      <ul
+        class="text-neutral-800 dark:text-neutral-200 h-48 flex-col justify-center w-full items-center"
+      >
+        @if (cars) {
+          <div class="overflow-y-auto h-44 py-3">
+            @for (car of cars; track $index) {
+              <div class="p-3 hover:bg-dark-background-deepest cursor-pointer" (click)="select(car)">
+                <span class="text-neutral-600 dark:text-dark-text">{{ car.name }}</span>
+              </div>
+            } @empty {
+              <p class="dark:text-dark-text">No se han encontrado resultados.</p>
+            }
+          </div>
+        } @else {
+          <div class="h-full">
+            <app-custom-empty
+              title="Es obligatorio elegir un coche modelo"
+            />
+          </div>
+        }
+      </ul>
+
+      <app-custom-search-input
+        class="join-item bg-dark-background"
+        (onSearch)="searchCars($event)"
+        placeholder="Ej. F1 2022"
+      />
+    }
+  </div>
+
+</div>

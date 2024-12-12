@@ -1,10 +1,10 @@
 import { GlobalHelper } from '../../../../helpers/global.helper';
-import { PositionScore, ScoreSystem } from './../../../../utils/interfaces/score.interface';
+import { PositionScore, ScoreSystem } from '../../../../utils/interfaces/score.interface';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { CustomTextInputComponent } from "../../../utils/custom-text-input/custom-text-input.component";
-import { Team } from '../../../../utils/interfaces/championship.interface';
+import { CustomTextInputComponent } from "../../../utils/custom/input/custom-text-input/custom-text-input.component";
+import {ChampionshipPreset, LeagueChampionship, Team} from '../../../../utils/interfaces/championship.interface';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomButtonComponent } from "../../../utils/custom-button/custom-button.component";
+import { CustomSolidButtonComponent } from "../../../utils/button/solid-button/custom-solid-button.component";
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -12,39 +12,57 @@ import { NgClass } from '@angular/common';
   standalone: true,
   templateUrl: './score-system-form.component.html',
   styleUrl: './score-system-form.component.scss',
-  imports: [CustomTextInputComponent, CustomButtonComponent, NgClass, ReactiveFormsModule]
+  imports: [CustomTextInputComponent, CustomSolidButtonComponent, NgClass, ReactiveFormsModule]
 })
 export class ScoreSystemFormComponent implements OnInit {
 
   ngOnInit(): void {
-    this.gridSize = this.getGridSize()
+    if (this.championship && this.championship.teams) {
+      this.gridSize = this.getGridSize(this.championship.teams);
+    }
+
+    if (this.preset) {
+      this.gridSize = this.getGridSize(this.preset.teams)
+      this.scoreValues = this.preset.scoreSystem.positions!.map(item => item.score!)
+    }
+
+    console.log(this.championship)
+
+
+    if (this.championship && this.championship.scoreSystem) {
+      this.scoreValues = this.championship.scoreSystem.positions!.map(item => item.score!)
+    }
 
     this.buildScoreForm(this.scores)
   }
 
+  @Input() preset?: ChampionshipPreset
+  @Input() championship?: LeagueChampionship
+
   globalHelper = inject(GlobalHelper);
   formBuilder = inject(FormBuilder);
 
+  scoreValues: number[] = []
+
   scoresForm = this.formBuilder.group({
-    scores: this.formBuilder.array<string>([])
+    scores: this.formBuilder.array<FormGroup>([])
   })
 
   get scores() {
-    return this.scoresForm.controls.scores;
+    return this.scoresForm.controls.scores as FormArray<FormGroup>;
   }
 
-  gridSize = 0;
+  gridSize: number = 0
 
-
-  @Input() teams: Team[] = [];
+  @Input() scoreSystem?: ScoreSystem;
 
   @Output() scoreSystemCreated = new EventEmitter<ScoreSystem>();
 
-  private getGridSize() {
+  private getGridSize(teams: Team[]) {
     let size = 0
 
-    this.teams.forEach(team => {
-     size += team.carEntries!;
+    teams!.forEach(team => {
+      size += team.carEntries!;
     })
 
     return size;
@@ -53,9 +71,11 @@ export class ScoreSystemFormComponent implements OnInit {
   protected saveScoreSystem() {
     const scoreSystem: ScoreSystem = {positions: []};
 
-    this.scores.value.forEach((score, i) => {
+    const scores = this.scores.value.map(item => item.score);
+
+    scores.forEach((score, i) => {
       scoreSystem.positions![i] = {
-        score: (Number(score!) > 0 ? Number(score!) : 0)
+        score: (Number(score) > 0 ? Number(score) : 0)
       }
     });
 
@@ -65,8 +85,14 @@ export class ScoreSystemFormComponent implements OnInit {
   private buildScoreForm(array: FormArray)  {
     for (let i = 0; i < this.gridSize; i++) {
       array.push(
-        this.formBuilder.control("")
+        this.formBuilder.group({
+          score: this.scoreValues[i]
+        })
       )
     }
   }
+
+  getPlaceholder = (index: number) => {
+    return `Puntuación para ${index + 1}ª pos.`
+  };
 }

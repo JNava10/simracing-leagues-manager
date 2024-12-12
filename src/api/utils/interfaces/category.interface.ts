@@ -7,10 +7,4 @@ export interface CategoryData {
 export interface CategorySeed {
     name: string;
     description: string;
-    subcategories: SubcategorySeed[]
-}
-
-export interface SubcategorySeed {
-    name: string;
-    description: string;
 }

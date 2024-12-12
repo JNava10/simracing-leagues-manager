@@ -1,0 +1,18 @@
+<app-custom-search-input
+  (onSearch)="searchUsers($event)"
+/>
+@if (searchedUsers) {
+  @if (searchedUsers.length === 0) {
+    <span>No se han encontrado resultados</span>
+  }
+
+  @else {
+    <ul class="rounded-box flex flex-col gap-3">
+      @for (user of searchedUsers; track $index) {
+        <div (click)="selectUser(user)" class="flex cursor-pointer items-center justify-between w-full hover:bg-neutral-800">
+          <span class="text-sm p-3">{{user.name}}</span>
+        </div>
+      }
+    </ul>
+  }
+}

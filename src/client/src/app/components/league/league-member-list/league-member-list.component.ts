@@ -1,93 +1,151 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { LeagueApiService } from '../../../services/api/league-api.service';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { QueryIsExecuted, LeagueMember, ApiMemberFilter } from '../../../utils/interfaces/league.interface';
-import { TableModule } from 'primeng/table';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
-import { User } from '../../../utils/interfaces/user.interface';
-import { ListboxClickEvent, ListboxFilterEvent, ListboxModule } from 'primeng/listbox';
-import { FormsModule } from '@angular/forms';
-import { MenuItem, MessageService } from 'primeng/api';
-import { GlobalHelper } from '../../../helpers/global.helper';
+import { ListboxModule } from 'primeng/listbox';
 import { MessagesModule } from 'primeng/messages';
-import { TabMenuModule } from 'primeng/tabmenu';
+import { DialogModule } from 'primeng/dialog';
+import { LeagueApiService } from '../../../services/api/league-api.service';
+import { ListenerSocketService } from '../../../services/socket/listener.socket.service';
+import { GlobalHelper } from '../../../helpers/global.helper';
+import {
+  QueryIsExecuted,
+  LeagueMember,
+  LeagueMemberRequest,
+  BanMemberRequest
+} from '../../../utils/interfaces/league.interface';
+import { User } from '../../../utils/interfaces/user.interface';
+import {
+  CustomSolidButtonComponent
+} from '../../utils/button/solid-button/custom-solid-button.component';
+import {
+  SearchUsersBarComponent
+} from '../../utils/custom/search/search-users-bar/search-users-bar.component';
+import {
+  BaseCustomInputComponent
+} from '../../utils/custom/input/base-custom-input/base-custom-input.component';
+import {
+  CustomTextInputComponent
+} from '../../utils/custom/input/custom-text-input/custom-text-input.component';
 
 @Component({
   selector: 'app-league-member-list',
+  providers: [
+
+  ],
   standalone: true,
-  imports: [TableModule, AsyncPipe, ButtonModule, ToolbarModule, ListboxModule, FormsModule, MessagesModule, DatePipe],
+  imports: [
+    ButtonModule,
+    ToolbarModule,
+    ListboxModule,
+    FormsModule,
+    MessagesModule,
+    DatePipe,
+    CustomSolidButtonComponent,
+    DialogModule,
+    SearchUsersBarComponent,
+    CustomTextInputComponent,
+  ],
   templateUrl: './league-member-list.component.html',
   styleUrl: './league-member-list.component.scss'
 })
 export class LeagueMemberListComponent implements OnInit {
+
+  leagueId?: number;
+  members: Map<number, LeagueMember> = new Map();
+  searching = false;
+  banning = false;
+  banConfirm = false;
+  banReason = "";
+  memberToBan?: LeagueMember;
+
   constructor(
     private leagueService: LeagueApiService,
     private route: ActivatedRoute,
-    private messageService: MessageService,
-    private globalHelper: GlobalHelper
+    private globalHelper: GlobalHelper,
+    private socketListener: ListenerSocketService
   ) {}
 
   ngOnInit(): void {
-    if (!this.leagueId) this.leagueId = this.route.snapshot.parent?.params['leagueId'];
-    this.$members = this.leagueService.getLeagueMembers(this.leagueId!);
+    this.leagueId = this.route.snapshot.parent?.params['leagueId'];
+    this.refreshList();
+    this.socketListener.leagueMemberAdded(this.handleMemberAdded);
   }
 
-  leagueId?: number
-  selectedUser?: User
-
-  $members?: Observable<LeagueMember[]>
-  $elegibleUsers?: Observable<User[]>
-  $search?: Observable<User[]>
-
-  searchTimeout?: any;
-
-  handleSearch = (originalEvent: ListboxFilterEvent) => {
-    const value = String(originalEvent.filter);
-
-    if (value == "") this.$elegibleUsers = of(); // of() crea un nuevo observable vacio.
-
-    clearTimeout(this.searchTimeout);
-
-    this.searchTimeout = setTimeout(() => this.searchUsers(value), 500);
+  private refreshList(): void {
+    this.leagueService.getMembers(this.leagueId!).subscribe(this.handleMembers);
   }
 
-  searchUsers = (search: string) => {
-    this.$elegibleUsers = this.leagueService.searchNotMembers(this.leagueId!, search)
-  }
+  private handleMembers = (res: LeagueMember[]): void => {
+    res.forEach(member => {
+      this.addMember(member);
+    });
+  };
 
-  selectUser = ($event: ListboxClickEvent) => {
-    const selectedUser = $event.option as User;
+  private handleAddingMember = (memberIsAdded: QueryIsExecuted, memberInfo: LeagueMemberRequest): void => {
+    this.globalHelper.showSuccessMessage({ message: "Se ha añadido al miembro correctamente." });
+    this.members.delete(memberInfo.userId)
+  };
 
-    const newMemberData: ApiMemberFilter = {
-      leagueId: this.leagueId!,
-      userId: selectedUser.id!
-    }
+  private handleBanningMember = (res: QueryIsExecuted, member: BanMemberRequest): void => {
+    this.members.delete(member.userId);
+  };
 
-    this.leagueService.addMember(newMemberData).subscribe(this.handleAddingMember);
-  }
+  private handleMemberAdded = (id: number): void => {
+    this.leagueService.getMemberById(this.leagueId!, id).subscribe(this.addMember);
+  };
 
-  handleAddingMember = (memberIsAdded: QueryIsExecuted) => {
-    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.msg, this.messageService);
-
-    this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
-  }
-
-  kickMember = (userId: number) => {
-    const newMemberData: ApiMemberFilter = {
+  kickMember(userId: number): void {
+    const member: LeagueMemberRequest = {
       leagueId: this.leagueId!,
       userId
-    }
-
-    this.leagueService.kickMember(newMemberData).subscribe(this.handleAddingMember);
+    };
+    this.leagueService.kickMember(member).subscribe(res => this.handleAddingMember(res, member));
   }
 
-  handleKickingMember = (memberIsAdded: QueryIsExecuted) => {
-    this.globalHelper.showSuccessMessage("Exito", memberIsAdded.msg, this.messageService);
+  banMember(userId: number): void {
+    if (!this.memberToBan) return;
 
-    this.$members = this.leagueService.getLeagueMembers(this.leagueId!); // TODO: Cambiar esta chapuza.
+    const member: BanMemberRequest = {
+      leagueId: this.leagueId!,
+      userId: this.memberToBan.user.id!,
+      reason: this.banReason
+    };
+
+    this.leagueService.banMember(member).subscribe(res => this.handleBanningMember(res, member));
+  }
+
+  inviteUser(user: User): void {
+    this.leagueService.inviteMember(this.leagueId!, user.id!).subscribe(res => {
+      if (res.executed) this.searching = false;
+    });
+  }
+
+  toggleSearch(show: boolean): void {
+    this.searching = show;
+  }
+
+  showBanReason(member: LeagueMember): void {
+    this.banning = true;
+    this.banReason = "";
+    this.memberToBan = member;
+  }
+
+  showBanConfirm(): void {
+    this.banning = false;
+    this.banConfirm = true;
+  }
+
+  isAdmin(): void {
+
+  }
+
+  private addMember = (member: LeagueMember) => {
+
+    if (member.user && member.user.id) {
+      this.members.set(member.user.id, member);
+    }
   }
 }
-

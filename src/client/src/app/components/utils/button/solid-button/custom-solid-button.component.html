@@ -1,0 +1,15 @@
+@if ((border && borders[border]) && (color && colors[color])) {
+  <button
+    [ngClass]="[
+    'py-3 px-4 gap-x-2 text-sm font-medium flex gap-2 justify-center items-center',
+    styleClass,
+    borders[border]
+  ]"
+    [ngStyle]="{'background-color': colors[this.color][500], 'color': colors[this.color][100]}"
+    (click)="$event.preventDefault()"
+  >
+    <div class="flex justify-center gap-2 items-center">
+      <ng-content/>
+    </div>
+  </button>
+}

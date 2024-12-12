@@ -1,0 +1,20 @@
+<div class="flex justify-center">
+
+  <!-- Menú desplegable de notificaciones -->
+  <div class=" w-80 bg-neutral-100 border border-neutral-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700 z-50">
+    <!-- Título del menú -->
+    <div class="p-4 border-b border-neutral-200 dark:border-neutral-700">
+      <h3 class="text-sm font-semibold text-neutral-800 dark:text-neutral-300">Notificaciones</h3>
+    </div>
+
+    @for (notification of notifications; track $index) {
+
+    } @empty {
+      <div class="max-h-72 overflow-y-auto">
+        <div class="p-3 text-sm text-neutral-500 dark:text-neutral-400 text-center">
+          No hay notificaciones.
+        </div>
+      </div>
+    }
+  </div>
+</div>

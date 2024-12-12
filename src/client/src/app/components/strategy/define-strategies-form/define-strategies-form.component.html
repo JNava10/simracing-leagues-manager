@@ -1,0 +1,206 @@
+<section class="h-full">
+ <div class="h-[65vh]">
+   @if (strategies) {
+     <div class="flex-col w-[95%] mx-[5%]">
+       <app-strategy-chart
+         [strategy]="strategies[0]"
+       />
+     </div>
+   } @else {
+     <div class="h-full">
+       <app-custom-empty
+         title="No se ha encontrado ninguna estrategia."
+         description="Rellena el formulario de la parte inferior"
+       />
+     </div>
+   }
+
+   <div class="flex-col mx-[5%] max-h-[10rem]">
+     <div class="grid gap-12 p-3 grid-cols-6 max-h-full w-full  rounded-2xl bg-dark-background">
+       @if (strategyForm) {
+         <form class="grid grid-cols-3 gap-3 col-span-3" [formGroup]="strategyForm!">
+           <div>
+             @if (selectedLayout) {
+               <div class="flex max-w-full overflow-y-auto justify-center items-center flex-col p-3 bg-dark-background-deepest w-full h-full">
+                 <h2 class="font-bold text-2xl text-dark-text">Circuito</h2>
+
+                 <div class="flex flex-col justify-center items-center">
+                   <span class="font-medium text-xl text-dark-main">{{selectedLayout.parent?.name}}</span>
+                   <span class="font-sm text-md text-dark-main/50">{{selectedLayout.name}}</span>
+                 </div>
+               </div>
+             } @else {
+               <div class="flex flex-col items-center pb-2 bg-dark-background-deepest justify-center">
+
+                 <app-custom-empty
+                   title="No hay ningun trazado selec."
+                   description="Pulsa en la lupa para buscar"
+                   [showDescription]="false"
+                 />
+
+                 <div class="flex justify-center">
+                   <app-soft-button color="indigo" (click)="showSearchTrack()">
+                     <i class="fa-solid fa-magnifying-glass"></i>
+                   </app-soft-button>
+                 </div>
+
+               </div>
+             }
+           </div>
+
+           <div>
+             @if (selectedCar) {
+               <div class="flex max-w-full overflow-y-auto justify-center items-center flex-col p-3 bg-dark-background-deepest w-full h-full">
+                 <h2 class="font-bold text-2xl text-dark-text">Coche</h2>
+
+                 <div class="flex flex-col justify-center items-center">
+                   <span class="font-medium text-xl text-dark-main">{{selectedCar.name}}</span>
+                 </div>
+               </div>
+             } @else {
+               <div class="flex flex-col items-center pb-2 bg-dark-background-deepest justify-center">
+
+                 <app-custom-empty
+                   title="No hay ningun coche selec."
+                   description="Pulsa en la lupa para buscar"
+                   [showDescription]="false"
+                 />
+
+                 <div class="flex justify-center">
+                   <app-soft-button color="indigo" (click)="showSearchCar()">
+                     <i class="fa-solid fa-magnifying-glass"></i>
+                   </app-soft-button>
+                 </div>
+
+               </div>
+             }
+           </div>
+
+           <div>
+             <div class="flex flex-col gap-3">
+               <app-custom-text-input
+                 formControlName="raceLength"
+                 label="Vueltas"
+               />
+             </div>
+           </div>
+
+
+           <!-- POST DEFENSA. Faltaba este formulario para que no se utilizaran tiempos por vuelta predefinidos -->
+           @if (this.selectedTyresDistinct.size > 0) {
+             <p-dialog
+               contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+               showHeader="false"
+               styleClass="flex gap-1 p-3 dark:bg-dark-background w-30 h-15"
+               [(visible)]="typingLaptimes" [modal]="true"
+               [dismissableMask]="true">
+               <ng-template pTemplate="headless">
+                 <div class="flex flex-col gap-3" formArrayName="lapTimes">
+                   <span>Indicar los tiempos con formato MM:SS:MIL (1:30.000)</span>
+
+                   @for (group of this.lapTimes.controls; track $index) {
+                    <div [formGroupName]="$index">
+                      @if (lapTimes.at($index) && getTyre(lapTimes.at($index).value['tyreId']); as tyre) {
+                        <app-custom-text-input
+                          [label]="tyre.name!"
+                          [debug]="true"
+                          formControlName="lapTime"
+                          placeholder="Ej: 1:10:000"
+                        />
+                      }
+                    </div>
+                   }
+
+                   <app-soft-button color="pink" (click)="getStrategy()">Obtener estrategia</app-soft-button>
+                 </div>
+               </ng-template>
+             </p-dialog>
+           }
+         </form>
+       }
+
+       <div class="flex h-full col-span-2 flex-col gap-2">
+         <span class="text-3xl font-bold">Stints</span>
+         @if (selectedCar) {
+           <div class="flex justify-start items-start gap-3">
+             @for (tyre of selectedTyres; track $index) {
+               <div class="w-20 h-20">
+                 <span class="font-extrabold text-2xl" [ngStyle]="{'color': tyre.color}">{{tyre.name}}</span>
+               </div>
+             }
+             <div>
+               <div>
+                 <app-soft-button (click)="showChoosingTyre()" color="red">
+                   <i class="fa-solid fa-plus"></i>
+                 </app-soft-button>
+               </div>
+             </div>
+           </div>
+         } @else {
+           <app-custom-empty
+             title="Selecciona primero un coche"
+             description="Debes seleccionar primero un coche para seleccionar neumaticos"
+           />
+         }
+       </div>
+
+       <div class="flex flex-col justify-center">
+         <app-soft-button color="purple" (click)="showLaptimeForm()">
+           Siguiente
+         </app-soft-button>
+       </div>
+     </div>
+   </div>
+ </div>
+</section>
+
+<p-dialog
+  contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+  showHeader="false"
+  styleClass="flex gap-1 dark:bg-dark-background"
+  [(visible)]="searchingTrack"
+  [modal]="true"
+  [dismissableMask]="true">
+  <ng-template pTemplate="headless">
+    <div>
+      <app-track-search-form
+        (onConfirm)="confirmLayout($event)"
+      />
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+  showHeader="false"
+  styleClass="flex gap-1 dark:bg-dark-background"
+  [(visible)]="searchingCar" [modal]="true"
+  [dismissableMask]="true">
+  <ng-template pTemplate="headless">
+    <div>
+      <app-baseline-car-search
+        (onConfirm)="confirmCar($event)"
+      />
+    </div>
+  </ng-template>
+</p-dialog>
+
+
+@if (selectedCar) {
+  <p-dialog
+    contentStyleClass="dark:bg-dark-mainbg backdrop-blur-sm"
+    showHeader="false"
+    styleClass="flex gap-1 dark:bg-dark-background w-45 h-30"
+    [(visible)]="choosingTyre" [modal]="true"
+    [dismissableMask]="true">
+    <ng-template pTemplate="headless">
+      <div class="flex gap-3 p-3  rounded-xl">
+        @for (tyre of selectedCar.tyres; track $index) {
+          <div (click)="selectTyre(tyre)" class="w-20 h-10 flex justify-center items-center dark:text-dark-text dark:hover:text-dark-textPurple hover:bg-dark-background-lightest cursor-pointer">
+            <span class="text-xl text-center">{{tyre.name}}</span>
+          </div>
+        }
+      </div>
+    </ng-template>
+  </p-dialog>
+}

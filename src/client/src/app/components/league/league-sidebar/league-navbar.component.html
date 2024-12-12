@@ -1,0 +1,17 @@
+@if (league) {
+  <div
+    class="relative h-full w-full rounded-2xl dark:bg-dark-background"
+  >
+    <nav class="flex justify-center items-center gap-1 p-2 text-dark-text-inactive">
+    <span (click)="navigateInLeague('championships')" class="flex justify-center items-center w-full p-3 rounded-lg hover:text-dark-main">
+      Campeonatos
+    </span>
+
+<!--   POST ENTREGA: Se han quitado los eventos.   -->
+      <span (click)="navigateInLeague('admin')" class="flex items-center justify-center w-full p-3 rounded-lg  hover:text-dark-main">
+      Admin
+    </span>
+    </nav>
+  </div>
+
+}

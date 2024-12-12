@@ -8,110 +8,116 @@ datasource db {
 }
 
 model Category {
-  id            Int           @id @default(autoincrement())
-  name          String        @db.VarChar(255)
-  description   String        @db.VarChar(255)
-  subcategories Subcategory[]
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(255)
+  description String @db.VarChar(255)
 
-  userFavourites FavouriteCategories[]
-  championships ChampionshipCategories[]
-}
-
-// TODO: Quitar despues
-model Subcategory {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(255)
-  parentId    Int
-  description String   @db.VarChar(255)
-  parent      Category @relation(fields: [parentId], references: [id])
+  // userFavourites FavouriteCategories[]
+  championships ChampionshipCategory[]
+  presets       ChampionshipPresetCategories[]
+  events        EventCategory[]
+  TeamCategory  TeamCategory[]
 }
 
 // Usuarios
 
 model User {
-  id                   Int                  @id @default(autoincrement())
-  nickname             String?              @db.VarChar(255)
-  name                 String               @db.VarChar(255)
-  lastname             String               @db.VarChar(255)
-  secondLastname       String?              @db.VarChar(255)
-  password             String               @db.VarChar(255)
-  createdAt            DateTime             @default(now()) @db.DateTime(6)
-  email                String?              @db.VarChar(255)
-  profilePicUrl        String?              @db.VarChar(255)
+  id         Int      @id @default(autoincrement())
+  nickname   String   @db.VarChar(255)
+  name       String   @db.VarChar(255)
+  lastnames  String   @db.VarChar(255)
+  bio        String   @default("Profile bio.") @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  colorHex   String?  @default("#ffffff") @db.VarChar(7)
+  createdAt  DateTime @default(now()) @db.DateTime(6)
+  email      String?  @db.VarChar(255)
+  profileUrl String   @db.VarChar(255)
+  bannerUrl  String?  @db.VarChar(255)
 
   leagues              LeagueMember[]
-  entries              SessionEntry[]
   leaguesCreated       League[]
   championshipsCreated LeagueChampionship[]
-  championshipsJoined   ChampionshipEntry[]
-  appRoles UserRole[]
-  leaguePosts LeaguePost[]
-  postComments PostComment[]
-  favouriteSimulators FavouriteSimulator[]
-  favouriteCategories FavouriteCategories[]
-  auditActions LeagueAuditLog[]
+  championshipsJoined  ChampionshipEntry[]
+  appRoles             UserRole[]
+  // leaguePosts          LeaguePost[]
+  // postComments         PostComment[]
+  // favouriteSimulators  FavouriteSimulator[]
+  // favouriteCategories  FavouriteCategories[]
+  // auditActions         LeagueAuditLog[]
+
+  ChampionshipPreset ChampionshipPreset[]
+
+  RoundResults      RoundEntry[]
+  // notificationsSent     Notification[] @relation("NotificationsSent")
+  // notificationsReceived Notification[] @relation("NotificationsReceived")
+  EventChampionship LeagueEvent[]
 }
 
-model FavouriteSimulator {
-  userId               Int
-  simulatorId Int
+// model FavouriteSimulator {
+//   userId      Int
+//   simulatorId Int
+//
+//   simulator SimulatorGame @relation(fields: [simulatorId], references: [id])
+//   user      User          @relation(fields: [userId], references: [id])
+//
+//   @@id([userId, simulatorId])
+// }
 
-  simulator          SimulatorGame            @relation(fields: [simulatorId], references: [id])
-  user          User            @relation(fields: [userId], references: [id])
-
-  @@id([userId, simulatorId])  
-}
-
-model FavouriteCategories {
-  userId               Int
-  categoryId Int
-
-  category          Category            @relation(fields: [categoryId], references: [id])
-  user          User            @relation(fields: [userId], references: [id])
-
-  @@id([userId, categoryId])  
-}
+// model FavouriteCategories {
+//   userId     Int
+//   categoryId Int
+//
+//   category Category @relation(fields: [categoryId], references: [id])
+//   user     User     @relation(fields: [userId], references: [id])
+//
+//   @@id([userId, categoryId])
+// }
 
 model UserRole {
   userId Int
   roleId Int
-  role          AppRole            @relation(fields: [roleId], references: [id])
-  user          User               @relation(fields: [userId], references: [id])
+  role   AppRole @relation(fields: [roleId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
 
   @@id([roleId, userId])
 }
 
-
 model AppRole {
-    id                   Int                  @id @default(autoincrement())
-    name String
-
-    users UserRole[]
+  id    Int        @id @default(autoincrement())
+  name  String
+  users UserRole[]
 }
 
 /// Ligas ///
 
 model League {
-  id            Int                  @id @default(autoincrement())
-  name          String               @db.VarChar(255)
-  description   String               @db.VarChar(255)
-  createdAt     DateTime             @default(now()) @db.DateTime(6)
-  category      Int?
-  authorId      Int
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  picUrl      String   @db.VarChar(255)
+  bannerUrl   String   @db.VarChar(255)
+  description String   @db.VarChar(255)
+  color       String   @default("#FFFFFF") @db.VarChar(7)
+  createdAt   DateTime @default(now()) @db.DateTime(6)
+  category    Int?
+  authorId    Int
 
-  author        User                 @relation(fields: [authorId], references: [id])
-  championships LeagueChampionship[]
-  members       LeagueMember[]
-  leaguePost    LeaguePost[]
+  author            User                 @relation(fields: [authorId], references: [id])
+  championships     LeagueChampionship[]
+  members           LeagueMember[]
+  // leaguePost        LeaguePost[]
+  EventChampionship LeagueEvent[]
 }
 
 // Miembros pertenecientes a cada liga.
 model LeagueMember {
-  leagueId Int
-  userId   Int
-  accepted Boolean @default(false)
-  joinedAt            DateTime?             @db.DateTime(6)
-  requestedAt            DateTime?             @db.DateTime(6)
+  leagueId       Int
+  userId         Int
+  notificationId Int?
+  accepted       Boolean   @default(false)
+  invited        Boolean   @default(false)
+  joinedAt       DateTime? @db.DateTime(6)
+  invitedAt      DateTime? @db.DateTime(6)
+  requestedAt    DateTime? @db.DateTime(6)
 
   league League @relation(fields: [leagueId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
@@ -119,157 +125,250 @@ model LeagueMember {
   @@id(name: "memberKeys", [leagueId, userId])
 }
 
+model LeagueEvent {
+  id            Int      @id @default(autoincrement())
+  leagueId      Int
+  name          String   @db.VarChar(255)
+  description   String   @db.VarChar(255)
+  authorId      Int
+  layoutId      Int
+  picUrl        String   @db.VarChar(255)
+  backgroundUrl String   @db.VarChar(255)
+  simulatorId   Int
+  createdAt     DateTime @default(now()) @db.DateTime(6)
+
+  author    User?          @relation(fields: [authorId], references: [id])
+  league    League?        @relation(fields: [leagueId], references: [id])
+  simulator SimulatorGame? @relation(fields: [simulatorId], references: [id])
+  layout    TrackLayout?   @relation(fields: [layoutId], references: [id])
+
+  users      ChampionshipEntry[]
+  teams      EventTeam[]
+  categories EventCategory[]
+}
+
+model EventTeam {
+  eventId Int
+  teamId  Int
+
+  event LeagueEvent @relation(fields: [eventId], references: [id])
+  team  Team        @relation(fields: [teamId], references: [id])
+
+  @@id([eventId, teamId])
+}
 
 // Campeonatos de cada liga
 
 model LeagueChampionship {
-  id          Int                 @id @default(autoincrement())
-  leagueId    Int
-  name        String              @db.VarChar(255)
-  authorId    Int
-  description String              @db.VarChar(255)
-  simulatorId Int
-  createdAt   DateTime            @default(now()) @db.DateTime(6)
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(255)
+  picUrl        String   @db.VarChar(255)
+  backgroundUrl String   @db.VarChar(255)
+  description   String   @db.VarChar(255)
+  authorId      Int
+  leagueId      Int
+  simulatorId   Int
+  scoreSystemId Int
+  createdAt     DateTime @default(now()) @db.DateTime(6)
 
-  author      User?                @relation(fields: [authorId], references: [id])
-  league      League?              @relation(fields: [leagueId], references: [id])
-  simulator   SimulatorGame?              @relation(fields: [simulatorId], references: [id])
+  author      User?          @relation(fields: [authorId], references: [id])
+  league      League?        @relation(fields: [leagueId], references: [id])
+  simulator   SimulatorGame? @relation(fields: [simulatorId], references: [id])
+  scoreSystem ScoreSystem?   @relation(fields: [scoreSystemId], references: [id])
 
-  rounds      ChampionshipRound[]
-  entries      ChampionshipEntry[]
-  categories ChampionshipCategories[]
+  calendar   ChampionshipRound[]
+  users      ChampionshipEntry[]
+  categories ChampionshipCategory[]
+  teams      ChampionshipTeam[]
 }
 
 model ChampionshipRound {
-  id             Int                @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   championshipId Int
-  layoutId        Int
-  name           String?            @db.VarChar(255)
-  description    String?            @db.VarChar(255)
-  createdAt      DateTime           @default(now()) @db.DateTime(6)
+  layoutId       Int
+  roundNum       Int
+  name           String?  @db.VarChar(255)
+  description    String?  @db.VarChar(255)
+  createdAt      DateTime @default(now()) @db.DateTime(6)
+  finished       Boolean  @default(false)
 
-  championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
+  championship LeagueChampionship @relation(fields: [championshipId], references: [id])
+  result       RoundEntry[]
+  layout       TrackLayout        @relation(fields: [layoutId], references: [id])
 }
 
-model ChampionshipCategories {
+model ChampionshipCategory {
   championshipId Int
-  categoryId        Int
+  categoryId     Int
 
-  championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
-  categories   Category @relation(fields: [categoryId], references: [id])
+  championship LeagueChampionship @relation(fields: [championshipId], references: [id])
+  categories   Category           @relation(fields: [categoryId], references: [id])
 
   @@id(name: "keys", [championshipId, categoryId])
-
 }
 
+model EventCategory {
+  championshipId Int
+  categoryId     Int
+
+  event               LeagueEvent? @relation(fields: [eventChampionshipId], references: [id])
+  category            Category     @relation(fields: [categoryId], references: [id])
+  eventChampionshipId Int?
+
+  @@id(name: "keys", [championshipId, categoryId])
+}
 
 model ChampionshipEntry {
-  id             Int                @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   championshipId Int
   userId         Int
-  name           String?            @db.VarChar(255)
-  description    String?            @db.VarChar(255)
-  createdAt      DateTime           @default(now()) @db.DateTime(6)
-  championship   LeagueChampionship @relation(fields: [championshipId], references: [id])
-  user          User               @relation(fields: [userId], references: [id])
+  gameName       String?
+  number         Int?
+  teamId         Int?
+  nacionality    String?  @db.VarChar(2)
+  description    String?  @db.VarChar(255)
+  createdAt      DateTime @default(now()) @db.DateTime(6)
+
+  championship        LeagueChampionship @relation(fields: [championshipId], references: [id])
+  user                User               @relation(fields: [userId], references: [id])
+  EventChampionship   LeagueEvent?       @relation(fields: [eventChampionshipId], references: [id])
+  eventChampionshipId Int?
 }
 
-model Session {
-  id            Int            @id @default(autoincrement())
-  trackId       Int
-  createdAt     DateTime       @default(now()) @db.DateTime(6)
-  track         Track          @relation(fields: [trackId], references: [id])
-  sessionEntry  SessionEntry[]
-  raceSession   RaceSession?   @relation(fields: [raceSessionId], references: [id])
-  raceSessionId Int?
-}
+model RoundEntry {
+  driverId    Int
+  finishState Int
+  roundId     Int
+  position    Int
 
-model SessionEntry {
-  driverId      Int    
-  sessionId     Int    
-  position      Int
-  driver        User    @relation(fields: [driverId], references: [id])
-  session       Session @relation(fields: [sessionId], references: [id])
-  @@id([driverId, sessionId])
-}
+  driver User              @relation(fields: [driverId], references: [id])
+  round  ChampionshipRound @relation(fields: [roundId], references: [id])
 
-model RaceSession {
-  id       Int       @id @default(autoincrement())
-  laps     Int?
-  duration Int? // Minutos
-  session  Session[]
+  @@id([driverId, roundId])
 }
 
 // Equipos //
 
 // Información sobre los equipos existentes. Estos equipos pueden elegirse dentro de un campeonato
 model Team {
-  id            Int            @id @default(autoincrement())
-  name          String         @db.VarChar(255)
-  hexColor      String         @db.VarChar(7)
-  carEntries    Int?            @default(2)
+  id         Int    @id @default(autoincrement())
+  name       String @db.VarChar(255)
+  hexColor   String @db.VarChar(7)
+  carEntries Int    @default(2)
+
+  PresetTeam       PresetTeam[]
+  ChampionshipTeam ChampionshipTeam[]
+  EventTeam        EventTeam[]
+  TeamCategory     TeamCategory[]
+}
+
+model PresetTeam {
+  presetId Int
+  teamId   Int
+
+  team   Team               @relation(fields: [teamId], references: [id])
+  preset ChampionshipPreset @relation(fields: [presetId], references: [id])
+
+  @@id([presetId, teamId])
+}
+
+model TeamCategory {
+  teamId     Int
+  categoryId Int
+
+  team     Team     @relation(fields: [teamId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@id([teamId, categoryId])
 }
 
 // Union entre los campeonatos y sus respectivos equipos.
 model ChampionshipTeam {
-  championshipId  Int            
-  teamId  Int    
+  championshipId Int
+  teamId         Int
+
+  championship LeagueChampionship @relation(fields: [championshipId], references: [id])
+  team         Team               @relation(fields: [teamId], references: [id])
 
   @@id([championshipId, teamId])
 }
 
+/// Workshop de configuraciones ///
+
 // Configuración predeterminada para poder configurar un campeonato. Los usuarios pueden crear estos presets y publicarlos en una "workshop".
 model ChampionshipPreset {
-  id            Int            @id @default(autoincrement())
-  championshipId  Int
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String
+  imgUrl        String?
   scoreSystemId Int
-  authorId Int
-  createdAt DateTime @default(now()) @db.DateTime(6)
+  authorId      Int
+  createdAt     DateTime @default(now()) @db.DateTime(6)
+
+  author      User                           @relation(fields: [authorId], references: [id])
+  scoreSystem ScoreSystem                    @relation(fields: [scoreSystemId], references: [id])
+  categories  ChampionshipPresetCategories[]
+  layouts     ChampionshipPresetLayouts[]
+  teams       PresetTeam[]
 }
 
-// // Trazados de circuito pertenecientes a cada preset de configuración.
-// model WorkshopPresetLayouts {
-//   presetId  Int
-//   scoreSystemId Int
+// Trazados de circuito pertenecientes a cada preset de configuración.
+model ChampionshipPresetLayouts {
+  presetId Int
+  layoutId Int
 
-//   @@id([presetId, scoreSystemId])
-// }
+  layout TrackLayout        @relation(fields: [layoutId], references: [id])
+  preset ChampionshipPreset @relation(fields: [presetId], references: [id])
+
+  @@id([presetId, layoutId])
+}
+
+model ChampionshipPresetCategories {
+  presetId   Int
+  categoryId Int
+
+  categories Category           @relation(fields: [categoryId], references: [id])
+  preset     ChampionshipPreset @relation(fields: [presetId], references: [id])
+
+  @@id([presetId, categoryId])
+}
 
 /// Sistemas de puntuación ///
 
 // Definición de cuanto puntua cada posición, vuelta rapida o pole, distinguidos por un nombre.
 model ScoreSystem {
-  id            Int                   @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  positionScore ScoreSystemPosition[]
-  extraScore    ScoreSystemExtra[]
+  positions    ScoreSystemPosition[]
+  // extra        ScoreSystemExtra[]
+  preset       ChampionshipPreset[]
+  championship LeagueChampionship[]
 }
 
 // Valores de puntuación de cada posición dentro de un sistema de puntuación.
 model ScoreSystemPosition {
-  id       Int         @id @default(autoincrement())
-  parent   ScoreSystem @relation(fields: [parentId], references: [id])
-  
-  score    Int   
+  id     Int         @id @default(autoincrement())
+  parent ScoreSystem @relation(fields: [parentId], references: [id])
+
+  score    Int
   parentId Int
 }
 
-// Definición de las opciones extra dentro de los sistemas de puntuación (pole, vuelta rapida...).
-model ExtraScore {
-  id               Int                @id @default(autoincrement())
-  name             String
-  scoreSystemExtra ScoreSystemExtra[]
-}
+// // Definición de las opciones extra dentro de los sistemas de puntuación (pole, vuelta rapida...).
+// model ExtraScore {
+//   id               Int                @id @default(autoincrement())
+//   // scoreSystemExtra ScoreSystemExtra[]
+// }
 
 // Valores de puntuación de pole, vuelta rapida y otras opciones extra dentro de un sistema de puntuación.
-model ScoreSystemExtra {
-  id       Int         @id @default(autoincrement())
-  extraId  Int
-  score    String      @db.VarChar(255)
-  parentId Int
-  parent   ScoreSystem @relation(fields: [parentId], references: [id])
-  extra    ExtraScore  @relation(fields: [extraId], references: [id])
-}
+// model ScoreSystemExtra {
+//   id       Int         @id @default(autoincrement())
+//   extraId  Int
+//   score    String      @db.VarChar(255)
+//   parentId Int
+//   parent   ScoreSystem @relation(fields: [parentId], references: [id])
+//   extra    ExtraScore  @relation(fields: [extraId], references: [id])
+// }
 
 /// Circuitos ///
 
@@ -277,103 +376,179 @@ model Track {
   id          Int           @id @default(autoincrement())
   name        String        @db.VarChar(255)
   description String        @db.VarChar(255)
-  country     String        @db.VarChar(3)
+  country     String        @db.VarChar(2)
   location    String        @db.VarChar(255)
   layouts     TrackLayout[]
-  session     Session[]
 }
 
 model TrackLayout {
   id          Int    @id @default(autoincrement())
   name        String @db.VarChar(255)
   description String @db.VarChar(255)
-  parent      Track  @relation(fields: [parentId], references: [id])
-  parentId    Int
+  lengthKm    Float
+
+  traction   Int @default(0)
+  braking    Int @default(0)
+  lateral    Int @default(0)
+  tyreStress Int @default(0)
+
+  parent   Track @relation(fields: [parentId], references: [id])
+  parentId Int
+
+  WorkshopPresetLayouts ChampionshipPresetLayouts[]
+  EventChampionship     LeagueEvent[]
+
+  ChampionshipRound ChampionshipRound[]
 }
 
 // Simuladores
 
 model SimulatorGame {
-  id          Int           @id @default(autoincrement())
-  name        String        @db.VarChar(255)
-  description String        @db.VarChar(255)
-  picUrl     String?         @db.VarChar(255)
-  releaseYear     Int       @db.Year
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  description String  @db.VarChar(255)
+  picUrl      String? @db.VarChar(255)
+  releaseYear Int     @db.Year
 
-  userFavourites FavouriteSimulator[]
   championships LeagueChampionship[]
+  events        LeagueEvent[]
 }
+
+model LeagueBan {
+  leagueId Int
+  userId   Int
+  bannedAt DateTime @default(now()) @db.DateTime(6)
+  reason   String
+
+  @@id([leagueId, userId])
+}
+
+// Conceptos de coche genericos que comparten las caracteristicas de una categoria especifica en momentos o reglamentos concretos. Por ej: F1 2022-2025 o GT3 de resistencia.
+model BaselineCar {
+  id                Int    @id @default(autoincrement())
+  name              String
+  description       String
+  fuelWasteKm       Float
+  engine            String
+  powerHp           Int
+  weightKg          Int
+  fuelCapacityLitre Int
+
+  tyres Tyre[]
+}
+
+model Tyre {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  color       String
+  carId       Int
+  softness    Float
+
+  car      BaselineCar @relation(fields: [carId], references: [id])
+  wearList TyreWear[]
+}
+
+model TyreWear {
+  id          Int   @id @default(autoincrement())
+  tyreId      Int
+  wearIndex   Float
+  performance Float
+
+  Tyre          Tyre @relation(fields: [tyreId], references: [id])
+  baselineCarId Int?
+}
+
+// /// Registros de auditoria ///
+//
+// model LeagueAuditAction {
+//   id          Int    @id @default(autoincrement())
+//   name        String @db.VarChar(255)
+//   description String @db.VarChar(255)
+//
+//   usages LeagueAuditLog[]
+// }
+//
+// model LeagueAuditLog {
+//   id       Int @id @default(autoincrement())
+//   actionId Int
+//   target   Int // Puede ser cualquier cosa, un rol, un campeonato, un usuario... Si miras la base de datos es lioso,
+//   //  pero es la unica forma que veo sin meter una tabla por cada acción (lo cual seria peor)
+//
+//   authorId Int
+//   date     DateTime @default(now()) @db.DateTime(6)
+//
+//   action LeagueAuditAction @relation(fields: [actionId], references: [id])
+//   user   User              @relation(fields: [authorId], references: [id])
+// }
 
 /// Posts de ligas ///
+//
+// model LeaguePost {
+//   id          Int      @id @default(autoincrement())
+//   title       String   @db.VarChar(255)
+//   description String   @db.VarChar(255)
+//   content     String   @db.LongText
+//   authorId    Int
+//   leagueId    Int
+//   createdAt   DateTime @default(now()) @db.DateTime(6)
+//   updatedAt   DateTime
+//   private     Boolean  @default(false)
+//
+//   author User   @relation(fields: [authorId], references: [id])
+//   league League @relation(fields: [leagueId], references: [id])
+//
+//   postComment PostComment[]
+//   files       LeaguePostFile[]
+// }
+//
+// model PostComment {
+//   id        Int      @id @default(autoincrement())
+//   content   String   @db.LongText
+//   authorId  Int
+//   postId    Int
+//   createdAt DateTime @default(now()) @db.DateTime(6)
+//   updatedAt DateTime
+//
+//   author User       @relation(fields: [authorId], references: [id])
+//   post   LeaguePost @relation(fields: [postId], references: [id])
+//
+//   files CommentPostFile[]
+// }
+//
+// model LeaguePostFile {
+//   id      Int    @id @default(autoincrement())
+//   fileUrl String @db.VarChar(255)
+//   postId  Int
+//
+//   post LeaguePost @relation(fields: [postId], references: [id])
+// }
+//
+// model CommentPostFile {
+//   id        Int    @id @default(autoincrement())
+//   fileUrl   String @db.VarChar(255)
+//   commentId Int
+//
+//   comment PostComment @relation(fields: [commentId], references: [id])
+// }
 
-model LeaguePost {
-  id            Int            @id @default(autoincrement())
-  title         String         @db.VarChar(255)
-  description   String         @db.VarChar(255)
-  content       String         @db.LongText
-  authorId      Int
-  leagueId      Int
-  createdAt     DateTime       @default(now()) @db.DateTime(6)
-  updatedAt     DateTime
-  private       Boolean        @default(false)
+// // TODO: Quitar despues
+// model Subcategory {
+//   id          Int      @id @default(autoincrement())
+//   name        String   @db.VarChar(255)
+//   parentId    Int
+//   description String   @db.VarChar(255)
+//   parent      Category @relation(fields: [parentId], references: [id])
+// }
 
-  author      User  @relation(fields: [authorId], references: [id])
-  league      League  @relation(fields: [leagueId], references: [id])
-
-  postComment PostComment[]
-  files LeaguePostFile[]
-}
-
-model PostComment {
-  id            Int            @id @default(autoincrement())
-  content       String         @db.LongText
-  authorId      Int
-  postId        Int
-  createdAt     DateTime       @default(now()) @db.DateTime(6)
-  updatedAt     DateTime
-
-  author      User  @relation(fields: [authorId], references: [id])
-  post        LeaguePost  @relation(fields: [postId], references: [id])
-
-  files CommentPostFile[]
-}
-
-model LeaguePostFile {
-  id            Int           @id @default(autoincrement())
-  fileUrl       String        @db.VarChar(255)
-  postId          Int
-
-  post      LeaguePost  @relation(fields: [postId], references: [id])
-}
-
-model CommentPostFile {
-  id            Int           @id @default(autoincrement())
-  fileUrl       String        @db.VarChar(255)
-  commentId          Int
-
-  comment      PostComment  @relation(fields: [commentId], references: [id])
-}
-
-/// Registros de auditoria ///
-
-model LeagueAuditAction {
-  id            Int           @id @default(autoincrement())
-  name       String        @db.VarChar(255)
-  description       String        @db.VarChar(255)
-
-  usages      LeagueAuditLog[]
-}
-
-
-model LeagueAuditLog {
-  id            Int           @id @default(autoincrement())
-  actionId      Int
-  target        Int // Puede ser cualquier cosa, un rol, un campeonato, un usuario... Si miras la base de datos es lioso, 
-  //  pero es la unica forma que veo sin meter una tabla por cada acción (lo cual seria peor)
-
-  authorId Int
-  date          DateTime       @default(now()) @db.DateTime(6)
-
-  action      LeagueAuditAction  @relation(fields: [actionId], references: [id])
-  user      User  @relation(fields: [authorId], references: [id])
-}
+// model Notification {
+//   id       Int      @id @default(autoincrement())
+//   actionId Int
+//   targetId Int
+//   authorId Int
+//   date     DateTime @default(now()) @db.DateTime(6)
+//   memberId Int
+//
+//   target User @relation("NotificationsReceived", fields: [targetId], references: [id])
+//   author User @relation("NotificationsSent", fields: [authorId], references: [id])
+// }
